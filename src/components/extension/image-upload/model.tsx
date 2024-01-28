@@ -21,13 +21,13 @@ export const Model = () => {
       >
         Open Dialog
       </DialogTrigger>
-      <DialogContent className="max-w-md p-3">
+      <DialogContent className="max-w-md p-3 w-full">
         <UploadImageForm
           setImages={setImage}
           images={image}
           preview={preview}
           setPreview={setPreview}
-          maxFiles={3}
+          maxFiles={5}
           maxSize={1024 * 1024 * 8}
           multiple={true}
         />

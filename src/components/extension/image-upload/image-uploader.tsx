@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { EmblaOptionsType } from "embla-carousel";
+import { X as RemoveIcon } from "lucide-react";
 
 interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   accept?: Accept;
@@ -61,6 +62,32 @@ export const UploadImageForm = ({
       fileWithPreview,
     ]);
     setImages((files) => [...(files && maxFiles > 1 ? files : []), file]);
+  };
+
+  const removeImageFromPreview = (index: number) => {
+    if (!api) return;
+    setPreview((prev) => {
+      if (!prev) return null;
+      const newPreview = [...prev];
+      newPreview.splice(index, 1);
+      return newPreview;
+    });
+    setImages((files) => {
+      if (!files) return null;
+      const newFiles = [...files];
+      newFiles.splice(index, 1);
+      return newFiles;
+    });
+    console.log(index, activeIndex);
+
+    //make condition to change the activate index
+    if (index === activeIndex) {
+      if (index === 0) {
+        api.scrollTo(0);
+      } else {
+        api.scrollTo(index - 1);
+      }
+    }
   };
 
   const checkFileSize = (file: File) => {
@@ -150,7 +177,7 @@ export const UploadImageForm = ({
     });
 
   return preview && preview.length > 0 ? (
-    <div className="grid gap-3 w-full">
+    <div className="grid space-y-2 w-full">
       <Carousel
         opts={{
           align: "start",
@@ -158,10 +185,13 @@ export const UploadImageForm = ({
         }}
         tabIndex={0}
         setApi={setApi}
-        className="w-full carousel space-y-2 focus:outline-none"
+        className="w-full carousel space-y-1  focus:outline-none"
         orientation="horizontal"
         onKeyDownCapture={handleKeyDown}
       >
+        <p className="text-xs">
+          {preview.length} File{"(s)"} out of {maxFiles}
+        </p>
         <CarouselNext className="-right-2 top-[40%] z-[100] h-6 w-6  " />
         <CarouselPrevious className="-left-2 top-[40%] z-[100] h-6 w-6" />
         <CarouselContent className="flex items-center w-full">
@@ -183,14 +213,23 @@ export const UploadImageForm = ({
 
         {maxFiles > 1 ? (
           <Carousel setApi={setApi}>
-            <CarouselContent className="flex items-center w-full">
+            <CarouselContent className="flex items-center w-full mt-1">
               {preview.map((imageSrc, i) => (
                 <CarouselItem
                   key={i}
-                  className={`md:basis-1/2 lg:basis-1/3 `}
+                  className={`basis-1/3 `}
                   onClick={() => scrollTo(i)}
                 >
                   <div className="relative aspect-square h-20 w-full">
+                    <button
+                      aria-label={`remove-slide-${i}`}
+                      type="button"
+                      className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 group"
+                      onClick={() => removeImageFromPreview(i)}
+                    >
+                      {" "}
+                      <RemoveIcon className="h-4 w-4 group-hover:stroke-red-600" />
+                    </button>
                     <Image
                       src={imageSrc}
                       alt="uploaded image"
