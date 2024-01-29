@@ -3,46 +3,25 @@
 import { Badge } from "@/components/ui/badge";
 import {
   Command,
-  CommandDialog,
   CommandItem,
   CommandEmpty,
   CommandList,
 } from "@/components/ui/command";
 import { X as RemoveIcon } from "lucide-react";
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useCallback, useRef, useState } from "react";
 import { Command as CommandPrimitive } from "cmdk";
 
 interface MultiSelectProps extends React.HTMLAttributes<HTMLDivElement> {
   options: string[];
-  multiSelect?: boolean;
 }
 
-export const MultiSelect = ({
-  options,
-  multiSelect = true,
-}: MultiSelectProps) => {
+export const MultiSelect = ({ options }: MultiSelectProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string[]>([]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        setOpen(true);
-      } else if (e.key === "Escape") {
-        setOpen(false);
-      }
-    };
-    /* document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown); */
-  }, []);
-
   const selectOption = useCallback((value: string) => {
-    if (!multiSelect) {
-      setSelected([value]);
-      return;
-    }
     setSelected((prev) => [...prev, value]);
   }, []);
 
@@ -68,11 +47,6 @@ export const MultiSelect = ({
     e.preventDefault();
     e.stopPropagation();
   }, []);
-
-  const isMacOs = () => {
-    if (typeof window === "undefined") return;
-    return window.navigator.userAgent.includes("Mac");
-  };
 
   const notSelected = options.filter((item) => !selected.includes(item));
 

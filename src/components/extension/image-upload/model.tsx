@@ -1,9 +1,12 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UploadImageForm } from "./image-uploader";
 import { cn } from "@/lib/utils";
+import { MultiSelect } from "../fancy-multi-select/multi-select";
+import { CommandDialog } from "@/components/ui/command";
+import { Popover } from "@/components/ui/popover";
 
 export type FilePreview = {
   file: File;
@@ -46,5 +49,42 @@ export const Model = () => {
         </div>
       </DialogContent>
     </Dialog>
+  );
+};
+
+export const ImageUpload = () => {
+  const [image, setImage] = useState<File[] | null>(null);
+  const [preview, setPreview] = useState<FilePreview[] | null>(null);
+  return (
+    <div className="max-w-md w-full">
+      <UploadImageForm
+        setImages={setImage}
+        images={image}
+        preview={preview}
+        setPreview={setPreview}
+        maxFiles={5}
+        maxSize={1024 * 1024 * 8}
+        multiple={true}
+      />
+    </div>
+  );
+};
+
+export const Commander = () => {
+  return (
+    <MultiSelect
+      options={[
+        "Hello",
+        "World",
+        "Next.js",
+        "Tailwind CSS",
+        "TypeScript",
+        "React",
+        "Vite",
+        "Remix",
+        "Astro",
+        "Svelte",
+      ]}
+    />
   );
 };

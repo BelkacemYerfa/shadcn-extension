@@ -1,5 +1,5 @@
 import { MultiSelect } from "@/components/extension/fancy-multi-select/multi-select";
-import { Model } from "@/components/extension/image-upload/model";
+
 import { ModeToggle } from "@/components/toggle-theme";
 
 export default function Home() {
