@@ -68,31 +68,27 @@ export const UploadImageForm = ({
     setImages((files) => [...(files && maxFiles > 1 ? files : []), file]);
   };
 
-  const removeImageFromPreview = (index: number) => {
-    if (!emblaMainApi) return;
-    setPreview((prev) => {
-      if (!prev) return null;
-      const newPreview = [...prev];
-      newPreview.splice(index, 1);
-      return newPreview;
-    });
-    setImages((files) => {
-      if (!files) return null;
-      const newFiles = [...files];
-      newFiles.splice(index, 1);
-      return newFiles;
-    });
-    console.log(index, activeIndex);
-
-    //make condition to change the activate index
-    if (index === activeIndex) {
-      if (index === 0) {
-        emblaMainApi.scrollTo(0);
-      } else {
-        emblaMainApi.scrollTo(index - 1);
+  const removeImageFromPreview = useCallback(
+    (index: number) => {
+      if (!emblaMainApi) return;
+      setPreview((prev) => {
+        if (!prev) return null;
+        const newPreview = [...prev];
+        newPreview.splice(index, 1);
+        return newPreview;
+      });
+      setImages((files) => {
+        if (!files) return null;
+        const newFiles = [...files];
+        newFiles.splice(index, 1);
+        return newFiles;
+      });
+      if (index === activeIndex) {
+        emblaMainApi.scrollTo(emblaMainApi.scrollSnapList().length);
       }
-    }
-  };
+    },
+    [emblaMainApi, setImages, setPreview, activeIndex]
+  );
 
   const checkFileSize = (file: File) => {
     if (file.size > maxSize) {
@@ -117,6 +113,7 @@ export const UploadImageForm = ({
         checkFileSize(file);
         handleBannerImageChange(file);
       });
+
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
           if (errors[0]?.code === "file-too-large") {
@@ -165,10 +162,11 @@ export const UploadImageForm = ({
 
   const onSelect = useCallback(() => {
     if (!emblaMainApi || !emblaThumbsApi) return;
-    setActiveIndex(emblaMainApi.selectedScrollSnap());
+    const selected = emblaMainApi.selectedScrollSnap();
+    setActiveIndex(selected);
+    emblaThumbsApi.scrollTo(selected);
     setCanScrollPrev(emblaMainApi.canScrollPrev());
     setCanScrollNext(emblaMainApi.canScrollNext());
-    emblaThumbsApi.scrollTo(emblaMainApi.selectedScrollSnap());
   }, [emblaMainApi, emblaThumbsApi]);
 
   useEffect(() => {
@@ -188,10 +186,8 @@ export const UploadImageForm = ({
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
     });
-
   return preview && preview.length > 0 ? (
     <div className="grid gap-2 w-full relative">
-      {" "}
       <CarouselPrevious
         className="-left-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
         onClick={ScrollPrev}
@@ -227,45 +223,44 @@ export const UploadImageForm = ({
             </div>
           ))}
         </div>
-
-        {maxFiles > 1 ? (
-          <div ref={emblaThumbsRef} className="overflow-hidden ">
-            <div className="flex items-center w-full mt-1 ">
-              {preview.map((imageSrc, i) => (
-                <div
-                  key={i}
-                  className={`basis-1/3 px-1 min-w-0 shrink-0 grow-0 `}
-                  onClick={() => onThumbClick(i)}
-                >
-                  <div
-                    className={`relative aspect-square h-20 w-full   opacity-40 rounded-md transition-opacity ${
-                      i === activeIndex ? "!opacity-100" : ""
-                    }`}
-                  >
-                    <button
-                      aria-label={`remove-slide-${i}`}
-                      type="button"
-                      className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group "
-                      onClick={() => removeImageFromPreview(i)}
-                    >
-                      {" "}
-                      <RemoveIcon className="h-4 w-4 group-hover:stroke-red-600" />
-                    </button>
-                    <Image
-                      src={imageSrc.preview}
-                      alt="uploaded image"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className=" rounded-lg object-cover"
-                      quality={100}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
       </div>
+      {maxFiles > 1 ? (
+        <div ref={emblaThumbsRef} className="overflow-hidden">
+          <div className="flex items-center w-full mt-1 ">
+            {preview.map((imageSrc, i) => (
+              <div
+                key={i}
+                className={`basis-1/3 px-1 min-w-0 shrink-0 grow-0 `}
+                onClick={() => onThumbClick(i)}
+              >
+                <div
+                  className={`relative aspect-square h-20 w-full   opacity-40 rounded-md transition-opacity ${
+                    i === activeIndex ? "!opacity-100" : ""
+                  }`}
+                >
+                  <button
+                    aria-label={`remove-slide-${i}`}
+                    type="button"
+                    className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group "
+                    onClick={() => removeImageFromPreview(i)}
+                  >
+                    {" "}
+                    <RemoveIcon className="h-4 w-4 group-hover:stroke-red-600" />
+                  </button>
+                  <Image
+                    src={imageSrc.preview}
+                    alt="uploaded image"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className=" rounded-lg object-cover"
+                    quality={100}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
       <Button
         type="button"
         variant="outline"
