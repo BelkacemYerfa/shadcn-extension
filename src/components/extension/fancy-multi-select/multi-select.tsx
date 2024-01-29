@@ -64,6 +64,11 @@ export const MultiSelect = ({
     [selected, inputValue]
   );
 
+  const mousePreventDefault = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
   const isMacOs = () => {
     if (typeof window === "undefined") return;
     return window.navigator.userAgent.includes("Mac");
@@ -81,7 +86,13 @@ export const MultiSelect = ({
           <Badge key={item} className="px-1 rounded-xl" variant={"secondary"}>
             <div className="flex items-center gap-1.5">
               <span className="text-xs">{item}</span>
-              <button type="button" onClick={() => removeOption(item)}>
+              <button
+                aria-label={`Remove ${item} option`}
+                aria-roledescription="button to remove option"
+                type="button"
+                onMouseDown={mousePreventDefault}
+                onClick={() => removeOption(item)}
+              >
                 {" "}
                 <RemoveIcon className="h-4 w-4 hover:stroke-red-600" />
               </button>
@@ -104,11 +115,11 @@ export const MultiSelect = ({
             {notSelected.map((option) => (
               <CommandItem
                 key={option}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                onMouseDown={mousePreventDefault}
+                onSelect={() => {
+                  selectOption(option);
+                  setInputValue("");
                 }}
-                onSelect={() => selectOption(option)}
               >
                 {option}
               </CommandItem>
