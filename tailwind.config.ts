@@ -27,6 +27,9 @@ export default {
       padding: {
         default: "--padding",
       },
+      margin: {
+        calc: "calc(28rem - var(--padding) * 2)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -4,27 +4,22 @@ import Image from "next/image";
 import {
   Dispatch,
   SetStateAction,
+  forwardRef,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { useDropzone, type FileRejection, type Accept } from "react-dropzone";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Carousel,
-  type CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { EmblaOptionsType } from "embla-carousel";
-import { X as RemoveIcon } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronRightIcon, X as RemoveIcon } from "lucide-react";
 import { FilePreview } from "./model";
+import { cn } from "@/lib/utils";
+import { ChevronLeftIcon } from "@radix-ui/react-icons";
 
 interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   accept?: Accept;
@@ -51,8 +46,13 @@ export const UploadImageForm = ({
   options,
   maxFiles = 1,
 }: FileUploadProps) => {
-  const [api, setApi] = useState<CarouselApi>();
-  const ref = useRef<HTMLDivElement | null>(null);
+  const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
+  const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
+    containScroll: "keepSnaps",
+    dragFree: true,
+  });
+  const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
+  const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
 
@@ -69,7 +69,7 @@ export const UploadImageForm = ({
   };
 
   const removeImageFromPreview = (index: number) => {
-    if (!api) return;
+    if (!emblaMainApi) return;
     setPreview((prev) => {
       if (!prev) return null;
       const newPreview = [...prev];
@@ -87,9 +87,9 @@ export const UploadImageForm = ({
     //make condition to change the activate index
     if (index === activeIndex) {
       if (index === 0) {
-        api.scrollTo(0);
+        emblaMainApi.scrollTo(0);
       } else {
-        api.scrollTo(index - 1);
+        emblaMainApi.scrollTo(index - 1);
       }
     }
   };
@@ -107,6 +107,7 @@ export const UploadImageForm = ({
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       const files = acceptedFiles;
       setPreview([]);
+      setImages([]);
       if (!files) {
         toast.error("file error , probably too big");
         return;
@@ -133,43 +134,49 @@ export const UploadImageForm = ({
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (!api || !ref.current) return;
+      event.preventDefault();
+      if (!emblaMainApi) return;
       if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        api.scrollPrev();
+        emblaMainApi.scrollPrev();
       } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        api.scrollNext();
+        emblaMainApi.scrollNext();
       }
-      ref.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      });
     },
-    [api]
+    [emblaMainApi]
   );
 
-  const scrollTo = useCallback(
+  const ScrollNext = useCallback(() => {
+    if (!emblaMainApi) return;
+    emblaMainApi.scrollNext();
+  }, [emblaMainApi]);
+
+  const ScrollPrev = useCallback(() => {
+    if (!emblaMainApi) return;
+    emblaMainApi.scrollPrev();
+  }, [emblaMainApi]);
+
+  const onThumbClick = useCallback(
     (index: number) => {
-      if (!api) return;
-      api.scrollTo(index);
+      if (!emblaMainApi || !emblaThumbsApi) return;
+      emblaMainApi.scrollTo(index);
     },
-    [api]
+    [emblaMainApi, emblaThumbsApi]
   );
 
-  const onSelect = useCallback((api: any) => {
-    if (!api) return;
-    setActiveIndex(api.selectedScrollSnap());
-  }, []);
+  const onSelect = useCallback(() => {
+    if (!emblaMainApi || !emblaThumbsApi) return;
+    setActiveIndex(emblaMainApi.selectedScrollSnap());
+    setCanScrollPrev(emblaMainApi.canScrollPrev());
+    setCanScrollNext(emblaMainApi.canScrollNext());
+    emblaThumbsApi.scrollTo(emblaMainApi.selectedScrollSnap());
+  }, [emblaMainApi, emblaThumbsApi]);
 
   useEffect(() => {
-    if (!api) return;
-
-    onSelect(api);
-    api.on("reInit", onSelect);
-    api.on("select", onSelect);
-  }, [api, onSelect]);
+    if (!emblaMainApi) return;
+    onSelect();
+    emblaMainApi.on("select", onSelect);
+    emblaMainApi.on("reInit", onSelect);
+  }, [emblaMainApi, onSelect]);
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
     useDropzone({
@@ -183,23 +190,30 @@ export const UploadImageForm = ({
     });
 
   return preview && preview.length > 0 ? (
-    <div className="grid space-y-2 w-full">
-      <Carousel
-        opts={{
-          align: "start",
-          ...options,
-        }}
+    <div className="grid gap-2 w-full relative">
+      {" "}
+      <CarouselPrevious
+        className="-left-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
+        onClick={ScrollPrev}
+        disabled={!canScrollPrev}
+      />
+      <CarouselNext
+        className="-right-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
+        onClick={ScrollNext}
+        disabled={!canScrollNext}
+      />
+      <div
+        ref={emblaMainRef}
         tabIndex={0}
-        setApi={setApi}
-        className="w-full carousel space-y-1 focus:outline-none"
-        orientation="horizontal"
+        className="w-full space-y-1 focus:outline-none overflow-hidden "
         onKeyDownCapture={handleKeyDown}
       >
-        <CarouselNext className="-right-2 top-[40%] z-[100] h-6 w-6  " />
-        <CarouselPrevious className="-left-2 top-[40%] z-[100] h-6 w-6" />
-        <CarouselContent className="flex items-center w-full">
+        <div className="flex items-center w-full ">
           {preview.map((imageSrc, i) => (
-            <CarouselItem key={i} className={`basis-full px-1 `}>
+            <div
+              key={i}
+              className={`px-1 flex min-w-0 shrink-0 grow-0 basis-full`}
+            >
               <AspectRatio ratio={4 / 3} className="w-full">
                 <Image
                   fill
@@ -210,24 +224,28 @@ export const UploadImageForm = ({
                   alt={`uploaded image ${activeIndex}`}
                 />
               </AspectRatio>
-            </CarouselItem>
+            </div>
           ))}
-        </CarouselContent>
+        </div>
 
         {maxFiles > 1 ? (
-          <Carousel setApi={setApi}>
-            <CarouselContent className="flex items-center w-full mt-1">
+          <div ref={emblaThumbsRef} className="overflow-hidden ">
+            <div className="flex items-center w-full mt-1 ">
               {preview.map((imageSrc, i) => (
-                <CarouselItem
+                <div
                   key={i}
-                  className={`basis-1/3 px-1 `}
-                  onClick={() => scrollTo(i)}
+                  className={`basis-1/3 px-1 min-w-0 shrink-0 grow-0 `}
+                  onClick={() => onThumbClick(i)}
                 >
-                  <div className="relative aspect-square h-20 w-full">
+                  <div
+                    className={`relative aspect-square h-20 w-full   opacity-40 rounded-md transition-opacity ${
+                      i === activeIndex ? "!opacity-100" : ""
+                    }`}
+                  >
                     <button
                       aria-label={`remove-slide-${i}`}
                       type="button"
-                      className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group"
+                      className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group "
                       onClick={() => removeImageFromPreview(i)}
                     >
                       {" "}
@@ -241,19 +259,13 @@ export const UploadImageForm = ({
                       className=" rounded-lg object-cover"
                       quality={100}
                     />
-                    {i === activeIndex && (
-                      <div
-                        ref={ref}
-                        className="h-20 w-full bg-gray-300 opacity-50 backdrop-blur rounded-md"
-                      />
-                    )}
                   </div>
-                </CarouselItem>
+                </div>
               ))}
-            </CarouselContent>
-          </Carousel>
+            </div>
+          </div>
         ) : null}
-      </Carousel>
+      </div>
       <Button
         type="button"
         variant="outline"
@@ -304,3 +316,41 @@ export const UploadImageForm = ({
     </div>
   );
 };
+
+const CarouselPrevious = forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof Button>
+>(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  return (
+    <Button
+      ref={ref}
+      variant={variant}
+      size={size}
+      className={cn("absolute h-8 w-8 rounded-full", className)}
+      {...props}
+    >
+      <ChevronLeftIcon className="h-4 w-4" />
+      <span className="sr-only">Previous slide</span>
+    </Button>
+  );
+});
+CarouselPrevious.displayName = "CarouselPrevious";
+
+const CarouselNext = forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof Button>
+>(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  return (
+    <Button
+      ref={ref}
+      variant={variant}
+      size={size}
+      className={cn("absolute h-8 w-8 rounded-full", className)}
+      {...props}
+    >
+      <ChevronRightIcon className="h-4 w-4" />
+      <span className="sr-only">Next slide</span>
+    </Button>
+  );
+});
+CarouselNext.displayName = "CarouselNext";
