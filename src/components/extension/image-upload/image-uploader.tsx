@@ -188,16 +188,21 @@ export const UploadImageForm = ({
     });
   return preview && preview.length > 0 ? (
     <div className="grid gap-2 w-full relative">
-      <CarouselPrevious
-        className="-left-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
-        onClick={ScrollPrev}
-        disabled={!canScrollPrev}
-      />
-      <CarouselNext
-        className="-right-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
-        onClick={ScrollNext}
-        disabled={!canScrollNext}
-      />
+      {maxFiles > 1 && (
+        <>
+          {" "}
+          <CarouselPrevious
+            className="-left-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
+            onClick={ScrollPrev}
+            disabled={!canScrollPrev}
+          />
+          <CarouselNext
+            className="-right-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
+            onClick={ScrollNext}
+            disabled={!canScrollNext}
+          />
+        </>
+      )}
       <div
         ref={emblaMainRef}
         tabIndex={0}

@@ -32,7 +32,7 @@ export const MultiSelect = ({ options }: MultiSelectProps) => {
   const removeOptionWithBackspace = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
       if (
-        (e.key === "Backspace" || e.key === "delete") &&
+        (e.key === "Backspace" || e.key === "Delete") &&
         selected.length > 0
       ) {
         if (inputValue.length === 0) {

@@ -1,15 +1,14 @@
 import { MultiSelect } from "@/components/extension/fancy-multi-select/multi-select";
-import { ImageUpload } from "@/components/extension/image-upload/model";
+import { ImageUpload, Model } from "@/components/extension/image-upload/model";
 
 import { ModeToggle } from "@/components/toggle-theme";
 
 export default function Home() {
   return (
     <main className="relative flex justify-center items-center h-[100dvh]">
-      {/* <Model /> */}
-      <ImageUpload />
-
-      {/* <MultiSelect
+      {/*  <Model /> */}
+      {/*  <ImageUpload /> */}
+      <MultiSelect
         options={[
           "Hello",
           "World",
@@ -22,7 +21,7 @@ export default function Home() {
           "Astro",
           "Svelte",
         ]}
-      /> */}
+      />
       <div className="absolute right-2 bottom-2">
         <ModeToggle />
       </div>
