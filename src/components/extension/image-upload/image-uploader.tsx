@@ -24,17 +24,19 @@ import {
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { EmblaOptionsType } from "embla-carousel";
 import { X as RemoveIcon } from "lucide-react";
+import { FilePreview } from "./model";
 
 interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   accept?: Accept;
-  multiple?: boolean;
   maxSize?: number;
+  multiple?: boolean;
   maxFiles?: number;
   images: File[] | null;
   setImages: Dispatch<SetStateAction<File[] | null>>;
-  preview: string[] | null;
-  setPreview: Dispatch<SetStateAction<string[] | null>>;
+  preview: FilePreview[] | null;
+  setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
   options?: EmblaOptionsType;
+  counter?: boolean;
 }
 
 export const UploadImageForm = ({
@@ -45,10 +47,10 @@ export const UploadImageForm = ({
   accept = {
     "image/*": [".jpeg", ".png"],
   },
-  multiple = false,
   maxSize = 1024 * 1024 * 8,
-  maxFiles = 1,
   options,
+  maxFiles = 1,
+  counter = false,
 }: FileUploadProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const ref = useRef<HTMLDivElement | null>(null);
@@ -56,7 +58,10 @@ export const UploadImageForm = ({
   const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
 
   const handleBannerImageChange = (file: File) => {
-    const fileWithPreview = URL.createObjectURL(file);
+    const fileWithPreview = {
+      file,
+      preview: URL.createObjectURL(file),
+    };
     setPreview((prev) => [
       ...(prev && maxFiles > 1 ? prev : []),
       fileWithPreview,
@@ -102,10 +107,12 @@ export const UploadImageForm = ({
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       const files = acceptedFiles;
+      setPreview([]);
       if (!files) {
         toast.error("file error , probably too big");
         return;
       }
+
       files.forEach((file) => {
         checkFileSize(file);
         handleBannerImageChange(file);
@@ -169,7 +176,6 @@ export const UploadImageForm = ({
     useDropzone({
       onDrop,
       maxSize,
-      multiple,
       accept,
       maxFiles,
       onDropRejected: () => setIsFileTooBig(true),
@@ -189,9 +195,11 @@ export const UploadImageForm = ({
         orientation="horizontal"
         onKeyDownCapture={handleKeyDown}
       >
-        <p className="text-xs">
-          {preview.length} File{"(s)"} out of {maxFiles}
-        </p>
+        {counter && (
+          <p className="text-xs">
+            {preview.length} File{"(s)"} out of {maxFiles}
+          </p>
+        )}
         <CarouselNext className="-right-2 top-[40%] z-[100] h-6 w-6  " />
         <CarouselPrevious className="-left-2 top-[40%] z-[100] h-6 w-6" />
         <CarouselContent className="flex items-center w-full">
@@ -203,7 +211,7 @@ export const UploadImageForm = ({
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className=" rounded-lg object-cover"
                   quality={100}
-                  src={imageSrc}
+                  src={imageSrc.preview}
                   alt={`uploaded image ${activeIndex}`}
                 />
               </AspectRatio>
@@ -231,7 +239,7 @@ export const UploadImageForm = ({
                       <RemoveIcon className="h-4 w-4 group-hover:stroke-red-600" />
                     </button>
                     <Image
-                      src={imageSrc}
+                      src={imageSrc.preview}
                       alt="uploaded image"
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -251,7 +259,13 @@ export const UploadImageForm = ({
           </Carousel>
         ) : null}
       </Carousel>
-      <Button type="button" variant="outline" {...getRootProps()}>
+      <Button
+        type="button"
+        variant="outline"
+        {...getRootProps()}
+        className="disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={preview.length >= maxFiles}
+      >
         Choose another image
       </Button>
     </div>

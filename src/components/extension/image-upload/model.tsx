@@ -5,9 +5,14 @@ import { useState } from "react";
 import { UploadImageForm } from "./image-uploader";
 import { cn } from "@/lib/utils";
 
+export type FilePreview = {
+  file: File;
+  preview: string;
+};
+
 export const Model = () => {
   const [image, setImage] = useState<File[] | null>(null);
-  const [preview, setPreview] = useState<string[] | null>(null);
+  const [preview, setPreview] = useState<FilePreview[] | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
