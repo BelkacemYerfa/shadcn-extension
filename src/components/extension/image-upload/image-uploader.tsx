@@ -36,7 +36,6 @@ interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   preview: FilePreview[] | null;
   setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
   options?: EmblaOptionsType;
-  counter?: boolean;
 }
 
 export const UploadImageForm = ({
@@ -48,9 +47,9 @@ export const UploadImageForm = ({
     "image/*": [".jpeg", ".png"],
   },
   maxSize = 1024 * 1024 * 8,
+  multiple = true,
   options,
   maxFiles = 1,
-  counter = false,
 }: FileUploadProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const ref = useRef<HTMLDivElement | null>(null);
@@ -178,6 +177,7 @@ export const UploadImageForm = ({
       maxSize,
       accept,
       maxFiles,
+      multiple,
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
     });
@@ -191,20 +191,15 @@ export const UploadImageForm = ({
         }}
         tabIndex={0}
         setApi={setApi}
-        className="w-full carousel space-y-1  focus:outline-none"
+        className="w-full carousel space-y-1 focus:outline-none"
         orientation="horizontal"
         onKeyDownCapture={handleKeyDown}
       >
-        {counter && (
-          <p className="text-xs">
-            {preview.length} File{"(s)"} out of {maxFiles}
-          </p>
-        )}
         <CarouselNext className="-right-2 top-[40%] z-[100] h-6 w-6  " />
         <CarouselPrevious className="-left-2 top-[40%] z-[100] h-6 w-6" />
         <CarouselContent className="flex items-center w-full">
           {preview.map((imageSrc, i) => (
-            <CarouselItem key={i} className={`basis-full `}>
+            <CarouselItem key={i} className={`basis-full px-1 `}>
               <AspectRatio ratio={4 / 3} className="w-full">
                 <Image
                   fill
@@ -225,14 +220,14 @@ export const UploadImageForm = ({
               {preview.map((imageSrc, i) => (
                 <CarouselItem
                   key={i}
-                  className={`basis-1/3 `}
+                  className={`basis-1/3 px-1 `}
                   onClick={() => scrollTo(i)}
                 >
                   <div className="relative aspect-square h-20 w-full">
                     <button
                       aria-label={`remove-slide-${i}`}
                       type="button"
-                      className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 group"
+                      className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group"
                       onClick={() => removeImageFromPreview(i)}
                     >
                       {" "}

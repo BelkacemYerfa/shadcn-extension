@@ -24,6 +24,9 @@ export default {
         xs: "480px",
         xxs: "380px",
       },
+      padding: {
+        default: "--padding",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

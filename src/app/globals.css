@@ -38,7 +38,7 @@
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
-
+    --padding: 0.75rem;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
 
@@ -76,5 +76,5 @@
 }
 
 .carousel {
-  max-width: calc(28rem - 24px);
+  max-width: calc(28rem - var(--padding) * 2);
 }
