@@ -1,9 +1,10 @@
-import { MultiSelect } from "@/components/extension/fancy-multi-select/multi-select";
+/* import { MultiSelect } from "@/components/extension/fancy-multi-select/multi-select"; */
 import {
-  ImageUpload,
+  /* ImageUpload,
   Model,
-  OtpTest,
-} from "@/components/extension/image-upload/model";
+  OtpTest, */
+  TreeViewTest,
+} from "@/components/extension/model";
 
 import { ModeToggle } from "@/components/toggle-theme";
 
@@ -26,7 +27,8 @@ export default function Home() {
           "Svelte",
         ]}
       /> */}
-      <OtpTest />
+      {/* <OtpTest /> */}
+      <TreeViewTest />
       <div className="absolute right-2 bottom-2">
         <ModeToggle />
       </div>

@@ -1,11 +1,11 @@
 "use client";
-import { Button, buttonVariants } from "@/components/ui/button";
+/* import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
-import { UploadImageForm } from "./image-uploader";
+import { UploadImageForm } from "./image-upload/image-uploader";
 import { cn } from "@/lib/utils";
-import { MultiSelect } from "../fancy-multi-select/multi-select";
-import { OtpStyledInput } from "../otp-input/otp-input";
+import { MultiSelect } from "./fancy-multi-select/multi-select";
+import { OtpStyledInput } from "./otp-input/otp-input";
 import {
   Form,
   FormControl,
@@ -14,13 +14,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "sonner"; */
+import { TreeView } from "./tree-view/tree-view";
 
 export type FilePreview = {
   file: File;
   preview: string;
 };
-
+/*
 export const Model = () => {
   const [image, setImage] = useState<File[] | null>(null);
   const [preview, setPreview] = useState<FilePreview[] | null>(null);
@@ -141,6 +142,70 @@ export const OtpTest = () => {
           </form>
         </Form>
       </div>
+    </div>
+  );
+};
+ */
+export const TreeViewTest = () => {
+  const elements = [
+    {
+      id: "1",
+      isSelectable: true,
+      name: "Element 1",
+      children: [
+        {
+          id: "2",
+          isSelectable: true,
+          name: "Element 2",
+          children: [
+            {
+              id: "3",
+              isSelectable: true,
+              name: "Element 3",
+              children: [],
+            },
+            {
+              id: "4",
+              isSelectable: true,
+              name: "Element 4",
+              children: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "5",
+      isSelectable: true,
+      name: "Element 5",
+      children: [
+        {
+          id: "6",
+          isSelectable: true,
+          name: "Element 6",
+          children: [
+            {
+              id: "7",
+              isSelectable: true,
+              name: "Element 7",
+              children: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "8",
+      isSelectable: true,
+      name: "Element 8",
+      children: [],
+    },
+    // Add more elements as needed
+  ];
+
+  return (
+    <div className="flex gap-2 pl-2">
+      <TreeView elements={elements} initialSelectedId={"3"} expandAll={true} />
     </div>
   );
 };
