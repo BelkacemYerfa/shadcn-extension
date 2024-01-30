@@ -1,12 +1,20 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UploadImageForm } from "./image-uploader";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "../fancy-multi-select/multi-select";
-import { CommandDialog } from "@/components/ui/command";
-import { Popover } from "@/components/ui/popover";
+import { OtpStyledInput } from "../otp-input/otp-input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export type FilePreview = {
   file: File;
@@ -86,5 +94,53 @@ export const Commander = () => {
         "Svelte",
       ]}
     />
+  );
+};
+
+export const OtpTest = () => {
+  const form = useForm({
+    defaultValues: {
+      otp: "",
+    },
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    toast.success(`Success ${data.otp}`);
+  };
+  return (
+    <div className="w-[20rem] flex items-center justify-center outline outline-1 outline-muted rounded-md p-4">
+      <div className="space-y-3">
+        <div className="space-y-1">
+          <h2 className="font-semibold">OTP verification</h2>
+          <p className="text-xs">
+            Enter the OTP sent to your registered email or mobile number
+          </p>
+        </div>
+        <Form {...form}>
+          <form className="grid gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="otp"
+              render={({ field }) => (
+                <FormControl>
+                  <>
+                    <FormItem>
+                      <OtpStyledInput
+                        numInputs={5}
+                        inputType="number"
+                        {...field}
+                      />
+                    </FormItem>
+                    <FormMessage />
+                  </>
+                </FormControl>
+              )}
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 };
