@@ -106,15 +106,15 @@ export const OtpTest = () => {
 
   const onSubmit = (data: any) => {
     console.log(data);
-    toast.success(`Success ${data.otp}`);
+    toast.success(`Success , Your Otp code is : ${data.otp}`);
   };
   return (
-    <div className="w-[20rem] flex items-center justify-center outline outline-1 outline-muted rounded-md p-4">
-      <div className="space-y-3">
+    <div className="max-w-xs flex items-center justify-center outline outline-1 outline-muted rounded-md p-4">
+      <div className="w-full space-y-2">
         <div className="space-y-1">
           <h2 className="font-semibold">OTP verification</h2>
           <p className="text-xs">
-            Enter the OTP sent to your registered email or mobile number
+            Enter the 5-digit code sent to your email address or phone number
           </p>
         </div>
         <Form {...form}>
