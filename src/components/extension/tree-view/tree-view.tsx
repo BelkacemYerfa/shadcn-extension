@@ -1,7 +1,9 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { FileIcon, FolderIcon, FolderOpenIcon } from "lucide-react";
 import { forwardRef, useCallback, useEffect, useState } from "react";
+import useResizeObserver from "use-resize-observer";
 
 type TreeViewElement = {
   id: string;
@@ -64,22 +66,25 @@ export const TreeView = ({
       expendAllTree(elements);
     }
   }, []);
-
+  const { ref: treeRef, height, width } = useResizeObserver();
   return (
     <div
+      ref={treeRef}
       className={cn(
-        "rounded-md outline outline-1 outline-muted w-[20rem] py-1 ",
+        "rounded-md outline max-h-40 h-full w-96 outline-1 outline-muted overflow-hidden py-1 ",
         className
       )}
     >
-      <TreeItem
-        aria-label="Root"
-        elements={elements}
-        selectedId={selectedId}
-        expendedItems={expendedItems}
-        handleSelect={handleExpand}
-        selectItem={selectItem}
-      />
+      <ScrollArea style={{ width, height }}>
+        <TreeItem
+          aria-label="Root"
+          elements={elements}
+          selectedId={selectedId}
+          expendedItems={expendedItems}
+          handleSelect={handleExpand}
+          selectItem={selectItem}
+        />
+      </ScrollArea>
     </div>
   );
 };
