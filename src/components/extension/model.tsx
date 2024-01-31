@@ -44,7 +44,7 @@ export const Model = () => {
           images={image}
           preview={preview}
           setPreview={setPreview}
-          maxFiles={2}
+          maxFiles={5}
           maxSize={1024 * 1024 * 8}
           multiple={true}
         />

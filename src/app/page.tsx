@@ -11,8 +11,8 @@ import { ModeToggle } from "@/components/toggle-theme";
 export default function Home() {
   return (
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
-      {/*  <Model /> */}
-      <ImageUpload />
+      <Model />
+      {/* <ImageUpload /> */}
 
       {/* <OtpTest /> */}
       {/*  <TreeViewTest /> */}

@@ -61,10 +61,14 @@ export const UploadImageForm = ({
       file,
       preview: URL.createObjectURL(file),
     };
-    setPreview((prev) => [
-      ...(prev && maxFiles > 1 ? prev : []),
-      fileWithPreview,
-    ]);
+    setPreview((prev) => {
+      if (prev && prev.length >= maxFiles) {
+        toast.error(`Max files is ${maxFiles}`);
+        return prev;
+      }
+
+      return [...(prev || []), fileWithPreview];
+    });
     setImages((files) => [...(files && maxFiles > 1 ? files : []), file]);
   };
 
@@ -108,8 +112,7 @@ export const UploadImageForm = ({
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       const files = acceptedFiles;
-      setPreview([]);
-      setImages([]);
+
       if (!files) {
         toast.error("file error , probably too big");
         return;
