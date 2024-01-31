@@ -47,6 +47,7 @@ export const Model = () => {
           maxFiles={5}
           maxSize={1024 * 1024 * 8}
           multiple={true}
+          reSelectAll={true}
         />
         <div className="flex items-center justify-end gap-2">
           <Button variant={"outline"} onClick={() => setIsOpen(!open)}>

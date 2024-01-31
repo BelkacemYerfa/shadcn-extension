@@ -26,15 +26,15 @@ interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   maxSize?: number;
   multiple?: boolean;
   maxFiles?: number;
-  images: File[] | null;
+  images?: File[] | null;
   setImages: Dispatch<SetStateAction<File[] | null>>;
   preview: FilePreview[] | null;
   setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
   options?: EmblaOptionsType;
+  reSelectAll?: boolean;
 }
 
 export const UploadImageForm = ({
-  images,
   setImages,
   preview,
   setPreview,
@@ -45,6 +45,7 @@ export const UploadImageForm = ({
   multiple = true,
   options,
   maxFiles = 1,
+  reSelectAll = false,
 }: FileUploadProps) => {
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -62,8 +63,10 @@ export const UploadImageForm = ({
       preview: URL.createObjectURL(file),
     };
     setPreview((prev) => {
-      if (prev && prev.length >= maxFiles) {
-        toast.error(`Max files is ${maxFiles}`);
+      if (!reSelectAll && prev && prev.length >= maxFiles) {
+        toast.warning(
+          `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
+        );
         return prev;
       }
 
@@ -90,7 +93,6 @@ export const UploadImageForm = ({
 
       if (index === activeIndex) {
         if (activeIndex === emblaMainApi.selectedScrollSnap()) {
-          console.log(emblaMainApi.selectedScrollSnap(), activeIndex);
           emblaMainApi.scrollPrev();
         } else {
           emblaMainApi.scrollNext();
@@ -98,6 +100,15 @@ export const UploadImageForm = ({
       }
     },
     [emblaMainApi, activeIndex]
+  );
+
+  const removeImageFromPreviewOnKeyDown = useCallback(
+    (index: number, event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === "Backspace" || event.key === "Delete") {
+        removeImageFromPreview(index);
+      }
+    },
+    [removeImageFromPreview]
   );
 
   const checkFileSize = (file: File) => {
@@ -112,6 +123,11 @@ export const UploadImageForm = ({
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       const files = acceptedFiles;
+
+      if (!!reSelectAll) {
+        setPreview(null);
+        setImages(null);
+      }
 
       if (!files) {
         toast.error("file error , probably too big");
@@ -146,6 +162,10 @@ export const UploadImageForm = ({
         emblaMainApi.scrollPrev();
       } else if (event.key === "ArrowRight") {
         emblaMainApi.scrollNext();
+      } else if (event.key === "Home") {
+        emblaMainApi.scrollTo(0);
+      } else if (event.key === "End") {
+        emblaMainApi.scrollTo(emblaMainApi.slideNodes().length - 1);
       }
     },
     [emblaMainApi]
@@ -183,6 +203,10 @@ export const UploadImageForm = ({
     onSelect();
     emblaMainApi.on("select", onSelect);
     emblaMainApi.on("reInit", onSelect);
+    return () => {
+      emblaMainApi.off("select", onSelect);
+      emblaMainApi.off("reInit", onSelect);
+    };
   }, [emblaMainApi, onSelect]);
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
@@ -201,12 +225,12 @@ export const UploadImageForm = ({
         <>
           {" "}
           <CarouselPrevious
-            className="-left-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
+            className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6"
             onClick={ScrollPrev}
             disabled={!canScrollPrev}
           />
           <CarouselNext
-            className="-right-2 z-[100] top-[40%] -translate-y-1/2 h-6 w-6"
+            className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6"
             onClick={ScrollNext}
             disabled={!canScrollNext}
           />
@@ -243,9 +267,11 @@ export const UploadImageForm = ({
           <div className="flex items-center w-full mt-1 ">
             {preview.map((imageSrc, i) => (
               <div
+                tabIndex={0}
                 key={i}
                 className={`basis-1/3 px-1 min-w-0 shrink-0 grow-0 `}
                 onClick={() => onThumbClick(i)}
+                onKeyDown={(e) => removeImageFromPreviewOnKeyDown(i, e)}
               >
                 <div
                   className={`relative aspect-square h-20 w-full   opacity-40 rounded-md transition-opacity ${
@@ -280,7 +306,7 @@ export const UploadImageForm = ({
         variant="outline"
         {...getRootProps()}
         className="disabled:opacity-50 disabled:cursor-not-allowed"
-        disabled={preview.length >= maxFiles}
+        disabled={preview.length >= maxFiles && !reSelectAll}
       >
         Choose another image
       </Button>
@@ -335,7 +361,7 @@ const CarouselPrevious = forwardRef<
       ref={ref}
       variant={variant}
       size={size}
-      className={cn("absolute h-8 w-8 rounded-full", className)}
+      className={cn("absolute h-8 w-8 rounded-full hidden sm:flex ", className)}
       {...props}
     >
       <ChevronLeftIcon className="h-4 w-4" />
@@ -354,7 +380,7 @@ const CarouselNext = forwardRef<
       ref={ref}
       variant={variant}
       size={size}
-      className={cn("absolute h-8 w-8 rounded-full", className)}
+      className={cn("absolute h-8 w-8 rounded-full hidden sm:flex ", className)}
       {...props}
     >
       <ChevronRightIcon className="h-4 w-4" />
