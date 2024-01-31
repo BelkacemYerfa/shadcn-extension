@@ -59,25 +59,50 @@ export const TreeView = ({
   }, []);
 
   const expendAllTree = useCallback((elements: TreeViewElement[]) => {
-    console.time("expand");
-    const expandedSet = new Set<string>();
-
     const expandTree = (element: TreeViewElement) => {
       if (element.children && element.children.length > 0) {
-        expandedSet.add(element.id);
+        setExpendedItems((prev) => [...(prev ?? []), element.id]);
         element.children.forEach(expandTree);
       }
     };
 
     elements.forEach(expandTree);
-
-    setExpendedItems((prev) => [...(prev ?? []), ...Array.from(expandedSet)]);
-    console.timeEnd("expand");
   }, []);
+
+  const expandSpecificTargetedElements = useCallback(
+    (elements: TreeViewElement[], selectId: string) => {
+      const findParent = (
+        currentElement: TreeViewElement,
+        currentPath: string[] = []
+      ) => {
+        const newPath = [...currentPath, currentElement.id];
+
+        if (currentElement.id === selectId) {
+          setExpendedItems((prev) => [...(prev ?? []), ...newPath]);
+        }
+
+        if (currentElement.children && currentElement.children.length > 0) {
+          currentElement.children.forEach((child) => {
+            findParent(child, newPath);
+          });
+        }
+      };
+
+      elements.forEach((element) => {
+        findParent(element);
+      });
+    },
+    []
+  );
 
   useEffect(() => {
     if (expandAll) {
+      console.log("expandAll", expandAll);
       expendAllTree(elements);
+      return;
+    }
+    if (initialSelectedId) {
+      expandSpecificTargetedElements(elements, initialSelectedId);
     }
   }, []);
   const { ref: treeRef, height, width } = useResizeObserver();
@@ -85,7 +110,7 @@ export const TreeView = ({
     <div
       ref={treeRef}
       className={cn(
-        "rounded-md outline max-h-40 h-full w-96 outline-1 outline-muted overflow-hidden py-1 ",
+        "rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1 ",
         className
       )}
     >
@@ -204,15 +229,15 @@ export const TreeItem = forwardRef<
 TreeItem.displayName = "TreeItem";
 
 export const Leaf = forwardRef<
-  HTMLDivElement,
+  HTMLButtonElement,
   {
     element: TreeViewElement;
     handleSelect: (id: string) => void;
     isSelected?: boolean;
-  } & React.HTMLAttributes<HTMLDivElement>
+  } & React.HTMLAttributes<HTMLButtonElement>
 >(({ element, className, handleSelect, isSelected, ...props }, ref) => {
   return (
-    <div ref={ref} aria-label="leaf" {...props}>
+    <button type="button" ref={ref} aria-label="leaf" {...props}>
       <div
         className={cn(
           `flex items-center gap-1 px-1 cursor-pointer ${
@@ -225,7 +250,7 @@ export const Leaf = forwardRef<
         <FileIcon className="h-4 w-4" />
         <span>{element?.name}</span>
       </div>
-    </div>
+    </button>
   );
 });
 

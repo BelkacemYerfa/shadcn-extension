@@ -186,30 +186,33 @@ export const TreeViewTest = () => {
           children: [
             {
               id: "7",
-              isSelectable: true,
+              isSelectable: false,
               name: "Element 7",
               children: [],
             },
           ],
         },
+        {
+          id: "8",
+          isSelectable: true,
+          name: "Element 8",
+          children: [],
+        },
       ],
     },
     {
-      id: "8",
+      id: "9",
       isSelectable: true,
-      name: "Element 8",
+      name: "Element 9",
       children: [],
     },
+
     // Add more elements as needed
   ];
 
   return (
     <div className="flex gap-2 pl-2">
-      <TreeView
-        elements={elements}
-        initialSelectedId={"3"}
-        initialExpendedItems={["2"]}
-      />
+      <TreeView elements={elements} initialSelectedId={"4"} />
     </div>
   );
 };
