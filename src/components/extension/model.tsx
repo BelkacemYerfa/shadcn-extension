@@ -205,7 +205,11 @@ export const TreeViewTest = () => {
 
   return (
     <div className="flex gap-2 pl-2">
-      <TreeView elements={elements} initialSelectedId={"3"} expandAll={true} />
+      <TreeView
+        elements={elements}
+        initialSelectedId={"3"}
+        initialExpendedItems={["2"]}
+      />
     </div>
   );
 };

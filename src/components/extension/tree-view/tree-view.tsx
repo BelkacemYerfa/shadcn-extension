@@ -13,23 +13,37 @@ type TreeViewElement = {
   children?: TreeViewElement[];
 };
 
-interface TreeViewProps extends React.HTMLAttributes<HTMLDivElement> {
+interface TreeViewComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+type TreeViewProps = {
   initialSelectedId?: string;
-  expandAll?: boolean;
   elements: TreeViewElement[];
-}
+} & (
+  | {
+      initialExpendedItems?: string[];
+      expandAll?: false;
+    }
+  | {
+      initialExpendedItems?: undefined;
+      expandAll: true;
+    }
+) &
+  TreeViewComponentProps;
 
 export const TreeView = ({
   elements,
   className,
   initialSelectedId,
+  initialExpendedItems,
   expandAll = false,
 }: TreeViewProps) => {
   const [selectedId, setSelectIds] = useState<string | undefined>(
     initialSelectedId
   );
 
-  const [expendedItems, setExpendedItems] = useState<string[] | undefined>();
+  const [expendedItems, setExpendedItems] = useState<string[] | undefined>(
+    initialExpendedItems
+  );
 
   const selectItem = useCallback((id: string) => {
     setSelectIds(id);
@@ -121,7 +135,7 @@ export const TreeItem = forwardRef<
               {element.children && element.children?.length > 0 ? (
                 <AccordionPrimitive.Root
                   type="multiple"
-                  //defaultValue={expendedItems}
+                  defaultValue={expendedItems}
                   value={
                     expendedItems?.includes(element.id) ? [element.name] : []
                   }
