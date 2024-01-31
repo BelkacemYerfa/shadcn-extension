@@ -237,11 +237,21 @@ export const Leaf = forwardRef<
   } & React.HTMLAttributes<HTMLButtonElement>
 >(({ element, className, handleSelect, isSelected, ...props }, ref) => {
   return (
-    <button type="button" ref={ref} aria-label="leaf" {...props}>
+    <button
+      type="button"
+      disabled={!element.isSelectable}
+      ref={ref}
+      aria-label="leaf"
+      {...props}
+    >
       <div
         className={cn(
           `flex items-center gap-1 px-1 cursor-pointer ${
             isSelected ? " bg-muted rounded-md" : ""
+          } ${
+            !element.isSelectable
+              ? "opacity-50 cursor-not-allowed"
+              : "cursor-pointer"
           }`,
           className
         )}
