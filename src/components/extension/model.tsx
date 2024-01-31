@@ -1,7 +1,7 @@
 "use client";
-/* import { Button, buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UploadImageForm } from "./image-upload/image-uploader";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "./fancy-multi-select/multi-select";
@@ -14,14 +14,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner"; */
+import { toast } from "sonner";
 import { TreeView } from "./tree-view/tree-view";
 
 export type FilePreview = {
   file: File;
   preview: string;
 };
-/*
+
 export const Model = () => {
   const [image, setImage] = useState<File[] | null>(null);
   const [preview, setPreview] = useState<FilePreview[] | null>(null);
@@ -145,7 +145,7 @@ export const OtpTest = () => {
     </div>
   );
 };
- */
+
 export const TreeViewTest = () => {
   const elements = [
     {
@@ -168,42 +168,78 @@ export const TreeViewTest = () => {
               id: "4",
               isSelectable: true,
               name: "Element 4",
-              children: [],
+              children: [
+                {
+                  id: "5",
+                  isSelectable: true,
+                  name: "Element 5",
+                  children: [
+                    {
+                      id: "6",
+                      isSelectable: true,
+                      name: "Element 6",
+                      children: [
+                        {
+                          id: "7",
+                          isSelectable: false,
+                          name: "Element 7",
+                          children: [],
+                        },
+                      ],
+                    },
+                    {
+                      id: "8",
+                      isSelectable: true,
+                      name: "Element 8",
+                      children: [],
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
       ],
     },
-    {
-      id: "5",
-      isSelectable: true,
-      name: "Element 5",
-      children: [
-        {
-          id: "6",
-          isSelectable: true,
-          name: "Element 6",
-          children: [
-            {
-              id: "7",
-              isSelectable: false,
-              name: "Element 7",
-              children: [],
-            },
-          ],
-        },
-        {
-          id: "8",
-          isSelectable: true,
-          name: "Element 8",
-          children: [],
-        },
-      ],
-    },
+
     {
       id: "9",
       isSelectable: true,
       name: "Element 9",
+      children: [
+        {
+          id: "10",
+          isSelectable: true,
+          name: "Element 10",
+          children: [
+            {
+              id: "11",
+              isSelectable: true,
+              name: "Element 11",
+              children: [],
+            },
+          ],
+        },
+        {
+          id: "12",
+          isSelectable: true,
+          name: "Element 12",
+          children: [
+            {
+              id: "13",
+              isSelectable: true,
+              name: "Element 13",
+              children: [],
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      id: "20",
+      isSelectable: true,
+      name: "Element 20",
       children: [],
     },
 
@@ -212,7 +248,11 @@ export const TreeViewTest = () => {
 
   return (
     <div className="flex gap-2 pl-2">
-      <TreeView elements={elements} initialSelectedId={"6"} />
+      <TreeView
+        elements={elements}
+        initialSelectedId="8"
+        initialExpendedItems={["2", "4"]}
+      />
     </div>
   );
 };

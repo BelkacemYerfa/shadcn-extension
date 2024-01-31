@@ -2,8 +2,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { FileIcon, FolderIcon, FolderOpenIcon } from "lucide-react";
-import { forwardRef, useCallback, useEffect, useState } from "react";
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import useResizeObserver from "use-resize-observer";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 type TreeViewElement = {
   id: string;
@@ -105,24 +106,36 @@ export const TreeView = ({
       expandSpecificTargetedElements(elements, initialSelectedId);
     }
   }, []);
-  const { ref: treeRef, height, width } = useResizeObserver();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { getVirtualItems, getTotalSize } = useVirtualizer({
+    count: elements.length,
+    getScrollElement: () => containerRef.current,
+    estimateSize: useCallback(() => 40, []),
+    overscan: 5,
+  });
+  const { height = getTotalSize(), width } = useResizeObserver({
+    ref: containerRef,
+  });
   return (
     <div
-      ref={treeRef}
+      ref={containerRef}
       className={cn(
         "rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1 ",
         className
       )}
     >
       <ScrollArea style={{ width, height }}>
-        <TreeItem
-          aria-label="Root"
-          elements={elements}
-          selectedId={selectedId}
-          expendedItems={expendedItems}
-          handleSelect={handleExpand}
-          selectItem={selectItem}
-        />
+        {getVirtualItems().map((element) => (
+          <TreeItem
+            aria-label="Root"
+            key={element.key}
+            elements={[elements[element.index]]}
+            selectedId={selectedId}
+            expendedItems={expendedItems}
+            handleSelect={handleExpand}
+            selectItem={selectItem}
+          />
+        ))}
       </ScrollArea>
     </div>
   );
@@ -135,7 +148,7 @@ export const TreeItem = forwardRef<
   {
     expendedItems?: string[];
     selectedId?: string;
-    elements: TreeViewElement[] | TreeViewElement;
+    elements?: TreeViewElement[] | TreeViewElement;
     handleSelect: (id: string) => void;
     selectItem: (id: string) => void;
   } & React.HTMLAttributes<HTMLUListElement>
@@ -214,10 +227,10 @@ export const TreeItem = forwardRef<
         ) : (
           <li>
             <Leaf
-              aria-label={`File ${elements.name}`}
+              aria-label={`File ${elements?.name}`}
               element={elements}
               handleSelect={selectItem}
-              isSelected={selectedId === elements.id}
+              isSelected={selectedId === elements?.id}
             />
           </li>
         )}
@@ -231,7 +244,7 @@ TreeItem.displayName = "TreeItem";
 export const Leaf = forwardRef<
   HTMLButtonElement,
   {
-    element: TreeViewElement;
+    element?: TreeViewElement;
     handleSelect: (id: string) => void;
     isSelected?: boolean;
   } & React.HTMLAttributes<HTMLButtonElement>
@@ -239,7 +252,7 @@ export const Leaf = forwardRef<
   return (
     <button
       type="button"
-      disabled={!element.isSelectable}
+      disabled={!element?.isSelectable}
       ref={ref}
       aria-label="leaf"
       {...props}
@@ -249,13 +262,13 @@ export const Leaf = forwardRef<
           `flex items-center gap-1 px-1 cursor-pointer ${
             isSelected ? " bg-muted rounded-md" : ""
           } ${
-            !element.isSelectable
+            !element?.isSelectable
               ? "opacity-50 cursor-not-allowed"
               : "cursor-pointer"
           }`,
           className
         )}
-        onClick={() => handleSelect(element.id)}
+        onClick={() => handleSelect(element?.id ?? "")}
       >
         <FileIcon className="h-4 w-4" />
         <span>{element?.name}</span>

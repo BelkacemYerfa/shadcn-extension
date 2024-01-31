@@ -1,8 +1,8 @@
 /* import { MultiSelect } from "@/components/extension/fancy-multi-select/multi-select"; */
 import {
-  /* ImageUpload,
+  ImageUpload,
   Model,
-  OtpTest, */
+  OtpTest,
   TreeViewTest,
 } from "@/components/extension/model";
 
@@ -13,20 +13,7 @@ export default function Home() {
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
       {/*  <Model /> */}
       {/*  <ImageUpload /> */}
-      {/* <MultiSelect
-        options={[
-          "Hello",
-          "World",
-          "Next.js",
-          "Tailwind CSS",
-          "TypeScript",
-          "React",
-          "Vite",
-          "Remix",
-          "Astro",
-          "Svelte",
-        ]}
-      /> */}
+
       {/* <OtpTest /> */}
       <TreeViewTest />
       <div className="absolute right-2 bottom-2">
