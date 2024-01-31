@@ -12,10 +12,10 @@ export default function Home() {
   return (
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
       {/*  <Model /> */}
-      {/*  <ImageUpload /> */}
+      <ImageUpload />
 
       {/* <OtpTest /> */}
-      <TreeViewTest />
+      {/*  <TreeViewTest /> */}
       <div className="absolute right-2 bottom-2">
         <ModeToggle />
       </div>

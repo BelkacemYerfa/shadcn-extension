@@ -83,11 +83,17 @@ export const UploadImageForm = ({
         newFiles.splice(index, 1);
         return newFiles;
       });
+
       if (index === activeIndex) {
-        emblaMainApi.scrollTo(emblaMainApi.scrollSnapList().length);
+        if (activeIndex === emblaMainApi.selectedScrollSnap()) {
+          console.log(emblaMainApi.selectedScrollSnap(), activeIndex);
+          emblaMainApi.scrollPrev();
+        } else {
+          emblaMainApi.scrollNext();
+        }
       }
     },
-    [emblaMainApi, setImages, setPreview, activeIndex]
+    [emblaMainApi, activeIndex]
   );
 
   const checkFileSize = (file: File) => {
