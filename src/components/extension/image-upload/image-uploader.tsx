@@ -3,6 +3,7 @@
 import Image from "next/image";
 import {
   Dispatch,
+  JSXElementConstructor,
   SetStateAction,
   forwardRef,
   useCallback,
@@ -32,7 +33,9 @@ interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
   options?: EmblaOptionsType;
   reSelectAll?: boolean;
-  renderInput?: (props: any) => React.ReactNode;
+  renderInput?: <T extends JSXElementConstructor<any>>(
+    props: React.ComponentProps<T>
+  ) => React.ReactNode;
 }
 
 export const UploadImageForm = ({
@@ -80,17 +83,13 @@ export const UploadImageForm = ({
   const removeImageFromPreview = useCallback(
     (index: number) => {
       if (!emblaMainApi || !emblaMainRef) return;
-      let newIndex = 0;
       if (index === activeIndex) {
         if (activeIndex === emblaMainApi.selectedScrollSnap()) {
           emblaMainApi.scrollPrev();
-          newIndex = emblaMainApi.selectedScrollSnap();
         } else {
           emblaMainApi.scrollNext();
-          newIndex = index + 1;
         }
       }
-
       setPreview((prev) => {
         if (!prev) return null;
         const newPreview = [...prev];
@@ -105,15 +104,6 @@ export const UploadImageForm = ({
       });
     },
     [emblaMainApi]
-  );
-
-  const removeImageFromPreviewOnKeyDown = useCallback(
-    (index: number, event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === "Backspace" || event.key === "Delete") {
-        removeImageFromPreview(index);
-      }
-    },
-    [removeImageFromPreview]
   );
 
   const checkFileSize = (file: File) => {
@@ -171,6 +161,8 @@ export const UploadImageForm = ({
         emblaMainApi.scrollTo(0);
       } else if (event.key === "End") {
         emblaMainApi.scrollTo(emblaMainApi.slideNodes().length - 1);
+      } else if (event.key === "Delete" || event.key === "Backspace") {
+        removeImageFromPreview(activeIndex);
       }
     },
     [emblaMainApi]
@@ -224,6 +216,7 @@ export const UploadImageForm = ({
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
     });
+
   return preview && preview.length > 0 ? (
     <div className="grid gap-2 w-full relative">
       {maxFiles > 1 && (
@@ -275,7 +268,6 @@ export const UploadImageForm = ({
                 key={image.preview}
                 image={image}
                 onClick={() => onThumbClick(i)}
-                onKeyDown={(e) => removeImageFromPreviewOnKeyDown(i, e)}
                 isSlideActive={i === activeIndex}
                 removeSlide={() => removeImageFromPreview(i)}
               />
@@ -294,7 +286,7 @@ export const UploadImageForm = ({
       </Button>
     </div>
   ) : renderInput ? (
-    renderInput(getInputProps())
+    renderInput(getRootProps())
   ) : (
     <div
       className={`w-full border border-muted-foreground border-dashed rounded-lg cursor-pointer duration-300 ease-in-out

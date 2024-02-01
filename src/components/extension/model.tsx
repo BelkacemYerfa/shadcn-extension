@@ -75,8 +75,8 @@ export const ImageUpload = () => {
         maxFiles={5}
         maxSize={1024 * 1024 * 8}
         multiple={true}
-        /*  renderInput={(props) => (
-          <Button {...props} variant={"outline"}>
+        /* renderInput={(props) => (
+          <Button type="button" variant="outline" className="w-full" {...props}>
             <span>Upload Image</span>
           </Button>
         )} */
