@@ -8,9 +8,15 @@ import {
   forwardRef,
   useCallback,
   useEffect,
+  useReducer,
   useState,
 } from "react";
-import { useDropzone, type FileRejection, type Accept } from "react-dropzone";
+import {
+  useDropzone,
+  type FileRejection,
+  type Accept,
+  DropzoneOptions,
+} from "react-dropzone";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,15 +29,12 @@ import { cn } from "@/lib/utils";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
 
 interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
-  accept?: Accept;
-  maxSize?: number;
-  multiple?: boolean;
-  maxFiles?: number;
   images?: File[] | null;
   setImages: Dispatch<SetStateAction<File[] | null>>;
   preview: FilePreview[] | null;
   setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
-  options?: EmblaOptionsType;
+  dropzoneOptions: DropzoneOptions;
+  carouselOptions?: EmblaOptionsType;
   reSelectAll?: boolean;
   renderInput?: <T extends JSXElementConstructor<any>>(
     props: React.ComponentProps<T>
@@ -42,17 +45,12 @@ export const UploadImageForm = ({
   setImages,
   preview,
   setPreview,
-  accept = {
-    "image/*": [".jpeg", ".png"],
-  },
-  maxSize = 1024 * 1024 * 8,
-  multiple = true,
-  options,
-  maxFiles = 1,
+  dropzoneOptions,
+  carouselOptions,
   reSelectAll = false,
   renderInput,
 }: FileUploadProps) => {
-  const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
+  const [emblaMainRef, emblaMainApi] = useEmblaCarousel(carouselOptions);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
     dragFree: true,
@@ -61,8 +59,20 @@ export const UploadImageForm = ({
   const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
+  const {
+    accept = {
+      "image/*": [".png", ".jpg", ".jpeg"],
+    },
+    maxFiles = 1,
+    maxSize = 8 * 1024 * 1024,
+    multiple = true,
+  } = dropzoneOptions;
 
-  const handleBannerImageChange = (file: File) => {
+  const addImageToTheSet = useCallback((file: File) => {
+    if (file.size > maxSize) {
+      toast.error("File too big , Max size is 8MB");
+      return;
+    }
     const fileWithPreview = {
       file,
       preview: URL.createObjectURL(file),
@@ -74,11 +84,15 @@ export const UploadImageForm = ({
         );
         return prev;
       }
-
       return [...(prev || []), fileWithPreview];
     });
-    setImages((files) => [...(files && maxFiles > 1 ? files : []), file]);
-  };
+    setImages((files) => {
+      if (!reSelectAll && files && files.length >= maxFiles) {
+        return files;
+      }
+      return [...(files || []), file];
+    });
+  }, []);
 
   const removeImageFromPreview = useCallback(
     (index: number) => {
@@ -103,17 +117,8 @@ export const UploadImageForm = ({
         return newFiles;
       });
     },
-    [emblaMainApi]
+    [emblaMainApi, activeIndex]
   );
-
-  const checkFileSize = (file: File) => {
-    if (file.size > maxSize) {
-      setIsFileTooBig(true);
-      toast.error("File too big , Max size is 8MB");
-      return;
-    }
-    setIsFileTooBig(false);
-  };
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
@@ -130,8 +135,7 @@ export const UploadImageForm = ({
       }
 
       files.forEach((file) => {
-        checkFileSize(file);
-        handleBannerImageChange(file);
+        addImageToTheSet(file);
       });
 
       if (rejectedFiles.length > 0) {
@@ -157,15 +161,11 @@ export const UploadImageForm = ({
         emblaMainApi.scrollPrev();
       } else if (event.key === "ArrowRight") {
         emblaMainApi.scrollNext();
-      } else if (event.key === "Home") {
-        emblaMainApi.scrollTo(0);
-      } else if (event.key === "End") {
-        emblaMainApi.scrollTo(emblaMainApi.slideNodes().length - 1);
       } else if (event.key === "Delete" || event.key === "Backspace") {
         removeImageFromPreview(activeIndex);
       }
     },
-    [emblaMainApi]
+    [emblaMainApi, activeIndex]
   );
 
   const ScrollNext = useCallback(() => {
@@ -218,7 +218,11 @@ export const UploadImageForm = ({
     });
 
   return preview && preview.length > 0 ? (
-    <div className="grid gap-2 w-full relative">
+    <div
+      tabIndex={0}
+      onKeyDownCapture={handleKeyDown}
+      className="grid gap-2 w-full relative focus:outline-none"
+    >
       {maxFiles > 1 && (
         <>
           <CarouselPrevious
@@ -233,12 +237,7 @@ export const UploadImageForm = ({
           />
         </>
       )}
-      <div
-        ref={emblaMainRef}
-        tabIndex={0}
-        className="w-full space-y-1 focus:outline-none overflow-hidden "
-        onKeyDownCapture={handleKeyDown}
-      >
+      <div ref={emblaMainRef} className="w-full space-y-1 overflow-hidden ">
         <div className="flex items-center w-full ">
           {preview.map((image, i) => (
             <div
@@ -289,7 +288,7 @@ export const UploadImageForm = ({
     renderInput(getRootProps())
   ) : (
     <div
-      className={`w-full border border-muted-foreground border-dashed rounded-lg cursor-pointer duration-300 ease-in-out
+      className={`w-full border border-muted-foreground border-dashed rounded-lg cursor-pointer duration-300 ease-in-out focus:outline-none
       ${
         isDragAccept
           ? "border-green-500"
@@ -338,7 +337,6 @@ const SliderMiniItem = forwardRef<
 >(({ className, isSlideActive, image, removeSlide, ...props }, ref) => {
   return (
     <div
-      tabIndex={0}
       {...props}
       ref={ref}
       className={cn("basis-1/3 px-1 min-w-0 shrink-0 grow-0", className)}

@@ -41,12 +41,13 @@ export const Model = () => {
       <DialogContent className="max-w-md p-3 w-full">
         <UploadImageForm
           setImages={setImage}
-          images={image}
           preview={preview}
           setPreview={setPreview}
-          maxFiles={5}
-          maxSize={1024 * 1024 * 8}
-          multiple={true}
+          dropzoneOptions={{
+            maxFiles: 5,
+            maxSize: 1024 * 1024 * 4,
+            multiple: true,
+          }}
           reSelectAll={true}
         />
         <div className="flex items-center justify-end gap-2">
@@ -69,12 +70,13 @@ export const ImageUpload = () => {
     <div className="max-w-md w-full">
       <UploadImageForm
         setImages={setImage}
-        images={image}
         preview={preview}
         setPreview={setPreview}
-        maxFiles={5}
-        maxSize={1024 * 1024 * 8}
-        multiple={true}
+        dropzoneOptions={{
+          maxFiles: 5,
+          maxSize: 1024 * 1024 * 4,
+          multiple: true,
+        }}
         /* renderInput={(props) => (
           <Button type="button" variant="outline" className="w-full" {...props}>
             <span>Upload Image</span>
