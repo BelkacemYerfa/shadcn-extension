@@ -4,6 +4,7 @@ import {
   Model,
   OtpTest,
   TreeViewTest,
+  Commander,
 } from "@/components/extension/model";
 
 import { ModeToggle } from "@/components/toggle-theme";
@@ -11,9 +12,9 @@ import { ModeToggle } from "@/components/toggle-theme";
 export default function Home() {
   return (
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
-      <Model />
-      {/* <ImageUpload /> */}
-
+      {/*  <Model /> */}
+      <ImageUpload />
+      {/* <Commander /> */}
       {/* <OtpTest /> */}
       {/*  <TreeViewTest /> */}
       <div className="absolute right-2 bottom-2">

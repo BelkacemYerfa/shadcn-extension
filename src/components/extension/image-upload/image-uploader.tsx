@@ -32,6 +32,7 @@ interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
   options?: EmblaOptionsType;
   reSelectAll?: boolean;
+  renderInput?: (props: any) => React.ReactNode;
 }
 
 export const UploadImageForm = ({
@@ -46,6 +47,7 @@ export const UploadImageForm = ({
   options,
   maxFiles = 1,
   reSelectAll = false,
+  renderInput,
 }: FileUploadProps) => {
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -77,7 +79,18 @@ export const UploadImageForm = ({
 
   const removeImageFromPreview = useCallback(
     (index: number) => {
-      if (!emblaMainApi) return;
+      if (!emblaMainApi || !emblaMainRef) return;
+      let newIndex = 0;
+      if (index === activeIndex) {
+        if (activeIndex === emblaMainApi.selectedScrollSnap()) {
+          emblaMainApi.scrollPrev();
+          newIndex = emblaMainApi.selectedScrollSnap();
+        } else {
+          emblaMainApi.scrollNext();
+          newIndex = index + 1;
+        }
+      }
+
       setPreview((prev) => {
         if (!prev) return null;
         const newPreview = [...prev];
@@ -90,16 +103,8 @@ export const UploadImageForm = ({
         newFiles.splice(index, 1);
         return newFiles;
       });
-
-      if (index === activeIndex) {
-        if (activeIndex === emblaMainApi.selectedScrollSnap()) {
-          emblaMainApi.scrollPrev();
-        } else {
-          emblaMainApi.scrollNext();
-        }
-      }
     },
-    [emblaMainApi, activeIndex]
+    [emblaMainApi]
   );
 
   const removeImageFromPreviewOnKeyDown = useCallback(
@@ -223,7 +228,6 @@ export const UploadImageForm = ({
     <div className="grid gap-2 w-full relative">
       {maxFiles > 1 && (
         <>
-          {" "}
           <CarouselPrevious
             className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6"
             onClick={ScrollPrev}
@@ -243,9 +247,9 @@ export const UploadImageForm = ({
         onKeyDownCapture={handleKeyDown}
       >
         <div className="flex items-center w-full ">
-          {preview.map((imageSrc, i) => (
+          {preview.map((image, i) => (
             <div
-              key={i}
+              key={image.preview}
               className={`px-1 flex min-w-0 shrink-0 grow-0 basis-full`}
             >
               <AspectRatio ratio={4 / 3} className="w-full">
@@ -254,8 +258,9 @@ export const UploadImageForm = ({
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className=" rounded-lg object-cover"
                   quality={100}
-                  src={imageSrc.preview}
-                  alt={`uploaded image ${activeIndex}`}
+                  src={image.preview}
+                  alt={`uploaded image ${image.file.name}`}
+                  priority
                 />
               </AspectRatio>
             </div>
@@ -265,38 +270,15 @@ export const UploadImageForm = ({
       {maxFiles > 1 ? (
         <div ref={emblaThumbsRef} className="overflow-hidden">
           <div className="flex items-center w-full mt-1 ">
-            {preview.map((imageSrc, i) => (
-              <div
-                tabIndex={0}
-                key={i}
-                className={`basis-1/3 px-1 min-w-0 shrink-0 grow-0 `}
+            {preview.map((image, i) => (
+              <SliderMiniItem
+                key={image.preview}
+                image={image}
                 onClick={() => onThumbClick(i)}
                 onKeyDown={(e) => removeImageFromPreviewOnKeyDown(i, e)}
-              >
-                <div
-                  className={`relative aspect-square h-20 w-full   opacity-40 rounded-md transition-opacity ${
-                    i === activeIndex ? "!opacity-100" : ""
-                  }`}
-                >
-                  <button
-                    aria-label={`remove-slide-${i}`}
-                    type="button"
-                    className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group "
-                    onClick={() => removeImageFromPreview(i)}
-                  >
-                    {" "}
-                    <RemoveIcon className="h-4 w-4 group-hover:stroke-red-600" />
-                  </button>
-                  <Image
-                    src={imageSrc.preview}
-                    alt="uploaded image"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className=" rounded-lg object-cover"
-                    quality={100}
-                  />
-                </div>
-              </div>
+                isSlideActive={i === activeIndex}
+                removeSlide={() => removeImageFromPreview(i)}
+              />
             ))}
           </div>
         </div>
@@ -311,6 +293,8 @@ export const UploadImageForm = ({
         Choose another image
       </Button>
     </div>
+  ) : renderInput ? (
+    renderInput(getInputProps())
   ) : (
     <div
       className={`w-full border border-muted-foreground border-dashed rounded-lg cursor-pointer duration-300 ease-in-out
@@ -351,6 +335,51 @@ export const UploadImageForm = ({
     </div>
   );
 };
+
+const SliderMiniItem = forwardRef<
+  HTMLDivElement,
+  {
+    image: FilePreview;
+    isSlideActive: boolean;
+    removeSlide: () => void;
+  } & React.HTMLAttributes<HTMLDivElement>
+>(({ className, isSlideActive, image, removeSlide, ...props }, ref) => {
+  return (
+    <div
+      tabIndex={0}
+      {...props}
+      ref={ref}
+      className={cn("basis-1/3 px-1 min-w-0 shrink-0 grow-0", className)}
+    >
+      <div
+        className={`relative aspect-square h-20 w-full   opacity-40 rounded-md transition-opacity ${
+          isSlideActive ? "!opacity-100" : ""
+        }`}
+      >
+        <button
+          aria-label={`remove-slide-${image.file.name}`}
+          type="button"
+          className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group "
+          onClick={removeSlide}
+        >
+          {" "}
+          <RemoveIcon className="h-4 w-4 group-hover:stroke-red-600" />
+        </button>
+        <Image
+          src={image.preview}
+          alt={image.file.name}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className=" rounded-lg object-cover"
+          quality={100}
+          priority
+        />
+      </div>
+    </div>
+  );
+});
+
+SliderMiniItem.displayName = "SliderMiniItem";
 
 const CarouselPrevious = forwardRef<
   HTMLButtonElement,

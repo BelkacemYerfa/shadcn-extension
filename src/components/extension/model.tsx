@@ -75,6 +75,11 @@ export const ImageUpload = () => {
         maxFiles={5}
         maxSize={1024 * 1024 * 8}
         multiple={true}
+        /*  renderInput={(props) => (
+          <Button {...props} variant={"outline"}>
+            <span>Upload Image</span>
+          </Button>
+        )} */
       />
     </div>
   );
@@ -249,11 +254,7 @@ export const TreeViewTest = () => {
 
   return (
     <div className="flex gap-2 pl-2">
-      <TreeView
-        elements={elements}
-        initialSelectedId="8"
-        initialExpendedItems={["2", "4"]}
-      />
+      <TreeView elements={elements} initialSelectedId="3" expandAll={true} />
     </div>
   );
 };
