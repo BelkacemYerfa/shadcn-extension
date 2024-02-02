@@ -13,34 +13,44 @@ import { Command as CommandPrimitive } from "cmdk";
 
 interface MultiSelectProps extends React.HTMLAttributes<HTMLDivElement> {
   options: string[];
+  onUpdateValue: (value: string[]) => void;
+  value: string[];
 }
 
-export const MultiSelect = ({ options }: MultiSelectProps) => {
+export const MultiSelect = ({
+  options,
+  onUpdateValue,
+  value,
+}: MultiSelectProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<string[]>([]);
 
-  const selectOption = useCallback((value: string) => {
-    setSelected((prev) => [...prev, value]);
-  }, []);
+  const selectOption = useCallback(
+    (e: any) => {
+      onUpdateValue([...value, e]);
+    },
+    [value]
+  );
 
-  const removeOption = useCallback((value: string) => {
-    setSelected((prev) => prev.filter((item) => item !== value));
-  }, []);
+  const removeOption = useCallback(
+    (e: any) => {
+      onUpdateValue(value.filter((item) => item !== e));
+    },
+    [value]
+  );
 
   const removeOptionWithBackspace = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
-      if (
-        (e.key === "Backspace" || e.key === "Delete") &&
-        selected.length > 0
-      ) {
+      if ((e.key === "Backspace" || e.key === "Delete") && value.length > 0) {
         if (inputValue.length === 0) {
-          setSelected((prev) => prev.slice(0, prev.length - 1));
+          onUpdateValue(
+            value.filter((item) => item !== value[value.length - 1])
+          );
         }
       }
     },
-    [selected, inputValue]
+    [value, inputValue]
   );
 
   const mousePreventDefault = useCallback((e: React.MouseEvent) => {
@@ -48,7 +58,7 @@ export const MultiSelect = ({ options }: MultiSelectProps) => {
     e.stopPropagation();
   }, []);
 
-  const notSelected = options.filter((item) => !selected.includes(item));
+  const notSelected = options.filter((item) => !value.includes(item));
 
   return (
     <Command
@@ -56,7 +66,7 @@ export const MultiSelect = ({ options }: MultiSelectProps) => {
       className="flex flex-col gap-2 max-w-md w-full rounded-md p-1.5 max-h-96 h-full"
     >
       <div className="flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg">
-        {selected.map((item) => (
+        {value.map((item) => (
           <Badge key={item} className="px-1 rounded-xl" variant={"secondary"}>
             <div className="flex items-center gap-1.5">
               <span className="text-xs">{item}</span>
@@ -83,27 +93,26 @@ export const MultiSelect = ({ options }: MultiSelectProps) => {
           className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
         />
       </div>
-      <div className=" ">
-        {open && notSelected.length > 0 && (
-          <CommandList className="p-2 flex flex-col gap-2 border-muted border rounded-lg scrollbar-thin scrollbar-track-transparent  transition-colors scrollbar-thumb-muted scrollbar-thumb-rounded-lg ">
-            {notSelected.map((option) => (
-              <CommandItem
-                key={option}
-                onMouseDown={mousePreventDefault}
-                onSelect={() => {
-                  selectOption(option);
-                  setInputValue("");
-                }}
-              >
-                {option}
-              </CommandItem>
-            ))}
-            <CommandEmpty>
-              <span className="text-muted-foreground">No results found</span>
-            </CommandEmpty>
-          </CommandList>
-        )}
-      </div>
+
+      {open && notSelected.length > 0 && (
+        <CommandList className="p-2 flex flex-col gap-2 border-muted border rounded-lg scrollbar-thin scrollbar-track-transparent  transition-colors scrollbar-thumb-muted scrollbar-thumb-rounded-lg ">
+          {notSelected.map((option) => (
+            <CommandItem
+              key={option}
+              onMouseDown={mousePreventDefault}
+              onSelect={() => {
+                selectOption(option);
+                setInputValue("");
+              }}
+            >
+              {option}
+            </CommandItem>
+          ))}
+          <CommandEmpty>
+            <span className="text-muted-foreground">No results found</span>
+          </CommandEmpty>
+        </CommandList>
+      )}
     </Command>
   );
 };

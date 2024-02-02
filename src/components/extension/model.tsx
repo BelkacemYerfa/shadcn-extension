@@ -13,7 +13,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { ControllerRenderProps, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { TreeView } from "./tree-view/tree-view";
 
@@ -86,22 +86,77 @@ export const ImageUpload = () => {
   );
 };
 
-export const Commander = () => {
+export const CommanderUsingUseState = () => {
+  const [command, setCommand] = useState<string[]>(["Hello"]);
   return (
-    <MultiSelect
-      options={[
-        "Hello",
-        "World",
-        "Next.js",
-        "Tailwind CSS",
-        "TypeScript",
-        "React",
-        "Vite",
-        "Remix",
-        "Astro",
-        "Svelte",
-      ]}
-    />
+    <form className="grid gap-2 max-w-sm w-full">
+      <MultiSelect
+        options={[
+          "Hello",
+          "World",
+          "Next.js",
+          "Tailwind CSS",
+          "TypeScript",
+          "React",
+          "Vite",
+          "Remix",
+          "Astro",
+          "Svelte",
+        ]}
+        onUpdateValue={setCommand}
+        value={command}
+      />
+      <Button type="submit">Submit</Button>
+    </form>
+  );
+};
+
+export const Commander = () => {
+  const form = useForm({
+    defaultValues: {
+      command: [],
+    },
+  });
+  const onSubmit = (data: any) => {
+    console.log(data);
+    toast.success(`Success , Your command is : ${data.command}`);
+  };
+  return (
+    <Form {...form}>
+      <form
+        className="grid gap-2 max-w-sm w-full"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <FormField
+          control={form.control}
+          name="command"
+          render={({ field }) => (
+            <FormControl>
+              <FormItem>
+                <MultiSelect
+                  options={[
+                    "Hello",
+                    "World",
+                    "Next.js",
+                    "Tailwind CSS",
+                    "TypeScript",
+                    "React",
+                    "Vite",
+                    "Remix",
+                    "Astro",
+                    "Svelte",
+                  ]}
+                  onUpdateValue={field.onChange}
+                  {...field}
+                />
+                <FormMessage />
+              </FormItem>
+            </FormControl>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   );
 };
 
