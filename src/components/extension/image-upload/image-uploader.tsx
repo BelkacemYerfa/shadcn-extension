@@ -8,13 +8,11 @@ import {
   forwardRef,
   useCallback,
   useEffect,
-  useReducer,
   useState,
 } from "react";
 import {
   useDropzone,
   type FileRejection,
-  type Accept,
   DropzoneOptions,
 } from "react-dropzone";
 import { toast } from "sonner";
@@ -59,9 +57,10 @@ export const UploadImageForm = ({
   const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
+
   const {
     accept = {
-      "image/*": [".png", ".jpg", ".jpeg"],
+      "image/jpeg": [".png", ".jpg", ".jpeg"],
     },
     maxFiles = 1,
     maxSize = 8 * 1024 * 1024,
@@ -70,7 +69,7 @@ export const UploadImageForm = ({
 
   const addImageToTheSet = useCallback((file: File) => {
     if (file.size > maxSize) {
-      toast.error("File too big , Max size is 8MB");
+      toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
       return;
     }
     const fileWithPreview = {
@@ -82,6 +81,7 @@ export const UploadImageForm = ({
         toast.warning(
           `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
         );
+
         return prev;
       }
       return [...(prev || []), fileWithPreview];

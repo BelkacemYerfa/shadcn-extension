@@ -98,7 +98,6 @@ export const TreeView = ({
 
   useEffect(() => {
     if (expandAll) {
-      console.log("expandAll", expandAll);
       expendAllTree(elements);
       return;
     }

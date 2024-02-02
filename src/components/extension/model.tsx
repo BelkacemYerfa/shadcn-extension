@@ -48,7 +48,6 @@ export const Model = () => {
             maxSize: 1024 * 1024 * 4,
             multiple: true,
           }}
-          reSelectAll={true}
         />
         <div className="flex items-center justify-end gap-2">
           <Button variant={"outline"} onClick={() => setIsOpen(!open)}>
@@ -256,7 +255,7 @@ export const TreeViewTest = () => {
 
   return (
     <div className="flex gap-2 pl-2">
-      <TreeView elements={elements} initialSelectedId="3" expandAll={true} />
+      <TreeView elements={elements} initialSelectedId="3" expandAll />
     </div>
   );
 };

@@ -85,7 +85,7 @@ export const MultiSelect = ({ options }: MultiSelectProps) => {
       </div>
       <div className=" ">
         {open && notSelected.length > 0 && (
-          <CommandList className="p-2 flex flex-col gap-2 border-muted border rounded-lg">
+          <CommandList className="p-2 flex flex-col gap-2 border-muted border rounded-lg scrollbar-thin scrollbar-track-transparent  transition-colors scrollbar-thumb-muted scrollbar-thumb-rounded-lg ">
             {notSelected.map((option) => (
               <CommandItem
                 key={option}
