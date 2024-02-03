@@ -7,6 +7,7 @@ import {
   SetStateAction,
   forwardRef,
   useCallback,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -25,8 +26,10 @@ import { ChevronRightIcon, X as RemoveIcon } from "lucide-react";
 import { FilePreview } from "../model";
 import { cn } from "@/lib/utils";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
+import { createContext } from "react";
 
-interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
+export interface FileUploadProps
+  extends React.HTMLAttributes<HTMLInputElement> {
   images?: File[] | null;
   setImages: Dispatch<SetStateAction<File[] | null>>;
   preview: FilePreview[] | null;
@@ -39,15 +42,47 @@ interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   ) => React.ReactNode;
 }
 
-export const UploadImageForm = ({
-  setImages,
-  preview,
-  setPreview,
-  dropzoneOptions,
-  carouselOptions,
-  reSelectAll = false,
-  renderInput,
-}: FileUploadProps) => {
+type CarouselContextProps = {
+  carouselOptions?: EmblaOptionsType;
+};
+
+type CarouselContextType = {
+  mainRef: ReturnType<typeof useEmblaCarousel>[0];
+  thumbsRef: ReturnType<typeof useEmblaCarousel>[0];
+  scrollNext: () => void;
+  scrollPrev: () => void;
+  canScrollNext: boolean;
+  canScrollPrev: boolean;
+  activeIndex: number;
+  onThumbClick: (index: number) => void;
+} & CarouselContextProps;
+
+type CarouselWithUploadType = {
+  images?: File[] | null;
+  setImages: Dispatch<SetStateAction<File[] | null>>;
+  preview: FilePreview[] | null;
+  setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
+  dropzoneOptions: DropzoneOptions;
+  reSelectAll?: boolean;
+  renderInput?: <T extends JSXElementConstructor<any>>(
+    props: React.ComponentProps<T>
+  ) => React.ReactNode;
+} & CarouselContextType;
+
+const useCarousel = () => {
+  const context = useContext(CarouselContext);
+  if (!context) {
+    throw new Error("useCarousel must be used within a CarouselProvider");
+  }
+  return context;
+};
+
+const CarouselContext = createContext<CarouselContextType | null>(null);
+
+export const CarouselProvider = forwardRef<
+  HTMLDivElement,
+  CarouselContextProps & React.HTMLAttributes<HTMLDivElement>
+>(({ carouselOptions, children, className, ...props }, ref) => {
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(carouselOptions);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
@@ -56,102 +91,101 @@ export const UploadImageForm = ({
   const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
   const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
 
-  const {
-    accept = {
-      "image/jpeg": [".png", ".jpg", ".jpeg"],
-    },
-    maxFiles = 1,
-    maxSize = 8 * 1024 * 1024,
-    multiple = true,
-  } = dropzoneOptions;
+  /*  const {
+      accept = {
+        "image/jpeg": [".png", ".jpg", ".jpeg"],
+      },
+      maxFiles = 1,
+      maxSize = 8 * 1024 * 1024,
+      multiple = true,
+    } = dropzoneOptions;
 
-  const addImageToTheSet = useCallback((file: File) => {
-    if (file.size > maxSize) {
-      toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
-      return;
-    }
-    const fileWithPreview = {
-      file,
-      preview: URL.createObjectURL(file),
-    };
-    setPreview((prev) => {
-      if (!reSelectAll && prev && prev.length >= maxFiles) {
-        toast.warning(
-          `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
-        );
-
-        return prev;
-      }
-      return [...(prev || []), fileWithPreview];
-    });
-    setImages((files) => {
-      if (!reSelectAll && files && files.length >= maxFiles) {
-        return files;
-      }
-      return [...(files || []), file];
-    });
-  }, []);
-
-  const removeImageFromPreview = useCallback(
-    (index: number) => {
-      if (!emblaMainApi || !emblaMainRef) return;
-      if (index === activeIndex) {
-        if (activeIndex === emblaMainApi.selectedScrollSnap()) {
-          emblaMainApi.scrollPrev();
-        } else {
-          emblaMainApi.scrollNext();
-        }
-      }
-      setPreview((prev) => {
-        if (!prev) return null;
-        const newPreview = [...prev];
-        newPreview.splice(index, 1);
-        return newPreview;
-      });
-      setImages((files) => {
-        if (!files) return null;
-        const newFiles = [...files];
-        newFiles.splice(index, 1);
-        return newFiles;
-      });
-    },
-    [emblaMainApi, activeIndex]
-  );
-
-  const onDrop = useCallback(
-    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-      const files = acceptedFiles;
-
-      if (!!reSelectAll) {
-        setPreview(null);
-        setImages(null);
-      }
-
-      if (!files) {
-        toast.error("file error , probably too big");
+    const addImageToTheSet = useCallback((file: File) => {
+      if (file.size > maxSize) {
+        toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
         return;
       }
+      const fileWithPreview = {
+        file,
+        preview: URL.createObjectURL(file),
+      };
+      setPreview((prev) => {
+        if (!reSelectAll && prev && prev.length >= maxFiles) {
+          toast.warning(
+            `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
+          );
 
-      files.forEach((file) => {
-        addImageToTheSet(file);
+          return prev;
+        }
+        return [...(prev || []), fileWithPreview];
       });
+      setImages((files) => {
+        if (!reSelectAll && files && files.length >= maxFiles) {
+          return files;
+        }
+        return [...(files || []), file];
+      });
+    }, []);
 
-      if (rejectedFiles.length > 0) {
-        rejectedFiles.forEach(({ errors }) => {
-          if (errors[0]?.code === "file-too-large") {
-            toast.error(
-              `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
-            );
-            return;
+    const removeImageFromPreview = useCallback(
+      (index: number) => {
+        if (!emblaMainApi || !emblaMainRef) return;
+        if (index === activeIndex) {
+          if (activeIndex === emblaMainApi.selectedScrollSnap()) {
+            emblaMainApi.scrollPrev();
+          } else {
+            emblaMainApi.scrollNext();
           }
-          errors[0]?.message && toast.error(errors[0].message);
+        }
+        setPreview((prev) => {
+          if (!prev) return null;
+          const newPreview = [...prev];
+          newPreview.splice(index, 1);
+          return newPreview;
         });
-      }
-    },
-    []
-  );
+        setImages((files) => {
+          if (!files) return null;
+          const newFiles = [...files];
+          newFiles.splice(index, 1);
+          return newFiles;
+        });
+      },
+      [emblaMainApi, activeIndex]
+    );
+
+    const onDrop = useCallback(
+      (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+        const files = acceptedFiles;
+
+        if (!!reSelectAll) {
+          setPreview(null);
+          setImages(null);
+        }
+
+        if (!files) {
+          toast.error("file error , probably too big");
+          return;
+        }
+
+        files.forEach((file) => {
+          addImageToTheSet(file);
+        });
+
+        if (rejectedFiles.length > 0) {
+          rejectedFiles.forEach(({ errors }) => {
+            if (errors[0]?.code === "file-too-large") {
+              toast.error(
+                `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
+              );
+              return;
+            }
+            errors[0]?.message && toast.error(errors[0].message);
+          });
+        }
+      },
+      []
+    ); */
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -161,11 +195,11 @@ export const UploadImageForm = ({
         emblaMainApi.scrollPrev();
       } else if (event.key === "ArrowRight") {
         emblaMainApi.scrollNext();
-      } else if (event.key === "Delete" || event.key === "Backspace") {
-        removeImageFromPreview(activeIndex);
-      }
+      } /* else if (event.key === "Delete" || event.key === "Backspace") {
+          removeImageFromPreview(activeIndex);
+        } */
     },
-    [emblaMainApi, activeIndex]
+    [emblaMainApi]
   );
 
   const ScrollNext = useCallback(() => {
@@ -206,139 +240,103 @@ export const UploadImageForm = ({
     };
   }, [emblaMainApi, onSelect]);
 
-  const { getRootProps, getInputProps, isDragAccept, isDragReject } =
-    useDropzone({
-      onDrop,
-      maxSize,
-      accept,
-      maxFiles,
-      multiple,
-      onDropRejected: () => setIsFileTooBig(true),
-      onDropAccepted: () => setIsFileTooBig(false),
-    });
-
-  return preview && preview.length > 0 ? (
-    <div
-      tabIndex={0}
-      onKeyDownCapture={handleKeyDown}
-      className="grid gap-2 w-full relative focus:outline-none"
+  return (
+    <CarouselContext.Provider
+      value={{
+        mainRef: emblaMainRef,
+        thumbsRef: emblaThumbsRef,
+        scrollNext: ScrollNext,
+        scrollPrev: ScrollPrev,
+        canScrollNext,
+        canScrollPrev,
+        activeIndex,
+        onThumbClick,
+      }}
     >
-      {maxFiles > 1 && (
-        <>
-          <CarouselPrevious
-            className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6"
-            onClick={ScrollPrev}
-            disabled={!canScrollPrev}
-          />
-          <CarouselNext
-            className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6"
-            onClick={ScrollNext}
-            disabled={!canScrollNext}
-          />
-        </>
-      )}
-      <div ref={emblaMainRef} className="w-full space-y-1 overflow-hidden ">
-        <div className="flex items-center w-full ">
-          {preview.map((image, i) => (
-            <div
-              key={image.preview}
-              className={`px-1 flex min-w-0 shrink-0 grow-0 basis-full`}
-            >
-              <AspectRatio ratio={4 / 3} className="w-full">
-                <Image
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className=" rounded-lg object-cover"
-                  quality={100}
-                  src={image.preview}
-                  alt={`uploaded image ${image.file.name}`}
-                  priority
-                />
-              </AspectRatio>
-            </div>
-          ))}
-        </div>
-      </div>
-      {maxFiles > 1 ? (
-        <div ref={emblaThumbsRef} className="overflow-hidden">
-          <div className="flex items-center w-full mt-1 ">
-            {preview.map((image, i) => (
-              <SliderMiniItem
-                key={image.preview}
-                image={image}
-                onClick={() => onThumbClick(i)}
-                isSlideActive={i === activeIndex}
-                removeSlide={() => removeImageFromPreview(i)}
-              />
-            ))}
-          </div>
-        </div>
-      ) : null}
-      <Button
-        type="button"
-        variant="outline"
-        {...getRootProps()}
-        className="disabled:opacity-50 disabled:cursor-not-allowed"
-        disabled={preview.length >= maxFiles && !reSelectAll}
+      <div
+        ref={ref}
+        tabIndex={0}
+        onKeyDownCapture={handleKeyDown}
+        className={cn(
+          "grid gap-2 w-full relative focus:outline-none",
+          className
+        )}
+        {...props}
       >
-        Choose another image
-      </Button>
-    </div>
-  ) : renderInput ? (
-    renderInput(getRootProps())
-  ) : (
-    <div
-      className={`w-full border border-muted-foreground border-dashed rounded-lg cursor-pointer duration-300 ease-in-out focus:outline-none
-      ${
-        isDragAccept
-          ? "border-green-500"
-          : isDragReject || isFileTooBig
-          ? "border-red-500"
-          : "border-gray-300 "
-      }`}
-      {...getRootProps()}
-    >
-      <div className="flex items-center justify-center flex-col pt-5 pb-6">
-        <svg
-          className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 20 16"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-          />
-        </svg>
-        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-          <span className="font-semibold">Click to upload</span>
-          &nbsp; or drag and drop
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          SVG, PNG, JPG or GIF
-        </p>
+        {children}
       </div>
-      <Input {...getInputProps()} />
+    </CarouselContext.Provider>
+  );
+});
+
+CarouselProvider.displayName = "CarouselProvider";
+
+export const CarouselMainContainer = forwardRef<
+  HTMLDivElement,
+  {} & React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
+  const { mainRef } = useCarousel();
+  return (
+    <div ref={mainRef} {...props} className={cn("overflow-hidden", className)}>
+      <div ref={ref} className="flex items-center w-full ">
+        {children}
+      </div>
     </div>
   );
-};
+});
 
-const SliderMiniItem = forwardRef<
+CarouselMainContainer.displayName = "CarouselMainContainer";
+
+export const CarouselThumbsContainer = forwardRef<
   HTMLDivElement,
-  {
-    image: FilePreview;
-    isSlideActive: boolean;
-    removeSlide: () => void;
-  } & React.HTMLAttributes<HTMLDivElement>
->(({ className, isSlideActive, image, removeSlide, ...props }, ref) => {
+  {} & React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
+  const { thumbsRef } = useCarousel();
+  return (
+    <div
+      ref={thumbsRef}
+      {...props}
+      className={cn("overflow-hidden", className)}
+    >
+      <div ref={ref} className="flex items-center w-full ">
+        {children}
+      </div>
+    </div>
+  );
+});
+
+CarouselThumbsContainer.displayName = "CarouselThumbsContainer";
+
+export const SliderMainItem = forwardRef<
+  HTMLDivElement,
+  {} & React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
   return (
     <div
       {...props}
       ref={ref}
+      className={cn("px-1 flex min-w-0 shrink-0 grow-0 basis-full", className)}
+    >
+      {children}
+    </div>
+  );
+});
+
+SliderMainItem.displayName = "SliderMainItem";
+
+export const SliderMiniItem = forwardRef<
+  HTMLDivElement,
+  {
+    index: number;
+  } & React.HTMLAttributes<HTMLDivElement>
+>(({ className, index, children, ...props }, ref) => {
+  const { activeIndex, onThumbClick } = useCarousel();
+  const isSlideActive = activeIndex === index;
+  return (
+    <div
+      {...props}
+      ref={ref}
+      onClick={() => onThumbClick(index)}
       className={cn("basis-1/3 px-1 min-w-0 shrink-0 grow-0", className)}
     >
       <div
@@ -346,24 +344,7 @@ const SliderMiniItem = forwardRef<
           isSlideActive ? "!opacity-100" : ""
         }`}
       >
-        <button
-          aria-label={`remove-slide-${image.file.name}`}
-          type="button"
-          className="absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group "
-          onClick={removeSlide}
-        >
-          {" "}
-          <RemoveIcon className="h-4 w-4 group-hover:stroke-red-600" />
-        </button>
-        <Image
-          src={image.preview}
-          alt={image.file.name}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className=" rounded-lg object-cover"
-          quality={100}
-          priority
-        />
+        {children}
       </div>
     </div>
   );
@@ -371,16 +352,20 @@ const SliderMiniItem = forwardRef<
 
 SliderMiniItem.displayName = "SliderMiniItem";
 
-const CarouselPrevious = forwardRef<
+export const CarouselPrevious = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  const { canScrollPrev, scrollPrev } = useCarousel();
+
   return (
     <Button
       ref={ref}
       variant={variant}
       size={size}
       className={cn("absolute h-8 w-8 rounded-full hidden sm:flex ", className)}
+      onClick={scrollPrev}
+      disabled={!canScrollPrev}
       {...props}
     >
       <ChevronLeftIcon className="h-4 w-4" />
@@ -390,16 +375,19 @@ const CarouselPrevious = forwardRef<
 });
 CarouselPrevious.displayName = "CarouselPrevious";
 
-const CarouselNext = forwardRef<
+export const CarouselNext = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  const { canScrollNext, scrollNext } = useCarousel();
   return (
     <Button
       ref={ref}
       variant={variant}
       size={size}
       className={cn("absolute h-8 w-8 rounded-full hidden sm:flex ", className)}
+      onClick={scrollNext}
+      disabled={!canScrollNext}
       {...props}
     >
       <ChevronRightIcon className="h-4 w-4" />

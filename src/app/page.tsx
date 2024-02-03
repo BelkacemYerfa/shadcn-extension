@@ -11,12 +11,13 @@ import {
 
 import { ModeToggle } from "@/components/toggle-theme";
 
+//provide the set of api to the component that allow to build the ui examples
 export default function Home() {
   return (
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
       {/* <Model /> */}
-      {/* <ImageUpload /> */}
-      <Commander />
+      <ImageUpload />
+      {/*  <Commander /> */}
       {/* <CommanderUsingUseState /> */}
       {/* <OtpTest /> */}
       {/* <TreeViewTest /> */}

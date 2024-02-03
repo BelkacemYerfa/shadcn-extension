@@ -1,8 +1,17 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
-import { UploadImageForm } from "./image-upload/image-uploader";
+import { useCallback, useEffect, useState } from "react";
+import {
+  CarouselMainContainer,
+  CarouselThumbsContainer,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselProvider,
+  FileUploadProps,
+  SliderMainItem,
+  SliderMiniItem,
+} from "./image-upload/image-uploader";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "./fancy-multi-select/multi-select";
 import { OtpStyledInput } from "./otp-input/otp-input";
@@ -13,9 +22,15 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { ControllerRenderProps, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { TreeView } from "./tree-view/tree-view";
+import { Input } from "../ui/input";
+import Image from "next/image";
+import { X } from "lucide-react";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
+import { FileRejection, useDropzone } from "react-dropzone";
+import useEmblaCarousel from "embla-carousel-react";
 
 export type FilePreview = {
   file: File;
@@ -83,6 +98,206 @@ export const ImageUpload = () => {
         )} */
       />
     </div>
+  );
+};
+
+const UploadImageForm = ({
+  setImages,
+  preview,
+  setPreview,
+  dropzoneOptions,
+  carouselOptions,
+  reSelectAll = false,
+  renderInput,
+}: FileUploadProps) => {
+  const [emblaMainRef, emblaMainApi] = useEmblaCarousel(carouselOptions);
+  const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
+    containScroll: "keepSnaps",
+    dragFree: true,
+  });
+  const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
+  const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
+
+  const {
+    accept = {
+      "image/jpeg": [".png", ".jpg", ".jpeg"],
+    },
+    maxFiles = 1,
+    maxSize = 8 * 1024 * 1024,
+    multiple = true,
+  } = dropzoneOptions;
+
+  const addImageToTheSet = useCallback((file: File) => {
+    if (file.size > maxSize) {
+      toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
+      return;
+    }
+    const fileWithPreview = {
+      file,
+      preview: URL.createObjectURL(file),
+    };
+    setPreview((prev) => {
+      if (!reSelectAll && prev && prev.length >= maxFiles) {
+        toast.warning(
+          `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
+        );
+
+        return prev;
+      }
+      return [...(prev || []), fileWithPreview];
+    });
+    setImages((files) => {
+      if (!reSelectAll && files && files.length >= maxFiles) {
+        return files;
+      }
+      return [...(files || []), file];
+    });
+  }, []);
+
+  const removeImageFromPreview = useCallback(
+    (index: number) => {
+      if (!emblaMainApi || !emblaMainRef) return;
+      if (index === activeIndex) {
+        if (activeIndex === emblaMainApi.selectedScrollSnap()) {
+          emblaMainApi.scrollPrev();
+        } else {
+          emblaMainApi.scrollNext();
+        }
+      }
+      setPreview((prev) => {
+        if (!prev) return null;
+        const newPreview = [...prev];
+        newPreview.splice(index, 1);
+        return newPreview;
+      });
+      setImages((files) => {
+        if (!files) return null;
+        const newFiles = [...files];
+        newFiles.splice(index, 1);
+        return newFiles;
+      });
+    },
+    [emblaMainApi, activeIndex]
+  );
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+      const files = acceptedFiles;
+
+      if (!!reSelectAll) {
+        setPreview(null);
+        setImages(null);
+      }
+
+      if (!files) {
+        toast.error("file error , probably too big");
+        return;
+      }
+
+      files.forEach((file) => {
+        addImageToTheSet(file);
+      });
+
+      if (rejectedFiles.length > 0) {
+        rejectedFiles.forEach(({ errors }) => {
+          if (errors[0]?.code === "file-too-large") {
+            toast.error(
+              `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
+            );
+            return;
+          }
+          errors[0]?.message && toast.error(errors[0].message);
+        });
+      }
+    },
+    []
+  );
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      if (!emblaMainApi) return;
+      if (event.key === "ArrowLeft") {
+        emblaMainApi.scrollPrev();
+      } else if (event.key === "ArrowRight") {
+        emblaMainApi.scrollNext();
+      } else if (event.key === "Delete" || event.key === "Backspace") {
+        removeImageFromPreview(activeIndex);
+      }
+    },
+    [emblaMainApi, activeIndex]
+  );
+
+  const ScrollNext = useCallback(() => {
+    if (!emblaMainApi) return;
+    emblaMainApi.scrollNext();
+  }, [emblaMainApi]);
+
+  const ScrollPrev = useCallback(() => {
+    if (!emblaMainApi) return;
+    emblaMainApi.scrollPrev();
+  }, [emblaMainApi]);
+
+  const onThumbClick = useCallback(
+    (index: number) => {
+      if (!emblaMainApi || !emblaThumbsApi) return;
+      emblaMainApi.scrollTo(index);
+    },
+    [emblaMainApi, emblaThumbsApi]
+  );
+
+  const onSelect = useCallback(() => {
+    if (!emblaMainApi || !emblaThumbsApi) return;
+    const selected = emblaMainApi.selectedScrollSnap();
+    setActiveIndex(selected);
+    emblaThumbsApi.scrollTo(selected);
+    setCanScrollPrev(emblaMainApi.canScrollPrev());
+    setCanScrollNext(emblaMainApi.canScrollNext());
+  }, [emblaMainApi, emblaThumbsApi]);
+
+  useEffect(() => {
+    if (!emblaMainApi) return;
+    onSelect();
+    emblaMainApi.on("select", onSelect);
+    emblaMainApi.on("reInit", onSelect);
+    return () => {
+      emblaMainApi.off("select", onSelect);
+      emblaMainApi.off("reInit", onSelect);
+    };
+  }, [emblaMainApi, onSelect]);
+
+  const { getRootProps, getInputProps, isDragAccept, isDragReject } =
+    useDropzone({
+      onDrop,
+      maxSize,
+      accept,
+      maxFiles,
+      multiple,
+      onDropRejected: () => setIsFileTooBig(true),
+      onDropAccepted: () => setIsFileTooBig(false),
+    });
+
+  return (
+    <CarouselProvider>
+      <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+      <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+      <CarouselMainContainer className="space-y-1 overflow-hidden ">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <SliderMainItem key={i}>
+            <div className="h-40 bg-red-500 w-full"></div>
+          </SliderMainItem>
+        ))}
+      </CarouselMainContainer>
+      <CarouselThumbsContainer className="overflow-hidden">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <SliderMiniItem key={i} index={i}>
+            <div className="h-20 bg-red-500"></div>
+          </SliderMiniItem>
+        ))}
+      </CarouselThumbsContainer>
+    </CarouselProvider>
   );
 };
 
