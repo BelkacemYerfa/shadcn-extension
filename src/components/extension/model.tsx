@@ -1,14 +1,13 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import {
   CarouselMainContainer,
   CarouselThumbsContainer,
   CarouselNext,
   CarouselPrevious,
   CarouselProvider,
-  FileUploadProps,
   SliderMainItem,
   SliderMiniItem,
 } from "./image-upload/carousel";
@@ -25,17 +24,13 @@ import {
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { TreeView } from "./tree-view/tree-view";
-import { Input } from "../ui/input";
-import Image from "next/image";
-import { X } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { FileRejection, useDropzone } from "react-dropzone";
-import useEmblaCarousel from "embla-carousel-react";
 import {
   CustomUploadInput,
   FileUploadCarouselProvider,
   SliderMiniItemWithRemove,
 } from "./image-upload/image-upload";
+import Image from "next/image";
 
 export type FilePreview = {
   file: File;

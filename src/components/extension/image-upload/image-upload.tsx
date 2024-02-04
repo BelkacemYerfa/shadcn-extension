@@ -1,7 +1,6 @@
 import { Input } from "@/components/ui/input";
 import {
   Dispatch,
-  JSXElementConstructor,
   SetStateAction,
   createContext,
   forwardRef,
@@ -9,7 +8,7 @@ import {
   useContext,
   useState,
 } from "react";
-import { CarouselProvider, SliderMiniItem, useCarousel } from "./carousel";
+import { SliderMiniItem, useCarousel } from "./carousel";
 import { X as RemoveIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { EmblaOptionsType } from "embla-carousel";
@@ -42,21 +41,21 @@ const CarouselUploadContext = createContext<CarouselWithUploadContext | null>(
   null
 );
 
-type ImageUploadProps = {
+interface ImageUploadProps<T> {
   value?: string[];
   onChange?: (value: string[]) => void;
   images: File[] | null;
   setImages: Dispatch<SetStateAction<File[] | null>>;
-  preview: FilePreview[] | null;
-  setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
+  preview: T[] | null;
+  setPreview: Dispatch<SetStateAction<T[] | null>>;
   carouselOptions?: EmblaOptionsType;
   dropzoneOptions: DropzoneOptions;
   reSelectAll?: boolean;
-};
+}
 
 export const FileUploadCarouselProvider = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & ImageUploadProps
+  React.HTMLAttributes<HTMLDivElement> & ImageUploadProps<FilePreview>
 >(
   (
     {

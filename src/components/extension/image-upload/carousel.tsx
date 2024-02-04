@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import {
   Dispatch,
   JSXElementConstructor,
@@ -11,36 +10,13 @@ import {
   useEffect,
   useState,
 } from "react";
-import {
-  useDropzone,
-  type FileRejection,
-  DropzoneOptions,
-} from "react-dropzone";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronRightIcon, X as RemoveIcon } from "lucide-react";
-import { FilePreview } from "../model";
+import { ChevronRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
 import { createContext } from "react";
-
-export interface FileUploadProps
-  extends React.HTMLAttributes<HTMLInputElement> {
-  images?: File[] | null;
-  setImages: Dispatch<SetStateAction<File[] | null>>;
-  preview: FilePreview[] | null;
-  setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
-  dropzoneOptions: DropzoneOptions;
-  carouselOptions?: EmblaOptionsType;
-  reSelectAll?: boolean;
-  renderInput?: <T extends JSXElementConstructor<any>>(
-    props: React.ComponentProps<T>
-  ) => React.ReactNode;
-}
 
 type CarouselContextProps = {
   carouselOptions?: EmblaOptionsType;
