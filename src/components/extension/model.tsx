@@ -11,7 +11,7 @@ import {
   FileUploadProps,
   SliderMainItem,
   SliderMiniItem,
-} from "./image-upload/image-uploader";
+} from "./image-upload/carousel";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "./fancy-multi-select/multi-select";
 import { OtpStyledInput } from "./otp-input/otp-input";
@@ -31,6 +31,11 @@ import { X } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { FileRejection, useDropzone } from "react-dropzone";
 import useEmblaCarousel from "embla-carousel-react";
+import {
+  CustomUploadInput,
+  FileUploadCarouselProvider,
+  SliderMiniItemWithRemove,
+} from "./image-upload/image-upload";
 
 export type FilePreview = {
   file: File;
@@ -54,7 +59,7 @@ export const Model = () => {
         Open Dialog
       </DialogTrigger>
       <DialogContent className="max-w-md p-3 w-full">
-        <UploadImageForm
+        {/* <UploadImageForm
           setImages={setImage}
           preview={preview}
           setPreview={setPreview}
@@ -63,7 +68,7 @@ export const Model = () => {
             maxSize: 1024 * 1024 * 4,
             multiple: true,
           }}
-        />
+        /> */}
         <div className="flex items-center justify-end gap-2">
           <Button variant={"outline"} onClick={() => setIsOpen(!open)}>
             <span>Cancel</span>
@@ -78,12 +83,21 @@ export const Model = () => {
 };
 
 export const ImageUpload = () => {
-  const [image, setImage] = useState<File[] | null>(null);
-  const [preview, setPreview] = useState<FilePreview[] | null>(null);
   return (
     <div className="max-w-md w-full">
-      <UploadImageForm
-        setImages={setImage}
+      <MultiCarousel />
+    </div>
+  );
+};
+
+const MultiCarousel = () => {
+  const [images, setImages] = useState<File[] | null>(null);
+  const [preview, setPreview] = useState<FilePreview[] | null>(null);
+  return (
+    <CarouselProvider>
+      <FileUploadCarouselProvider
+        images={images}
+        setImages={setImages}
         preview={preview}
         setPreview={setPreview}
         dropzoneOptions={{
@@ -91,212 +105,76 @@ export const ImageUpload = () => {
           maxSize: 1024 * 1024 * 4,
           multiple: true,
         }}
-        /* renderInput={(props) => (
-          <Button type="button" variant="outline" className="w-full" {...props}>
-            <span>Upload Image</span>
-          </Button>
-        )} */
-      />
-    </div>
-  );
-};
-
-const UploadImageForm = ({
-  setImages,
-  preview,
-  setPreview,
-  dropzoneOptions,
-  carouselOptions,
-  reSelectAll = false,
-  renderInput,
-}: FileUploadProps) => {
-  const [emblaMainRef, emblaMainApi] = useEmblaCarousel(carouselOptions);
-  const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
-    containScroll: "keepSnaps",
-    dragFree: true,
-  });
-  const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
-  const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
-
-  const {
-    accept = {
-      "image/jpeg": [".png", ".jpg", ".jpeg"],
-    },
-    maxFiles = 1,
-    maxSize = 8 * 1024 * 1024,
-    multiple = true,
-  } = dropzoneOptions;
-
-  const addImageToTheSet = useCallback((file: File) => {
-    if (file.size > maxSize) {
-      toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
-      return;
-    }
-    const fileWithPreview = {
-      file,
-      preview: URL.createObjectURL(file),
-    };
-    setPreview((prev) => {
-      if (!reSelectAll && prev && prev.length >= maxFiles) {
-        toast.warning(
-          `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
-        );
-
-        return prev;
-      }
-      return [...(prev || []), fileWithPreview];
-    });
-    setImages((files) => {
-      if (!reSelectAll && files && files.length >= maxFiles) {
-        return files;
-      }
-      return [...(files || []), file];
-    });
-  }, []);
-
-  const removeImageFromPreview = useCallback(
-    (index: number) => {
-      if (!emblaMainApi || !emblaMainRef) return;
-      if (index === activeIndex) {
-        if (activeIndex === emblaMainApi.selectedScrollSnap()) {
-          emblaMainApi.scrollPrev();
-        } else {
-          emblaMainApi.scrollNext();
-        }
-      }
-      setPreview((prev) => {
-        if (!prev) return null;
-        const newPreview = [...prev];
-        newPreview.splice(index, 1);
-        return newPreview;
-      });
-      setImages((files) => {
-        if (!files) return null;
-        const newFiles = [...files];
-        newFiles.splice(index, 1);
-        return newFiles;
-      });
-    },
-    [emblaMainApi, activeIndex]
-  );
-
-  const onDrop = useCallback(
-    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-      const files = acceptedFiles;
-
-      if (!!reSelectAll) {
-        setPreview(null);
-        setImages(null);
-      }
-
-      if (!files) {
-        toast.error("file error , probably too big");
-        return;
-      }
-
-      files.forEach((file) => {
-        addImageToTheSet(file);
-      });
-
-      if (rejectedFiles.length > 0) {
-        rejectedFiles.forEach(({ errors }) => {
-          if (errors[0]?.code === "file-too-large") {
-            toast.error(
-              `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
-            );
-            return;
-          }
-          errors[0]?.message && toast.error(errors[0].message);
-        });
-      }
-    },
-    []
-  );
-
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      if (!emblaMainApi) return;
-      if (event.key === "ArrowLeft") {
-        emblaMainApi.scrollPrev();
-      } else if (event.key === "ArrowRight") {
-        emblaMainApi.scrollNext();
-      } else if (event.key === "Delete" || event.key === "Backspace") {
-        removeImageFromPreview(activeIndex);
-      }
-    },
-    [emblaMainApi, activeIndex]
-  );
-
-  const ScrollNext = useCallback(() => {
-    if (!emblaMainApi) return;
-    emblaMainApi.scrollNext();
-  }, [emblaMainApi]);
-
-  const ScrollPrev = useCallback(() => {
-    if (!emblaMainApi) return;
-    emblaMainApi.scrollPrev();
-  }, [emblaMainApi]);
-
-  const onThumbClick = useCallback(
-    (index: number) => {
-      if (!emblaMainApi || !emblaThumbsApi) return;
-      emblaMainApi.scrollTo(index);
-    },
-    [emblaMainApi, emblaThumbsApi]
-  );
-
-  const onSelect = useCallback(() => {
-    if (!emblaMainApi || !emblaThumbsApi) return;
-    const selected = emblaMainApi.selectedScrollSnap();
-    setActiveIndex(selected);
-    emblaThumbsApi.scrollTo(selected);
-    setCanScrollPrev(emblaMainApi.canScrollPrev());
-    setCanScrollNext(emblaMainApi.canScrollNext());
-  }, [emblaMainApi, emblaThumbsApi]);
-
-  useEffect(() => {
-    if (!emblaMainApi) return;
-    onSelect();
-    emblaMainApi.on("select", onSelect);
-    emblaMainApi.on("reInit", onSelect);
-    return () => {
-      emblaMainApi.off("select", onSelect);
-      emblaMainApi.off("reInit", onSelect);
-    };
-  }, [emblaMainApi, onSelect]);
-
-  const { getRootProps, getInputProps, isDragAccept, isDragReject } =
-    useDropzone({
-      onDrop,
-      maxSize,
-      accept,
-      maxFiles,
-      multiple,
-      onDropRejected: () => setIsFileTooBig(true),
-      onDropAccepted: () => setIsFileTooBig(false),
-    });
-
-  return (
-    <CarouselProvider>
-      <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
-      <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
-      <CarouselMainContainer className="space-y-1 overflow-hidden ">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <SliderMainItem key={i}>
-            <div className="h-40 bg-red-500 w-full"></div>
-          </SliderMainItem>
-        ))}
-      </CarouselMainContainer>
-      <CarouselThumbsContainer className="overflow-hidden">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <SliderMiniItem key={i} index={i}>
-            <div className="h-20 bg-red-500"></div>
-          </SliderMiniItem>
-        ))}
-      </CarouselThumbsContainer>
+      >
+        {preview && preview.length > 0 ? (
+          <>
+            <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+            <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+            <CarouselMainContainer className="space-y-1 overflow-hidden ">
+              {preview.map((file, i) => (
+                <SliderMainItem key={i}>
+                  <AspectRatio ratio={16 / 9}>
+                    <Image
+                      src={file.preview}
+                      objectFit="cover"
+                      alt="preview"
+                      fill
+                      className="rounded-md"
+                    />
+                  </AspectRatio>
+                </SliderMainItem>
+              ))}
+            </CarouselMainContainer>
+            <CarouselThumbsContainer className="overflow-hidden">
+              {preview.map((file, i) => (
+                <SliderMiniItemWithRemove key={i} index={i}>
+                  <AspectRatio ratio={16 / 9}>
+                    <Image
+                      src={file.preview}
+                      objectFit="cover"
+                      alt="preview"
+                      fill
+                      className="rounded-md"
+                    />
+                  </AspectRatio>
+                </SliderMiniItemWithRemove>
+              ))}
+            </CarouselThumbsContainer>
+            <CustomUploadInput className="border-none ">
+              <Button type="button" variant="outline" className="w-full">
+                Choose another image
+              </Button>
+            </CustomUploadInput>
+          </>
+        ) : (
+          <CustomUploadInput>
+            <div className="flex items-center justify-center flex-col pt-5 pb-6">
+              <svg
+                className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                />
+              </svg>
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">Click to upload</span>
+                &nbsp; or drag and drop
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                SVG, PNG, JPG or GIF
+              </p>
+            </div>
+          </CustomUploadInput>
+        )}
+      </FileUploadCarouselProvider>
     </CarouselProvider>
   );
 };

@@ -47,6 +47,7 @@ type CarouselContextProps = {
 };
 
 type CarouselContextType = {
+  emblaMainApi: ReturnType<typeof useEmblaCarousel>[1];
   mainRef: ReturnType<typeof useEmblaCarousel>[0];
   thumbsRef: ReturnType<typeof useEmblaCarousel>[0];
   scrollNext: () => void;
@@ -57,19 +58,7 @@ type CarouselContextType = {
   onThumbClick: (index: number) => void;
 } & CarouselContextProps;
 
-type CarouselWithUploadType = {
-  images?: File[] | null;
-  setImages: Dispatch<SetStateAction<File[] | null>>;
-  preview: FilePreview[] | null;
-  setPreview: Dispatch<SetStateAction<FilePreview[] | null>>;
-  dropzoneOptions: DropzoneOptions;
-  reSelectAll?: boolean;
-  renderInput?: <T extends JSXElementConstructor<any>>(
-    props: React.ComponentProps<T>
-  ) => React.ReactNode;
-} & CarouselContextType;
-
-const useCarousel = () => {
+export const useCarousel = () => {
   const context = useContext(CarouselContext);
   if (!context) {
     throw new Error("useCarousel must be used within a CarouselProvider");
@@ -92,101 +81,6 @@ export const CarouselProvider = forwardRef<
   const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  /*  const {
-      accept = {
-        "image/jpeg": [".png", ".jpg", ".jpeg"],
-      },
-      maxFiles = 1,
-      maxSize = 8 * 1024 * 1024,
-      multiple = true,
-    } = dropzoneOptions;
-
-    const addImageToTheSet = useCallback((file: File) => {
-      if (file.size > maxSize) {
-        toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
-        return;
-      }
-      const fileWithPreview = {
-        file,
-        preview: URL.createObjectURL(file),
-      };
-      setPreview((prev) => {
-        if (!reSelectAll && prev && prev.length >= maxFiles) {
-          toast.warning(
-            `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
-          );
-
-          return prev;
-        }
-        return [...(prev || []), fileWithPreview];
-      });
-      setImages((files) => {
-        if (!reSelectAll && files && files.length >= maxFiles) {
-          return files;
-        }
-        return [...(files || []), file];
-      });
-    }, []);
-
-    const removeImageFromPreview = useCallback(
-      (index: number) => {
-        if (!emblaMainApi || !emblaMainRef) return;
-        if (index === activeIndex) {
-          if (activeIndex === emblaMainApi.selectedScrollSnap()) {
-            emblaMainApi.scrollPrev();
-          } else {
-            emblaMainApi.scrollNext();
-          }
-        }
-        setPreview((prev) => {
-          if (!prev) return null;
-          const newPreview = [...prev];
-          newPreview.splice(index, 1);
-          return newPreview;
-        });
-        setImages((files) => {
-          if (!files) return null;
-          const newFiles = [...files];
-          newFiles.splice(index, 1);
-          return newFiles;
-        });
-      },
-      [emblaMainApi, activeIndex]
-    );
-
-    const onDrop = useCallback(
-      (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-        const files = acceptedFiles;
-
-        if (!!reSelectAll) {
-          setPreview(null);
-          setImages(null);
-        }
-
-        if (!files) {
-          toast.error("file error , probably too big");
-          return;
-        }
-
-        files.forEach((file) => {
-          addImageToTheSet(file);
-        });
-
-        if (rejectedFiles.length > 0) {
-          rejectedFiles.forEach(({ errors }) => {
-            if (errors[0]?.code === "file-too-large") {
-              toast.error(
-                `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
-              );
-              return;
-            }
-            errors[0]?.message && toast.error(errors[0].message);
-          });
-        }
-      },
-      []
-    ); */
-
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       event.preventDefault();
@@ -195,9 +89,7 @@ export const CarouselProvider = forwardRef<
         emblaMainApi.scrollPrev();
       } else if (event.key === "ArrowRight") {
         emblaMainApi.scrollNext();
-      } /* else if (event.key === "Delete" || event.key === "Backspace") {
-          removeImageFromPreview(activeIndex);
-        } */
+      }
     },
     [emblaMainApi]
   );
@@ -243,6 +135,7 @@ export const CarouselProvider = forwardRef<
   return (
     <CarouselContext.Provider
       value={{
+        emblaMainApi,
         mainRef: emblaMainRef,
         thumbsRef: emblaThumbsRef,
         scrollNext: ScrollNext,
@@ -278,7 +171,7 @@ export const CarouselMainContainer = forwardRef<
   const { mainRef } = useCarousel();
   return (
     <div ref={mainRef} {...props} className={cn("overflow-hidden", className)}>
-      <div ref={ref} className="flex items-center w-full ">
+      <div ref={ref} className="flex items-center w-full">
         {children}
       </div>
     </div>
