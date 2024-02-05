@@ -67,7 +67,7 @@ export const FileUploadCarouselProvider = forwardRef<
     const { emblaMainApi, mainRef: emblaMainRef, activeIndex } = useCarousel();
     const {
       accept = {
-        "image/jpeg": [".png", ".jpg", ".jpeg"],
+        "image/*": [".jpg", ".jpeg", ".png", ".gif"],
       },
       maxFiles = 1,
       maxSize = 8 * 1024 * 1024,
@@ -240,14 +240,13 @@ export const SliderMiniItemWithRemove = forwardRef<
 >(({ index, children, className, ...props }, ref) => {
   const { removeImageFromPreview } = useFileUpload();
   return (
-    <SliderMiniItem index={index}>
+    <SliderMiniItem index={index} className={className}>
       <button
         ref={ref}
         {...props}
         type="button"
         className={cn(
-          "absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none",
-          className
+          "absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none"
         )}
         onClick={() => removeImageFromPreview(index)}
       >
