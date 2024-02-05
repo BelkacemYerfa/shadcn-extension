@@ -165,8 +165,12 @@ export const CarouselThumbsContainer = forwardRef<
 >(({ className, children, ...props }, ref) => {
   const { thumbsRef } = useCarousel();
   return (
-    <div ref={thumbsRef} {...props} className={cn("overflow-hidden")}>
-      <div ref={ref} className={cn("flex items-center w-full", className)}>
+    <div
+      ref={thumbsRef}
+      {...props}
+      className={cn("overflow-hidden", className)}
+    >
+      <div ref={ref} className={cn("flex items-center w-full")}>
         {children}
       </div>
     </div>

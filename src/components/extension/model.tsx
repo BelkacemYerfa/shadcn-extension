@@ -83,7 +83,7 @@ const MultiCarousel = () => {
         value={preview}
         onValueChange={setPreview}
         dropzoneOptions={{
-          maxFiles: 3,
+          maxFiles: 5,
           maxSize: 1024 * 1024 * 4,
           multiple: true,
         }}
@@ -96,7 +96,7 @@ const MultiCarousel = () => {
                 <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
               </>
             )}
-            <CarouselMainContainer className="space-y-1 overflow-hidden ">
+            <CarouselMainContainer className="space-y-1">
               {preview.map((file, i) => (
                 <SliderMainItemWithRemove key={i} index={i}>
                   <AspectRatio ratio={16 / 9}>
@@ -111,7 +111,7 @@ const MultiCarousel = () => {
                 </SliderMainItemWithRemove>
               ))}
             </CarouselMainContainer>
-            <CarouselThumbsContainer className="overflow-hidden">
+            <CarouselThumbsContainer>
               {preview.map((file, i) => (
                 <SliderMiniItemWithRemove key={i} index={i}>
                   <AspectRatio ratio={16 / 9}>
