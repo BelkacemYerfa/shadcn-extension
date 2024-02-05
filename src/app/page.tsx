@@ -17,9 +17,11 @@ export default function Home() {
   return (
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
       {/* <Model /> */}
-      <ImageUpload />
-      <CarouselExample />
-      {/*  <Commander /> */}
+      <div className="flex items-center justify-center gap-2 w-full">
+        <ImageUpload />
+        <CarouselExample />
+      </div>
+      {/* <Commander /> */}
       {/* <CommanderUsingUseState /> */}
       {/* <OtpTest /> */}
       {/* <TreeViewTest /> */}

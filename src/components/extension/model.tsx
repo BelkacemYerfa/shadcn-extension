@@ -80,8 +80,8 @@ const MultiCarousel = () => {
   return (
     <CarouselProvider>
       <FileUploadCarouselProvider
-        preview={preview}
-        setPreview={setPreview}
+        value={preview}
+        onValueChange={setPreview}
         dropzoneOptions={{
           maxFiles: 3,
           maxSize: 1024 * 1024 * 4,

@@ -41,10 +41,8 @@ const CarouselUploadContext = createContext<CarouselWithUploadContext | null>(
 );
 
 interface ImageUploadProps<T> {
-  value?: string[];
-  onChange?: (value: string[]) => void;
-  preview: T[] | null;
-  setPreview: Dispatch<SetStateAction<T[] | null>>;
+  value: T[] | null;
+  onValueChange: Dispatch<SetStateAction<T[] | null>>;
   carouselOptions?: EmblaOptionsType;
   dropzoneOptions: DropzoneOptions;
   reSelect?: boolean;
@@ -58,7 +56,7 @@ export const FileUploadCarouselProvider = forwardRef<
     {
       className,
       carouselOptions,
-      setPreview,
+      onValueChange,
       dropzoneOptions,
       reSelect,
       children,
@@ -86,8 +84,8 @@ export const FileUploadCarouselProvider = forwardRef<
         file,
         preview: URL.createObjectURL(file),
       };
-      setPreview((prev) => {
-        if (!reSelectAll && prev && prev.length >= maxFiles && maxFiles > 1) {
+      onValueChange((prev) => {
+        if (!reSelectAll && prev && prev.length >= maxFiles) {
           toast.warning(
             `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
           );
@@ -107,7 +105,7 @@ export const FileUploadCarouselProvider = forwardRef<
             emblaMainApi.scrollNext();
           }
         }
-        setPreview((prev) => {
+        onValueChange((prev) => {
           if (!prev) return null;
           const newPreview = [...prev];
           newPreview.splice(index, 1);
@@ -139,7 +137,7 @@ export const FileUploadCarouselProvider = forwardRef<
         const files = acceptedFiles;
 
         if (!!reSelectAll) {
-          setPreview(null);
+          onValueChange(null);
         }
 
         if (!files) {
