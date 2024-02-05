@@ -124,8 +124,7 @@ export const CarouselProvider = forwardRef<
     >
       <div
         ref={ref}
-        tabIndex={0}
-        onKeyDownCapture={handleKeyDown}
+        //onKeyDownCapture={handleKeyDown}
         className={cn(
           "grid gap-2 w-full relative focus:outline-none",
           className

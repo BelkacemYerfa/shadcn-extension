@@ -86,13 +86,10 @@ export const ImageUpload = () => {
 };
 
 const MultiCarousel = () => {
-  const [images, setImages] = useState<File[] | null>(null);
   const [preview, setPreview] = useState<FilePreview[] | null>(null);
   return (
     <CarouselProvider>
       <FileUploadCarouselProvider
-        images={images}
-        setImages={setImages}
         preview={preview}
         setPreview={setPreview}
         dropzoneOptions={{
@@ -135,14 +132,23 @@ const MultiCarousel = () => {
                 </SliderMiniItemWithRemove>
               ))}
             </CarouselThumbsContainer>
-            <CustomUploadInput className="border-none ">
-              <Button type="button" variant="outline" className="w-full">
+            <CustomUploadInput
+              className="border-none"
+              isLOF={preview.length >= 5}
+            >
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  `${preview.length >= 5 ? "cursor-not-allowed" : ""} w-full`
+                )}
+              >
                 Choose another image
               </Button>
             </CustomUploadInput>
           </>
         ) : (
-          <CustomUploadInput>
+          <CustomUploadInput isLOF={false}>
             <div className="flex items-center justify-center flex-col pt-5 pb-6">
               <svg
                 className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"

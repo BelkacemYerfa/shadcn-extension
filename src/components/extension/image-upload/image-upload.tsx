@@ -24,7 +24,6 @@ import { FilePreview } from "../model";
 type CarouselWithUploadContext = {
   addImageToTheSet: (file: File) => void;
   removeImageFromPreview: (index: number) => void;
-  onDrop: (acceptedFiles: File[], rejectedFiles: FileRejection[]) => void;
   isFileTooBig: boolean;
   dropzoneState: DropzoneState;
 };
@@ -44,8 +43,6 @@ const CarouselUploadContext = createContext<CarouselWithUploadContext | null>(
 interface ImageUploadProps<T> {
   value?: string[];
   onChange?: (value: string[]) => void;
-  images: File[] | null;
-  setImages: Dispatch<SetStateAction<File[] | null>>;
   preview: T[] | null;
   setPreview: Dispatch<SetStateAction<T[] | null>>;
   carouselOptions?: EmblaOptionsType;
@@ -61,9 +58,6 @@ export const FileUploadCarouselProvider = forwardRef<
     {
       className,
       carouselOptions,
-      images,
-      setImages,
-      preview,
       setPreview,
       dropzoneOptions,
       reSelectAll,
@@ -82,7 +76,6 @@ export const FileUploadCarouselProvider = forwardRef<
       multiple = true,
     } = dropzoneOptions;
     const [isFileTooBig, setIsFileTooBig] = useState(false);
-
     const addImageToTheSet = useCallback((file: File) => {
       if (file.size > maxSize) {
         toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
@@ -97,16 +90,9 @@ export const FileUploadCarouselProvider = forwardRef<
           toast.warning(
             `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
           );
-
           return prev;
         }
         return [...(prev || []), fileWithPreview];
-      });
-      setImages((files) => {
-        if (!reSelectAll && files && files.length >= maxFiles) {
-          return files;
-        }
-        return [...(files || []), file];
       });
     }, []);
 
@@ -126,12 +112,6 @@ export const FileUploadCarouselProvider = forwardRef<
           newPreview.splice(index, 1);
           return newPreview;
         });
-        setImages((files) => {
-          if (!files) return null;
-          const newFiles = [...files];
-          newFiles.splice(index, 1);
-          return newFiles;
-        });
       },
       [emblaMainApi, activeIndex]
     );
@@ -146,6 +126,8 @@ export const FileUploadCarouselProvider = forwardRef<
           emblaMainApi.scrollNext();
         } else if (event.key === "Delete" || event.key === "Backspace") {
           removeImageFromPreview(activeIndex);
+        } else if (event.key === "Enter") {
+          dropzoneState.inputRef.current?.click();
         }
       },
       [emblaMainApi]
@@ -157,7 +139,6 @@ export const FileUploadCarouselProvider = forwardRef<
 
         if (!!reSelectAll) {
           setPreview(null);
-          setImages(null);
         }
 
         if (!files) {
@@ -165,20 +146,21 @@ export const FileUploadCarouselProvider = forwardRef<
           return;
         }
 
-        files.forEach((file) => {
-          addImageToTheSet(file);
-        });
+        files.forEach(addImageToTheSet);
 
         if (rejectedFiles.length > 0) {
-          rejectedFiles.forEach(({ errors }) => {
-            if (errors[0]?.code === "file-too-large") {
+          for (let i = 0; i < rejectedFiles.length; i++) {
+            if (rejectedFiles[i].errors[0]?.code === "file-too-large") {
               toast.error(
                 `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
               );
-              return;
+              break;
             }
-            errors[0]?.message && toast.error(errors[0].message);
-          });
+            if (rejectedFiles[i].errors[0]?.message) {
+              toast.error(rejectedFiles[i].errors[0].message);
+              break;
+            }
+          }
         }
       },
       []
@@ -199,7 +181,6 @@ export const FileUploadCarouselProvider = forwardRef<
         value={{
           addImageToTheSet,
           removeImageFromPreview,
-          onDrop,
           isFileTooBig,
           dropzoneState,
         }}
@@ -254,14 +235,23 @@ SliderMiniItemWithRemove.displayName = "SliderMiniItemWithRemove";
 
 export const CustomUploadInput = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, children }, ref) => {
+  {
+    isLOF: boolean;
+  } & React.HTMLAttributes<HTMLDivElement>
+>(({ className, isLOF, children, ...props }, ref) => {
   const { dropzoneState, isFileTooBig } = useFileUpload();
+  const spreader = isLOF ? {} : dropzoneState.getRootProps();
   return (
-    <div ref={ref} className={"w-full"}>
+    <div
+      ref={ref}
+      {...props}
+      className={`w-full ${
+        isLOF ? "opacity-50 cursor-not-allowed " : "cursor-pointer "
+      }`}
+    >
       <div
         className={cn(
-          `w-full border border-muted-foreground border-dashed rounded-lg cursor-pointer duration-300 ease-in-out
+          `w-full border border-muted-foreground border-dashed rounded-lg duration-300 ease-in-out
       ${
         dropzoneState.isDragAccept
           ? "border-green-500"
@@ -271,11 +261,16 @@ export const CustomUploadInput = forwardRef<
       }`,
           className
         )}
-        {...dropzoneState.getRootProps()}
+        {...spreader}
       >
         {children}
       </div>
-      <Input {...dropzoneState.getInputProps()} />
+      <Input
+        ref={dropzoneState.inputRef}
+        disabled={isLOF}
+        {...dropzoneState.getInputProps()}
+        className={`${isLOF ? "cursor-not-allowed" : ""}`}
+      />
     </div>
   );
 });
