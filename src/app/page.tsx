@@ -7,6 +7,7 @@ import {
   TreeViewTest,
   Commander,
   CommanderUsingUseState,
+  CarouselExample,
 } from "@/components/extension/model";
 
 import { ModeToggle } from "@/components/toggle-theme";
@@ -17,6 +18,7 @@ export default function Home() {
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
       {/* <Model /> */}
       <ImageUpload />
+      <CarouselExample />
       {/*  <Commander /> */}
       {/* <CommanderUsingUseState /> */}
       {/* <OtpTest /> */}

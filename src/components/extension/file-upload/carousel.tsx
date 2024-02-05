@@ -20,6 +20,7 @@ import { createContext } from "react";
 
 type CarouselContextProps = {
   carouselOptions?: EmblaOptionsType;
+  activeKeyboard?: boolean;
 };
 
 type CarouselContextType = {
@@ -32,6 +33,7 @@ type CarouselContextType = {
   canScrollPrev: boolean;
   activeIndex: number;
   onThumbClick: (index: number) => void;
+  handleKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 } & CarouselContextProps;
 
 export const useCarousel = () => {
@@ -47,7 +49,7 @@ const CarouselContext = createContext<CarouselContextType | null>(null);
 export const CarouselProvider = forwardRef<
   HTMLDivElement,
   CarouselContextProps & React.HTMLAttributes<HTMLDivElement>
->(({ carouselOptions, children, className, ...props }, ref) => {
+>(({ carouselOptions, activeKeyboard, children, className, ...props }, ref) => {
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(carouselOptions);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
@@ -120,11 +122,13 @@ export const CarouselProvider = forwardRef<
         canScrollPrev,
         activeIndex,
         onThumbClick,
+        handleKeyDown,
       }}
     >
       <div
+        tabIndex={0}
         ref={ref}
-        //onKeyDownCapture={handleKeyDown}
+        onKeyDownCapture={activeKeyboard ? handleKeyDown : undefined}
         className={cn(
           "grid gap-2 w-full relative focus:outline-none",
           className

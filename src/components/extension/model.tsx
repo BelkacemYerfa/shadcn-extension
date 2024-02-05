@@ -10,7 +10,7 @@ import {
   CarouselProvider,
   SliderMainItem,
   SliderMiniItem,
-} from "./image-upload/carousel";
+} from "./file-upload/carousel";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "./fancy-multi-select/multi-select";
 import { OtpStyledInput } from "./otp-input/otp-input";
@@ -30,7 +30,7 @@ import {
   FileUploadCarouselProvider,
   SliderMainItemWithRemove,
   SliderMiniItemWithRemove,
-} from "./image-upload/image-upload";
+} from "./file-upload/file-upload";
 import Image from "next/image";
 
 export type FilePreview = {
@@ -39,8 +39,6 @@ export type FilePreview = {
 };
 
 export const Model = () => {
-  const [image, setImage] = useState<File[] | null>(null);
-  const [preview, setPreview] = useState<FilePreview[] | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -55,16 +53,7 @@ export const Model = () => {
         Open Dialog
       </DialogTrigger>
       <DialogContent className="max-w-md p-3 w-full">
-        {/* <UploadImageForm
-          setImages={setImage}
-          preview={preview}
-          setPreview={setPreview}
-          dropzoneOptions={{
-            maxFiles: 5,
-            maxSize: 1024 * 1024 * 4,
-            multiple: true,
-          }}
-        /> */}
+        <ImageUpload />
         <div className="flex items-center justify-end gap-2">
           <Button variant={"outline"} onClick={() => setIsOpen(!open)}>
             <span>Cancel</span>
@@ -173,6 +162,31 @@ const MultiCarousel = () => {
         )}
       </FileUploadCarouselProvider>
     </CarouselProvider>
+  );
+};
+
+export const CarouselExample = () => {
+  return (
+    <div className="max-w-md w-full mt-3">
+      <CarouselProvider activeKeyboard>
+        <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+        <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+        <CarouselMainContainer className="overflow-hidden">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <SliderMainItem key={i}>
+              <div className="w-full h-40 bg-gray-300 rounded-md"></div>
+            </SliderMainItem>
+          ))}
+        </CarouselMainContainer>
+        <CarouselThumbsContainer className="overflow-hidden">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <SliderMiniItem key={i} index={i}>
+              <div className="w-full h-20 bg-gray-300 rounded-md"></div>
+            </SliderMiniItem>
+          ))}
+        </CarouselThumbsContainer>
+      </CarouselProvider>
+    </div>
   );
 };
 
