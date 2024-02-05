@@ -8,7 +8,7 @@ import {
   useContext,
   useState,
 } from "react";
-import { SliderMiniItem, useCarousel } from "./carousel";
+import { SliderMainItem, SliderMiniItem, useCarousel } from "./carousel";
 import { X as RemoveIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { EmblaOptionsType } from "embla-carousel";
@@ -47,7 +47,7 @@ interface ImageUploadProps<T> {
   setPreview: Dispatch<SetStateAction<T[] | null>>;
   carouselOptions?: EmblaOptionsType;
   dropzoneOptions: DropzoneOptions;
-  reSelectAll?: boolean;
+  reSelect?: boolean;
 }
 
 export const FileUploadCarouselProvider = forwardRef<
@@ -60,7 +60,7 @@ export const FileUploadCarouselProvider = forwardRef<
       carouselOptions,
       setPreview,
       dropzoneOptions,
-      reSelectAll,
+      reSelect,
       children,
       ...props
     },
@@ -75,6 +75,7 @@ export const FileUploadCarouselProvider = forwardRef<
       maxSize = 8 * 1024 * 1024,
       multiple = true,
     } = dropzoneOptions;
+    const reSelectAll = maxFiles === 1 ? true : reSelect;
     const [isFileTooBig, setIsFileTooBig] = useState(false);
     const addImageToTheSet = useCallback((file: File) => {
       if (file.size > maxSize) {
@@ -86,7 +87,7 @@ export const FileUploadCarouselProvider = forwardRef<
         preview: URL.createObjectURL(file),
       };
       setPreview((prev) => {
-        if (!reSelectAll && prev && prev.length >= maxFiles) {
+        if (!reSelectAll && prev && prev.length >= maxFiles && maxFiles > 1) {
           toast.warning(
             `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
           );
@@ -130,7 +131,7 @@ export const FileUploadCarouselProvider = forwardRef<
           dropzoneState.inputRef.current?.click();
         }
       },
-      [emblaMainApi]
+      [emblaMainApi, activeIndex]
     );
 
     const onDrop = useCallback(
@@ -163,7 +164,7 @@ export const FileUploadCarouselProvider = forwardRef<
           }
         }
       },
-      []
+      [reSelectAll]
     );
 
     const dropzoneState = useDropzone({
@@ -204,6 +205,35 @@ export const FileUploadCarouselProvider = forwardRef<
 
 FileUploadCarouselProvider.displayName = "FileUploadCarouselProvider";
 
+export const SliderMainItemWithRemove = forwardRef<
+  HTMLButtonElement,
+  {
+    index: number;
+  } & React.HTMLAttributes<HTMLButtonElement>
+>(({ className, index, children, ...props }, ref) => {
+  const { removeImageFromPreview } = useFileUpload();
+  return (
+    <SliderMainItem className="relative">
+      <button
+        ref={ref}
+        {...props}
+        type="button"
+        className={cn(
+          "absolute -right-1 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none",
+          className
+        )}
+        onClick={() => removeImageFromPreview(index)}
+      >
+        {" "}
+        <RemoveIcon className="h-4 w-4 stroke-red-600" />
+      </button>
+      {children}
+    </SliderMainItem>
+  );
+});
+
+SliderMainItemWithRemove.displayName = "SliderMainItemWithRemove";
+
 export const SliderMiniItemWithRemove = forwardRef<
   HTMLButtonElement,
   {
@@ -218,13 +248,13 @@ export const SliderMiniItemWithRemove = forwardRef<
         {...props}
         type="button"
         className={cn(
-          "absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none group",
+          "absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none",
           className
         )}
         onClick={() => removeImageFromPreview(index)}
       >
         {" "}
-        <RemoveIcon className="h-4 w-4 group-hover:stroke-red-600" />
+        <RemoveIcon className="h-4 w-4 stroke-red-600" />
       </button>
       {children}
     </SliderMiniItem>
@@ -236,7 +266,7 @@ SliderMiniItemWithRemove.displayName = "SliderMiniItemWithRemove";
 export const CustomUploadInput = forwardRef<
   HTMLDivElement,
   {
-    isLOF: boolean;
+    isLOF?: boolean;
   } & React.HTMLAttributes<HTMLDivElement>
 >(({ className, isLOF, children, ...props }, ref) => {
   const { dropzoneState, isFileTooBig } = useFileUpload();

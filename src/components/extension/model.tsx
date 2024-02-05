@@ -28,6 +28,7 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
   CustomUploadInput,
   FileUploadCarouselProvider,
+  SliderMainItemWithRemove,
   SliderMiniItemWithRemove,
 } from "./image-upload/image-upload";
 import Image from "next/image";
@@ -93,18 +94,22 @@ const MultiCarousel = () => {
         preview={preview}
         setPreview={setPreview}
         dropzoneOptions={{
-          maxFiles: 5,
+          maxFiles: 3,
           maxSize: 1024 * 1024 * 4,
           multiple: true,
         }}
       >
         {preview && preview.length > 0 ? (
           <>
-            <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
-            <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+            {preview.length > 1 && (
+              <>
+                <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+                <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+              </>
+            )}
             <CarouselMainContainer className="space-y-1 overflow-hidden ">
               {preview.map((file, i) => (
-                <SliderMainItem key={i}>
+                <SliderMainItemWithRemove key={i} index={i}>
                   <AspectRatio ratio={16 / 9}>
                     <Image
                       src={file.preview}
@@ -114,7 +119,7 @@ const MultiCarousel = () => {
                       className="rounded-md"
                     />
                   </AspectRatio>
-                </SliderMainItem>
+                </SliderMainItemWithRemove>
               ))}
             </CarouselMainContainer>
             <CarouselThumbsContainer className="overflow-hidden">
@@ -132,17 +137,8 @@ const MultiCarousel = () => {
                 </SliderMiniItemWithRemove>
               ))}
             </CarouselThumbsContainer>
-            <CustomUploadInput
-              className="border-none"
-              isLOF={preview.length >= 5}
-            >
-              <Button
-                type="button"
-                variant="outline"
-                className={cn(
-                  `${preview.length >= 5 ? "cursor-not-allowed" : ""} w-full`
-                )}
-              >
+            <CustomUploadInput className="border-none">
+              <Button type="button" variant="outline" className={cn(`w-full`)}>
                 Choose another image
               </Button>
             </CustomUploadInput>
