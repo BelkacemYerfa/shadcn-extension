@@ -12,14 +12,14 @@ import { KeyboardEvent, useCallback, useRef, useState } from "react";
 import { Command as CommandPrimitive } from "cmdk";
 
 interface MultiSelectProps extends React.HTMLAttributes<HTMLDivElement> {
-  options: string[];
-  onUpdateValue: (value: string[]) => void;
   value: string[];
+  onValueChange: (value: string[]) => void;
+  options: string[];
 }
 
 export const MultiSelect = ({
   options,
-  onUpdateValue,
+  onValueChange,
   value,
 }: MultiSelectProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,14 +28,14 @@ export const MultiSelect = ({
 
   const selectOption = useCallback(
     (e: any) => {
-      onUpdateValue([...value, e]);
+      onValueChange([...value, e]);
     },
     [value]
   );
 
   const removeOption = useCallback(
     (e: any) => {
-      onUpdateValue(value.filter((item) => item !== e));
+      onValueChange(value.filter((item) => item !== e));
     },
     [value]
   );
@@ -44,7 +44,7 @@ export const MultiSelect = ({
     (e: KeyboardEvent<HTMLDivElement>) => {
       if ((e.key === "Backspace" || e.key === "Delete") && value.length > 0) {
         if (inputValue.length === 0) {
-          onUpdateValue(
+          onValueChange(
             value.filter((item) => item !== value[value.length - 1])
           );
         }

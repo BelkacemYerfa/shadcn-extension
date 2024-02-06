@@ -61,7 +61,11 @@ export const TreeView = ({
 
   const expendAllTree = useCallback((elements: TreeViewElement[]) => {
     const expandTree = (element: TreeViewElement) => {
-      if (element.children && element.children.length > 0) {
+      if (
+        element.isSelectable &&
+        element.children &&
+        element.children.length > 0
+      ) {
         setExpendedItems((prev) => [...(prev ?? []), element.id]);
         element.children.forEach(expandTree);
       }
@@ -78,11 +82,15 @@ export const TreeView = ({
       ) => {
         const newPath = [...currentPath, currentElement.id];
 
-        if (currentElement.id === selectId) {
+        if (currentElement.isSelectable && currentElement.id === selectId) {
           setExpendedItems((prev) => [...(prev ?? []), ...newPath]);
         }
 
-        if (currentElement.children && currentElement.children.length > 0) {
+        if (
+          currentElement.isSelectable &&
+          currentElement.children &&
+          currentElement.children.length > 0
+        ) {
           currentElement.children.forEach((child) => {
             findParent(child, newPath);
           });
@@ -186,7 +194,9 @@ export const TreeItem = forwardRef<
                         expendedItems?.includes(element.id)
                           ? "cursor-pointer"
                           : "cursor-default"
-                      }  cursor-pointer `}
+                      } ${
+                        !element.isSelectable && "opacity-50 cursor-not-allowed"
+                      } `}
                       disabled={!element.isSelectable}
                       onClick={() => handleSelect(element.id)}
                     >
@@ -201,7 +211,7 @@ export const TreeItem = forwardRef<
                       <div className="flex flex-col gap-2">
                         <TreeItem
                           key={element.id}
-                          aria-label={`Folder ${element.name}`}
+                          aria-label={`folder ${element.name}`}
                           elements={element.children}
                           selectedId={selectedId}
                           handleSelect={handleSelect}
@@ -224,9 +234,9 @@ export const TreeItem = forwardRef<
             </li>
           ))
         ) : (
-          <li>
+          <li className="px-1">
             <Leaf
-              aria-label={`File ${elements?.name}`}
+              aria-label={`file ${elements?.name}`}
               element={elements}
               handleSelect={selectItem}
               isSelected={selectedId === elements?.id}
@@ -255,12 +265,11 @@ export const Leaf = forwardRef<
       ref={ref}
       aria-label="leaf"
       {...props}
+      className={`${isSelected ? " bg-muted rounded-md" : ""} `}
     >
       <div
         className={cn(
-          `flex items-center gap-1 px-1 cursor-pointer ${
-            isSelected ? " bg-muted rounded-md" : ""
-          } ${
+          `flex items-center gap-1 cursor-pointer text-sm ${
             !element?.isSelectable
               ? "opacity-50 cursor-not-allowed"
               : "cursor-pointer"

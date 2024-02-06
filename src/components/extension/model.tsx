@@ -38,6 +38,7 @@ import {
   BreadCrumbItem,
   BreadCrumbSeparator,
 } from "./breadcrumb/bread-crumb";
+import Link from "next/link";
 
 export type FilePreview = {
   file: File;
@@ -213,7 +214,7 @@ export const CommanderUsingUseState = () => {
           "Astro",
           "Svelte",
         ]}
-        onUpdateValue={setCommand}
+        onValueChange={setCommand}
         value={command}
       />
       <Button type="submit">Submit</Button>
@@ -256,7 +257,7 @@ export const Commander = () => {
                     "Astro",
                     "Svelte",
                   ]}
-                  onUpdateValue={field.onChange}
+                  onValueChange={field.onChange}
                   {...field}
                 />
                 <FormMessage />
@@ -355,7 +356,28 @@ export const TreeViewTest = () => {
                           id: "7",
                           isSelectable: false,
                           name: "Element 7",
-                          children: [],
+                          children: [
+                            {
+                              id: "21",
+                              isSelectable: true,
+                              name: "Element 21",
+                              children: [
+                                {
+                                  id: "22",
+                                  isSelectable: true,
+                                  name: "Element 22",
+                                  children: [
+                                    {
+                                      id: "23",
+                                      isSelectable: true,
+                                      name: "Element 23",
+                                      children: [],
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
                         },
                       ],
                     },
@@ -420,7 +442,7 @@ export const TreeViewTest = () => {
 
   return (
     <div className="flex gap-2 pl-2">
-      <TreeView elements={elements} initialSelectedId="3" expandAll />
+      <TreeView elements={elements} initialSelectedId="21" />
     </div>
   );
 };
@@ -435,7 +457,7 @@ export const BreadCrumbTest = () => {
           variant: "ghost",
         }}
       >
-        Home
+        <Link href="/">Home</Link>
       </BreadCrumbItem>
       <BreadCrumbSeparator className="" />
       <BreadCrumbItem className="px-2 ">Settings</BreadCrumbItem>
