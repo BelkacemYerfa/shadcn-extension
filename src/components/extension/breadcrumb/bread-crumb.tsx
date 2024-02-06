@@ -5,13 +5,7 @@ import { cn } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { VariantProps } from "class-variance-authority";
 import { ChevronRight } from "lucide-react";
-import Link from "next/link";
-import {
-  JSXElementConstructor,
-  createContext,
-  forwardRef,
-  useContext,
-} from "react";
+import { createContext, forwardRef, useContext } from "react";
 
 type BreadCrumbContextProps = {} & VariantProps<typeof buttonVariants>;
 
@@ -57,13 +51,15 @@ export const BreadCrumb = ({
 
 BreadCrumb.displayName = "BreadCrumb";
 
+// Check if activeVariant is provided without isActive
+
 type BreadCrumbItemProps =
   | {
-      isActive?: boolean;
+      isActive: true;
       activeVariant?: VariantProps<typeof buttonVariants>;
     }
   | {
-      isActive: undefined;
+      isActive?: false;
       activeVariant?: undefined;
     };
 
@@ -71,7 +67,7 @@ export const BreadCrumbItem = forwardRef<
   HTMLButtonElement,
   React.HTMLAttributes<HTMLButtonElement> & BreadCrumbItemProps
 >(({ className, isActive, activeVariant, children }, ref) => {
-  const { variant } = useBreadcrumb();
+  const { variant, size } = useBreadcrumb();
   return (
     <Button
       ref={ref}
@@ -80,9 +76,10 @@ export const BreadCrumbItem = forwardRef<
           isActive
             ? activeVariant
               ? { ...activeVariant }
-              : { variant: variant }
+              : { variant, size }
             : {
-                variant: variant,
+                variant,
+                size,
               }
         ),
         className
