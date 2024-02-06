@@ -32,6 +32,12 @@ import {
   SliderMiniItemWithRemove,
 } from "./file-upload/file-upload";
 import Image from "next/image";
+import {
+  BreadCrumb,
+  BreadCrumbEllipsis,
+  BreadCrumbItem,
+  BreadCrumbSeparator,
+} from "./breadcrumb/bread-crumb";
 
 export type FilePreview = {
   file: File;
@@ -416,5 +422,27 @@ export const TreeViewTest = () => {
     <div className="flex gap-2 pl-2">
       <TreeView elements={elements} initialSelectedId="3" expandAll />
     </div>
+  );
+};
+
+export const BreadCrumbTest = () => {
+  return (
+    <BreadCrumb variant={"outline"} className="gap-1">
+      <BreadCrumbItem
+        className="px-2 "
+        isActive
+        activeVariant={{
+          variant: "ghost",
+        }}
+      >
+        Home
+      </BreadCrumbItem>
+      <BreadCrumbSeparator className="" />
+      <BreadCrumbItem className="px-2 ">Settings</BreadCrumbItem>
+      <BreadCrumbSeparator />
+      <BreadCrumbEllipsis className="px-2" />
+      <BreadCrumbSeparator />
+      <BreadCrumbItem className="px-2">Account</BreadCrumbItem>
+    </BreadCrumb>
   );
 };

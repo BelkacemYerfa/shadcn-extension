@@ -1,81 +1,127 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { JSXElementConstructor } from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { VariantProps } from "class-variance-authority";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import {
+  JSXElementConstructor,
+  createContext,
+  forwardRef,
+  useContext,
+} from "react";
 
-type ReactElement = JSXElementConstructor<any>;
+type BreadCrumbContextProps = {} & VariantProps<typeof buttonVariants>;
 
-type itemTypes = {
-  path: string;
-  name: string;
-  component: <T extends ReactElement>(
-    props?: React.ComponentProps<T>
-  ) => React.ReactNode;
+const BreadCrumbContext = createContext<BreadCrumbContextProps | null>(null);
+
+const useBreadcrumb = () => {
+  const context = useContext(BreadCrumbContext);
+  if (!context) {
+    throw new Error("useBreadcrumb must be used within a BreadCrumb");
+  }
+  return context;
 };
 
-interface BreadCrumbProps extends React.HTMLAttributes<HTMLDivElement> {
-  items?: itemTypes[];
-  separator?: <T extends ReactElement>(
-    props?: React.ComponentProps<T>
-  ) => React.ReactNode;
-  className?: string;
-}
+interface BreadCrumbProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof buttonVariants> {}
 
 // ? feature: breadcrumb : https://tailwindui.com/components/application-ui/navigation/breadcrumbs
 
 export const BreadCrumb = ({
-  items = [
-    {
-      path: "/",
-      name: "Home",
-      component: (props) => <div {...props}>Home</div>, //gonna be used for dynamic routing later
-    },
-    {
-      path: "/about",
-      name: "About",
-      component: (props) => <div {...props}>About</div>,
-    },
-  ],
-  separator,
+  className,
+  variant,
+  children,
+  ...props
 }: BreadCrumbProps) => {
   // TODO: the core feature needs to use the query string to determine the path
-  const router = useRouter();
   //supports pagination ( at most it show  3 items at a time)
-  const maxItems = 3;
-  const buildPath = (targetPathName: string) => {
-    const currentPath: string[] = [];
-    items.forEach((item) => {
-      currentPath.push(item.path);
-      if (item.name === targetPathName) {
-        return currentPath;
-      }
-    });
-  };
+
   return (
-    <div className="flex items-center justify-center flex-wrap gap-2">
-      {items.map((item, index) => (
-        <>
-          <div key={item?.name + index} className="flex items-center gap-2">
-            <item.component />
-            {separator ? (
-              separator()
-            ) : (
-              <span>{index !== items.length - 1 && ">"}</span>
-              //popover triggers when the user hovers over the breadcrumb separator
-            )}
-          </div>
-          {index !== items.length - 1 && (
-            <div className="flex items-center gap-2">
-              <span>...</span>
-              {separator ? (
-                separator()
-              ) : (
-                <span>{index !== items.length - 1 && ">"}</span>
-              )}
-            </div>
-          )}
-        </>
-      ))}
-    </div>
+    <BreadCrumbContext.Provider value={{ variant }}>
+      <div
+        {...props}
+        className={cn(
+          "flex items-center justify-center flex-wrap gap-2",
+          className
+        )}
+      >
+        {children}
+      </div>
+    </BreadCrumbContext.Provider>
   );
 };
+
+BreadCrumb.displayName = "BreadCrumb";
+
+type BreadCrumbItemProps =
+  | {
+      isActive?: boolean;
+      activeVariant?: VariantProps<typeof buttonVariants>;
+    }
+  | {
+      isActive: undefined;
+      activeVariant?: undefined;
+    };
+
+export const BreadCrumbItem = forwardRef<
+  HTMLButtonElement,
+  React.HTMLAttributes<HTMLButtonElement> & BreadCrumbItemProps
+>(({ className, isActive, activeVariant, children }, ref) => {
+  const { variant } = useBreadcrumb();
+  return (
+    <Button
+      ref={ref}
+      className={cn(
+        buttonVariants(
+          isActive
+            ? activeVariant
+              ? { ...activeVariant }
+              : { variant: variant }
+            : {
+                variant: variant,
+              }
+        ),
+        className
+      )}
+    >
+      {children}
+    </Button>
+  );
+});
+
+BreadCrumbItem.displayName = "BreadCrumbItem";
+
+export const BreadCrumbSeparator = forwardRef<
+  HTMLSpanElement,
+  React.HTMLAttributes<HTMLSpanElement>
+>(({ className, children }, ref) => {
+  return (
+    <span ref={ref}>
+      {children ? (
+        children
+      ) : (
+        <ChevronRight className={cn("h-4 w-4", className)} />
+      )}
+    </span>
+  );
+});
+
+BreadCrumbSeparator.displayName = "BreadCrumbSeparator";
+
+export const BreadCrumbEllipsis = forwardRef<
+  HTMLSpanElement,
+  React.HTMLAttributes<HTMLSpanElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <span ref={ref} aria-hidden className={cn("", className)} {...props}>
+      <DotsHorizontalIcon className="h-4 w-4 " />
+      <span className="sr-only">More pages</span>
+    </span>
+  );
+});
+
+BreadCrumbEllipsis.displayName = "BreadCrumbEllipsis";

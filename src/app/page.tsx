@@ -8,6 +8,7 @@ import {
   Commander,
   CommanderUsingUseState,
   CarouselExample,
+  BreadCrumbTest,
 } from "@/components/extension/model";
 
 import { ModeToggle } from "@/components/toggle-theme";
@@ -17,15 +18,15 @@ export default function Home() {
   return (
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
       {/* <Model /> */}
-      <div className="flex items-center justify-center gap-2 w-full">
+      {/*  <div className="flex items-center justify-center gap-2 w-full">
         <ImageUpload />
         <CarouselExample />
-      </div>
-      {/* <Commander /> */}
+      </div> */}
+      {/*  <Commander /> */}
       {/* <CommanderUsingUseState /> */}
       {/* <OtpTest /> */}
       {/* <TreeViewTest /> */}
-      {/* <BreadCrumb /> */}
+      <BreadCrumbTest />
       <div className="absolute right-2 bottom-2">
         <ModeToggle />
       </div>
