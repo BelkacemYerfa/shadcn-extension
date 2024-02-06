@@ -23,19 +23,15 @@ interface BreadCrumbProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof buttonVariants> {}
 
-// ? feature: breadcrumb : https://tailwindui.com/components/application-ui/navigation/breadcrumbs
-
 export const BreadCrumb = ({
   className,
   variant,
+  size,
   children,
   ...props
 }: BreadCrumbProps) => {
-  // TODO: the core feature needs to use the query string to determine the path
-  //supports pagination ( at most it show  3 items at a time)
-
   return (
-    <BreadCrumbContext.Provider value={{ variant }}>
+    <BreadCrumbContext.Provider value={{ variant, size }}>
       <div
         {...props}
         className={cn(
@@ -51,8 +47,6 @@ export const BreadCrumb = ({
 
 BreadCrumb.displayName = "BreadCrumb";
 
-// Check if activeVariant is provided without isActive
-
 type BreadCrumbItemProps =
   | {
       isActive: true;
@@ -65,26 +59,17 @@ type BreadCrumbItemProps =
 
 export const BreadCrumbItem = forwardRef<
   HTMLButtonElement,
-  React.HTMLAttributes<HTMLButtonElement> & BreadCrumbItemProps
->(({ className, isActive, activeVariant, children }, ref) => {
+  React.ButtonHTMLAttributes<HTMLButtonElement> & BreadCrumbItemProps
+>(({ className, isActive, activeVariant, children, ...props }, ref) => {
   const { variant, size } = useBreadcrumb();
+  const variants = {
+    variant,
+    size,
+  };
+  const activeVariants = activeVariant ?? variants;
+  const Variants = isActive ? activeVariants : variants;
   return (
-    <Button
-      ref={ref}
-      className={cn(
-        buttonVariants(
-          isActive
-            ? activeVariant
-              ? { ...activeVariant }
-              : { variant, size }
-            : {
-                variant,
-                size,
-              }
-        ),
-        className
-      )}
-    >
+    <Button ref={ref} {...Variants} className={cn(className)} {...props}>
       {children}
     </Button>
   );
@@ -95,14 +80,15 @@ BreadCrumbItem.displayName = "BreadCrumbItem";
 export const BreadCrumbSeparator = forwardRef<
   HTMLSpanElement,
   React.HTMLAttributes<HTMLSpanElement>
->(({ className, children }, ref) => {
+>(({ className, children, ...props }, ref) => {
   return (
-    <span ref={ref}>
+    <span ref={ref} {...props}>
       {children ? (
         children
       ) : (
         <ChevronRight className={cn("h-4 w-4", className)} />
       )}
+      <span className="sr-only">the next page</span>
     </span>
   );
 });

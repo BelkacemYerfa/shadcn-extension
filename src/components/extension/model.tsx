@@ -427,7 +427,7 @@ export const TreeViewTest = () => {
 
 export const BreadCrumbTest = () => {
   return (
-    <BreadCrumb variant={"default"} className="gap-1">
+    <BreadCrumb variant={"link"} className="gap-1">
       <BreadCrumbItem
         className="px-2 "
         isActive
