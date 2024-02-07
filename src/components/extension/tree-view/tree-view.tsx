@@ -5,6 +5,8 @@ import { FileIcon, FolderIcon, FolderOpenIcon } from "lucide-react";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import useResizeObserver from "use-resize-observer";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { Button } from "@/components/ui/button";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 
 type TreeViewElement = {
   id: string;
@@ -104,6 +106,10 @@ export const TreeView = ({
     []
   );
 
+  const closeAll = useCallback(() => {
+    setExpendedItems([]);
+  }, []);
+
   useEffect(() => {
     if (expandAll) {
       expendAllTree(elements);
@@ -131,7 +137,7 @@ export const TreeView = ({
         className
       )}
     >
-      <ScrollArea style={{ width, height }}>
+      <ScrollArea style={{ width, height }} className="relative">
         {getVirtualItems().map((element) => (
           <TreeItem
             aria-label="Root"
@@ -143,6 +149,18 @@ export const TreeView = ({
             selectItem={selectItem}
           />
         ))}
+        <Button
+          variant={"ghost"}
+          className="h-8 w-8 p-1 absolute bottom-1 right-2"
+          onClick={
+            expendedItems && expendedItems.length > 0
+              ? closeAll
+              : () => expendAllTree(elements)
+          }
+        >
+          <CaretSortIcon />
+          <span className="sr-only">Toggle</span>
+        </Button>
       </ScrollArea>
     </div>
   );
