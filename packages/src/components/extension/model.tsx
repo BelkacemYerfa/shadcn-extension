@@ -86,7 +86,7 @@ const MultiCarousel = () => {
   const [preview, setPreview] = useState<FilePreview[] | null>(null);
   return (
     <CarouselProvider>
-      <FileUploadCarouselProvider
+      <FileUploadCarouselProvider<FilePreview>
         value={preview}
         onValueChange={setPreview}
         dropzoneOptions={{
@@ -133,8 +133,16 @@ const MultiCarousel = () => {
                 </SliderMiniItemWithRemove>
               ))}
             </CarouselThumbsContainer>
-            <CustomUploadInput className="border-none">
-              <Button type="button" variant="outline" className={cn(`w-full`)}>
+            <CustomUploadInput
+              className="border-none"
+              isLOF={preview.length >= 5}
+            >
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(`w-full`)}
+                disabled={preview.length >= 5}
+              >
                 Choose another image
               </Button>
             </CustomUploadInput>

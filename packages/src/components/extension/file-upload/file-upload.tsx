@@ -46,160 +46,151 @@ interface ImageUploadProps<T> {
   carouselOptions?: EmblaOptionsType;
   dropzoneOptions: DropzoneOptions;
   reSelect?: boolean;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export const FileUploadCarouselProvider = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & ImageUploadProps<FilePreview>
->(
-  (
-    {
-      className,
-      carouselOptions,
-      onValueChange,
-      dropzoneOptions,
-      reSelect,
-      children,
-      ...props
+export function FileUploadCarouselProvider<T>({
+  className,
+  carouselOptions,
+  onValueChange,
+  dropzoneOptions,
+  reSelect,
+  children,
+}: ImageUploadProps<T>) {
+  const { emblaMainApi, mainRef: emblaMainRef, activeIndex } = useCarousel();
+  const {
+    accept = {
+      "image/*": [".jpg", ".jpeg", ".png", ".gif"],
     },
-    ref
-  ) => {
-    const { emblaMainApi, mainRef: emblaMainRef, activeIndex } = useCarousel();
-    const {
-      accept = {
-        "image/*": [".jpg", ".jpeg", ".png", ".gif"],
-      },
-      maxFiles = 1,
-      maxSize = 8 * 1024 * 1024,
-      multiple = true,
-    } = dropzoneOptions;
-    const reSelectAll = maxFiles === 1 ? true : reSelect;
-    const [isFileTooBig, setIsFileTooBig] = useState(false);
-    const addImageToTheSet = useCallback((file: File) => {
-      if (file.size > maxSize) {
-        toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
+    maxFiles = 1,
+    maxSize = 8 * 1024 * 1024,
+    multiple = true,
+  } = dropzoneOptions;
+  const reSelectAll = maxFiles === 1 ? true : reSelect;
+  const [isFileTooBig, setIsFileTooBig] = useState(false);
+  const addImageToTheSet = useCallback((file: File) => {
+    if (file.size > maxSize) {
+      toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
+      return;
+    }
+    const fileWithPreview = {
+      file,
+      preview: URL.createObjectURL(file),
+    } as T;
+    onValueChange((prev) => {
+      if (!reSelectAll && prev && prev.length >= maxFiles) {
+        toast.warning(
+          `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
+        );
+        return prev;
+      }
+      return [...(prev || []), fileWithPreview];
+    });
+  }, []);
+
+  const removeImageFromPreview = useCallback(
+    (index: number) => {
+      if (!emblaMainApi || !emblaMainRef) return;
+      if (index === activeIndex) {
+        if (activeIndex === emblaMainApi.selectedScrollSnap()) {
+          emblaMainApi.scrollPrev();
+        } else {
+          emblaMainApi.scrollNext();
+        }
+      }
+      onValueChange((prev) => {
+        if (!prev) return null;
+        const newPreview = [...prev];
+        newPreview.splice(index, 1);
+        return newPreview;
+      });
+    },
+    [emblaMainApi, activeIndex]
+  );
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      if (!emblaMainApi) return;
+      if (event.key === "ArrowLeft") {
+        emblaMainApi.scrollPrev();
+      } else if (event.key === "ArrowRight") {
+        emblaMainApi.scrollNext();
+      } else if (event.key === "Delete" || event.key === "Backspace") {
+        removeImageFromPreview(activeIndex);
+      } else if (event.key === "Enter") {
+        dropzoneState.inputRef.current?.click();
+      }
+    },
+    [emblaMainApi, activeIndex]
+  );
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+      const files = acceptedFiles;
+
+      if (!!reSelectAll) {
+        onValueChange(null);
+      }
+
+      if (!files) {
+        toast.error("file error , probably too big");
         return;
       }
-      const fileWithPreview = {
-        file,
-        preview: URL.createObjectURL(file),
-      };
-      onValueChange((prev) => {
-        if (!reSelectAll && prev && prev.length >= maxFiles) {
-          toast.warning(
-            `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
-          );
-          return prev;
-        }
-        return [...(prev || []), fileWithPreview];
-      });
-    }, []);
 
-    const removeImageFromPreview = useCallback(
-      (index: number) => {
-        if (!emblaMainApi || !emblaMainRef) return;
-        if (index === activeIndex) {
-          if (activeIndex === emblaMainApi.selectedScrollSnap()) {
-            emblaMainApi.scrollPrev();
-          } else {
-            emblaMainApi.scrollNext();
+      files.forEach(addImageToTheSet);
+
+      if (rejectedFiles.length > 0) {
+        for (let i = 0; i < rejectedFiles.length; i++) {
+          if (rejectedFiles[i].errors[0]?.code === "file-too-large") {
+            toast.error(
+              `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
+            );
+            break;
+          }
+          if (rejectedFiles[i].errors[0]?.message) {
+            toast.error(rejectedFiles[i].errors[0].message);
+            break;
           }
         }
-        onValueChange((prev) => {
-          if (!prev) return null;
-          const newPreview = [...prev];
-          newPreview.splice(index, 1);
-          return newPreview;
-        });
-      },
-      [emblaMainApi, activeIndex]
-    );
+      }
+    },
+    [reSelectAll]
+  );
 
-    const handleKeyDown = useCallback(
-      (event: React.KeyboardEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        if (!emblaMainApi) return;
-        if (event.key === "ArrowLeft") {
-          emblaMainApi.scrollPrev();
-        } else if (event.key === "ArrowRight") {
-          emblaMainApi.scrollNext();
-        } else if (event.key === "Delete" || event.key === "Backspace") {
-          removeImageFromPreview(activeIndex);
-        } else if (event.key === "Enter") {
-          dropzoneState.inputRef.current?.click();
-        }
-      },
-      [emblaMainApi, activeIndex]
-    );
+  const dropzoneState = useDropzone({
+    onDrop,
+    maxSize,
+    accept,
+    maxFiles,
+    multiple,
+    onDropRejected: () => setIsFileTooBig(true),
+    onDropAccepted: () => setIsFileTooBig(false),
+  });
 
-    const onDrop = useCallback(
-      (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-        const files = acceptedFiles;
-
-        if (!!reSelectAll) {
-          onValueChange(null);
-        }
-
-        if (!files) {
-          toast.error("file error , probably too big");
-          return;
-        }
-
-        files.forEach(addImageToTheSet);
-
-        if (rejectedFiles.length > 0) {
-          for (let i = 0; i < rejectedFiles.length; i++) {
-            if (rejectedFiles[i].errors[0]?.code === "file-too-large") {
-              toast.error(
-                `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
-              );
-              break;
-            }
-            if (rejectedFiles[i].errors[0]?.message) {
-              toast.error(rejectedFiles[i].errors[0].message);
-              break;
-            }
-          }
-        }
-      },
-      [reSelectAll]
-    );
-
-    const dropzoneState = useDropzone({
-      onDrop,
-      maxSize,
-      accept,
-      maxFiles,
-      multiple,
-      onDropRejected: () => setIsFileTooBig(true),
-      onDropAccepted: () => setIsFileTooBig(false),
-    });
-
-    return (
-      <CarouselUploadContext.Provider
-        value={{
-          addImageToTheSet,
-          removeImageFromPreview,
-          isFileTooBig,
-          dropzoneState,
-        }}
+  return (
+    <CarouselUploadContext.Provider
+      value={{
+        addImageToTheSet,
+        removeImageFromPreview,
+        isFileTooBig,
+        dropzoneState,
+      }}
+    >
+      <div
+        tabIndex={0}
+        onKeyDownCapture={handleKeyDown}
+        className={cn(
+          "grid gap-2 w-full relative focus:outline-none",
+          className
+        )}
       >
-        <div
-          tabIndex={0}
-          onKeyDownCapture={handleKeyDown}
-          ref={ref}
-          {...props}
-          className={cn(
-            "grid gap-2 w-full relative focus:outline-none",
-            className
-          )}
-        >
-          {children}
-        </div>
-      </CarouselUploadContext.Provider>
-    );
-  }
-);
+        {children}
+      </div>
+    </CarouselUploadContext.Provider>
+  );
+}
 
 FileUploadCarouselProvider.displayName = "FileUploadCarouselProvider";
 
