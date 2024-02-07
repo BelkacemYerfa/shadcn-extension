@@ -83,9 +83,18 @@ export const TreeView = ({
         currentPath: string[] = []
       ) => {
         const newPath = [...currentPath, currentElement.id];
-
-        if (currentElement.isSelectable && currentElement.id === selectId) {
-          setExpendedItems((prev) => [...(prev ?? []), ...newPath]);
+        console.log(newPath, currentElement.isSelectable, selectId);
+        if (currentElement.id === selectId) {
+          if (currentElement.isSelectable) {
+            setExpendedItems(newPath);
+          } else {
+            if (newPath.includes(currentElement.id)) {
+              newPath.pop();
+              setExpendedItems(newPath);
+              return;
+            }
+            setExpendedItems(newPath);
+          }
         }
 
         if (
@@ -190,6 +199,7 @@ export const TreeItem = forwardRef<
     },
     ref
   ) => {
+    console.log("expendedItems", expendedItems, "selectedId", selectedId);
     return (
       <ul ref={ref} className="w-full" {...props}>
         {elements instanceof Array ? (
@@ -208,12 +218,10 @@ export const TreeItem = forwardRef<
                     className="w-full"
                   >
                     <AccordionPrimitive.Trigger
-                      className={`flex items-center gap-1 w-full text-sm  ${
-                        expendedItems?.includes(element.id)
-                          ? "cursor-pointer"
-                          : "cursor-default"
-                      } ${
-                        !element.isSelectable && "opacity-50 cursor-not-allowed"
+                      className={`flex items-center gap-1 w-full text-sm ${
+                        !element.isSelectable
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
                       } `}
                       disabled={!element.isSelectable}
                       onClick={() => handleSelect(element.id)}

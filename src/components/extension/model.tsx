@@ -354,17 +354,17 @@ export const TreeViewTest = () => {
                       children: [
                         {
                           id: "7",
-                          isSelectable: false,
+                          isSelectable: true,
                           name: "Element 7",
                           children: [
                             {
                               id: "21",
-                              isSelectable: true,
+                              isSelectable: false,
                               name: "Element 21",
                               children: [
                                 {
                                   id: "22",
-                                  isSelectable: true,
+                                  isSelectable: false,
                                   name: "Element 22",
                                   children: [
                                     {
