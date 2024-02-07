@@ -1,0 +1,18 @@
+import { Tabs } from "nextra/components";
+
+# Tree View
+
+A tree view that assembles all the functionalities
+
+```js
+import { TreeView } from "@/components/extension/tree-view";
+
+export const Custom FilesTree View = ({elements} : {elements : any[]})=>{
+ return <TreeView elements={elements} initialSelectedId="21" />
+}
+```
+
+<Tabs items={["js", "ts"]}>
+  <Tabs.Tab>This is js code</Tabs.Tab>
+  <Tabs.Tab>This is ts code</Tabs.Tab>
+</Tabs>
