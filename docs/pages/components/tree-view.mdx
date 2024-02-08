@@ -56,19 +56,9 @@ export const CustomFilesTreeView = ({
 
 ## API Reference
 
-### Elements array
-
-```ts copy
-export type TreeViewElement = {
-  id: string;
-  name: string;
-  isSelectable?: boolean;
-  icon?: React.ReactNode;
-  children?: TreeViewElement[];
-};
-```
-
 ### Props
+
+The TreeView component accepts the following props:
 
 | Prop                 |  Type   | Default value |
 | :------------------- | :-----: | ------------: |
@@ -77,8 +67,31 @@ export type TreeViewElement = {
 | elements             |  Array  |            -- |
 | initialExpendedItems |  Array  |            -- |
 
+#### initialSelectedId
+
+The id of the element that should be selected by default (optional)
+
+#### expendAll
+
+Boolean that indicates if all the elements should be expended by default (optional)
+
 <Callout type="warning" emoji="⚠️">
   The `initialExpendedItems` with `expendAll` will not work together, if you
   want to expend all the items you should use `expendAll` prop only , if you
   want to expend some items you should use `initialExpendedItems` prop only
 </Callout>
+
+#### elements
+
+Description of the element object inside this Array (required) that is passed to the TreeView component
+
+| Field        |      Type       | Default value |
+| :----------- | :-------------: | ------------: |
+| id           |     string      |            -- |
+| label        |     string      |            -- |
+| children     | TreeViewElement |            -- |
+| isSelectable |     boolean     |            -- |
+
+#### initialExpendedItems
+
+Array of the ids of the elements that should be expended by default (optional)

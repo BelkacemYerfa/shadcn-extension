@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const themeConfig = {
   logo: <span>This is My logo</span>,
   project: {
@@ -11,10 +13,9 @@ const themeConfig = {
     };
   },
   footer: {
-    text: "CopyRight 2024 - Shadcn Extension Components - All Rights Reserved",
+    component: <></>,
   },
   chat: {
-    icon: <span>💬</span>,
     link: "https://twitter.com/bylka0207",
   },
 };

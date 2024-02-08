@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    domains: ["upload.wikimedia.org"],
+  },
+};
 
 const withNextra = require("nextra")({
   theme: "nextra-theme-docs",
