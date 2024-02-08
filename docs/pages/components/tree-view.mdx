@@ -1,18 +1,84 @@
-import { Tabs } from "nextra/components";
+import { Callout, Steps } from "nextra/components";
 
 # Tree View
 
 A tree view that assembles all the functionalities
 
-```js
-import { TreeView } from "@/components/extension/tree-view";
+```jsx copy
+import { TreeView, TreeViewElement } from "@/components/extension/tree-view";
 
-export const Custom FilesTree View = ({elements} : {elements : any[]})=>{
- return <TreeView elements={elements} initialSelectedId="21" />
-}
+export const CustomFilesTreeView = ({
+  elements,
+}: {
+  elements: TreeViewElement[],
+}) => {
+  return <TreeView elements={elements} initialSelectedId="21" />;
+};
 ```
 
-<Tabs items={["js", "ts"]}>
-  <Tabs.Tab>This is js code</Tabs.Tab>
-  <Tabs.Tab>This is ts code</Tabs.Tab>
-</Tabs>
+## Installation
+
+<Steps>
+  ### Install the package from radix
+  ```bash copy
+    npm install @radix-ui/react-accordion
+  ```
+  ### Copy past the code that you will find in this github file
+  ```link copy
+  https://github.com/radix-ui/react-accordion/blob/main/src/accordion.css
+  ```
+  ### Update your Tailwinds config file (tailwind.config.js)
+  ```ts
+  /** @type {import('tailwindcss').Config} */
+  module.exports = {
+    theme: {
+      extend: {
+        keyframes: {
+          "accordion-down": {
+            from: { height: "0" },
+            to: { height: "var(--radix-accordion-content-height)" },
+          },
+          "accordion-up": {
+            from: { height: "var(--radix-accordion-content-height)" },
+            to: { height: "0" },
+          },
+        },
+        animation: {
+          "accordion-down": "accordion-down 0.2s ease-out",
+          "accordion-up": "accordion-up 0.2s ease-out",
+        },
+      },
+    },
+  };
+  ```
+  ### Import the component and enjoy with it
+</Steps>
+
+## API Reference
+
+### Elements array
+
+```ts copy
+export type TreeViewElement = {
+  id: string;
+  name: string;
+  isSelectable?: boolean;
+  icon?: React.ReactNode;
+  children?: TreeViewElement[];
+};
+```
+
+### Props
+
+| Prop                 |  Type   | Default value |
+| :------------------- | :-----: | ------------: |
+| initialSelectedId    | string  |            -- |
+| expendAll            | boolean |         false |
+| elements             |  Array  |            -- |
+| initialExpendedItems |  Array  |            -- |
+
+<Callout type="warning" emoji="⚠️">
+  The `initialExpendedItems` with `expendAll` will not work together, if you
+  want to expend all the items you should use `expendAll` prop only , if you
+  want to expend some items you should use `initialExpendedItems` prop only
+</Callout>

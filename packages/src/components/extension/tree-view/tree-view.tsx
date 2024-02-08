@@ -1,3 +1,4 @@
+"use client";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
@@ -8,7 +9,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { Button } from "@/components/ui/button";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 
-type TreeViewElement = {
+export type TreeViewElement = {
   id: string;
   name: string;
   isSelectable?: boolean;

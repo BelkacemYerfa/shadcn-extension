@@ -40,19 +40,15 @@ const CarouselUploadContext = createContext<CarouselWithUploadContext | null>(
   null
 );
 
-interface ImageUploadProps<T> {
+interface ImageUploadProps<T> extends React.HTMLAttributes<HTMLDivElement> {
   value: T[] | null;
   onValueChange: Dispatch<SetStateAction<T[] | null>>;
-  carouselOptions?: EmblaOptionsType;
   dropzoneOptions: DropzoneOptions;
   reSelect?: boolean;
-  children: React.ReactNode;
-  className?: string;
 }
 
 export function FileUploadCarouselProvider<T>({
   className,
-  carouselOptions,
   onValueChange,
   dropzoneOptions,
   reSelect,
