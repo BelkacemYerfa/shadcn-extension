@@ -343,7 +343,6 @@ export const TreeViewTest = () => {
               id: "3",
               isSelectable: true,
               name: "Element 3",
-              children: [],
             },
             {
               id: "4",
@@ -369,21 +368,6 @@ export const TreeViewTest = () => {
                               id: "21",
                               isSelectable: false,
                               name: "Element 21",
-                              children: [
-                                {
-                                  id: "22",
-                                  isSelectable: false,
-                                  name: "Element 22",
-                                  children: [
-                                    {
-                                      id: "23",
-                                      isSelectable: true,
-                                      name: "Element 23",
-                                      children: [],
-                                    },
-                                  ],
-                                },
-                              ],
                             },
                           ],
                         },
@@ -393,7 +377,6 @@ export const TreeViewTest = () => {
                       id: "8",
                       isSelectable: true,
                       name: "Element 8",
-                      children: [],
                     },
                   ],
                 },

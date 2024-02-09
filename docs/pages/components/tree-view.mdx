@@ -1,4 +1,4 @@
-import { Callout, Steps } from "nextra/components";
+import { Callout, Steps, Tabs } from "nextra/components";
 
 # Tree View
 
@@ -88,10 +88,54 @@ Description of the element object inside this Array (required) that is passed to
 | Field        |      Type       | Default value |
 | :----------- | :-------------: | ------------: |
 | id           |     string      |            -- |
-| label        |     string      |            -- |
+| name         |     string      |            -- |
 | children     | TreeViewElement |            -- |
 | isSelectable |     boolean     |            -- |
 
 #### initialExpendedItems
 
 Array of the ids of the elements that should be expended by default (optional)
+
+## Accessibility
+
+Currently, the TreeView component is not fully accessible, but we are working on it.
+
+## Usage Examples
+
+### Basic Usage
+
+<Tabs items={["Code" , "Preview"]} >
+  <Tabs.Tab>
+    ```jsx
+    import { TreeView, TreeViewElement } from "@/components/extension/tree-view";
+
+    const elements: TreeViewElement[] = [
+      {
+        id: "1",
+        name: "Element 1",
+        isSelectable: true,
+        children: [
+          {
+            id: "11",
+            name: "Element 11",
+            isSelectable: true,
+          },
+          {
+            id: "12",
+            name: "Element 12",
+            isSelectable: true,
+          },
+        ],
+      },
+    ];
+
+    export const CustomFilesTreeView = () => {
+      return <TreeView elements={elements} initialSelectedId="1" />;
+    };
+    ```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+    none
+  </Tabs.Tab>
+</Tabs>

@@ -1,4 +1,5 @@
 "use client";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
@@ -13,7 +14,6 @@ export type TreeViewElement = {
   id: string;
   name: string;
   isSelectable?: boolean;
-  icon?: React.ReactNode;
   children?: TreeViewElement[];
 };
 
