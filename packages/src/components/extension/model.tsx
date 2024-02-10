@@ -28,7 +28,6 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
   CustomUploadInput,
   FileUploadCarouselProvider,
-  SliderMainItemWithRemove,
   SliderMiniItemWithRemove,
 } from "./file-upload/file-upload";
 import Image from "next/image";
@@ -90,7 +89,7 @@ const MultiCarousel = () => {
         value={preview}
         onValueChange={setPreview}
         dropzoneOptions={{
-          maxFiles: 5,
+          maxFiles: 2,
           maxSize: 1024 * 1024 * 4,
           multiple: true,
         }}
@@ -105,7 +104,7 @@ const MultiCarousel = () => {
             )}
             <CarouselMainContainer className="space-y-1">
               {preview.map((file, i) => (
-                <SliderMainItemWithRemove key={i} index={i}>
+                <SliderMainItem key={i}>
                   <AspectRatio ratio={16 / 9}>
                     <Image
                       src={file.preview}
@@ -115,7 +114,7 @@ const MultiCarousel = () => {
                       className="rounded-md"
                     />
                   </AspectRatio>
-                </SliderMainItemWithRemove>
+                </SliderMainItem>
               ))}
             </CarouselMainContainer>
             <CarouselThumbsContainer>
@@ -133,22 +132,19 @@ const MultiCarousel = () => {
                 </SliderMiniItemWithRemove>
               ))}
             </CarouselThumbsContainer>
-            <CustomUploadInput
-              className="border-none"
-              isLOF={preview.length >= 5}
-            >
+            <CustomUploadInput className="border-none">
               <Button
                 type="button"
                 variant="outline"
                 className={cn(`w-full`)}
-                disabled={preview.length >= 5}
+                //disabled={preview.length >= 2}
               >
                 Choose another image
               </Button>
             </CustomUploadInput>
           </>
         ) : (
-          <CustomUploadInput isLOF={false}>
+          <CustomUploadInput>
             <div className="flex items-center justify-center flex-col pt-5 pb-6">
               <svg
                 className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"

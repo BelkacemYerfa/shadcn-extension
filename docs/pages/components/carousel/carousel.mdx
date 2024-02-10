@@ -1,0 +1,18 @@
+# Carousel
+
+This is a carousel component that extends the functionality of the `Carousel` component from the `shadcn/ui` library.
+
+```jsx copy
+import { Carousel } from "@/component/extension/carousel";
+
+export const CarouselExample = () => {
+  return (
+    <CarouselProvider>
+      <CarouselMainItem>Slide 1</CarouselMainItem>
+      <CarouselMainItem>Slide 2</CarouselMainItem>
+      <CarouselMainItem>Slide 3</CarouselMainItem>
+      <CarouselMainItem>...</CarouselMainItem>
+    </CarouselProvider>
+  );
+};
+```

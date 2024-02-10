@@ -6,12 +6,12 @@ import {
   forwardRef,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
-import { SliderMainItem, SliderMiniItem, useCarousel } from "./carousel";
+import { SliderMiniItem, useCarousel } from "./carousel";
 import { X as RemoveIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { EmblaOptionsType } from "embla-carousel";
 import {
   DropzoneOptions,
   DropzoneState,
@@ -19,13 +19,13 @@ import {
   useDropzone,
 } from "react-dropzone";
 import { toast } from "sonner";
-import { FilePreview } from "../model";
 
 type CarouselWithUploadContext = {
   addImageToTheSet: (file: File) => void;
   removeImageFromPreview: (index: number) => void;
   isFileTooBig: boolean;
   dropzoneState: DropzoneState;
+  isLOF?: boolean;
 };
 
 export const useFileUpload = () => {
@@ -49,12 +49,14 @@ interface ImageUploadProps<T> extends React.HTMLAttributes<HTMLDivElement> {
 
 export function FileUploadCarouselProvider<T>({
   className,
+  value,
   onValueChange,
   dropzoneOptions,
   reSelect,
   children,
 }: ImageUploadProps<T>) {
   const { emblaMainApi, mainRef: emblaMainRef, activeIndex } = useCarousel();
+
   const {
     accept = {
       "image/*": [".jpg", ".jpeg", ".png", ".gif"],
@@ -65,25 +67,31 @@ export function FileUploadCarouselProvider<T>({
   } = dropzoneOptions;
   const reSelectAll = maxFiles === 1 ? true : reSelect;
   const [isFileTooBig, setIsFileTooBig] = useState(false);
-  const addImageToTheSet = useCallback((file: File) => {
-    if (file.size > maxSize) {
-      toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
-      return;
-    }
-    const fileWithPreview = {
-      file,
-      preview: URL.createObjectURL(file),
-    } as T;
-    onValueChange((prev) => {
-      if (!reSelectAll && prev && prev.length >= maxFiles) {
-        toast.warning(
-          `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
-        );
-        return prev;
+  const [isLOF, setIsLOF] = useState(false);
+
+  const addImageToTheSet = useCallback(
+    (file: File) => {
+      if (file.size > maxSize) {
+        toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
+        return;
       }
-      return [...(prev || []), fileWithPreview];
-    });
-  }, []);
+      const fileWithPreview = {
+        file,
+        preview: URL.createObjectURL(file),
+      } as T;
+      onValueChange((prev) => {
+        if (!reSelectAll && prev && prev.length >= maxFiles) {
+          toast.warning(
+            `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
+          );
+
+          return prev;
+        }
+        return [...(prev || []), fileWithPreview];
+      });
+    },
+    [reSelectAll]
+  );
 
   const removeImageFromPreview = useCallback(
     (index: number) => {
@@ -119,7 +127,7 @@ export function FileUploadCarouselProvider<T>({
         dropzoneState.inputRef.current?.click();
       }
     },
-    [emblaMainApi, activeIndex]
+    [emblaMainApi, activeIndex, removeImageFromPreview]
   );
 
   const onDrop = useCallback(
@@ -155,6 +163,15 @@ export function FileUploadCarouselProvider<T>({
     [reSelectAll]
   );
 
+  useEffect(() => {
+    if (!value) return;
+    if (value.length === maxFiles) {
+      setIsLOF(true);
+      return;
+    }
+    setIsLOF(false);
+  }, [value, maxFiles]);
+
   const dropzoneState = useDropzone({
     onDrop,
     maxSize,
@@ -172,6 +189,7 @@ export function FileUploadCarouselProvider<T>({
         removeImageFromPreview,
         isFileTooBig,
         dropzoneState,
+        isLOF,
       }}
     >
       <div
@@ -190,35 +208,6 @@ export function FileUploadCarouselProvider<T>({
 
 FileUploadCarouselProvider.displayName = "FileUploadCarouselProvider";
 
-export const SliderMainItemWithRemove = forwardRef<
-  HTMLButtonElement,
-  {
-    index: number;
-  } & React.HTMLAttributes<HTMLButtonElement>
->(({ className, index, children, ...props }, ref) => {
-  const { removeImageFromPreview } = useFileUpload();
-  return (
-    <SliderMainItem className="relative">
-      <button
-        ref={ref}
-        {...props}
-        type="button"
-        className={cn(
-          "absolute -right-1 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none",
-          className
-        )}
-        onClick={() => removeImageFromPreview(index)}
-      >
-        {" "}
-        <RemoveIcon className="h-4 w-4 stroke-red-600" />
-      </button>
-      {children}
-    </SliderMainItem>
-  );
-});
-
-SliderMainItemWithRemove.displayName = "SliderMainItemWithRemove";
-
 export const SliderMiniItemWithRemove = forwardRef<
   HTMLButtonElement,
   {
@@ -233,7 +222,7 @@ export const SliderMiniItemWithRemove = forwardRef<
         {...props}
         type="button"
         className={cn(
-          "absolute -right-2 -top-1 z-[100] opacity-70 h-6 w-6 focus:outline-none"
+          "absolute -right-2 -top-1 z-10 opacity-70 h-6 w-6 focus:outline-none"
         )}
         onClick={() => removeImageFromPreview(index)}
       >
@@ -249,12 +238,10 @@ SliderMiniItemWithRemove.displayName = "SliderMiniItemWithRemove";
 
 export const CustomUploadInput = forwardRef<
   HTMLDivElement,
-  {
-    isLOF?: boolean;
-  } & React.HTMLAttributes<HTMLDivElement>
->(({ className, isLOF, children, ...props }, ref) => {
-  const { dropzoneState, isFileTooBig } = useFileUpload();
-  const spreader = isLOF ? {} : dropzoneState.getRootProps();
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
+  const { dropzoneState, isFileTooBig, isLOF } = useFileUpload();
+  const rootProps = isLOF ? {} : dropzoneState.getRootProps();
   return (
     <div
       ref={ref}
@@ -271,11 +258,11 @@ export const CustomUploadInput = forwardRef<
           ? "border-green-500"
           : dropzoneState.isDragReject || isFileTooBig
           ? "border-red-500"
-          : "border-gray-300 "
+          : "border-gray-300"
       }`,
           className
         )}
-        {...spreader}
+        {...rootProps}
       >
         {children}
       </div>
