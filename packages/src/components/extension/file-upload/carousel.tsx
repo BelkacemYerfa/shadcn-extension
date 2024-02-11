@@ -50,7 +50,9 @@ export const CarouselProvider = forwardRef<
   HTMLDivElement,
   CarouselContextProps & React.HTMLAttributes<HTMLDivElement>
 >(({ carouselOptions, activeKeyboard, children, className, ...props }, ref) => {
-  const [emblaMainRef, emblaMainApi] = useEmblaCarousel(carouselOptions);
+  const [emblaMainRef, emblaMainApi] = useEmblaCarousel({
+    ...carouselOptions,
+  });
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
     dragFree: true,
@@ -123,6 +125,7 @@ export const CarouselProvider = forwardRef<
         activeIndex,
         onThumbClick,
         handleKeyDown,
+        carouselOptions,
       }}
     >
       <div
@@ -147,10 +150,17 @@ export const CarouselMainContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
-  const { mainRef } = useCarousel();
+  const { mainRef, carouselOptions } = useCarousel();
   return (
-    <div ref={mainRef} {...props} className={cn("overflow-hidden", className)}>
-      <div ref={ref} className="flex items-center w-full">
+    <div ref={mainRef} className="overflow-hidden" {...props}>
+      <div
+        ref={ref}
+        className={cn(
+          "flex",
+          `${carouselOptions?.axis === "y" ? "flex-col" : ""}`,
+          className
+        )}
+      >
         {children}
       </div>
     </div>
@@ -165,12 +175,8 @@ export const CarouselThumbsContainer = forwardRef<
 >(({ className, children, ...props }, ref) => {
   const { thumbsRef } = useCarousel();
   return (
-    <div
-      ref={thumbsRef}
-      {...props}
-      className={cn("overflow-hidden", className)}
-    >
-      <div ref={ref} className={cn("flex items-center w-full")}>
+    <div ref={thumbsRef} className="overflow-hidden" {...props}>
+      <div ref={ref} className={cn("flex ", className)}>
         {children}
       </div>
     </div>
@@ -183,11 +189,17 @@ export const SliderMainItem = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
+  const { carouselOptions } = useCarousel();
   return (
     <div
       {...props}
       ref={ref}
-      className={cn("px-1 flex min-w-0 shrink-0 grow-0 basis-full", className)}
+      className={cn(
+        `flex min-w-0 shrink-0 grow-0 basis-full ${
+          carouselOptions?.axis === "y" ? "py-1" : "px-1"
+        }`,
+        className
+      )}
     >
       {children}
     </div>
@@ -202,17 +214,21 @@ export const SliderMiniItem = forwardRef<
     index: number;
   } & React.HTMLAttributes<HTMLDivElement>
 >(({ className, index, children, ...props }, ref) => {
-  const { activeIndex, onThumbClick } = useCarousel();
+  const { activeIndex, onThumbClick, carouselOptions } = useCarousel();
   const isSlideActive = activeIndex === index;
   return (
     <div
       {...props}
       ref={ref}
       onClick={() => onThumbClick(index)}
-      className={cn("basis-1/3 px-1 min-w-0 shrink-0 grow-0", className)}
+      className={cn(
+        "flex min-w-0 shrink-0 grow-0 basis-1/3 ",
+        `${carouselOptions?.axis === "y" ? "py-1" : "px-1"}`,
+        className
+      )}
     >
       <div
-        className={`relative aspect-square h-20 w-full   opacity-40 rounded-md transition-opacity ${
+        className={`relative aspect-square h-20 w-full opacity-40 rounded-md transition-opacity ${
           isSlideActive ? "!opacity-100" : ""
         }`}
       >

@@ -20,7 +20,7 @@ export default function Home() {
       {/* <Model /> */}
       <div className="flex items-center justify-center gap-2 w-full">
         <ImageUpload />
-        {/* <CarouselExample /> */}
+        {/*  <CarouselExample /> */}
       </div>
       {/*  <Commander /> */}
       {/* <CommanderUsingUseState /> */}

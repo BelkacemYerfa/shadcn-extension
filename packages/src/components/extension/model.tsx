@@ -89,7 +89,7 @@ const MultiCarousel = () => {
         value={preview}
         onValueChange={setPreview}
         dropzoneOptions={{
-          maxFiles: 2,
+          maxFiles: 5,
           maxSize: 1024 * 1024 * 4,
           multiple: true,
         }}
@@ -178,21 +178,30 @@ const MultiCarousel = () => {
 
 export const CarouselExample = () => {
   return (
-    <div className="max-w-md w-full mt-3">
-      <CarouselProvider activeKeyboard>
-        <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
-        <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
-        <CarouselMainContainer className="overflow-hidden">
+    <div className=" max-w-lg w-full mt-3 ">
+      <CarouselProvider
+        activeKeyboard
+        carouselOptions={{
+          axis: "y",
+        }}
+        className="flex gap-2"
+      >
+        <div className="basis-3/4 relative ">
+          {" "}
+          <CarouselPrevious className="left-1/2 z-[10] -top-2 h-6 w-6" />
+          <CarouselNext className="left-1/2 z-[10] -bottom-2 h-6 w-6" />
+          <CarouselMainContainer className="h-60">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <SliderMainItem key={i}>
+                <div className="w-full h-full bg-gray-300 rounded-md"></div>
+              </SliderMainItem>
+            ))}
+          </CarouselMainContainer>
+        </div>
+        <CarouselThumbsContainer className="flex-col h-60">
           {Array.from({ length: 10 }).map((_, i) => (
-            <SliderMainItem key={i}>
-              <div className="w-full h-40 bg-gray-300 rounded-md"></div>
-            </SliderMainItem>
-          ))}
-        </CarouselMainContainer>
-        <CarouselThumbsContainer className="overflow-hidden">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <SliderMiniItem key={i} index={i}>
-              <div className="w-full h-20 bg-gray-300 rounded-md"></div>
+            <SliderMiniItem index={i} key={i}>
+              <div className="w-full h-full bg-gray-300 rounded-md"></div>
             </SliderMiniItem>
           ))}
         </CarouselThumbsContainer>
