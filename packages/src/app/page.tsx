@@ -17,11 +17,11 @@ import { ModeToggle } from "@/components/toggle-theme";
 export default function Home() {
   return (
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
-      {/* <Model /> */}
-      <div className="flex items-center justify-center gap-2 w-full">
+      <Model />
+      {/* <div className="flex items-center justify-center gap-2 w-full">
         <ImageUpload />
-        {/*  <CarouselExample /> */}
-      </div>
+         <CarouselExample />
+      </div> */}
       {/*  <Commander /> */}
       {/* <CommanderUsingUseState /> */}
       {/* <OtpTest /> */}
