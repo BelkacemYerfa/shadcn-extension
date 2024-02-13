@@ -10,7 +10,7 @@ import {
   CarouselProvider,
   SliderMainItem,
   SliderMiniItem,
-} from "./file-upload/carousel";
+} from "./carousel/carousel";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "./fancy-multi-select/multi-select";
 import { OtpStyledInput } from "./otp-input/otp-input";
@@ -26,10 +26,9 @@ import { toast } from "sonner";
 import { TreeView } from "./tree-view/tree-view";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
-  CustomUploadInput,
   FileUploadCarouselProvider,
   SliderMiniItemWithRemove,
-} from "./file-upload/file-upload";
+} from "./carousel/carousel-image-upload";
 import Image from "next/image";
 import {
   BreadCrumb,
@@ -38,6 +37,13 @@ import {
   BreadCrumbSeparator,
 } from "./breadcrumb/bread-crumb";
 import Link from "next/link";
+import {
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+  CustomUploadInput,
+} from "./file-uploader/file-uploader";
+import { Paperclip } from "lucide-react";
 
 export type FilePreview = {
   file: File;
@@ -179,13 +185,7 @@ const MultiCarousel = () => {
 export const CarouselExample = () => {
   return (
     <div className=" max-w-lg w-full mt-3 ">
-      <CarouselProvider
-        activeKeyboard
-        carouselOptions={{
-          axis: "y",
-        }}
-        className="flex gap-2"
-      >
+      <CarouselProvider activeKeyboard className="flex gap-2">
         <div className="basis-3/4 relative ">
           {" "}
           <CarouselPrevious className="left-1/2 z-[10] -top-2 h-6 w-6" />
@@ -462,5 +462,42 @@ export const BreadCrumbTest = () => {
       <BreadCrumbSeparator />
       <BreadCrumbItem className="px-2">Account</BreadCrumbItem>
     </BreadCrumb>
+  );
+};
+
+export const FileUploaderTest = () => {
+  const [files, setFiles] = useState<File[] | null>(null);
+  return (
+    <FileUploader
+      value={files}
+      onValueChange={setFiles}
+      dropzoneOptions={{
+        maxFiles: 5,
+        maxSize: 1024 * 1024 * 4,
+        multiple: true,
+      }}
+      className="w-full max-w-md space-y-1"
+    >
+      <CustomUploadInput className="outline-none border-none">
+        <Button
+          type="button"
+          variant="outline"
+          className={cn(`w-full `)}
+          //disabled={preview.length >= 2}
+        >
+          Choose another image
+        </Button>
+      </CustomUploadInput>
+      <FileUploaderContent>
+        {files &&
+          files.length > 0 &&
+          files.map((file, i) => (
+            <FileUploaderItem key={i} index={i}>
+              <Paperclip className="h-4 w-4" />
+              {file.name}
+            </FileUploaderItem>
+          ))}
+      </FileUploaderContent>
+    </FileUploader>
   );
 };

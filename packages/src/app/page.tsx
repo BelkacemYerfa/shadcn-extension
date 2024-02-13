@@ -9,6 +9,7 @@ import {
   CommanderUsingUseState,
   CarouselExample,
   BreadCrumbTest,
+  FileUploaderTest,
 } from "@/components/extension/model";
 
 import { ModeToggle } from "@/components/toggle-theme";
@@ -17,7 +18,7 @@ import { ModeToggle } from "@/components/toggle-theme";
 export default function Home() {
   return (
     <main className="relative flex justify-center items-center flex-col h-[100dvh]">
-      <Model />
+      {/* <Model /> */}
       {/* <div className="flex items-center justify-center gap-2 w-full">
         <ImageUpload />
          <CarouselExample />
@@ -27,6 +28,7 @@ export default function Home() {
       {/* <OtpTest /> */}
       {/*  <TreeViewTest />
       <BreadCrumbTest /> */}
+      <FileUploaderTest />
       <div className="absolute right-2 bottom-2">
         <ModeToggle />
       </div>
