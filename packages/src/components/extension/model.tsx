@@ -185,11 +185,14 @@ const MultiCarousel = () => {
 export const CarouselExample = () => {
   return (
     <div className=" max-w-lg w-full mt-3 ">
-      <CarouselProvider activeKeyboard className="flex gap-2">
+      <CarouselProvider
+        carouselOptions={{ axis: "y" }}
+        activeKeyboard
+        className="flex gap-2"
+      >
         <div className="basis-3/4 relative ">
-          {" "}
-          <CarouselPrevious className="left-1/2 z-[10] -top-2 h-6 w-6" />
-          <CarouselNext className="left-1/2 z-[10] -bottom-2 h-6 w-6" />
+          <CarouselPrevious className="left-1/2 z-[10] -top-2 " />
+          <CarouselNext className="left-1/2 z-[10] -bottom-2 " />
           <CarouselMainContainer className="h-60">
             {Array.from({ length: 10 }).map((_, i) => (
               <SliderMainItem key={i}>
@@ -472,7 +475,7 @@ export const FileUploaderTest = () => {
       value={files}
       onValueChange={setFiles}
       dropzoneOptions={{
-        maxFiles: 5,
+        maxFiles: 30,
         maxSize: 1024 * 1024 * 4,
         multiple: true,
       }}
@@ -507,7 +510,7 @@ export const FileUploaderTest = () => {
                 />
               </AspectRatio> */}
               <Paperclip className="w-4 h-4" />
-              <span className="text-xs">{file.name}</span>
+              <span className="text-sm">{file.name}</span>
             </FileUploaderItem>
           ))}
       </FileUploaderContent>

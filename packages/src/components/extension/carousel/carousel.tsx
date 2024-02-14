@@ -54,6 +54,7 @@ export const CarouselProvider = forwardRef<
     ...carouselOptions,
   });
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
+    ...carouselOptions,
     containScroll: "keepSnaps",
     dragFree: true,
   });
@@ -244,14 +245,20 @@ export const CarouselPrevious = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { canScrollPrev, scrollPrev } = useCarousel();
+  const { canScrollPrev, scrollPrev, carouselOptions } = useCarousel();
 
   return (
     <Button
       ref={ref}
       variant={variant}
       size={size}
-      className={cn("absolute h-8 w-8 rounded-full hidden sm:flex ", className)}
+      className={cn(
+        "absolute  h-6 w-6 rounded-full",
+        carouselOptions?.axis === "x"
+          ? "-left-12 top-1/2 -translate-y-1/2"
+          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+        className
+      )}
       onClick={scrollPrev}
       disabled={!canScrollPrev}
       {...props}
@@ -267,13 +274,19 @@ export const CarouselNext = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { canScrollNext, scrollNext } = useCarousel();
+  const { canScrollNext, scrollNext, carouselOptions } = useCarousel();
   return (
     <Button
       ref={ref}
       variant={variant}
       size={size}
-      className={cn("absolute h-8 w-8 rounded-full hidden sm:flex ", className)}
+      className={cn(
+        "absolute h-6 w-6 rounded-full",
+        carouselOptions?.axis === "x"
+          ? "-right-12 top-1/2 -translate-y-1/2"
+          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+        className
+      )}
       onClick={scrollNext}
       disabled={!canScrollNext}
       {...props}
