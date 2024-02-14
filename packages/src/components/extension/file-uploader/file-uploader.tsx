@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import useResizeObserver from "use-resize-observer";
 import { Trash2 as RemoveIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type FileUploaderContextType = {
   dropzoneState: DropzoneState;
@@ -173,7 +174,12 @@ export const FileUploader = forwardRef<
 
     return (
       <FileUploaderContext.Provider
-        value={{ dropzoneState, isLOF, isFileTooBig, removeFileFromSet }}
+        value={{
+          dropzoneState,
+          isLOF,
+          isFileTooBig,
+          removeFileFromSet,
+        }}
       >
         <div
           ref={containerRef}
@@ -199,9 +205,32 @@ export const FileUploaderContent = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ children, className, ...props }, ref) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { height, width } = useResizeObserver({
+    ref: containerRef,
+  });
   return (
-    <div ref={ref} className={cn("flex flex-col gap-1", className)} {...props}>
-      {children}
+    <div
+      className={cn("relative w-full")}
+      ref={containerRef}
+      aria-description="content file holder"
+    >
+      <ScrollArea
+        style={{
+          width,
+          height,
+        }}
+        className="px-1"
+      >
+        <div
+          {...props}
+          ref={ref}
+          className={cn("flex flex-col gap-1", className)}
+        >
+          {children}
+        </div>
+      </ScrollArea>
     </div>
   );
 });
@@ -218,15 +247,19 @@ export const FileUploaderItem = forwardRef<
       ref={ref}
       className={cn(
         buttonVariants({ variant: "ghost" }),
-        "h-6 p-1 justify-between cursor-pointer",
+        "h-6 p-1 justify-between cursor-pointer relative",
         className
       )}
       {...props}
     >
-      <p className="font-medium leading-none tracking-tight flex items-center gap-1.5">
+      <div className="font-medium leading-none tracking-tight flex items-center gap-1.5 h-full w-full">
         {children}
-      </p>
-      <button type="button" onClick={() => removeFileFromSet(index)}>
+      </div>
+      <button
+        type="button"
+        className="absolute top-1 right-1"
+        onClick={() => removeFileFromSet(index)}
+      >
         <span className="sr-only">remove item {index}</span>
         <RemoveIcon className="w-4 h-4 hover:stroke-destructive duration-200 ease-in-out" />
       </button>
@@ -236,7 +269,7 @@ export const FileUploaderItem = forwardRef<
 
 FileUploaderItem.displayName = "FileUploaderItem";
 
-export const CustomUploadInput = forwardRef<
+export const FileInput = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
@@ -252,14 +285,14 @@ export const CustomUploadInput = forwardRef<
     >
       <div
         className={cn(
-          `w-full border border-muted-foreground border-dashed rounded-lg duration-300 ease-in-out
-      ${
-        dropzoneState.isDragAccept
-          ? "border-green-500"
-          : dropzoneState.isDragReject || isFileTooBig
-          ? "border-red-500"
-          : "border-gray-300"
-      }`,
+          `w-full rounded-lg duration-300 ease-in-out
+         ${
+           dropzoneState.isDragAccept
+             ? "border-green-500"
+             : dropzoneState.isDragReject || isFileTooBig
+             ? "border-red-500"
+             : "border-gray-300"
+         }`,
           className
         )}
         {...rootProps}
@@ -276,4 +309,4 @@ export const CustomUploadInput = forwardRef<
   );
 });
 
-CustomUploadInput.displayName = "CustomUploadInput";
+FileInput.displayName = "FileInput";

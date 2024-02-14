@@ -41,7 +41,7 @@ import {
   FileUploader,
   FileUploaderContent,
   FileUploaderItem,
-  CustomUploadInput,
+  FileInput,
 } from "./file-uploader/file-uploader";
 import { Paperclip } from "lucide-react";
 
@@ -138,7 +138,7 @@ const MultiCarousel = () => {
                 </SliderMiniItemWithRemove>
               ))}
             </CarouselThumbsContainer>
-            <CustomUploadInput className="border-none">
+            <FileInput className="border-none">
               <Button
                 type="button"
                 variant="outline"
@@ -147,10 +147,10 @@ const MultiCarousel = () => {
               >
                 Choose another image
               </Button>
-            </CustomUploadInput>
+            </FileInput>
           </>
         ) : (
-          <CustomUploadInput>
+          <FileInput>
             <div className="flex items-center justify-center flex-col pt-5 pb-6">
               <svg
                 className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
@@ -175,7 +175,7 @@ const MultiCarousel = () => {
                 SVG, PNG, JPG or GIF
               </p>
             </div>
-          </CustomUploadInput>
+          </FileInput>
         )}
       </FileUploadCarouselProvider>
     </CarouselProvider>
@@ -478,7 +478,7 @@ export const FileUploaderTest = () => {
       }}
       className="w-full max-w-md space-y-1"
     >
-      <CustomUploadInput className="outline-none border-none">
+      <FileInput className="outline-none border-none">
         <Button
           type="button"
           variant="outline"
@@ -487,14 +487,27 @@ export const FileUploaderTest = () => {
         >
           Choose another image
         </Button>
-      </CustomUploadInput>
-      <FileUploaderContent>
+      </FileInput>
+      <FileUploaderContent className="h-48 ">
         {files &&
           files.length > 0 &&
           files.map((file, i) => (
-            <FileUploaderItem key={i} index={i}>
-              <Paperclip className="h-4 w-4" />
-              {file.name}
+            <FileUploaderItem
+              key={i}
+              index={i}
+              //className="h-48 w-48 rounded-md"
+            >
+              {/* <AspectRatio ratio={1 / 1} className="w-full h-full">
+                <Image
+                  src={URL.createObjectURL(file)}
+                  alt="preview"
+                  fill
+                  sizes="100%"
+                  className="object-cover rounded-md "
+                />
+              </AspectRatio> */}
+              <Paperclip className="w-4 h-4" />
+              <span className="text-xs">{file.name}</span>
             </FileUploaderItem>
           ))}
       </FileUploaderContent>
