@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { TreeView } from "./tree-view/tree-view";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
+  CustomUploadInput,
   FileUploadCarouselProvider,
   SliderMiniItemWithRemove,
 } from "./carousel/carousel-image-upload";
@@ -138,7 +139,7 @@ const MultiCarousel = () => {
                 </SliderMiniItemWithRemove>
               ))}
             </CarouselThumbsContainer>
-            <FileInput className="border-none">
+            <CustomUploadInput className="border-none">
               <Button
                 type="button"
                 variant="outline"
@@ -147,10 +148,10 @@ const MultiCarousel = () => {
               >
                 Choose another image
               </Button>
-            </FileInput>
+            </CustomUploadInput>
           </>
         ) : (
-          <FileInput>
+          <CustomUploadInput>
             <div className="flex items-center justify-center flex-col pt-5 pb-6">
               <svg
                 className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
@@ -175,7 +176,7 @@ const MultiCarousel = () => {
                 SVG, PNG, JPG or GIF
               </p>
             </div>
-          </FileInput>
+          </CustomUploadInput>
         )}
       </FileUploadCarouselProvider>
     </CarouselProvider>
@@ -216,7 +217,13 @@ export const CarouselExample = () => {
 export const CommanderUsingUseState = () => {
   const [command, setCommand] = useState<string[]>(["Hello"]);
   return (
-    <form className="grid gap-2 max-w-sm w-full">
+    <form
+      className="grid gap-2 max-w-sm w-full"
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
       <MultiSelect
         options={[
           "Hello",
@@ -258,8 +265,8 @@ export const Commander = () => {
           control={form.control}
           name="command"
           render={({ field }) => (
-            <FormControl>
-              <FormItem>
+            <FormControl className="w-full">
+              <FormItem className="w-full">
                 <MultiSelect
                   options={[
                     "Hello",
@@ -481,15 +488,31 @@ export const FileUploaderTest = () => {
       }}
       className="w-full max-w-md space-y-1"
     >
-      <FileInput className="outline-none border-none">
-        <Button
-          type="button"
-          variant="outline"
-          className={cn(`w-full `)}
-          //disabled={preview.length >= 2}
-        >
-          Choose another image
-        </Button>
+      <FileInput className="border border-dashed border-gray-500">
+        <div className="flex items-center justify-center flex-col pt-3 pb-4">
+          <svg
+            className="w-8 h-8 mb-3 text-gray-500 dark:text-gray-400"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 16"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+            />
+          </svg>
+          <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+            <span className="font-semibold">Click to upload</span>
+            &nbsp; or drag and drop
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            SVG, PNG, JPG or GIF
+          </p>
+        </div>
       </FileInput>
       <FileUploaderContent className="h-48 ">
         {files &&

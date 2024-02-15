@@ -17,18 +17,18 @@ import { ModeToggle } from "@/components/toggle-theme";
 //provide the set of api to the component that allow to build the ui examples
 export default function Home() {
   return (
-    <main className="relative flex justify-center items-center flex-col h-[100dvh]">
+    <main className="relative flex py-20 items-center flex-col h-[100dvh]">
       {/* <Model /> */}
-      <div className="flex items-center justify-center gap-2 w-full">
-        {/* <ImageUpload /> */}
+      {/*  <div className="flex items-center justify-center gap-2 w-full">
+        <ImageUpload />
         <CarouselExample />
-      </div>
-      {/*  <Commander /> */}
-      {/* <CommanderUsingUseState /> */}
+      </div> */}
+      <Commander />
+      {/*  <CommanderUsingUseState /> */}
       {/* <OtpTest /> */}
       {/*  <TreeViewTest />
       <BreadCrumbTest /> */}
-      {/*  <FileUploaderTest /> */}
+      {/* <FileUploaderTest /> */}
       <div className="absolute right-2 bottom-2">
         <ModeToggle />
       </div>

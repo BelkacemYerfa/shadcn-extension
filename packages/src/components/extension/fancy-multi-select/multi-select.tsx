@@ -7,9 +7,16 @@ import {
   CommandEmpty,
   CommandList,
 } from "@/components/ui/command";
-import { X as RemoveIcon } from "lucide-react";
-import { KeyboardEvent, useCallback, useRef, useState } from "react";
 import { Command as CommandPrimitive } from "cmdk";
+import { X as RemoveIcon } from "lucide-react";
+import {
+  KeyboardEvent,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 
 interface MultiSelectProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string[];
@@ -21,8 +28,10 @@ export const MultiSelect = ({
   options,
   onValueChange,
   value,
+  ...props
 }: MultiSelectProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState<boolean>(false);
 
@@ -58,14 +67,33 @@ export const MultiSelect = ({
     e.stopPropagation();
   }, []);
 
-  const notSelected = options.filter((item) => !value.includes(item));
+  const height = useMemo(() => {
+    const container = containerRef.current;
+    if (!container) return 0;
 
+    const containerHeight = container.getBoundingClientRect().height;
+    const containerOffsetTop = container.offsetTop;
+
+    return containerHeight + containerOffsetTop + 8;
+  }, [containerRef.current, value]);
+
+  useEffect(() => {
+    setOpen(false);
+    console.log(open);
+    setOpen(true);
+    console.log(open);
+  }, [height]);
+
+  const notSelected = options.filter((item) => !value.includes(item));
   return (
     <Command
       onKeyDown={removeOptionWithBackspace}
-      className="flex flex-col gap-2 max-w-md w-full rounded-md p-1.5 max-h-96 h-full"
+      className="overflow-visible flex flex-col gap-2"
     >
-      <div className="flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg">
+      <div
+        ref={containerRef}
+        className="flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg"
+      >
         {value.map((item) => (
           <Badge
             key={item}
@@ -78,7 +106,10 @@ export const MultiSelect = ({
               aria-roledescription="button to remove option"
               type="button"
               onMouseDown={mousePreventDefault}
-              onClick={() => removeOption(item)}
+              onClick={() => {
+                removeOption(item);
+                setOpen(true);
+              }}
             >
               {" "}
               <RemoveIcon className="h-4 w-4 hover:stroke-red-600" />
@@ -95,26 +126,30 @@ export const MultiSelect = ({
           className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
         />
       </div>
-
-      {open && notSelected.length > 0 && (
-        <CommandList className="p-2 flex flex-col gap-2 border-muted border rounded-lg scrollbar-thin scrollbar-track-transparent  transition-colors scrollbar-thumb-muted scrollbar-thumb-rounded-lg ">
-          {notSelected.map((option) => (
-            <CommandItem
-              key={option}
-              onMouseDown={mousePreventDefault}
-              onSelect={() => {
-                selectOption(option);
-                setInputValue("");
-              }}
-            >
-              {option}
-            </CommandItem>
-          ))}
-          <CommandEmpty>
-            <span className="text-muted-foreground">No results found</span>
-          </CommandEmpty>
-        </CommandList>
-      )}
+      <div className="relative ">
+        {open && notSelected.length > 0 && (
+          <CommandList
+            className={`p-2 flex flex-col gap-2 rounded-md scrollbar-thin scrollbar-track-transparent  transition-colors scrollbar-thumb-muted scrollbar-thumb-rounded-lg w-full absolute bg-background shadow-md z-10 border border-muted max-w-sm top-0`}
+          >
+            {notSelected.map((option) => (
+              <CommandItem
+                key={option}
+                onMouseDown={mousePreventDefault}
+                onSelect={() => {
+                  selectOption(option);
+                  setInputValue("");
+                }}
+                className="rounded-md cursor-pointer px-2 py-1 transition-colors"
+              >
+                {option}
+              </CommandItem>
+            ))}
+            <CommandEmpty>
+              <span className="text-muted-foreground">No results found</span>
+            </CommandEmpty>
+          </CommandList>
+        )}
+      </div>
     </Command>
   );
 };
