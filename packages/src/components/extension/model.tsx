@@ -192,8 +192,8 @@ export const CarouselExample = () => {
         className="flex gap-2"
       >
         <div className="basis-3/4 relative ">
-          <CarouselPrevious className="left-1/2 z-[10] -top-2 " />
-          <CarouselNext className="left-1/2 z-[10] -bottom-2 " />
+          <CarouselPrevious />
+          <CarouselNext />
           <CarouselMainContainer className="h-60">
             {Array.from({ length: 10 }).map((_, i) => (
               <SliderMainItem key={i}>
