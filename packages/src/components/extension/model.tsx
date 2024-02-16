@@ -215,6 +215,44 @@ export const CarouselExample = () => {
 };
 
 export const CommanderUsingUseState = () => {
+  const options = [
+    {
+      value: "Next",
+      label: "Next",
+    },
+    {
+      value: "React",
+      label: "React",
+    },
+    {
+      value: "Tailwind",
+      label: "Tailwind",
+    },
+    {
+      value: "Remix",
+      label: "Remix",
+    },
+    {
+      value: "Astro",
+      label: "Astro",
+    },
+    {
+      value: "Svelte",
+      label: "Svelte",
+    },
+    {
+      value: "Solid",
+      label: "Solid",
+    },
+    {
+      value: "Vue",
+      label: "Vue",
+    },
+    {
+      value: "Nuxt",
+      label: "Nuxt",
+    },
+  ];
   const [command, setCommand] = useState<string[]>(["Hello"]);
   return (
     <form
@@ -225,18 +263,7 @@ export const CommanderUsingUseState = () => {
       }}
     >
       <MultiSelect
-        options={[
-          "Hello",
-          "World",
-          "Next.js",
-          "Tailwind CSS",
-          "TypeScript",
-          "React",
-          "Vite",
-          "Remix",
-          "Astro",
-          "Svelte",
-        ]}
+        options={options}
         onValueChange={setCommand}
         value={command}
       />
@@ -246,6 +273,68 @@ export const CommanderUsingUseState = () => {
 };
 
 export const Commander = () => {
+  const options = [
+    {
+      value: "Next",
+      label: "Next",
+    },
+    {
+      value: "React",
+      label: "React",
+    },
+    {
+      value: "Tailwind",
+      label: "Tailwind",
+    },
+    {
+      value: "Remix",
+      label: "Remix",
+    },
+    {
+      value: "Astro",
+      label: "Astro",
+    },
+    {
+      value: "Svelte",
+      label: "Svelte",
+    },
+    {
+      value: "Solid",
+      label: "Solid",
+    },
+    {
+      value: "Vue",
+      label: "Vue",
+    },
+    {
+      value: "Nuxt",
+      label: "Nuxt",
+    },
+    {
+      value: "SvelteKit",
+      label: "SvelteKit",
+    },
+    {
+      value: "Vite",
+      label: "Vite",
+    },
+    {
+      value: "Snowpack",
+      label: "Snowpack",
+    },
+    {
+      value: "Parcel",
+      label: "Parcel",
+    },
+    {
+      value: "Webpack",
+      label: "Webpack",
+    },
+    {
+      value: "Gatsby",
+      label: "Gatsby",
+    },
+  ];
   const form = useForm({
     defaultValues: {
       command: [],
@@ -268,18 +357,7 @@ export const Commander = () => {
             <FormControl className="w-full">
               <FormItem className="w-full">
                 <MultiSelect
-                  options={[
-                    "Hello",
-                    "World",
-                    "Next.js",
-                    "Tailwind CSS",
-                    "TypeScript",
-                    "React",
-                    "Vite",
-                    "Remix",
-                    "Astro",
-                    "Svelte",
-                  ]}
+                  options={options}
                   onValueChange={field.onChange}
                   {...field}
                 />
