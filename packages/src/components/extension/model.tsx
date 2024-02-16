@@ -317,10 +317,12 @@ export const Commander = () => {
     {
       value: "Vite",
       label: "Vite",
+      disabled: true,
     },
     {
       value: "Snowpack",
       label: "Snowpack",
+      disabled: true,
     },
     {
       value: "Parcel",
@@ -333,6 +335,7 @@ export const Commander = () => {
     {
       value: "Gatsby",
       label: "Gatsby",
+      disabled: true,
     },
   ];
   const form = useForm({
@@ -535,7 +538,7 @@ export const BreadCrumbTest = () => {
   return (
     <BreadCrumb variant={"link"} className="gap-1">
       <BreadCrumbItem
-        className="px-2 "
+        className="px-2 h-8"
         isActive
         activeVariant={{
           variant: "ghost",

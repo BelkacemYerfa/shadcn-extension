@@ -7,6 +7,7 @@ import {
   CommandEmpty,
   CommandList,
 } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon } from "lucide-react";
 import { KeyboardEvent, useCallback, useRef, useState } from "react";
@@ -14,6 +15,7 @@ import { KeyboardEvent, useCallback, useRef, useState } from "react";
 type Options = {
   value: string;
   label: string;
+  disabled?: boolean;
 };
 
 interface MultiSelectProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -124,7 +126,11 @@ export const MultiSelect = ({
                   selectOption(option.value);
                   setInputValue("");
                 }}
-                className="rounded-md cursor-pointer px-2 py-1 transition-colors"
+                className={cn(
+                  "rounded-md cursor-pointer px-2 py-1 transition-colors ",
+                  option.disabled && "opacity-50 cursor-default"
+                )}
+                disabled={option.disabled}
               >
                 {option.label}
               </CommandItem>
