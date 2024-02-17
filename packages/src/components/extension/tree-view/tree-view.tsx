@@ -131,6 +131,7 @@ export const TreeView = ({
       expandSpecificTargetedElements(elements, initialSelectedId);
     }
   }, []);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const { getVirtualItems, getTotalSize } = useVirtualizer({
     count: elements.length,
@@ -138,6 +139,7 @@ export const TreeView = ({
     estimateSize: useCallback(() => 40, []),
     overscan: 5,
   });
+
   const { height = getTotalSize(), width } = useResizeObserver({
     ref: containerRef,
   });
@@ -145,7 +147,7 @@ export const TreeView = ({
     <div
       ref={containerRef}
       className={cn(
-        "rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1 ",
+        "rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1",
         className
       )}
     >
@@ -265,7 +267,10 @@ export const TreeItem = forwardRef<
                   element={element}
                   isSelected={selectedId === element.id}
                   handleSelect={selectItem}
-                />
+                >
+                  <FileIcon className="h-4 w-4" />
+                  <span>{element?.name}</span>
+                </Leaf>
               )}
             </li>
           ))
@@ -276,7 +281,10 @@ export const TreeItem = forwardRef<
               element={elements}
               handleSelect={selectItem}
               isSelected={selectedId === elements?.id}
-            />
+            >
+              <FileIcon className="h-4 w-4" />
+              <span>{elements?.name}</span>
+            </Leaf>
           </li>
         )}
       </ul>
@@ -293,36 +301,40 @@ export const Leaf = forwardRef<
     handleSelect: (id: string) => void;
     isSelected?: boolean;
   } & React.HTMLAttributes<HTMLButtonElement>
->(({ element, className, handleSelect, isSelected, ...props }, ref) => {
-  return (
-    <button
-      type="button"
-      disabled={!element?.isSelectable}
-      ref={ref}
-      aria-label="leaf"
-      {...props}
-      className={`${
-        isSelected === true && element?.isSelectable
-          ? " bg-muted rounded-md"
-          : ""
-      } `}
-    >
-      <div
-        className={cn(
-          `flex items-center gap-1 cursor-pointer text-sm ${
-            element?.isSelectable
-              ? "cursor-pointer"
-              : "opacity-50 cursor-not-allowed"
-          }`,
-          className
-        )}
-        onClick={() => handleSelect(element?.id ?? "")}
+>(
+  (
+    { element, className, handleSelect, isSelected, children, ...props },
+    ref
+  ) => {
+    return (
+      <button
+        type="button"
+        disabled={!element?.isSelectable}
+        ref={ref}
+        aria-label="leaf"
+        {...props}
+        className={`${
+          isSelected === true && element?.isSelectable
+            ? " bg-muted rounded-md"
+            : ""
+        } `}
       >
-        <FileIcon className="h-4 w-4" />
-        <span>{element?.name}</span>
-      </div>
-    </button>
-  );
-});
+        <div
+          className={cn(
+            `flex items-center gap-1 cursor-pointer text-sm ${
+              element?.isSelectable
+                ? "cursor-pointer"
+                : "opacity-50 cursor-not-allowed"
+            }`,
+            className
+          )}
+          onClick={() => handleSelect(element?.id ?? "")}
+        >
+          {children}
+        </div>
+      </button>
+    );
+  }
+);
 
 Leaf.displayName = "Leaf";
