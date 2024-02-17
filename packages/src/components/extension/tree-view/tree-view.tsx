@@ -270,11 +270,8 @@ type FolderProps = {
   expendedItems?: string[];
   handleSelect?: (id: string) => void;
   indicator?: boolean;
-} & (
-  | { name: string; element?: undefined }
-  | { name?: undefined; element: TreeViewElement }
-) &
-  FolderComponentProps;
+  element: TreeViewElement;
+} & FolderComponentProps;
 
 export const Folder = forwardRef<
   HTMLDivElement,
@@ -282,7 +279,6 @@ export const Folder = forwardRef<
 >(
   ({
     className,
-    name,
     element,
     expendedItems,
     handleSelect,
@@ -293,10 +289,14 @@ export const Folder = forwardRef<
       <AccordionPrimitive.Root
         type="multiple"
         defaultValue={expendedItems}
-        value={expendedItems?.includes(element?.id ?? "") ? [name ?? " "] : []}
+        value={
+          expendedItems?.includes(element?.id ?? "")
+            ? [element.name ?? " "]
+            : []
+        }
       >
         <AccordionPrimitive.Item
-          value={name ?? " "}
+          value={element.name ?? " "}
           className="relative overflow-hidden h-full"
         >
           <AccordionPrimitive.Trigger
