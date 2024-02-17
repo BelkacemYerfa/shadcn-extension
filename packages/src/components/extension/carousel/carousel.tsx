@@ -49,101 +49,112 @@ const CarouselContext = createContext<CarouselContextType | null>(null);
 export const CarouselProvider = forwardRef<
   HTMLDivElement,
   CarouselContextProps & React.HTMLAttributes<HTMLDivElement>
->(({ carouselOptions, activeKeyboard, children, className, ...props }, ref) => {
-  const [emblaMainRef, emblaMainApi] = useEmblaCarousel({
-    ...carouselOptions,
-  });
-  const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
-    ...carouselOptions,
-    containScroll: "keepSnaps",
-    dragFree: true,
-  });
-  const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
-  const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+>(
+  (
+    {
+      carouselOptions = { axis: "x" },
+      activeKeyboard = false,
+      children,
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    const [emblaMainRef, emblaMainApi] = useEmblaCarousel({
+      ...carouselOptions,
+    });
+    const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
+      ...carouselOptions,
+      containScroll: "keepSnaps",
+      dragFree: true,
+    });
+    const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
+    const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
+    const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      event.preventDefault();
+    const handleKeyDown = useCallback(
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        if (!emblaMainApi) return;
+        if (event.key === "ArrowLeft") {
+          emblaMainApi.scrollPrev();
+        } else if (event.key === "ArrowRight") {
+          emblaMainApi.scrollNext();
+        }
+      },
+      [emblaMainApi]
+    );
+
+    const ScrollNext = useCallback(() => {
       if (!emblaMainApi) return;
-      if (event.key === "ArrowLeft") {
-        emblaMainApi.scrollPrev();
-      } else if (event.key === "ArrowRight") {
-        emblaMainApi.scrollNext();
-      }
-    },
-    [emblaMainApi]
-  );
+      emblaMainApi.scrollNext();
+    }, [emblaMainApi]);
 
-  const ScrollNext = useCallback(() => {
-    if (!emblaMainApi) return;
-    emblaMainApi.scrollNext();
-  }, [emblaMainApi]);
+    const ScrollPrev = useCallback(() => {
+      if (!emblaMainApi) return;
+      emblaMainApi.scrollPrev();
+    }, [emblaMainApi]);
 
-  const ScrollPrev = useCallback(() => {
-    if (!emblaMainApi) return;
-    emblaMainApi.scrollPrev();
-  }, [emblaMainApi]);
+    const onThumbClick = useCallback(
+      (index: number) => {
+        if (!emblaMainApi || !emblaThumbsApi) return;
+        emblaMainApi.scrollTo(index);
+      },
+      [emblaMainApi, emblaThumbsApi]
+    );
 
-  const onThumbClick = useCallback(
-    (index: number) => {
+    const onSelect = useCallback(() => {
       if (!emblaMainApi || !emblaThumbsApi) return;
-      emblaMainApi.scrollTo(index);
-    },
-    [emblaMainApi, emblaThumbsApi]
-  );
+      const selected = emblaMainApi.selectedScrollSnap();
+      setActiveIndex(selected);
+      emblaThumbsApi.scrollTo(selected);
+      setCanScrollPrev(emblaMainApi.canScrollPrev());
+      setCanScrollNext(emblaMainApi.canScrollNext());
+    }, [emblaMainApi, emblaThumbsApi]);
 
-  const onSelect = useCallback(() => {
-    if (!emblaMainApi || !emblaThumbsApi) return;
-    const selected = emblaMainApi.selectedScrollSnap();
-    setActiveIndex(selected);
-    emblaThumbsApi.scrollTo(selected);
-    setCanScrollPrev(emblaMainApi.canScrollPrev());
-    setCanScrollNext(emblaMainApi.canScrollNext());
-  }, [emblaMainApi, emblaThumbsApi]);
+    useEffect(() => {
+      if (!emblaMainApi) return;
+      onSelect();
+      emblaMainApi.on("select", onSelect);
+      emblaMainApi.on("reInit", onSelect);
+      return () => {
+        emblaMainApi.off("select", onSelect);
+        emblaMainApi.off("reInit", onSelect);
+      };
+    }, [emblaMainApi, onSelect]);
 
-  useEffect(() => {
-    if (!emblaMainApi) return;
-    onSelect();
-    emblaMainApi.on("select", onSelect);
-    emblaMainApi.on("reInit", onSelect);
-    return () => {
-      emblaMainApi.off("select", onSelect);
-      emblaMainApi.off("reInit", onSelect);
-    };
-  }, [emblaMainApi, onSelect]);
-
-  return (
-    <CarouselContext.Provider
-      value={{
-        emblaMainApi,
-        mainRef: emblaMainRef,
-        thumbsRef: emblaThumbsRef,
-        scrollNext: ScrollNext,
-        scrollPrev: ScrollPrev,
-        canScrollNext,
-        canScrollPrev,
-        activeIndex,
-        onThumbClick,
-        handleKeyDown,
-        carouselOptions,
-      }}
-    >
-      <div
-        tabIndex={0}
-        ref={ref}
-        onKeyDownCapture={activeKeyboard ? handleKeyDown : undefined}
-        className={cn(
-          "grid gap-2 w-full relative focus:outline-none",
-          className
-        )}
-        {...props}
+    return (
+      <CarouselContext.Provider
+        value={{
+          emblaMainApi,
+          mainRef: emblaMainRef,
+          thumbsRef: emblaThumbsRef,
+          scrollNext: ScrollNext,
+          scrollPrev: ScrollPrev,
+          canScrollNext,
+          canScrollPrev,
+          activeIndex,
+          onThumbClick,
+          handleKeyDown,
+          carouselOptions,
+        }}
       >
-        {children}
-      </div>
-    </CarouselContext.Provider>
-  );
-});
+        <div
+          tabIndex={0}
+          ref={ref}
+          onKeyDownCapture={activeKeyboard ? handleKeyDown : undefined}
+          className={cn(
+            "grid gap-2 w-full relative focus:outline-none",
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </div>
+      </CarouselContext.Provider>
+    );
+  }
+);
 
 CarouselProvider.displayName = "CarouselProvider";
 

@@ -1,18 +1,101 @@
+import { Steps, Tabs } from "nextra/components";
+
 # Carousel
 
 This is a carousel component that extends the functionality of the `Carousel` component from the `shadcn/ui` library.
 
 ```jsx copy
-import { Carousel } from "@/component/extension/carousel";
+import {
+  CarouselProvider,
+  CarouselMainContainer,
+  SliderMainItem,
+} from "@/components/extension/carousel";
 
 export const CarouselExample = () => {
   return (
     <CarouselProvider>
-      <CarouselMainItem>Slide 1</CarouselMainItem>
-      <CarouselMainItem>Slide 2</CarouselMainItem>
-      <CarouselMainItem>Slide 3</CarouselMainItem>
-      <CarouselMainItem>...</CarouselMainItem>
+      <CarouselMainContainer>
+        {Array.from({ length: 10 }).map((_, index) => (
+          <SliderMainItem
+            key={index}
+            className="border border-muted flex items-center justify-center h-52 rounded-md"
+          >
+            Slide {index + 1}
+          </SliderMainItem>
+        ))}
+      </CarouselMainContainer>
     </CarouselProvider>
   );
 };
 ```
+
+## Installation
+
+<Steps>
+  ### Install the package from radix
+  ```bash copy
+    npm install embla-carousel embla-carousel-react
+  ```
+  
+  ### Copy past the code that you will find in this github file
+  ```link copy
+  https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/packages/src/components/extension/carousel/carousel.tsx
+  ```
+
+</Steps>
+
+## API Reference
+
+### Props
+
+The Carousel component accepts the following props:
+
+| Prop            |        Type         | Default value |
+| :-------------- | :-----------------: | ------------: |
+| carouselOptions | EmblaCarouselOption |            -- |
+| activeKeyboard  |       boolean       |         false |
+
+### EmblaCarouselOption
+
+For more information about the `EmblaCarouselOption` interface, please refer to the [Embla Carousel documentation]().
+
+### activeKeyboard
+
+This prop is used to enable or disable the keyboard navigation. When set to `true`, the keyboard navigation is enabled , else it is disabled.
+
+## Accessibility
+
+The Carousel component is accessible by default. It supports keyboard navigation and screen readers , it follows the WARIA accessibility rules .
+
+## Usage Examples
+
+<Tabs items={["Code" , "Preview"]} >
+  <Tabs.Tab>
+    ```jsx
+    import { CarouselProvider , CarouselMainContainer , SliderMainItem , CarouselPrevious , CarouselNext} from "@/components/extension/carousel";
+
+    export const CarouselExample = () => {
+      return (
+        <CarouselProvider activeKeyboard className="max-w-xs w-full ">
+          <CarouselNext />
+          <CarouselPrevious />
+          <CarouselMainContainer>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <SliderMainItem
+                key={index}
+                className="border border-muted flex items-center justify-center h-52 rounded-md"
+              >
+                Slide {index + 1}
+              </SliderMainItem>
+            ))}
+          </CarouselMainContainer>
+        </CarouselProvider>
+      );
+    };
+    ```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+    none
+  </Tabs.Tab>
+</Tabs>

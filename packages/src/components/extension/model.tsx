@@ -185,32 +185,20 @@ const MultiCarousel = () => {
 
 export const CarouselExample = () => {
   return (
-    <div className=" max-w-lg w-full mt-3 ">
-      <CarouselProvider
-        carouselOptions={{ axis: "y" }}
-        activeKeyboard
-        className="flex gap-2"
-      >
-        <div className="basis-3/4 relative ">
-          <CarouselPrevious />
-          <CarouselNext />
-          <CarouselMainContainer className="h-60">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <SliderMainItem key={i}>
-                <div className="w-full h-full bg-gray-300 rounded-md"></div>
-              </SliderMainItem>
-            ))}
-          </CarouselMainContainer>
-        </div>
-        <CarouselThumbsContainer className="flex-col h-60">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <SliderMiniItem index={i} key={i}>
-              <div className="w-full h-full bg-gray-300 rounded-md"></div>
-            </SliderMiniItem>
-          ))}
-        </CarouselThumbsContainer>
-      </CarouselProvider>
-    </div>
+    <CarouselProvider activeKeyboard className="max-w-xs w-full ">
+      <CarouselNext />
+      <CarouselPrevious />
+      <CarouselMainContainer>
+        {Array.from({ length: 10 }).map((_, index) => (
+          <SliderMainItem
+            key={index}
+            className="border border-muted flex items-center justify-center h-52 rounded-md"
+          >
+            Slide {index + 1}
+          </SliderMainItem>
+        ))}
+      </CarouselMainContainer>
+    </CarouselProvider>
   );
 };
 
