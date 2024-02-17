@@ -218,6 +218,7 @@ export const TreeItem = forwardRef<
                   expendedItems={expendedItems}
                   handleSelect={handleSelect}
                   element={element}
+                  indicator={indicator}
                 >
                   <TreeItem
                     key={element.id}
@@ -313,7 +314,7 @@ export const Folder = forwardRef<
             ) : (
               <FolderIcon className="h-4 w-4" />
             )}
-            <span>{element?.name ?? name}</span>
+            <span>{element.name}</span>
           </AccordionPrimitive.Trigger>
           <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
             {element?.children && indicator && (
