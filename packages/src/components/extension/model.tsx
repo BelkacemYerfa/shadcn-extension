@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { File, Folder, TreeView } from "./tree-view/tree-view";
+import { TreeView } from "./tree-view/tree-view";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
   CustomUploadInput,
@@ -411,10 +411,7 @@ export const OtpTest = () => {
   );
 };
 
-type TreeViewProps = {
-  active?: boolean;
-};
-export const TreeViewTest = ({ active = false }: TreeViewProps) => {
+export const TreeViewTest = () => {
   const elements = [
     {
       id: "1",
@@ -516,15 +513,7 @@ export const TreeViewTest = ({ active = false }: TreeViewProps) => {
 
     // Add more elements as needed
   ];
-  if (active) {
-    return (
-      <div className="flex gap-2 pl-2">
-        <Folder name="folder">
-          <File>file 1</File>
-        </Folder>
-      </div>
-    );
-  }
+
   return (
     <div className="flex gap-2 pl-2">
       <TreeView elements={elements} initialSelectedId="21" indicator />
