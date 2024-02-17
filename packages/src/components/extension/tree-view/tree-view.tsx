@@ -22,6 +22,7 @@ interface TreeViewComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
 type TreeViewProps = {
   initialSelectedId?: string;
   elements: TreeViewElement[];
+  indicator?: boolean;
 } & (
   | {
       initialExpendedItems?: string[];
@@ -40,6 +41,7 @@ export const TreeView = ({
   initialSelectedId,
   initialExpendedItems,
   expandAll = false,
+  indicator = false,
 }: TreeViewProps) => {
   const [selectedId, setSelectIds] = useState<string | undefined>(
     initialSelectedId
@@ -157,6 +159,7 @@ export const TreeView = ({
             expendedItems={expendedItems}
             handleSelect={handleExpand}
             selectItem={selectItem}
+            indicator={indicator}
           />
         ))}
         <Button
@@ -186,6 +189,7 @@ export const TreeItem = forwardRef<
     elements?: TreeViewElement[] | TreeViewElement;
     handleSelect: (id: string) => void;
     selectItem: (id: string) => void;
+    indicator?: boolean;
   } & React.HTMLAttributes<HTMLUListElement>
 >(
   (
@@ -196,6 +200,7 @@ export const TreeItem = forwardRef<
       handleSelect,
       expendedItems,
       selectedId,
+      indicator,
       ...props
     },
     ref
@@ -205,7 +210,7 @@ export const TreeItem = forwardRef<
       <ul ref={ref} className="w-full" {...props}>
         {elements instanceof Array ? (
           elements.map((element) => (
-            <li key={element.id} className="pl-4 w-full">
+            <li key={element.id} className="pl-5 w-full">
               {element.children && element.children?.length > 0 ? (
                 <AccordionPrimitive.Root
                   type="multiple"
@@ -216,10 +221,10 @@ export const TreeItem = forwardRef<
                 >
                   <AccordionPrimitive.Item
                     value={element.name}
-                    className="w-full"
+                    className="relative overflow-hidden h-full"
                   >
                     <AccordionPrimitive.Trigger
-                      className={`flex items-center gap-1 w-full text-sm ${
+                      className={` flex items-center gap-1 w-full text-sm ${
                         !element.isSelectable
                           ? "opacity-50 cursor-not-allowed"
                           : "cursor-pointer"
@@ -234,7 +239,10 @@ export const TreeItem = forwardRef<
                       )}
                       <span>{element.name}</span>
                     </AccordionPrimitive.Trigger>
-                    <AccordionPrimitive.Content className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                    <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
+                      {element.children && indicator && (
+                        <div className="h-full w-[1px] bg-muted absolute left-1.5 py-3 rounded-md" />
+                      )}
                       <div className="flex flex-col gap-2">
                         <TreeItem
                           key={element.id}
@@ -244,6 +252,7 @@ export const TreeItem = forwardRef<
                           handleSelect={handleSelect}
                           selectItem={selectItem}
                           expendedItems={expendedItems}
+                          indicator={indicator}
                         />
                       </div>
                     </AccordionPrimitive.Content>
@@ -292,14 +301,18 @@ export const Leaf = forwardRef<
       ref={ref}
       aria-label="leaf"
       {...props}
-      className={`${isSelected ? " bg-muted rounded-md" : ""} `}
+      className={`${
+        isSelected === true && element?.isSelectable
+          ? " bg-muted rounded-md"
+          : ""
+      } `}
     >
       <div
         className={cn(
           `flex items-center gap-1 cursor-pointer text-sm ${
-            !element?.isSelectable
-              ? "opacity-50 cursor-not-allowed"
-              : "cursor-pointer"
+            element?.isSelectable
+              ? "cursor-pointer"
+              : "opacity-50 cursor-not-allowed"
           }`,
           className
         )}

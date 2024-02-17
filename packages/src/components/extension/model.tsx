@@ -424,11 +424,6 @@ export const TreeViewTest = () => {
           name: "Element 2",
           children: [
             {
-              id: "3",
-              isSelectable: true,
-              name: "Element 3",
-            },
-            {
               id: "4",
               isSelectable: true,
               name: "Element 4",
@@ -445,15 +440,14 @@ export const TreeViewTest = () => {
                       children: [
                         {
                           id: "7",
-                          isSelectable: true,
+                          isSelectable: false,
                           name: "Element 7",
-                          children: [
-                            {
-                              id: "21",
-                              isSelectable: false,
-                              name: "Element 21",
-                            },
-                          ],
+                          children: [],
+                        },
+                        {
+                          id: "21",
+                          isSelectable: true,
+                          name: "Element 21",
                         },
                       ],
                     },
@@ -465,6 +459,11 @@ export const TreeViewTest = () => {
                   ],
                 },
               ],
+            },
+            {
+              id: "3",
+              isSelectable: true,
+              name: "Element 3",
             },
           ],
         },
@@ -517,7 +516,7 @@ export const TreeViewTest = () => {
 
   return (
     <div className="flex gap-2 pl-2">
-      <TreeView elements={elements} initialSelectedId="21" />
+      <TreeView elements={elements} initialSelectedId="21" indicator />
     </div>
   );
 };

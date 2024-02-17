@@ -19,14 +19,12 @@ export default function Home() {
   return (
     <main className="relative flex items-center py-20 flex-col h-[100dvh]">
       {/*  <Model /> */}
-      <div className="flex items-center justify-center gap-2 w-full">
-        {/*  <ImageUpload /> */}
-        <CarouselExample />
-      </div>
+      {/*  <ImageUpload /> */}
+      {/* <CarouselExample /> */}
       {/* <Commander /> */}
       {/* <CommanderUsingUseState />
-      <OtpTest />
-      <TreeViewTest /> */}
+      <OtpTest /> */}
+      <TreeViewTest />
       {/* <BreadCrumbTest /> */}
       {/*  <FileUploaderTest /> */}
       <div className="absolute right-2 bottom-2">
