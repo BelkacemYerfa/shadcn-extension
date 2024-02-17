@@ -214,7 +214,7 @@ export const TreeItem = forwardRef<
           elements.map((element) => (
             <li key={element.id} className="pl-5 w-full">
               {element.children && element.children?.length > 0 ? (
-                <Branch
+                <Folder
                   expendedItems={expendedItems}
                   handleSelect={handleSelect}
                   element={element}
@@ -229,9 +229,9 @@ export const TreeItem = forwardRef<
                     expendedItems={expendedItems}
                     indicator={indicator}
                   />
-                </Branch>
+                </Folder>
               ) : (
-                <Leaf
+                <File
                   aria-label={`File ${element.name}`}
                   key={element.id}
                   element={element}
@@ -240,13 +240,13 @@ export const TreeItem = forwardRef<
                 >
                   <FileIcon className="h-4 w-4" />
                   <span>{element?.name}</span>
-                </Leaf>
+                </File>
               )}
             </li>
           ))
         ) : (
           <li className="px-1">
-            <Leaf
+            <File
               aria-label={`file ${elements?.name}`}
               element={elements}
               handleSelect={selectItem}
@@ -254,7 +254,7 @@ export const TreeItem = forwardRef<
             >
               <FileIcon className="h-4 w-4" />
               <span>{elements?.name}</span>
-            </Leaf>
+            </File>
           </li>
         )}
       </ul>
@@ -264,17 +264,25 @@ export const TreeItem = forwardRef<
 
 TreeItem.displayName = "TreeItem";
 
-export const Branch = forwardRef<
+interface FolderComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+type FolderProps = {
+  expendedItems?: string[];
+  handleSelect?: (id: string) => void;
+  indicator?: boolean;
+} & (
+  | { name: string; element?: undefined }
+  | { name?: undefined; element: TreeViewElement }
+) &
+  FolderComponentProps;
+
+export const Folder = forwardRef<
   HTMLDivElement,
-  {
-    element: TreeViewElement;
-    expendedItems?: string[];
-    handleSelect: (id: string) => void;
-    indicator?: boolean;
-  } & React.HTMLAttributes<HTMLDivElement>
+  FolderProps & React.HTMLAttributes<HTMLDivElement>
 >(
   ({
     className,
+    name,
     element,
     expendedItems,
     handleSelect,
@@ -285,30 +293,30 @@ export const Branch = forwardRef<
       <AccordionPrimitive.Root
         type="multiple"
         defaultValue={expendedItems}
-        value={expendedItems?.includes(element.id) ? [element.name] : []}
+        value={expendedItems?.includes(element?.id ?? "") ? [name ?? " "] : []}
       >
         <AccordionPrimitive.Item
-          value={element.name}
+          value={name ?? " "}
           className="relative overflow-hidden h-full"
         >
           <AccordionPrimitive.Trigger
             className={` flex items-center gap-1 w-full text-sm ${
-              !element.isSelectable
+              !element?.isSelectable
                 ? "opacity-50 cursor-not-allowed"
                 : "cursor-pointer"
             } `}
-            disabled={!element.isSelectable}
-            onClick={() => handleSelect(element.id)}
+            disabled={!element?.isSelectable}
+            onClick={() => handleSelect?.(element?.id ?? "")}
           >
-            {expendedItems?.includes(element.id) ? (
+            {expendedItems?.includes(element?.id ?? "") ? (
               <FolderOpenIcon className="h-4 w-4" />
             ) : (
               <FolderIcon className="h-4 w-4" />
             )}
-            <span>{element.name}</span>
+            <span>{element?.name ?? name}</span>
           </AccordionPrimitive.Trigger>
           <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
-            {element.children && indicator && (
+            {element?.children && indicator && (
               <div className="h-full w-[1px] bg-muted absolute left-1.5 py-3 rounded-md" />
             )}
             <div className="flex flex-col gap-2">{children}</div>
@@ -319,13 +327,13 @@ export const Branch = forwardRef<
   }
 );
 
-Branch.displayName = "Branch";
+Folder.displayName = "Folder";
 
-export const Leaf = forwardRef<
+export const File = forwardRef<
   HTMLButtonElement,
   {
     element?: TreeViewElement;
-    handleSelect: (id: string) => void;
+    handleSelect?: (id: string) => void;
     isSelected?: boolean;
   } & React.HTMLAttributes<HTMLButtonElement>
 >(
@@ -338,7 +346,7 @@ export const Leaf = forwardRef<
         type="button"
         disabled={!element?.isSelectable}
         ref={ref}
-        aria-label="leaf"
+        aria-label="File"
         {...props}
         className={`${
           isSelected === true && element?.isSelectable
@@ -355,7 +363,7 @@ export const Leaf = forwardRef<
             }`,
             className
           )}
-          onClick={() => handleSelect(element?.id ?? "")}
+          onClick={() => handleSelect?.(element?.id ?? "")}
         >
           {children}
         </div>
@@ -364,4 +372,4 @@ export const Leaf = forwardRef<
   }
 );
 
-Leaf.displayName = "Leaf";
+File.displayName = "File";
