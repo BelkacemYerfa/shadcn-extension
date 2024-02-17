@@ -10,6 +10,8 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { Button } from "@/components/ui/button";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 
+// TODO: Add the ability to add custom icons
+
 export type TreeViewElement = {
   id: string;
   name: string;
@@ -265,6 +267,8 @@ export const TreeItem = forwardRef<
 TreeItem.displayName = "TreeItem";
 
 interface FolderComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+// TODO: refactor the folder and file component api , to be used as custom component to build a primitive custom tree view
 
 type FolderProps = {
   expendedItems?: string[];
