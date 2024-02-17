@@ -214,52 +214,22 @@ export const TreeItem = forwardRef<
           elements.map((element) => (
             <li key={element.id} className="pl-5 w-full">
               {element.children && element.children?.length > 0 ? (
-                <AccordionPrimitive.Root
-                  type="multiple"
-                  defaultValue={expendedItems}
-                  value={
-                    expendedItems?.includes(element.id) ? [element.name] : []
-                  }
+                <Branch
+                  expendedItems={expendedItems}
+                  handleSelect={handleSelect}
+                  element={element}
                 >
-                  <AccordionPrimitive.Item
-                    value={element.name}
-                    className="relative overflow-hidden h-full"
-                  >
-                    <AccordionPrimitive.Trigger
-                      className={` flex items-center gap-1 w-full text-sm ${
-                        !element.isSelectable
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer"
-                      } `}
-                      disabled={!element.isSelectable}
-                      onClick={() => handleSelect(element.id)}
-                    >
-                      {expendedItems?.includes(element.id) ? (
-                        <FolderOpenIcon className="h-4 w-4" />
-                      ) : (
-                        <FolderIcon className="h-4 w-4" />
-                      )}
-                      <span>{element.name}</span>
-                    </AccordionPrimitive.Trigger>
-                    <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
-                      {element.children && indicator && (
-                        <div className="h-full w-[1px] bg-muted absolute left-1.5 py-3 rounded-md" />
-                      )}
-                      <div className="flex flex-col gap-2">
-                        <TreeItem
-                          key={element.id}
-                          aria-label={`folder ${element.name}`}
-                          elements={element.children}
-                          selectedId={selectedId}
-                          handleSelect={handleSelect}
-                          selectItem={selectItem}
-                          expendedItems={expendedItems}
-                          indicator={indicator}
-                        />
-                      </div>
-                    </AccordionPrimitive.Content>
-                  </AccordionPrimitive.Item>
-                </AccordionPrimitive.Root>
+                  <TreeItem
+                    key={element.id}
+                    aria-label={`folder ${element.name}`}
+                    elements={element.children}
+                    selectedId={selectedId}
+                    handleSelect={handleSelect}
+                    selectItem={selectItem}
+                    expendedItems={expendedItems}
+                    indicator={indicator}
+                  />
+                </Branch>
               ) : (
                 <Leaf
                   aria-label={`File ${element.name}`}
@@ -293,6 +263,63 @@ export const TreeItem = forwardRef<
 );
 
 TreeItem.displayName = "TreeItem";
+
+export const Branch = forwardRef<
+  HTMLDivElement,
+  {
+    element: TreeViewElement;
+    expendedItems?: string[];
+    handleSelect: (id: string) => void;
+    indicator?: boolean;
+  } & React.HTMLAttributes<HTMLDivElement>
+>(
+  ({
+    className,
+    element,
+    expendedItems,
+    handleSelect,
+    indicator,
+    children,
+  }) => {
+    return (
+      <AccordionPrimitive.Root
+        type="multiple"
+        defaultValue={expendedItems}
+        value={expendedItems?.includes(element.id) ? [element.name] : []}
+      >
+        <AccordionPrimitive.Item
+          value={element.name}
+          className="relative overflow-hidden h-full"
+        >
+          <AccordionPrimitive.Trigger
+            className={` flex items-center gap-1 w-full text-sm ${
+              !element.isSelectable
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer"
+            } `}
+            disabled={!element.isSelectable}
+            onClick={() => handleSelect(element.id)}
+          >
+            {expendedItems?.includes(element.id) ? (
+              <FolderOpenIcon className="h-4 w-4" />
+            ) : (
+              <FolderIcon className="h-4 w-4" />
+            )}
+            <span>{element.name}</span>
+          </AccordionPrimitive.Trigger>
+          <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
+            {element.children && indicator && (
+              <div className="h-full w-[1px] bg-muted absolute left-1.5 py-3 rounded-md" />
+            )}
+            <div className="flex flex-col gap-2">{children}</div>
+          </AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+      </AccordionPrimitive.Root>
+    );
+  }
+);
+
+Branch.displayName = "Branch";
 
 export const Leaf = forwardRef<
   HTMLButtonElement,
