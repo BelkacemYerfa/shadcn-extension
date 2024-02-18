@@ -9,7 +9,6 @@ import {
   CarouselPrevious,
   CarouselProvider,
   SliderMainItem,
-  SliderMiniItem,
 } from "./carousel/carousel";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "./fancy-multi-select/multi-select";
