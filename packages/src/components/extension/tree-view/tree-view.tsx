@@ -86,7 +86,6 @@ export const TreeView = ({
         currentPath: string[] = []
       ) => {
         const newPath = [...currentPath, currentElement.id];
-        console.log(newPath, currentElement.isSelectable, selectId);
         if (currentElement.id === selectId) {
           if (currentElement.isSelectable) {
             setExpendedItems(newPath);
@@ -207,7 +206,6 @@ export const TreeItem = forwardRef<
     },
     ref
   ) => {
-    console.log("expendedItems", expendedItems, "selectedId", selectedId);
     return (
       <ul ref={ref} className="w-full" {...props}>
         {elements instanceof Array ? (
@@ -278,14 +276,10 @@ export const Folder = forwardRef<
   HTMLDivElement,
   FolderProps & React.HTMLAttributes<HTMLDivElement>
 >(
-  ({
-    className,
-    element,
-    expendedItems,
-    handleSelect,
-    indicator,
-    children,
-  }) => {
+  (
+    { className, element, expendedItems, handleSelect, indicator, children },
+    ref
+  ) => {
     return (
       <AccordionPrimitive.Root
         type="multiple"
@@ -295,6 +289,7 @@ export const Folder = forwardRef<
             ? [element.name ?? " "]
             : []
         }
+        className={cn("w-full", className)}
       >
         <AccordionPrimitive.Item
           value={element.name ?? " "}
@@ -351,7 +346,7 @@ export const File = forwardRef<
         {...props}
         className={`${
           isSelected === true && element?.isSelectable
-            ? " bg-muted rounded-md"
+            ? "bg-muted rounded-md"
             : ""
         } `}
       >
