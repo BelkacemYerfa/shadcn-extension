@@ -516,7 +516,7 @@ export const TreeViewTest = () => {
 
   return (
     <div className="flex gap-2 pl-2">
-      <TreeView elements={elements} initialSelectedId="21" indicator />
+      <TreeView elements={elements} initialSelectedId="21" indicator={true} />
     </div>
   );
 };
@@ -611,7 +611,7 @@ export const FileUploaderTest = () => {
 
 export const TreeFileTest = () => {
   return (
-    <Tree className="max-w-md">
+    <Tree className="max-w-md h-96 ">
       <Folder element="src" indicator={true}>
         <File element="app.tsx">
           <p> app.tsx </p>

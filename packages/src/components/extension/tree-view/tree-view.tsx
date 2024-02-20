@@ -157,38 +157,36 @@ export const TreeView = ({
     <div
       ref={containerRef}
       className={cn(
-        "rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1",
+        "rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1 relative ",
         className
       )}
     >
-      <ScrollArea style={{ width, height }} className="relative">
-        <Tree>
-          {getVirtualItems().map((element) => (
-            <TreeItem
-              aria-label="Root"
-              key={element.key}
-              elements={[elements[element.index]]}
-              selectedId={selectedId}
-              expendedItems={expendedItems}
-              handleSelect={handleExpand}
-              selectItem={selectItem}
-              indicator={indicator}
-            />
-          ))}
-        </Tree>
-        <Button
-          variant={"ghost"}
-          className="h-8 w-8 p-1 absolute bottom-1 right-2"
-          onClick={
-            expendedItems && expendedItems.length > 0
-              ? closeAll
-              : () => expendAllTree(elements)
-          }
-        >
-          <CaretSortIcon />
-          <span className="sr-only">Toggle</span>
-        </Button>
-      </ScrollArea>
+      <Tree style={{ height, width }}>
+        {getVirtualItems().map((element) => (
+          <TreeItem
+            aria-label="Root"
+            key={element.key}
+            elements={[elements[element.index]]}
+            selectedId={selectedId}
+            expendedItems={expendedItems}
+            handleSelect={handleExpand}
+            selectItem={selectItem}
+            indicator={indicator}
+          />
+        ))}
+      </Tree>
+      <Button
+        variant={"ghost"}
+        className="h-8 w-8 p-1 absolute bottom-1 right-2"
+        onClick={
+          expendedItems && expendedItems.length > 0
+            ? closeAll
+            : () => expendAllTree(elements)
+        }
+      >
+        <CaretSortIcon />
+        <span className="sr-only">Toggle</span>
+      </Button>
     </div>
   );
 };
@@ -224,12 +222,13 @@ export const TreeItem = forwardRef<
       <ul ref={ref} className="w-full" {...props}>
         {elements instanceof Array ? (
           elements.map((element) => (
-            <li key={element.id} className="pl-5 w-full">
+            <li key={element.id} className="w-full">
               {element.children && element.children?.length > 0 ? (
                 <Folder
                   expendedItems={expendedItems}
                   handleSelect={handleSelect}
                   element={element.name}
+                  indicator={indicator}
                 >
                   <TreeItem
                     key={element.id}
@@ -250,7 +249,6 @@ export const TreeItem = forwardRef<
                   isSelected={selectedId === element.id}
                   handleSelect={selectItem}
                 >
-                  <FileIcon className="h-4 w-4" />
                   <span>{element?.name}</span>
                 </File>
               )}
@@ -264,7 +262,6 @@ export const TreeItem = forwardRef<
               handleSelect={selectItem}
               isSelected={selectedId === elements?.id}
             >
-              <FileIcon className="h-4 w-4" />
               <span>{elements?.name}</span>
             </File>
           </li>
@@ -296,7 +293,7 @@ export const useTree = () => {
 export const Tree = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, children }, ref) => {
+>(({ className, children, ...props }, ref) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [expendedItems, setExpendedItems] = useState<string[] | null>(null);
 
@@ -322,12 +319,14 @@ export const Tree = forwardRef<
     width,
   } = useResizeObserver<HTMLDivElement>({});
 
+  const style = props.style ?? { height, width };
+
   return (
     <TreeContext.Provider
       value={{ selectedId, expendedItems, handleExpand, selectItem }}
     >
-      <div ref={containerRef} className={cn("w-full h-96", className)}>
-        <ScrollArea ref={ref} style={{ height, width }} className="relative">
+      <div ref={containerRef} className={cn("w-full h-20", className)}>
+        <ScrollArea ref={ref} style={style} className="relative">
           {children}
         </ScrollArea>
       </div>
@@ -351,7 +350,7 @@ type FolderProps = {
 export const Folder = forwardRef<
   HTMLDivElement,
   FolderProps & React.HTMLAttributes<HTMLDivElement>
->(({ className, element, handleSelect, indicator, children }) => {
+>(({ className, element, handleSelect, indicator, children }, ref) => {
   const name = element;
 
   const { handleExpand, expendedItems } = useTree();
@@ -427,7 +426,7 @@ export const File = forwardRef<
         ref={ref}
         aria-label="File"
         {...props}
-        className={`ml-5 px-1 ${
+        className={`ml-5 pr-1 ${
           selectedId === element && isSelectable
             ? " bg-muted rounded-md w-fit "
             : ""
@@ -444,6 +443,7 @@ export const File = forwardRef<
             handleSelect?.(element ?? "") ?? selectItem(element ?? " ")
           }
         >
+          <FileIcon className="h-4 w-4" />
           {children}
         </div>
       </button>
