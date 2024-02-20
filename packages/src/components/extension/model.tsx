@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { TreeView } from "./tree-view/tree-view";
+import { File, Folder, Tree, TreeView } from "./tree-view/tree-view";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
   CustomUploadInput,
@@ -606,5 +606,30 @@ export const FileUploaderTest = () => {
           ))}
       </FileUploaderContent>
     </FileUploader>
+  );
+};
+
+export const TreeFileTest = () => {
+  return (
+    <Tree className="max-w-md">
+      <Folder element="src" indicator={true}>
+        <File element="app.tsx">
+          <p> app.tsx </p>
+        </File>
+        <Folder element="components" indicator={true}>
+          <File element="input.tsx">
+            <p> input.tsx </p>
+          </File>
+          <File element="button.tsx">
+            <p> button.tsx </p>
+          </File>
+        </Folder>
+        <Folder element="ui">
+          <File element="carousel.tsx">
+            <p>carousel.tsx</p>
+          </File>
+        </Folder>
+      </Folder>
+    </Tree>
   );
 };
