@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Tree, Folder, File } from "./tree-view/tree-view-api";
+import { Tree, Folder, File, CollapseButton } from "./tree-view/tree-view-api";
 import { TreeView } from "./tree-view/tree-view";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
@@ -501,17 +501,60 @@ export const FileUploaderTest = () => {
 };
 
 export const TreeFileTest = () => {
+  const elements = [
+    {
+      id: "1",
+      isSelectable: true,
+      name: "src",
+      children: [
+        {
+          id: "2",
+          isSelectable: true,
+          name: "app.tsx",
+        },
+        {
+          id: "3",
+          isSelectable: true,
+          name: "components",
+          children: [
+            {
+              id: "4",
+              isSelectable: true,
+              name: "input.tsx",
+            },
+            {
+              id: "5",
+              isSelectable: true,
+              name: "button.tsx",
+            },
+          ],
+        },
+        {
+          id: "6",
+          isSelectable: true,
+          name: "ui",
+          children: [
+            {
+              id: "7",
+              isSelectable: true,
+              name: "carousel.tsx",
+            },
+          ],
+        },
+      ],
+    },
+  ];
   return (
     <Tree
-      className="max-w-md h-96"
-      initialExpendedItems={["src", "ui"]}
-      initialSelectedId="carousel.tsx"
+      className="rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1"
+      initialExpendedItems={["src", "components"]}
+      initialSelectedId="button.tsx"
     >
-      <Folder element="src" indicator={true}>
+      <Folder element="src">
         <File element="app.tsx">
           <p> app.tsx </p>
         </File>
-        <Folder element="components" indicator={true}>
+        <Folder element="components">
           <File element="input.tsx">
             <p> input.tsx </p>
           </File>
@@ -525,6 +568,7 @@ export const TreeFileTest = () => {
           </File>
         </Folder>
       </Folder>
+      <CollapseButton elements={elements} />
     </Tree>
   );
 };

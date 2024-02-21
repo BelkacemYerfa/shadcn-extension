@@ -42,6 +42,7 @@ export const TreeView = ({
   indicator = false,
 }: TreeViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+
   const { getVirtualItems, getTotalSize } = useVirtualizer({
     count: elements.length,
     getScrollElement: () => containerRef.current,
