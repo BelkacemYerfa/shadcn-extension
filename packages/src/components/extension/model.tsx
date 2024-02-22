@@ -46,6 +46,7 @@ import {
   FileInput,
 } from "./file-uploader/file-uploader";
 import { Paperclip } from "lucide-react";
+import * as AccordionPrimitive from "@radix-ui/react-accordion";
 
 export type FilePreview = {
   file: File;
@@ -527,6 +528,18 @@ export const TreeFileTest = () => {
               isSelectable: true,
               name: "button.tsx",
             },
+            {
+              id: "20",
+              isSelectable: true,
+              name: "pages",
+              children: [
+                {
+                  id: "21",
+                  isSelectable: true,
+                  name: "interface.ts",
+                },
+              ],
+            },
           ],
         },
         {
@@ -549,6 +562,7 @@ export const TreeFileTest = () => {
       className="rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1"
       initialExpendedItems={["src", "components"]}
       initialSelectedId="button.tsx"
+      elements={elements}
     >
       <Folder element="src">
         <File element="app.tsx">
@@ -561,6 +575,11 @@ export const TreeFileTest = () => {
           <File element="button.tsx">
             <p> button.tsx </p>
           </File>
+          <Folder element="pages">
+            <File element="interface.ts">
+              <p>interface.ts</p>
+            </File>
+          </Folder>
         </Folder>
         <Folder element="ui">
           <File element="carousel.tsx">
@@ -684,6 +703,36 @@ export const TreeViewTest = () => {
         expandAll
         indicator={true}
       />
+    </div>
+  );
+};
+
+export const AccordionTest = () => {
+  return (
+    <div className="max-w-md w-full">
+      <AccordionPrimitive.Root type="multiple">
+        <AccordionPrimitive.Item value="1">
+          <AccordionPrimitive.Trigger>Trigger 1</AccordionPrimitive.Trigger>
+          <AccordionPrimitive.Content>Content 1</AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+        <AccordionPrimitive.Item value="2">
+          <AccordionPrimitive.Trigger>Trigger 2</AccordionPrimitive.Trigger>
+          <AccordionPrimitive.Content>
+            <AccordionPrimitive.Root type="multiple">
+              <AccordionPrimitive.Item value="2.1">
+                <AccordionPrimitive.Trigger>
+                  Trigger 2.1
+                </AccordionPrimitive.Trigger>
+                <AccordionPrimitive.Content></AccordionPrimitive.Content>
+              </AccordionPrimitive.Item>
+            </AccordionPrimitive.Root>
+          </AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+        <AccordionPrimitive.Item value="3">
+          <AccordionPrimitive.Trigger>Trigger 3</AccordionPrimitive.Trigger>
+          <AccordionPrimitive.Content>Content 3</AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+      </AccordionPrimitive.Root>
     </div>
   );
 };

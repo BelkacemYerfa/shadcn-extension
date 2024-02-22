@@ -143,7 +143,17 @@ export const Tree = forwardRef<
       >
         <div ref={containerRef} className={cn("w-full h-80", className)}>
           <ScrollArea ref={ref} style={style} className="relative px-2">
-            {children}
+            <AccordionPrimitive.Root
+              type="multiple"
+              defaultValue={expendedItems}
+              value={expendedItems}
+              className="flex flex-col gap-1"
+              onValueChange={(value) =>
+                setExpendedItems((prev) => [...(prev ?? []), value[0]])
+              }
+            >
+              {children}
+            </AccordionPrimitive.Root>
           </ScrollArea>
         </div>
       </TreeContext.Provider>
@@ -154,8 +164,6 @@ export const Tree = forwardRef<
 Tree.displayName = "Tree";
 
 interface FolderComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-// TODO: refactor the folder and file component api , to be used as custom component to build a primitive custom tree view
 
 type FolderProps = {
   expendedItems?: string[];
@@ -168,43 +176,46 @@ export const Folder = forwardRef<
   HTMLDivElement,
   FolderProps & React.HTMLAttributes<HTMLDivElement>
 >(({ className, element, isSelectable = true, children, ...props }, ref) => {
-  const { handleExpand, expendedItems, indicator } = useTree();
+  const { handleExpand, expendedItems, indicator, setExpendedItems } =
+    useTree();
 
   return (
-    <AccordionPrimitive.Root
-      type="multiple"
-      defaultValue={expendedItems}
-      value={expendedItems?.includes(element) ? [element] : []}
-      className={cn("", className)}
-      ref={ref}
+    <AccordionPrimitive.Item
+      value={element}
+      className="relative overflow-hidden h-full"
+      {...props}
     >
-      <AccordionPrimitive.Item
-        value={element}
-        className="relative overflow-hidden h-full"
-        {...props}
+      <AccordionPrimitive.Trigger
+        className={`flex items-center gap-1 text-sm ${
+          !element ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+        } `}
+        disabled={!isSelectable}
+        onClick={() => handleExpand(element)}
       >
-        <AccordionPrimitive.Trigger
-          className={`flex items-center gap-1 text-sm ${
-            !element ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          } `}
-          disabled={!isSelectable}
-          onClick={() => handleExpand(element)}
+        {expendedItems?.includes(element) ? (
+          <FolderOpenIcon className="h-4 w-4" />
+        ) : (
+          <FolderIcon className="h-4 w-4" />
+        )}
+        <span>{element}</span>
+      </AccordionPrimitive.Trigger>
+      <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
+        {element && indicator && (
+          <div className="h-full w-[1px] bg-muted absolute left-1.5 py-3 rounded-md hover:bg-slate-300 duration-300 ease-in-out " />
+        )}
+        <AccordionPrimitive.Root
+          type="multiple"
+          className="flex flex-col gap-1 py-1 ml-5"
+          defaultValue={expendedItems}
+          value={expendedItems}
+          onValueChange={(value) => {
+            setExpendedItems?.((prev) => [...(prev ?? []), value[0]]);
+          }}
         >
-          {expendedItems?.includes(element) ? (
-            <FolderOpenIcon className="h-4 w-4" />
-          ) : (
-            <FolderIcon className="h-4 w-4" />
-          )}
-          <span>{element}</span>
-        </AccordionPrimitive.Trigger>
-        <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
-          {element && indicator && (
-            <div className="h-full w-[1px] bg-muted absolute left-1.5 py-3 rounded-md hover:bg-slate-300 duration-300 ease-in-out " />
-          )}
-          <div className="flex flex-col gap-1 py-1 ml-5">{children}</div>
-        </AccordionPrimitive.Content>
-      </AccordionPrimitive.Item>
-    </AccordionPrimitive.Root>
+          {children}
+        </AccordionPrimitive.Root>
+      </AccordionPrimitive.Content>
+    </AccordionPrimitive.Item>
   );
 });
 
@@ -213,7 +224,7 @@ Folder.displayName = "Folder";
 export const File = forwardRef<
   HTMLButtonElement,
   {
-    element?: string;
+    element: string;
     handleSelect?: (id: string) => void;
     isSelectable?: boolean;
   } & React.HTMLAttributes<HTMLButtonElement>
@@ -232,29 +243,25 @@ export const File = forwardRef<
     const { selectedId, selectItem } = useTree();
     const isSelected = selectedId === element;
     return (
-      <button
-        type="button"
-        disabled={!isSelectable}
-        ref={ref}
-        aria-label="File"
-        {...props}
-        className={`pr-1 rounded-md w-fit duration-300 ease-in-out ${
-          isSelected && isSelectable ? "bg-muted" : ""
-        } `}
-      >
-        <div
+      <AccordionPrimitive.Item value={element} className="relative">
+        <AccordionPrimitive.Trigger
+          ref={ref}
+          {...props}
+          disabled={!isSelectable}
+          aria-label="File"
           className={cn(
-            `flex items-center gap-1 cursor-pointer text-sm ${
-              isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed"
-            }`,
-            className
+            "flex items-center gap-1 cursor-pointer text-sm pr-1 rounded-md w-fit duration-200 ease-in-out",
+            {
+              "bg-muted": isSelected && isSelectable,
+            },
+            isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed"
           )}
-          onClick={() => selectItem(element ?? " ")}
+          onClick={() => selectItem(element)}
         >
           <FileIcon className="h-4 w-4" />
           {children}
-        </div>
-      </button>
+        </AccordionPrimitive.Trigger>
+      </AccordionPrimitive.Item>
     );
   }
 );

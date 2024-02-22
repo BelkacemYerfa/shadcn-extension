@@ -1,17 +1,5 @@
 /* import { MultiSelect } from "@/components/extension/fancy-multi-select/multi-select"; */
-import { BreadCrumb } from "@/components/extension/breadcrumb/bread-crumb";
-import {
-  ImageUpload,
-  Model,
-  OtpTest,
-  TreeViewTest,
-  Commander,
-  CommanderUsingUseState,
-  CarouselExample,
-  BreadCrumbTest,
-  FileUploaderTest,
-  TreeFileTest,
-} from "@/components/extension/model";
+import { TreeViewTest, TreeFileTest } from "@/components/extension/model";
 
 import { ModeToggle } from "@/components/toggle-theme";
 
@@ -36,7 +24,7 @@ export default function Home() {
         </div>
         <div className="flex flex-col items-center gap-2">
           <h2 className="font-semibold text-3xl">
-            Full Built in {"<"}Tree/{">"} Api{" "}
+            Full Built in {"<"}Tree /{">"} Api{" "}
           </h2>
           <TreeFileTest />
         </div>

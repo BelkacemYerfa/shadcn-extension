@@ -93,9 +93,9 @@ export const TreeItem = forwardRef<
     <ul ref={ref} className="w-full" {...props}>
       {elements instanceof Array ? (
         elements.map((element) => (
-          <li key={element.id} className="w-full">
+          <div key={element.id} className="w-full">
             {element.children && element.children?.length > 0 ? (
-              <Folder element={element.name} indicator={indicator}>
+              <Folder element={element.name}>
                 <TreeItem
                   key={element.id}
                   aria-label={`folder ${element.name}`}
@@ -112,14 +112,15 @@ export const TreeItem = forwardRef<
                 <span>{element?.name}</span>
               </File>
             )}
-          </li>
+          </div>
         ))
       ) : (
-        <li className="px-1">
-          <File aria-label={`file ${elements?.name}`} element={elements?.name}>
-            <span>{elements?.name}</span>
-          </File>
-        </li>
+        <File
+          aria-label={`file ${elements?.name}`}
+          element={elements?.name ?? " "}
+        >
+          <span>{elements?.name}</span>
+        </File>
       )}
     </ul>
   );
