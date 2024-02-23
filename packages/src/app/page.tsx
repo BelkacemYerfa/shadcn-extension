@@ -20,6 +20,15 @@ export default function Home() {
   return (
     <main className="relative flex items-center py-20 flex-col h-[100dvh]">
       {/*  <Model /> */}
+
+      {/* <ImageUpload /> */}
+      {/*  <CarouselExample /> */}
+      {/* <Commander /> */}
+      {/* <CommanderUsingUseState />
+      <OtpTest /> */}
+      {/* <BreadCrumbTest /> */}
+      {/*  <FileUploaderTest /> */}
+
       {/*  <ImageUpload /> */}
       {/* <CarouselExample /> */}
       {/* <ImageUpload /> */}
