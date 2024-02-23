@@ -5,6 +5,7 @@ import {
   Model,
   OtpTest,
   TreeViewTest,
+  TreeFileTest,
   Commander,
   CommanderUsingUseState,
   CarouselExample,
@@ -21,12 +22,31 @@ export default function Home() {
       {/*  <Model /> */}
       {/*  <ImageUpload /> */}
       {/* <CarouselExample /> */}
+      {/* <ImageUpload /> */}
+      {/*  <CarouselExample /> */}
+
       {/* <Commander /> */}
       {/* <CommanderUsingUseState />
       <OtpTest /> */}
-      <TreeViewTest />
+
       {/* <BreadCrumbTest /> */}
       {/*  <FileUploaderTest /> */}
+
+      <div className="flex flex-col md:flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
+          <h2 className="font-semibold text-3xl">
+            Full Built in {"<"}TreeView /{">"}{" "}
+          </h2>
+          <TreeViewTest />
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <h2 className="font-semibold text-3xl">
+            Full Built in {"<"}Tree /{">"} Api{" "}
+          </h2>
+          <TreeFileTest />
+        </div>
+      </div>
+
       <div className="absolute right-2 bottom-2">
         <ModeToggle />
       </div>
