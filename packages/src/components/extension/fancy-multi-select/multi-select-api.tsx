@@ -254,5 +254,4 @@ export {
   MultiSelectorContent,
   MultiSelectorList,
   MultiSelectorItem,
-  useMultiSelect,
 };
