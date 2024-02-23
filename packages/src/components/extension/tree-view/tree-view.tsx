@@ -204,63 +204,9 @@ export const TreeItem = forwardRef<
           </div>
         ))
       ) : (
+        <li key={i} >
+
         <File
-          aria-label={`file ${elements?.name}`}
-          element={elements?.name ?? " "}
->(
-  (
-    {
-      className,
-      elements,
-      selectItem,
-      handleSelect,
-      expendedItems,
-      selectedId,
-      indicator,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <ul ref={ref} className="w-full" {...props}>
-        {elements instanceof Array ? (
-          elements.map((element) => (
-            <li key={element.id} className="pl-5 w-full">
-              {element.children && element.children?.length > 0 ? (
-                <Folder
-                  expendedItems={expendedItems}
-                  handleSelect={handleSelect}
-                  element={element}
-                  indicator={indicator}
-                >
-                  <TreeItem
-                    key={element.id}
-                    aria-label={`folder ${element.name}`}
-                    elements={element.children}
-                    selectedId={selectedId}
-                    handleSelect={handleSelect}
-                    selectItem={selectItem}
-                    expendedItems={expendedItems}
-                    indicator={indicator}
-                  />
-                </Folder>
-              ) : (
-                <File
-                  aria-label={`File ${element.name}`}
-                  key={element.id}
-                  element={element}
-                  isSelected={selectedId === element.id}
-                  handleSelect={selectItem}
-                >
-                  <FileIcon className="h-4 w-4" />
-                  <span>{element?.name}</span>
-                </File>
-              )}
-            </li>
-          ))
-        ) : (
-          <li className="px-1">
-            <File
               aria-label={`file ${elements?.name}`}
               element={elements}
               handleSelect={selectItem}
@@ -269,12 +215,10 @@ export const TreeItem = forwardRef<
               <FileIcon className="h-4 w-4" />
               <span>{elements?.name}</span>
             </File>
-          </li>
-        )}
-      </ul>
-    );
-  }
-);
+        </li>
+    )
+  } </ul>)
+});
 
 TreeItem.displayName = "TreeItem";
 

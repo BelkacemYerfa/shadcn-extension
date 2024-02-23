@@ -10,12 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon } from "lucide-react";
-import React, {
-  KeyboardEvent,
-  useCallback,
-  useRef,
-  useState,
-} from "react";
+import { KeyboardEvent, useCallback, useRef, useState } from "react";
 
 type Options = {
   value: string;

@@ -12,14 +12,6 @@ import {
 } from "./carousel/carousel";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "./fancy-multi-select/multi-select";
-import {
-  MultiSelector,
-  MultiSelectorTrigger,
-  MultiSelectorContent,
-  MultiSelectorList,
-  MultiSelectorItem,
-  MultiSelectorInput,
-} from "./fancy-multi-select/multi-select-api";
 import { OtpStyledInput } from "./otp-input/otp-input";
 import {
   Form,
@@ -53,6 +45,7 @@ import {
   FileInput,
 } from "./file-uploader/file-uploader";
 import { Paperclip } from "lucide-react";
+import * as AccordionPrimitive from "@radix-ui/react-accordion";
 
 export type FilePreview = {
   file: File;
@@ -346,7 +339,7 @@ export const Commander = () => {
   return (
     <Form {...form}>
       <form
-        className="grid max-w-xs w-full"
+        className="grid gap-2 max-w-sm w-full"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -713,92 +706,32 @@ export const TreeViewTest = () => {
   );
 };
 
-export const MultiSelectorComp = () => {
-  const options = [
-    {
-      value: "Next",
-      label: "Next",
-    },
-    {
-      value: "React",
-      label: "React",
-    },
-    {
-      value: "Tailwind",
-      label: "Tailwind",
-    },
-    {
-      value: "Remix",
-      label: "Remix",
-    },
-    {
-      value: "Astro",
-      label: "Astro",
-    },
-    {
-      value: "Svelte",
-      label: "Svelte",
-    },
-    {
-      value: "Solid",
-      label: "Solid",
-    },
-    {
-      value: "Vue",
-      label: "Vue",
-      disabled: true,
-    },
-    {
-      value: "Nuxt",
-      label: "Nuxt",
-    },
-    {
-      value: "SvelteKit",
-      label: "SvelteKit",
-    },
-    {
-      value: "Vite",
-      label: "Vite",
-      disabled: true,
-    },
-    {
-      value: "Snowpack",
-      label: "Snowpack",
-      disabled: true,
-    },
-    {
-      value: "Parcel",
-      label: "Parcel",
-    },
-    {
-      value: "Webpack",
-      label: "Webpack",
-    },
-    {
-      value: "Gatsby",
-      label: "Gatsby",
-    },
-  ];
-  const [value, onValueChange] = useState<string[]>([]);
-  const notSelected = options.filter((item) => !value.includes(item.value));
+export const AccordionTest = () => {
   return (
-    <MultiSelector
-      value={value}
-      onValueChange={onValueChange}
-      className="max-w-xs"
-    >
-      <MultiSelectorTrigger>
-        <MultiSelectorInput placeholder="Select a framework ..." />
-      </MultiSelectorTrigger>
-      <MultiSelectorContent>
-        <MultiSelectorList>
-          {options.map((option, i) => (
-            <MultiSelectorItem key={i} value={option.value}>
-              {option.label}
-            </MultiSelectorItem>
-          ))}
-        </MultiSelectorList>
-      </MultiSelectorContent>
-    </MultiSelector>
+    <div className="max-w-md w-full">
+      <AccordionPrimitive.Root type="multiple">
+        <AccordionPrimitive.Item value="1">
+          <AccordionPrimitive.Trigger>Trigger 1</AccordionPrimitive.Trigger>
+          <AccordionPrimitive.Content>Content 1</AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+        <AccordionPrimitive.Item value="2">
+          <AccordionPrimitive.Trigger>Trigger 2</AccordionPrimitive.Trigger>
+          <AccordionPrimitive.Content>
+            <AccordionPrimitive.Root type="multiple">
+              <AccordionPrimitive.Item value="2.1">
+                <AccordionPrimitive.Trigger>
+                  Trigger 2.1
+                </AccordionPrimitive.Trigger>
+                <AccordionPrimitive.Content></AccordionPrimitive.Content>
+              </AccordionPrimitive.Item>
+            </AccordionPrimitive.Root>
+          </AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+        <AccordionPrimitive.Item value="3">
+          <AccordionPrimitive.Trigger>Trigger 3</AccordionPrimitive.Trigger>
+          <AccordionPrimitive.Content>Content 3</AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+      </AccordionPrimitive.Root>
+    </div>
   );
 };
