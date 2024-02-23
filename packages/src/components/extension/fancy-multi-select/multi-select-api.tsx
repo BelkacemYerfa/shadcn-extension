@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
-import { X as RemoveIcon, CheckCheck } from "lucide-react";
+import { X as RemoveIcon, Check } from "lucide-react";
 import React, {
   KeyboardEvent,
   createContext,
@@ -240,7 +240,7 @@ const MultiSelectorItem = forwardRef<
       onMouseDown={mousePreventDefault}
     >
       {children}
-      {isIncluded && <CheckCheck className="h-4 w-4" />}
+      {isIncluded && <Check className="h-4 w-4" />}
     </CommandItem>
   );
 });
