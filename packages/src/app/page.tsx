@@ -1,5 +1,3 @@
-/* import { MultiSelect } from "@/components/extension/fancy-multi-select/multi-select"; */
-
 import { BreadCrumb } from "@/components/extension/breadcrumb/bread-crumb";
 import {
   ImageUpload,
@@ -12,6 +10,7 @@ import {
   CarouselExample,
   BreadCrumbTest,
   FileUploaderTest,
+  MultiSelectTest,
 } from "@/components/extension/model";
 
 import { ModeToggle } from "@/components/toggle-theme";
@@ -42,7 +41,8 @@ export default function Home() {
       {/* <BreadCrumbTest /> */}
       {/*  <FileUploaderTest /> */}
 
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      <MultiSelectTest />
+      {/*  <div className="flex flex-col md:flex-row items-center gap-2">
         <div className="flex flex-col items-center gap-2">
           <h2 className="font-semibold text-3xl">
             Full Built in {"<"}TreeView /{">"}{" "}
@@ -55,8 +55,7 @@ export default function Home() {
           </h2>
           <TreeFileTest />
         </div>
-      </div>
-
+      </div> */}
       <div className="absolute right-2 bottom-2">
         <ModeToggle />
       </div>
