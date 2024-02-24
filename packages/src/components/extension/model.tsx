@@ -567,8 +567,8 @@ export const TreeFileTest = () => {
   return (
     <Tree
       className="rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1"
-      initialExpendedItems={["src", "components"]}
-      initialSelectedId="button.tsx"
+      initialExpendedItems={["components"]}
+      initialSelectedId="carousel.tsx"
       elements={elements}
     >
       <Folder element="src">
@@ -613,7 +613,7 @@ export const TreeViewTest = () => {
           children: [
             {
               id: "4",
-              isSelectable: true,
+              isSelectable: false,
               name: "Element 4",
               children: [
                 {
@@ -628,13 +628,12 @@ export const TreeViewTest = () => {
                       children: [
                         {
                           id: "7",
-                          isSelectable: false,
+                          isSelectable: true,
                           name: "Element 7",
-                          children: [],
                         },
                         {
                           id: "21",
-                          isSelectable: true,
+                          isSelectable: false,
                           name: "Element 21",
                         },
                       ],
@@ -706,8 +705,8 @@ export const TreeViewTest = () => {
     <div className="flex gap-2 pl-2">
       <TreeView
         elements={elements}
-        initialSelectedId="21"
-        expandAll
+        initialSelectedId="Element 21"
+        initialExpendedItems={["Element 9"]}
         indicator={true}
       />
     </div>

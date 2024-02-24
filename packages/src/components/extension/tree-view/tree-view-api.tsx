@@ -15,7 +15,14 @@ import React, {
 import useResizeObserver from "use-resize-observer";
 import { Button } from "@/components/ui/button";
 import { CaretSortIcon } from "@radix-ui/react-icons";
-import { TreeViewElement } from "./tree-view";
+import exp from "constants";
+
+type TreeViewElement = {
+  id: string;
+  name: string;
+  isSelectable?: boolean;
+  children?: TreeViewElement[];
+};
 
 type TreeContextProps = {
   selectedId: string | undefined;
@@ -26,9 +33,9 @@ type TreeContextProps = {
   setExpendedItems?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
 };
 
-export const TreeContext = createContext<TreeContextProps | null>(null);
+const TreeContext = createContext<TreeContextProps | null>(null);
 
-export const useTree = () => {
+const useTree = () => {
   const context = useContext(TreeContext);
   if (!context) {
     throw new Error("useTree must be used within a TreeProvider");
@@ -36,15 +43,16 @@ export const useTree = () => {
   return context;
 };
 
-export const Tree = forwardRef<
-  HTMLDivElement,
-  {
-    initialSelectedId?: string;
-    elements?: TreeViewElement[];
-    initialExpendedItems?: string[];
-    indicator?: boolean;
-  } & React.HTMLAttributes<HTMLDivElement>
->(
+type TreeViewComponentProps = React.HTMLAttributes<HTMLDivElement>;
+
+type TreeViewProps = {
+  initialSelectedId?: string;
+  indicator?: boolean;
+  elements?: TreeViewElement[];
+  initialExpendedItems?: string[];
+} & TreeViewComponentProps;
+
+const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
   (
     {
       className,
@@ -84,18 +92,17 @@ export const Tree = forwardRef<
           currentElement: TreeViewElement,
           currentPath: string[] = []
         ) => {
-          const newPath = [...currentPath, currentElement.id];
-          if (currentElement.id === selectId) {
+          const newPath = [...currentPath, currentElement.name];
+          if (currentElement.name === selectId) {
             if (currentElement.isSelectable) {
-              setExpendedItems(newPath);
+              setExpendedItems((prev) => [...(prev ?? []), ...newPath]);
             } else {
-              if (newPath.includes(currentElement.id)) {
+              if (newPath.includes(currentElement.name)) {
                 newPath.pop();
-                setExpendedItems(newPath);
-                return;
+                setExpendedItems((prev) => [...(prev ?? []), ...newPath]);
               }
-              setExpendedItems(newPath);
             }
+            return;
           }
 
           if (
@@ -172,7 +179,7 @@ type FolderProps = {
   isSelectable?: boolean;
 } & FolderComponentProps;
 
-export const Folder = forwardRef<
+const Folder = forwardRef<
   HTMLDivElement,
   FolderProps & React.HTMLAttributes<HTMLDivElement>
 >(({ className, element, isSelectable = true, children, ...props }, ref) => {
@@ -187,7 +194,7 @@ export const Folder = forwardRef<
     >
       <AccordionPrimitive.Trigger
         className={`flex items-center gap-1 text-sm ${
-          !element ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+          !isSelectable ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
         } `}
         disabled={!isSelectable}
         onClick={() => handleExpand(element)}
@@ -221,7 +228,7 @@ export const Folder = forwardRef<
 
 Folder.displayName = "Folder";
 
-export const File = forwardRef<
+const File = forwardRef<
   HTMLButtonElement,
   {
     element: string;
@@ -268,13 +275,13 @@ export const File = forwardRef<
 
 File.displayName = "File";
 
-export const CollapseButton = forwardRef<
+const CollapseButton = forwardRef<
   HTMLButtonElement,
   {
     elements: TreeViewElement[];
     expandAll?: boolean;
   } & React.HTMLAttributes<HTMLButtonElement>
->(({ className, elements, expandAll, ...props }, ref) => {
+>(({ className, elements, expandAll, children, ...props }, ref) => {
   const { expendedItems, setExpendedItems } = useTree();
 
   const expendAllTree = useCallback((elements: TreeViewElement[]) => {
@@ -305,7 +312,7 @@ export const CollapseButton = forwardRef<
   return (
     <Button
       variant={"ghost"}
-      className="h-8 w-8 p-1 absolute bottom-1 right-2"
+      className="h-8 w-fit p-1 absolute bottom-1 right-2"
       onClick={
         expendedItems && expendedItems.length > 0
           ? closeAll
@@ -314,10 +321,12 @@ export const CollapseButton = forwardRef<
       ref={ref}
       {...props}
     >
-      <CaretSortIcon />
+      {children}
       <span className="sr-only">Toggle</span>
     </Button>
   );
 });
 
 CollapseButton.displayName = "CollapseButton";
+
+export { Tree, Folder, File, CollapseButton, type TreeViewElement };
