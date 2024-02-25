@@ -16,13 +16,13 @@ import React, {
   forwardRef,
   useCallback,
   useContext,
-  useRef,
   useState,
 } from "react";
 
 type MultiSelectorProps = {
   value: string[];
   onValueChange: (value: string[]) => void;
+  loop?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 type MultiSelectContextProps = {
@@ -32,7 +32,6 @@ type MultiSelectContextProps = {
   setOpen: (value: boolean) => void;
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
-  inputRef?: React.RefObject<HTMLInputElement>;
   activeIndex: number;
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -50,10 +49,10 @@ const useMultiSelect = () => {
 const MultiSelector = ({
   value,
   onValueChange,
+  loop = false,
   className,
   children,
 }: MultiSelectorProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -94,12 +93,12 @@ const MultiSelector = ({
       } else if (e.key === "ArrowLeft") {
         const index = activeIndex - 1;
         setActiveIndex(index < 0 ? value.length - 1 : index);
-      } else if (e.key === "ArrowRight") {
+      } else if (e.key === "ArrowRight" && (activeIndex !== -1 || loop)) {
         const index = activeIndex + 1;
-        setActiveIndex(index > value.length - 1 ? 0 : index);
+        setActiveIndex(index > value.length - 1 ? (loop ? 0 : -1) : index);
       }
     },
-    [value, inputValue, activeIndex]
+    [value, inputValue, activeIndex, loop]
   );
 
   return (
@@ -111,7 +110,6 @@ const MultiSelector = ({
         setOpen,
         inputValue,
         setInputValue,
-        inputRef,
         activeIndex,
         setActiveIndex,
       }}
@@ -132,7 +130,7 @@ const MultiSelector = ({
 const MultiSelectorTrigger = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, children }, ref) => {
+>(({ className, children, ...props }, ref) => {
   const { value, onValueChange, activeIndex } = useMultiSelect();
 
   const mousePreventDefault = useCallback((e: React.MouseEvent) => {
@@ -147,6 +145,7 @@ const MultiSelectorTrigger = forwardRef<
         "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg",
         className
       )}
+      {...props}
     >
       {value.map((item, index) => (
         <Badge
@@ -163,11 +162,9 @@ const MultiSelectorTrigger = forwardRef<
             aria-roledescription="button to remove option"
             type="button"
             onMouseDown={mousePreventDefault}
-            onClick={() => {
-              onValueChange(item);
-            }}
+            onClick={() => onValueChange(item)}
           >
-            {" "}
+            <span className="sr-only">Remove {item} option</span>
             <RemoveIcon className="h-4 w-4 hover:stroke-destructive" />
           </button>
         </Badge>
@@ -182,17 +179,23 @@ MultiSelectorTrigger.displayName = "MultiSelectorTrigger";
 const MultiSelectorInput = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ ...props }, ref) => {
-  const { setOpen, inputValue, inputRef, setInputValue } = useMultiSelect();
+>(({ className, ...props }, ref) => {
+  const { setOpen, inputValue, setInputValue, activeIndex, setActiveIndex } =
+    useMultiSelect();
   return (
     <CommandPrimitive.Input
       {...props}
-      ref={inputRef}
+      ref={ref}
       value={inputValue}
-      onValueChange={setInputValue}
+      onValueChange={activeIndex === -1 ? setInputValue : undefined}
       onBlur={() => setOpen(false)}
       onFocus={() => setOpen(true)}
-      className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
+      onClick={() => setActiveIndex(-1)}
+      className={cn(
+        "ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1",
+        className,
+        activeIndex !== -1 && "caret-transparent"
+      )}
     />
   );
 });
