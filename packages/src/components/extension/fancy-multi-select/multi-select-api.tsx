@@ -33,6 +33,8 @@ type MultiSelectContextProps = {
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   inputRef?: React.RefObject<HTMLInputElement>;
+  activeIndex: number;
+  setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const MultiSelectContext = createContext<MultiSelectContextProps | null>(null);
@@ -54,6 +56,7 @@ const MultiSelector = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState<boolean>(false);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
 
   const onValueChangeHandler = useCallback(
     (val: string) => {
@@ -66,21 +69,37 @@ const MultiSelector = ({
     [value]
   );
 
-  const removeOptionWithBackspace = useCallback(
+  const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
       if ((e.key === "Backspace" || e.key === "Delete") && value.length > 0) {
         if (inputValue.length === 0) {
-          onValueChange(
-            value.filter((item) => item !== value[value.length - 1])
-          );
+          if (activeIndex !== -1 && activeIndex < value.length) {
+            onValueChange(value.filter((item) => item !== value[activeIndex]));
+            const newIndex = activeIndex - 1 < 0 ? 0 : activeIndex - 1;
+            setActiveIndex(newIndex);
+          } else {
+            onValueChange(
+              value.filter((item) => item !== value[value.length - 1])
+            );
+          }
         }
       } else if (e.key === "Enter") {
         setOpen(true);
       } else if (e.key === "Escape") {
-        setOpen(false);
+        if (activeIndex !== -1) {
+          setActiveIndex(-1);
+        } else {
+          setOpen(false);
+        }
+      } else if (e.key === "ArrowLeft") {
+        const index = activeIndex - 1;
+        setActiveIndex(index < 0 ? value.length - 1 : index);
+      } else if (e.key === "ArrowRight") {
+        const index = activeIndex + 1;
+        setActiveIndex(index > value.length - 1 ? 0 : index);
       }
     },
-    [value, inputValue]
+    [value, inputValue, activeIndex]
   );
 
   return (
@@ -93,10 +112,12 @@ const MultiSelector = ({
         inputValue,
         setInputValue,
         inputRef,
+        activeIndex,
+        setActiveIndex,
       }}
     >
       <Command
-        onKeyDown={removeOptionWithBackspace}
+        onKeyDown={handleKeyDown}
         className={cn(
           "overflow-visible bg-transparent flex flex-col gap-2",
           className
@@ -112,11 +133,13 @@ const MultiSelectorTrigger = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children }, ref) => {
-  const { value, onValueChange } = useMultiSelect();
+  const { value, onValueChange, activeIndex } = useMultiSelect();
+
   const mousePreventDefault = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
   }, []);
+
   return (
     <div
       ref={ref}
@@ -125,10 +148,13 @@ const MultiSelectorTrigger = forwardRef<
         className
       )}
     >
-      {value.map((item) => (
+      {value.map((item, index) => (
         <Badge
           key={item}
-          className="px-1 rounded-xl flex items-center gap-1"
+          className={cn(
+            "px-1 rounded-xl flex items-center gap-1",
+            activeIndex === index && "ring-2 ring-muted-foreground "
+          )}
           variant={"secondary"}
         >
           <span className="text-xs">{item}</span>
