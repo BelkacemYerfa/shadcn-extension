@@ -780,25 +780,36 @@ export const MultiSelectTest = () => {
     },
   ];
   const [value, setValue] = useState<string[]>([]);
+  const [loop, setLoop] = useState<boolean>(false);
   return (
-    <MultiSelector
-      value={value}
-      onValueChange={setValue}
-      className="max-w-xs"
-      loop
-    >
-      <MultiSelectorTrigger>
-        <MultiSelectorInput placeholder="Select your framework" />
-      </MultiSelectorTrigger>
-      <MultiSelectorContent>
-        <MultiSelectorList>
-          {options.map((option, i) => (
-            <MultiSelectorItem key={i} value={option.value}>
-              {option.label}
-            </MultiSelectorItem>
-          ))}
-        </MultiSelectorList>
-      </MultiSelectorContent>
-    </MultiSelector>
+    <div className="flex gap-2 max-w-lg w-full ">
+      <MultiSelector
+        value={value}
+        onValueChange={setValue}
+        className="max-w-xs"
+        loop={loop}
+      >
+        <MultiSelectorTrigger>
+          <MultiSelectorInput placeholder="Select your framework" />
+        </MultiSelectorTrigger>
+        <MultiSelectorContent>
+          <MultiSelectorList>
+            {options.map((option, i) => (
+              <MultiSelectorItem key={i} value={option.value}>
+                {option.label}
+              </MultiSelectorItem>
+            ))}
+          </MultiSelectorList>
+        </MultiSelectorContent>
+      </MultiSelector>
+      <Button
+        type="button"
+        variant={"outline"}
+        className="h-10"
+        onClick={() => setLoop(!loop)}
+      >
+        {loop ? "Disable Loop" : "Enable Loop"}
+      </Button>
+    </div>
   );
 };
