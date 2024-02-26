@@ -7,8 +7,9 @@ import {
   CarouselThumbsContainer,
   CarouselNext,
   CarouselPrevious,
-  CarouselProvider,
+  Carousel,
   SliderMainItem,
+  SliderThumbItem,
 } from "./carousel/carousel";
 import { cn } from "@/lib/utils";
 import { MultiSelect } from "./fancy-multi-select/multi-select";
@@ -28,7 +29,7 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
   CustomUploadInput,
   FileUploadCarouselProvider,
-  SliderMiniItemWithRemove,
+  SliderThumbItemWithRemove,
 } from "./carousel/carousel-image-upload";
 import Image from "next/image";
 import {
@@ -45,7 +46,6 @@ import {
   FileInput,
 } from "./file-uploader/file-uploader";
 import { Paperclip } from "lucide-react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -100,7 +100,7 @@ export const ImageUpload = () => {
 const MultiCarousel = () => {
   const [preview, setPreview] = useState<FilePreview[] | null>(null);
   return (
-    <CarouselProvider>
+    <Carousel>
       <FileUploadCarouselProvider<FilePreview>
         value={preview}
         onValueChange={setPreview}
@@ -135,7 +135,7 @@ const MultiCarousel = () => {
             </CarouselMainContainer>
             <CarouselThumbsContainer>
               {preview.map((file, i) => (
-                <SliderMiniItemWithRemove key={i} index={i}>
+                <SliderThumbItemWithRemove key={i} index={i}>
                   <AspectRatio ratio={16 / 9}>
                     <Image
                       src={file.preview}
@@ -145,7 +145,7 @@ const MultiCarousel = () => {
                       className="rounded-md"
                     />
                   </AspectRatio>
-                </SliderMiniItemWithRemove>
+                </SliderThumbItemWithRemove>
               ))}
             </CarouselThumbsContainer>
             <CustomUploadInput className="border-none">
@@ -188,26 +188,43 @@ const MultiCarousel = () => {
           </CustomUploadInput>
         )}
       </FileUploadCarouselProvider>
-    </CarouselProvider>
+    </Carousel>
   );
 };
 
 export const CarouselExample = () => {
   return (
-    <CarouselProvider activeKeyboard className="max-w-xs w-full ">
-      <CarouselNext />
-      <CarouselPrevious />
-      <CarouselMainContainer>
+    <Carousel
+      activeKeyboard
+      orientation="vertical"
+      className="max-w-xs w-full flex items-center gap-2 "
+    >
+      <div className="relative basis-3/4">
+        <CarouselNext />
+        <CarouselPrevious />
+        <CarouselMainContainer className="h-60">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <SliderMainItem
+              key={index}
+              className="border border-muted flex items-center justify-center h-52 rounded-md"
+            >
+              Slide {index + 1}
+            </SliderMainItem>
+          ))}
+        </CarouselMainContainer>
+      </div>
+      <CarouselThumbsContainer className="h-60 basis-1/4 ">
         {Array.from({ length: 10 }).map((_, index) => (
-          <SliderMainItem
+          <SliderThumbItem
             key={index}
-            className="border border-muted flex items-center justify-center h-52 rounded-md"
+            index={index}
+            className="border border-muted flex items-center justify-center h-16 rounded-md"
           >
             Slide {index + 1}
-          </SliderMainItem>
+          </SliderThumbItem>
         ))}
-      </CarouselMainContainer>
-    </CarouselProvider>
+      </CarouselThumbsContainer>
+    </Carousel>
   );
 };
 

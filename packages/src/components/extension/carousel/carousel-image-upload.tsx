@@ -9,7 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { SliderMiniItem, useCarousel } from "./carousel";
+import { SliderThumbItem, useCarousel } from "./carousel";
 import { X as RemoveIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -208,7 +208,7 @@ export function FileUploadCarouselProvider<T>({
 
 FileUploadCarouselProvider.displayName = "FileUploadCarouselProvider";
 
-export const SliderMiniItemWithRemove = forwardRef<
+export const SliderThumbItemWithRemove = forwardRef<
   HTMLButtonElement,
   {
     index: number;
@@ -216,7 +216,7 @@ export const SliderMiniItemWithRemove = forwardRef<
 >(({ index, children, className, ...props }, ref) => {
   const { removeImageFromPreview } = useFileUpload();
   return (
-    <SliderMiniItem index={index} className={className}>
+    <SliderThumbItem index={index} className={className}>
       <button
         ref={ref}
         {...props}
@@ -230,11 +230,11 @@ export const SliderMiniItemWithRemove = forwardRef<
         <RemoveIcon className="h-4 w-4 stroke-red-600" />
       </button>
       {children}
-    </SliderMiniItem>
+    </SliderThumbItem>
   );
 });
 
-SliderMiniItemWithRemove.displayName = "SliderMiniItemWithRemove";
+SliderThumbItemWithRemove.displayName = "SliderThumbItemWithRemove";
 
 export const CustomUploadInput = forwardRef<
   HTMLDivElement,

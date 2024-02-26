@@ -1,9 +1,6 @@
 "use client";
 
 import {
-  Dispatch,
-  JSXElementConstructor,
-  SetStateAction,
   forwardRef,
   useCallback,
   useContext,
@@ -21,6 +18,8 @@ import { createContext } from "react";
 type CarouselContextProps = {
   carouselOptions?: EmblaOptionsType;
   activeKeyboard?: boolean;
+  orientation?: "vertical" | "horizontal";
+  plugins?: Parameters<typeof useEmblaCarousel>[1];
 };
 
 type CarouselContextType = {
@@ -34,9 +33,10 @@ type CarouselContextType = {
   activeIndex: number;
   onThumbClick: (index: number) => void;
   handleKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => void;
+  orientation: "vertical" | "horizontal";
 } & CarouselContextProps;
 
-export const useCarousel = () => {
+const useCarousel = () => {
   const context = useContext(CarouselContext);
   if (!context) {
     throw new Error("useCarousel must be used within a CarouselProvider");
@@ -46,28 +46,38 @@ export const useCarousel = () => {
 
 const CarouselContext = createContext<CarouselContextType | null>(null);
 
-export const CarouselProvider = forwardRef<
+const Carousel = forwardRef<
   HTMLDivElement,
   CarouselContextProps & React.HTMLAttributes<HTMLDivElement>
 >(
   (
     {
-      carouselOptions = { axis: "x" },
+      carouselOptions,
       activeKeyboard = false,
+      orientation = "horizontal",
+      plugins,
       children,
       className,
       ...props
     },
     ref
   ) => {
-    const [emblaMainRef, emblaMainApi] = useEmblaCarousel({
-      ...carouselOptions,
-    });
-    const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
-      ...carouselOptions,
-      containScroll: "keepSnaps",
-      dragFree: true,
-    });
+    const [emblaMainRef, emblaMainApi] = useEmblaCarousel(
+      {
+        ...carouselOptions,
+        axis: orientation === "vertical" ? "y" : "x",
+      },
+      plugins
+    );
+    const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel(
+      {
+        ...carouselOptions,
+        axis: orientation === "vertical" ? "y" : "x",
+        containScroll: "keepSnaps",
+        dragFree: true,
+      },
+      plugins
+    );
     const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
     const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -119,7 +129,6 @@ export const CarouselProvider = forwardRef<
       emblaMainApi.on("reInit", onSelect);
       return () => {
         emblaMainApi.off("select", onSelect);
-        emblaMainApi.off("reInit", onSelect);
       };
     }, [emblaMainApi, onSelect]);
 
@@ -136,7 +145,9 @@ export const CarouselProvider = forwardRef<
           activeIndex,
           onThumbClick,
           handleKeyDown,
-          carouselOptions,
+          orientation:
+            orientation ||
+            (carouselOptions?.axis === "y" ? "vertical" : "horizontal"),
         }}
       >
         <div
@@ -156,20 +167,20 @@ export const CarouselProvider = forwardRef<
   }
 );
 
-CarouselProvider.displayName = "CarouselProvider";
+Carousel.displayName = "Carousel";
 
-export const CarouselMainContainer = forwardRef<
+const CarouselMainContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
-  const { mainRef, carouselOptions } = useCarousel();
+  const { mainRef, orientation } = useCarousel();
   return (
     <div ref={mainRef} className="overflow-hidden" {...props}>
       <div
         ref={ref}
         className={cn(
           "flex",
-          `${carouselOptions?.axis === "y" ? "flex-col" : ""}`,
+          `${orientation === "vertical" ? "flex-col" : ""}`,
           className
         )}
       >
@@ -181,14 +192,21 @@ export const CarouselMainContainer = forwardRef<
 
 CarouselMainContainer.displayName = "CarouselMainContainer";
 
-export const CarouselThumbsContainer = forwardRef<
+const CarouselThumbsContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
-  const { thumbsRef } = useCarousel();
+  const { thumbsRef, orientation } = useCarousel();
   return (
     <div ref={thumbsRef} className="overflow-hidden" {...props}>
-      <div ref={ref} className={cn("flex ", className)}>
+      <div
+        ref={ref}
+        className={cn(
+          "flex ",
+          `${orientation === "vertical" ? "flex-col" : ""}`,
+          className
+        )}
+      >
         {children}
       </div>
     </div>
@@ -197,18 +215,18 @@ export const CarouselThumbsContainer = forwardRef<
 
 CarouselThumbsContainer.displayName = "CarouselThumbsContainer";
 
-export const SliderMainItem = forwardRef<
+const SliderMainItem = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
-  const { carouselOptions } = useCarousel();
+  const { orientation } = useCarousel();
   return (
     <div
       {...props}
       ref={ref}
       className={cn(
-        `flex min-w-0 shrink-0 grow-0 basis-full ${
-          carouselOptions?.axis === "y" ? "py-1" : "px-1"
+        `min-w-0 shrink-0 grow-0 basis-full ${
+          orientation === "vertical" ? "py-1" : "px-1"
         }`,
         className
       )}
@@ -220,13 +238,13 @@ export const SliderMainItem = forwardRef<
 
 SliderMainItem.displayName = "SliderMainItem";
 
-export const SliderMiniItem = forwardRef<
+const SliderThumbItem = forwardRef<
   HTMLDivElement,
   {
     index: number;
   } & React.HTMLAttributes<HTMLDivElement>
 >(({ className, index, children, ...props }, ref) => {
-  const { activeIndex, onThumbClick, carouselOptions } = useCarousel();
+  const { activeIndex, onThumbClick, orientation } = useCarousel();
   const isSlideActive = activeIndex === index;
   return (
     <div
@@ -234,8 +252,8 @@ export const SliderMiniItem = forwardRef<
       ref={ref}
       onClick={() => onThumbClick(index)}
       className={cn(
-        "flex min-w-0 shrink-0 grow-0 basis-1/3 ",
-        `${carouselOptions?.axis === "y" ? "py-1" : "px-1"}`,
+        "flex min-w-0 shrink-0 grow-0 basis-1/3",
+        `${orientation === "vertical" ? "py-1" : "px-1"}`,
         className
       )}
     >
@@ -250,13 +268,13 @@ export const SliderMiniItem = forwardRef<
   );
 });
 
-SliderMiniItem.displayName = "SliderMiniItem";
+SliderThumbItem.displayName = "SliderThumbItem";
 
-export const CarouselPrevious = forwardRef<
+const CarouselPrevious = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { canScrollPrev, scrollPrev, carouselOptions } = useCarousel();
+  const { canScrollPrev, scrollPrev, orientation } = useCarousel();
 
   return (
     <Button
@@ -264,8 +282,8 @@ export const CarouselPrevious = forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute  h-6 w-6 rounded-full z-10",
-        carouselOptions?.axis === "y"
+        "absolute h-6 w-6 rounded-full z-10",
+        orientation === "vertical"
           ? "-top-2 left-1/2 -translate-x-1/2 rotate-90"
           : "-left-2 top-1/2 -translate-y-1/2",
         className
@@ -281,11 +299,11 @@ export const CarouselPrevious = forwardRef<
 });
 CarouselPrevious.displayName = "CarouselPrevious";
 
-export const CarouselNext = forwardRef<
+const CarouselNext = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { canScrollNext, scrollNext, carouselOptions } = useCarousel();
+  const { canScrollNext, scrollNext, orientation } = useCarousel();
   return (
     <Button
       ref={ref}
@@ -293,7 +311,7 @@ export const CarouselNext = forwardRef<
       size={size}
       className={cn(
         "absolute h-6 w-6 rounded-full z-10",
-        carouselOptions?.axis === "y"
+        orientation === "vertical"
           ? "-bottom-2 left-1/2 -translate-x-1/2 rotate-90"
           : "-right-2 top-1/2 -translate-y-1/2",
         className
@@ -307,4 +325,16 @@ export const CarouselNext = forwardRef<
     </Button>
   );
 });
+
 CarouselNext.displayName = "CarouselNext";
+
+export {
+  Carousel,
+  CarouselMainContainer,
+  CarouselThumbsContainer,
+  SliderMainItem,
+  SliderThumbItem,
+  CarouselPrevious,
+  CarouselNext,
+  useCarousel,
+};
