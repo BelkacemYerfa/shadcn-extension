@@ -567,8 +567,8 @@ export const TreeFileTest = () => {
   return (
     <Tree
       className="rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1"
-      initialExpendedItems={["src", "components"]}
-      initialSelectedId="button.tsx"
+      initialExpendedItems={["components"]}
+      initialSelectedId="carousel.tsx"
       elements={elements}
     >
       <Folder element="src">
@@ -613,7 +613,7 @@ export const TreeViewTest = () => {
           children: [
             {
               id: "4",
-              isSelectable: true,
+              isSelectable: false,
               name: "Element 4",
               children: [
                 {
@@ -628,13 +628,12 @@ export const TreeViewTest = () => {
                       children: [
                         {
                           id: "7",
-                          isSelectable: false,
+                          isSelectable: true,
                           name: "Element 7",
-                          children: [],
                         },
                         {
                           id: "21",
-                          isSelectable: true,
+                          isSelectable: false,
                           name: "Element 21",
                         },
                       ],
@@ -706,8 +705,8 @@ export const TreeViewTest = () => {
     <div className="flex gap-2 pl-2">
       <TreeView
         elements={elements}
-        initialSelectedId="21"
-        expandAll
+        initialSelectedId="Element 21"
+        initialExpendedItems={["Element 9"]}
         indicator={true}
       />
     </div>
@@ -781,20 +780,36 @@ export const MultiSelectTest = () => {
     },
   ];
   const [value, setValue] = useState<string[]>([]);
+  const [loop, setLoop] = useState<boolean>(false);
   return (
-    <MultiSelector value={value} onValueChange={setValue} className="max-w-xs">
-      <MultiSelectorTrigger>
-        <MultiSelectorInput placeholder="Select your framework" />
-      </MultiSelectorTrigger>
-      <MultiSelectorContent>
-        <MultiSelectorList>
-          {options.map((option, i) => (
-            <MultiSelectorItem key={i} value={option.value}>
-              {option.label}
-            </MultiSelectorItem>
-          ))}
-        </MultiSelectorList>
-      </MultiSelectorContent>
-    </MultiSelector>
+    <div className="flex gap-2 max-w-lg w-full ">
+      <MultiSelector
+        value={value}
+        onValueChange={setValue}
+        className="max-w-xs"
+        loop={loop}
+      >
+        <MultiSelectorTrigger>
+          <MultiSelectorInput placeholder="Select your framework" />
+        </MultiSelectorTrigger>
+        <MultiSelectorContent>
+          <MultiSelectorList>
+            {options.map((option, i) => (
+              <MultiSelectorItem key={i} value={option.value}>
+                {option.label}
+              </MultiSelectorItem>
+            ))}
+          </MultiSelectorList>
+        </MultiSelectorContent>
+      </MultiSelector>
+      <Button
+        type="button"
+        variant={"outline"}
+        className="h-10"
+        onClick={() => setLoop(!loop)}
+      >
+        {loop ? "Disable Loop" : "Enable Loop"}
+      </Button>
+    </div>
   );
 };

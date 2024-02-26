@@ -4,16 +4,15 @@ import { cn } from "@/lib/utils";
 import React, { forwardRef, useCallback, useRef } from "react";
 import useResizeObserver from "use-resize-observer";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { Tree, Folder, File, CollapseButton } from "./tree-view-api";
+import {
+  Tree,
+  Folder,
+  File,
+  CollapseButton,
+  TreeViewElement,
+} from "./tree-view-api";
 
 // TODO: Add the ability to add custom icons
-
-export type TreeViewElement = {
-  id: string;
-  name: string;
-  isSelectable?: boolean;
-  children?: TreeViewElement[];
-};
 
 interface TreeViewComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -64,6 +63,7 @@ export const TreeView = ({
       <Tree
         initialSelectedId={initialSelectedId}
         initialExpendedItems={initialExpendedItems}
+        elements={elements}
         style={{ height, width }}
       >
         {getVirtualItems().map((element) => (
@@ -74,7 +74,9 @@ export const TreeView = ({
             indicator={indicator}
           />
         ))}
-        <CollapseButton elements={elements} expandAll={expandAll} />
+        <CollapseButton elements={elements} expandAll={expandAll}>
+          <span>Expand All</span>
+        </CollapseButton>
       </Tree>
     </div>
   );
@@ -95,7 +97,11 @@ export const TreeItem = forwardRef<
         elements.map((element) => (
           <li key={element.id} className="w-full">
             {element.children && element.children?.length > 0 ? (
-              <Folder element={element.name} indicator={indicator}>
+              <Folder
+                element={element.name}
+                indicator={indicator}
+                isSelectable={element.isSelectable}
+              >
                 <TreeItem
                   key={element.id}
                   aria-label={`folder ${element.name}`}
@@ -108,6 +114,7 @@ export const TreeItem = forwardRef<
                 aria-label={`File ${element.name}`}
                 key={element.id}
                 element={element.name}
+                isSelectable={element.isSelectable}
               >
                 <span>{element?.name}</span>
               </File>
@@ -119,6 +126,7 @@ export const TreeItem = forwardRef<
           <File
             aria-label={`file ${elements?.name}`}
             element={elements?.name ?? " "}
+            isSelectable={elements?.isSelectable}
           >
             <span>{elements?.name}</span>
           </File>

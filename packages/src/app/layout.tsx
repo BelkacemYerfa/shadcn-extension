@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Provider } from "@/components/provider";
 import { Toaster } from "sonner";
+import { SiteHeader } from "@/components/layouts/site-header";
+import { SiteFooter } from "@/components/layouts/site-footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <>
-            {children}
-            <Toaster richColors position="bottom-center" />
-          </>
+          <SiteHeader />
+          {children}
+          <Toaster richColors position="bottom-center" />
+          <SiteFooter />
         </Provider>
       </body>
     </html>
