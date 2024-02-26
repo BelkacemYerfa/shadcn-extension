@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icons } from "../icons";
-import { siteConfig } from "@/config/siteconfig";
+import { siteConfig } from "@/config/site-config";
 
 export const SiteFooter = () => {
   return (

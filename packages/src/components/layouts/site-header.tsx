@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { Balancer } from "react-wrap-balancer";
 import { ModeToggle } from "../toggle-theme";
-import { siteConfig } from "@/config/siteconfig";
+import { siteConfig } from "@/config/site-config";
 
 export const SiteHeader = () => {
   return (

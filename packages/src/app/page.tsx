@@ -1,20 +1,6 @@
-import { BreadCrumb } from "@/components/extension/breadcrumb/bread-crumb";
-import {
-  ImageUpload,
-  Model,
-  OtpTest,
-  TreeViewTest,
-  TreeFileTest,
-  Commander,
-  CommanderUsingUseState,
-  CarouselExample,
-  BreadCrumbTest,
-  FileUploaderTest,
-  MultiSelectTest,
-} from "@/components/extension/model";
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
-import { siteConfig } from "@/config/siteconfig";
+import { siteConfig } from "@/config/site-config";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Balancer from "react-wrap-balancer";
@@ -78,44 +64,6 @@ export default function Home() {
             <Icons.gitHub className="h-4 w-4 fill-current" />
           </Link>
         </div>
-      </div>
-
-      <div className="hidden">
-        {/*  <Model /> */}
-        {/* <ImageUpload /> */}
-        {/*  <CarouselExample /> */}
-        {/* <Commander /> */}
-        {/* <CommanderUsingUseState />
-      <OtpTest /> */}
-        {/* <BreadCrumbTest /> */}
-        {/*  <FileUploaderTest /> */}
-        {/*  <ImageUpload /> */}
-        {/* <CarouselExample /> */}
-        {/* <ImageUpload /> */}
-        {/*  <CarouselExample /> */}
-
-        {/* <Commander /> */}
-        {/* <CommanderUsingUseState />
-      <OtpTest /> */}
-
-        {/* <BreadCrumbTest /> */}
-        {/*  <FileUploaderTest /> */}
-
-        {/* <MultiSelectTest /> */}
-        {/* <div className="flex flex-col md:flex-row items-center gap-2">
-        <div className="flex flex-col items-center gap-2">
-          <h2 className="font-semibold text-3xl">
-            Full Built with {"<"}TreeView /{">"}
-          </h2>
-          <TreeViewTest />
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <h2 className="font-semibold text-3xl">
-            Full Built with {"<"}Tree /{">"} Api{" "}
-          </h2>
-          <TreeFileTest />
-        </div>
-      </div> */}
       </div>
     </main>
   );
