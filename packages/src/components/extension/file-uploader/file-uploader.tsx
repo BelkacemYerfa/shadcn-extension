@@ -30,6 +30,8 @@ type FileUploaderContextType = {
   isLOF: boolean;
   isFileTooBig: boolean;
   removeFileFromSet: (index: number) => void;
+  activeIndex: number;
+  setActiveIndex: Dispatch<SetStateAction<number>>;
 };
 
 const FileUploaderContext = createContext<FileUploaderContextType | null>(null);
@@ -68,7 +70,7 @@ export const FileUploader = forwardRef<
     const [isFileTooBig, setIsFileTooBig] = useState(false);
     const [isLOF, setIsLOF] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-
+    const [activeIndex, setActiveIndex] = useState(-1);
     const {
       accept = {
         "image/*": [".jpg", ".jpeg", ".png", ".gif"],
@@ -97,7 +99,7 @@ export const FileUploader = forwardRef<
 
     const removeFileFromSet = useCallback((index: number) => {
       onValueChange((prev) => {
-        if (!prev) return null;
+        if (!prev) return prev;
         const newPreview = [...prev];
         newPreview.splice(index, 1);
         return newPreview;
@@ -108,12 +110,29 @@ export const FileUploader = forwardRef<
       (e: React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        e.currentTarget.click();
-        if (e.key === "Enter" || e.key === " ") {
-          dropzoneState.inputRef.current?.click();
+        if (!value) return;
+
+        if (e.key === "ArrowDown") {
+          const nextIndex = activeIndex + 1;
+          setActiveIndex(nextIndex > value.length - 1 ? 0 : nextIndex);
+        } else if (e.key === "ArrowUp") {
+          const nextIndex = activeIndex - 1;
+          setActiveIndex(nextIndex < 0 ? value.length - 1 : nextIndex);
+        } else if (e.key === "Enter" || e.key === "Space") {
+          if (activeIndex === -1) {
+            dropzoneState.inputRef.current?.click();
+          }
+        } else if (e.key === "Delete" || e.key === "Backspace") {
+          if (activeIndex !== -1) {
+            removeFileFromSet(activeIndex);
+            const newIndex = activeIndex - 1;
+            setActiveIndex(newIndex < 0 ? value.length - 1 : newIndex);
+          }
+        } else if (e.key === "Escape") {
+          setActiveIndex(-1);
         }
       },
-      []
+      [value, activeIndex]
     );
 
     const onDrop = useCallback(
@@ -121,7 +140,7 @@ export const FileUploader = forwardRef<
         const files = acceptedFiles;
 
         if (!!reSelectAll) {
-          onValueChange(null);
+          onValueChange([]);
         }
 
         if (!files) {
@@ -179,6 +198,8 @@ export const FileUploader = forwardRef<
           isLOF,
           isFileTooBig,
           removeFileFromSet,
+          activeIndex,
+          setActiveIndex,
         }}
       >
         <div
@@ -241,14 +262,16 @@ export const FileUploaderItem = forwardRef<
   HTMLDivElement,
   { index: number } & React.HTMLAttributes<HTMLDivElement>
 >(({ className, index, children, ...props }, ref) => {
-  const { removeFileFromSet } = useFileUpload();
+  const { removeFileFromSet, activeIndex } = useFileUpload();
+  const isSelected = index === activeIndex;
   return (
     <div
       ref={ref}
       className={cn(
         buttonVariants({ variant: "ghost" }),
         "h-6 p-1 justify-between cursor-pointer relative",
-        className
+        className,
+        isSelected ? "bg-muted" : ""
       )}
       {...props}
     >
