@@ -1,0 +1,126 @@
+import { Callout, Steps, Tabs } from "nextra/components";
+
+# Otp input
+
+This otp input component used to input the otp code , this component is just a styled version of `react-otp-input` package , you can check the docs of the package [here](https://www.npmjs.com/package/react-otp-input)
+
+```jsx copy
+import { OtpStyledInput } from "@/components/extension/otp-input/otp-input";
+
+export const OtpInput = () => {
+  const [value, setValue] = useState("");
+  return (
+    <OtpStyledInput
+      numInputs={5}
+      inputType="text"
+      value={otp}
+      onChange={setValue}
+    />
+  );
+};
+```
+
+## Installation
+
+<Steps>
+  ### Install the package
+
+```bash copy
+  npm install react-otp-input
+  npx shadcn@latest add input
+```
+
+### Copy paste the code that you will find in this github folder
+
+```link copy
+https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/packages/src/components/extension/otp-input
+```
+
+</Steps>
+
+## API Reference
+
+### Props
+
+The OtpInput component accepts the following props:
+
+| Prop      |     Type      | Default value |
+| :-------- | :-----------: | ------------: |
+| className |    string     |            -- |
+| props     | OTPInputProps |            -- |
+
+### className
+
+A string that will be added to the provided style to the default one
+
+### props
+
+The props object is the same as the `react-otp-input` package , you can find the documentation of the package [here](https://www.npmjs.com/package/react-otp-input)
+
+## Accessibility
+
+The Otp input component is accessible by default , it also supports keyboard navigation and screen readers
+
+| key                     |             Description             |
+| :---------------------- | :---------------------------------: |
+| `ArrowDown`             | Increments by one step horzentanly  |
+| `ArrowUp`               | Decrements by one step horzentanly  |
+| `Delete` or `Backspace` | Removes the selected item from list |
+
+## Usage
+
+This is an example of how to use the OtpInput component with [react-hook-form]() and [zod]() and Form from [shadcn ui]()
+
+```jsx copy
+
+import { OtpStyledInput } from "@/components/extension/otp-input/otp-input";
+
+
+export const OtpTest = () => {
+  const form = useForm</* zodInferedType */>({
+    defaultValues: {
+      otp: "",
+    },
+  });
+
+  const onSubmit = (data: /* zodInferedType */) => {
+    console.log(data);
+    toast.success(`Success , Your Otp code is : ${data.otp}`);
+  };
+  return (
+    <div className="max-w-xs flex items-center justify-center outline outline-1 outline-muted rounded-md p-4">
+      <div className="w-full space-y-2">
+        <div className="space-y-1">
+          <h2 className="font-semibold">OTP verification</h2>
+          <p className="text-xs">
+            Enter the 5-digit code sent to your email address or phone number
+          </p>
+        </div>
+        <Form {...form}>
+          <form className="grid gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="otp"
+              render={({ field }) => (
+                <FormControl>
+                  <>
+                    <FormItem>
+                      <OtpStyledInput
+                        numInputs={5}
+                        inputType="number"
+                        {...field}
+                      />
+                    </FormItem>
+                    <FormMessage />
+                  </>
+                </FormControl>
+              )}
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+      </div>
+    </div>
+  );
+};
+```

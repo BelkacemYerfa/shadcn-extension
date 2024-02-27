@@ -79,6 +79,7 @@ export const FileUploader = forwardRef<
       maxSize = 4 * 1024 * 1024,
       multiple = true,
     } = dropzoneOptions;
+
     const reSelectAll = maxFiles === 1 ? true : reSelect;
 
     const addFileToSet = useCallback(
