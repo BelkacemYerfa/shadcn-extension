@@ -1,4 +1,5 @@
 import { Callout, Steps, Tabs } from "nextra/components";
+import { Bleed } from "nextra-theme-docs";
 
 # Tree View
 
@@ -16,6 +17,16 @@ export const CustomFilesTreeView = ({
 };
 ```
 
+## About
+
+This component has 2 ways to use it , you can use the built in component , if you don't want to build a fully custom one with behvoir, or you can use the built in api to build your own custom tree view with your own behvoir.
+
+<Callout type="info">
+  Note that the built in component uses the built in api to build the tree view
+  , so if you want to use it you need to have the built in api installed in your
+  project
+</Callout>
+
 ## Installation
 
 <Steps>
@@ -23,9 +34,9 @@ export const CustomFilesTreeView = ({
   ```bash copy
     npm install @radix-ui/react-accordion
   ```
-  ### Copy past the code that you will find in this github file
+  ### Copy paste the code that you will find in this github folder
   ```link copy
-  https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/packages/src/components/extension/tree-view/tree-view.tsx
+  https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/packages/src/components/extension/tree-view
   ```
   ### Update your Tailwinds config file (tailwind.config.js)
   ```ts
@@ -75,7 +86,7 @@ The id of the element that should be selected by default (optional)
 
 Boolean that indicates if all the elements should be expended by default (optional)
 
-<Callout type="warning" emoji="⚠️">
+<Callout type="warning">
   The `initialExpendedItems` with `expendAll` will not work together, if you
   want to expend all the items you should use `expendAll` prop only , if you
   want to expend some items you should use `initialExpendedItems` prop only
@@ -98,13 +109,21 @@ Array of the ids of the elements that should be expended by default (optional)
 
 ## Accessibility
 
-Currently, the TreeView component is not fully accessible, but we are working on it.
+Currently, the TreeView component is fully accessible and supports keyboard navigation.
+
+| key             |             Description              |
+| :-------------- | :----------------------------------: |
+| `Tab`           |        enter a nested folder         |
+| `Tab` + `Shift` |   exit the current selected folder   |
+| `ArrowDown`     |  Increments by one step horzintanly  |
+| `ArrowUp`       |  Decrements by one step horzintanly  |
+| `Enter`         | Opens/Close a folder , select a file |
 
 ## Usage Examples
 
 ### Basic Usage
 
-<Tabs items={["Code" , "Preview"]} >
+<Tabs items={["Tree View Component" , "Tree Api" ]} >
   <Tabs.Tab>
     ```jsx
     import { TreeView, TreeViewElement } from "@/components/extension/tree-view";
@@ -135,7 +154,43 @@ Currently, the TreeView component is not fully accessible, but we are working on
     ```
 
   </Tabs.Tab>
-  <Tabs.Tab>
-    none
+  <Tabs.Tab >
+    ```jsx
+     import { Tree ,Folder , File } from "@/components/extension/tree-view/tree-view-api.tsx";
+     export const TreeFileTest = () => {
+        return (
+          <Tree
+            className="rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1"
+            initialExpendedItems={["components"]}
+            initialSelectedId="carousel.tsx"
+          >
+            <Folder element="src">
+              <File element="app.tsx">
+                <p> app.tsx </p>
+              </File>
+              <Folder element="components">
+                <File element="input.tsx">
+                  <p> input.tsx </p>
+                </File>
+                <File element="button.tsx">
+                  <p> button.tsx </p>
+                </File>
+                <Folder element="pages">
+                  <File element="interface.ts">
+                    <p>interface.ts</p>
+                  </File>
+                </Folder>
+              </Folder>
+              <Folder element="ui">
+                <File element="carousel.tsx">
+                  <p>carousel.tsx</p>
+                </File>
+              </Folder>
+            </Folder>
+          </Tree>
+        );
+      };
+    ```
   </Tabs.Tab>
+  
 </Tabs>

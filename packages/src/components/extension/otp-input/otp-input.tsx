@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import OtpInput, { OTPInputProps } from "react-otp-input";

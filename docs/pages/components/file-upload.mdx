@@ -1,0 +1,99 @@
+import { Callout, Steps, Tabs } from "nextra/components";
+
+# File Upload
+
+A file upload component that is responsible for uploading files to the
+
+```jsx copy
+import {
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+  FileInput,
+} from "@/components/extension/file-uploader/file-uploader";
+
+export const FileUpload = () => {
+  const [files, setFiles] = useState<File[]>([]);
+  return (
+   <FileUploader
+      value={files}
+      onValueChange={setFiles}
+      dropzoneOptions={/* dropZoneConfig */}
+      className="w-full max-w-md space-y-1"
+    >
+      <FileInput className="border border-dashed border-gray-500">
+        <Button variant={"outline"}>
+          Upload a file
+        </Button>
+      </FileInput>
+      <FileUploaderContent className="h-48 ">
+          {files &&
+           files.length > 0 &&
+           files.map((file, i) => (
+               <FileUploaderItem index={i} >
+                <span>
+                  {file.name}
+                </span>
+               </FileUploaderItem>
+           ))}
+      </FileUploaderContent>
+    </FileUploader>
+  );
+};
+```
+
+## Installation
+
+<Steps>
+  ### Install the package
+
+```bash copy
+  npm install use-resize-observer
+  npm install react-dropzone
+  npm install sonner
+  npx shadcn@latest add ScrollArea
+```
+
+### Copy paste the code that you will find in this github folder
+
+```link copy
+https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/packages/src/components/extension/file-uploader
+```
+
+</Steps>
+
+## API Reference
+
+### Props
+
+The BreadCrumb component accepts the following props:
+
+| Prop            |          Type           | Default value |
+| :-------------- | :---------------------: | ------------: |
+| value           |         File[]          |            -- |
+| onValueChange   | (value: File[]) => void |            -- |
+| dropzoneOptions |     DropzoneOptions     |     undefiend |
+
+### value
+
+The state of current selected files , it is an array of File objects
+
+### onValueChange
+
+A function that will be called when the value of the File upload changes
+
+### dropzoneOptions
+
+Those are options specified to the dropzone hook from `react-dropzone` , you can find the documentation of the dropzone hook [here](https://react-dropzone.js.org/)
+
+## Accessibility
+
+The File upload component is accessible by default , it also supports keyboard navigation and screen readers
+
+| key                     |             Description             |
+| :---------------------- | :---------------------------------: |
+| `Escape`                |         closes the selected         |
+| `Enter`                 |        opens the file upload        |
+| `ArrowDown`             | Increments by one step horzintanly  |
+| `ArrowUp`               | Decrements by one step horzintanly  |
+| `Delete` or `Backspace` | Removes the selected item from list |

@@ -1,0 +1,78 @@
+import { Callout, Steps, Tabs } from "nextra/components";
+
+# BreadCrumbs
+
+A bread crumbs for detecting the path of the user in the application
+
+```jsx copy
+import {
+  BreadCrumb,
+  BreadCrumbEllipsis,
+  BreadCrumbItem,
+  BreadCrumbSeparator,
+} from "@/components/extension/breadcrumb/bread-crumb";
+
+export const UserPath = () => {
+  return (
+    <BreadCrumb>
+      <BreadCrumbItem>Account</BreadCrumbItem>
+      <BreadCrumbSeparator />
+      <BreadCrumbItem>Settins</BreadCrumbItem>
+      <BreadCrumbSeparator />
+      <BreadCrumbEllipsis />
+      <BreadCrumbSeparator />
+      <BreadCrumbItem>...</BreadCrumbItem>
+    </BreadCrumb>
+  );
+};
+```
+
+## Installation
+
+<Steps>
+  ### Install the package
+
+```bash copy
+  npx shadcn-ui@latest add Button
+```
+
+### Copy paste the code that you will find in this github folder
+
+```link copy
+https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/packages/src/components/extension/breadcrumb
+```
+
+</Steps>
+
+## API Reference
+
+### Props
+
+The BreadCrumb component accepts the following props:
+
+| Prop          |         Type          | Default value |
+| :------------ | :-------------------: | ------------: |
+| variant       | typeof buttonVariants |       Default |
+| isActive      |        boolean        |         false |
+| activeVariant |  type buttonVariants  | default style |
+
+### variant
+
+The variant prop is used to change the style of the BreadCrumb component , it accepts the same values as the button component
+
+### isActive
+
+A boolean that will determine if the item is active or not
+
+### activeVariant
+
+The activeVariant prop is used to change the style of the BreadCrumb component when it is active , it accepts the same values as the button component
+
+<Callout type="warning" emoji="⚠️">
+  Know that the active variant can't be used unless the isActive prop is
+  specified
+</Callout>
+
+## Accessibility
+
+The BreadCrumb component is accessible , but it does not support keyboard navigation currently , we are working on it , and it will be available soon

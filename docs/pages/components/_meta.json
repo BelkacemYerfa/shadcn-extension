@@ -1,7 +1,17 @@
 {
-  "tree-view": "Tree View",
-  "carousel": "Carousel",
-  "bread-crumb": "Bread Crumb",
-  "multi-select": "Multi Select",
-  "file-upload": "File Upload"
+  "tree-view": {
+    "title": "Tree View"
+  },
+  "carousel": {
+    "title": "Carousel"
+  },
+  "bread-crumb": {
+    "title": "Bread Crumb"
+  },
+  "multi-select": {
+    "title": "Multi Select"
+  },
+  "file-upload": {
+    "title": "File Upload"
+  }
 }
