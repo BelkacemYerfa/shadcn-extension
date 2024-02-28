@@ -6,14 +6,14 @@ This is a carousel component that extends the functionality of the `Carousel` co
 
 ```jsx copy
 import {
-  CarouselProvider,
+  Carousel,
   CarouselMainContainer,
   SliderMainItem,
 } from "@/components/extension/carousel";
 
 export const CarouselExample = () => {
   return (
-    <CarouselProvider>
+    <Carousel>
       <CarouselMainContainer>
         {Array.from({ length: 10 }).map((_, index) => (
           <SliderMainItem
@@ -24,7 +24,7 @@ export const CarouselExample = () => {
           </SliderMainItem>
         ))}
       </CarouselMainContainer>
-    </CarouselProvider>
+    </Carousel>
   );
 };
 ```
@@ -34,7 +34,7 @@ export const CarouselExample = () => {
 <Steps>
   ### Install the package from radix
   ```bash copy
-    npm install embla-carousel embla-carousel-react
+    npm install embla-carousel@latest embla-carousel-react@latest
   ```
   
   ### Copy past the code that you will find in this github file
@@ -50,10 +50,11 @@ export const CarouselExample = () => {
 
 The Carousel component accepts the following props:
 
-| Prop            |        Type         | Default value |
-| :-------------- | :-----------------: | ------------: |
-| carouselOptions | EmblaCarouselOption |            -- |
-| activeKeyboard  |       boolean       |         false |
+| Prop            |            Type            | Default value |
+| :-------------- | :------------------------: | ------------: |
+| carouselOptions |    EmblaCarouselOption     |            -- |
+| activeKeyboard  |          boolean           |         false |
+| orientation     | "horizontal" or "vertical" |  "horizontal" |
 
 ### EmblaCarouselOption
 
@@ -63,20 +64,29 @@ For more information about the `EmblaCarouselOption` interface, please refer to 
 
 This prop is used to enable or disable the keyboard navigation. When set to `true`, the keyboard navigation is enabled , else it is disabled.
 
+### orientation
+
+This prop is used to set the orientation of the carousel. It accepts two values: "horizontal" and "vertical". The default value is "horizontal".
+
 ## Accessibility
 
-The Carousel component is accessible by default. It supports keyboard navigation and screen readers , it follows the WARIA accessibility rules .
+The Carousel component is accessible by default. It supports keyboard navigation and screen readers.
+
+| key          |            Description             |
+| :----------- | :--------------------------------: |
+| `ArrowRight` | Increments by one step horzintanly |
+| `ArrowLeft`  | Decrements by one step horzintanly |
 
 ## Usage Examples
 
-<Tabs items={["Code" , "Preview"]} >
-  <Tabs.Tab>
+### Carousel with navigation buttons
+
     ```jsx
-    import { CarouselProvider , CarouselMainContainer , SliderMainItem , CarouselPrevious , CarouselNext} from "@/components/extension/carousel";
+    import { Carousel , CarouselMainContainer , SliderMainItem , CarouselPrevious , CarouselNext} from "@/components/extension/carousel";
 
     export const CarouselExample = () => {
       return (
-        <CarouselProvider activeKeyboard className="max-w-xs w-full ">
+        <Carousel activeKeyboard className="max-w-xs w-full ">
           <CarouselNext />
           <CarouselPrevious />
           <CarouselMainContainer>
@@ -89,13 +99,45 @@ The Carousel component is accessible by default. It supports keyboard navigation
               </SliderMainItem>
             ))}
           </CarouselMainContainer>
-        </CarouselProvider>
+        </Carousel>
       );
     };
     ```
 
-  </Tabs.Tab>
-  <Tabs.Tab>
-    none
-  </Tabs.Tab>
-</Tabs>
+### Carousel with Mini highlieghted itme
+
+    ```jsx
+    import { Carousel , CarouselMainContainer , SliderMainItem , CarouselThumbsContainer , SliderThumbItem , CarouselPrevious , CarouselNext } from "@/components/extension/carousel";
+
+    <Carousel
+      activeKeyboard
+      orientation="vertical"
+      className="max-w-xs w-full flex items-center gap-2 "
+    >
+      <div className="relative basis-3/4">
+        <CarouselNext />
+        <CarouselPrevious />
+        <CarouselMainContainer className="h-60">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <SliderMainItem
+              key={index}
+              className="border border-muted flex items-center justify-center h-52 rounded-md"
+            >
+              Slide {index + 1}
+            </SliderMainItem>
+          ))}
+        </CarouselMainContainer>
+      </div>
+      <CarouselThumbsContainer className="h-60 basis-1/4 ">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <SliderThumbItem
+            key={index}
+            index={index}
+            className="border border-muted flex items-center justify-center h-16 rounded-md"
+          >
+            Slide {index + 1}
+          </SliderThumbItem>
+        ))}
+      </CarouselThumbsContainer>
+    </Carousel>
+    ```

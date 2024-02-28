@@ -4,9 +4,8 @@ import { siteConfig } from "@/config/site-config";
 
 export const SiteFooter = () => {
   return (
-    <footer className="fixed bottom-0 border-t border-border/40 py-2 px-4 w-full ">
-      <p className="text-center flex items-center justify-between w-full text-sm leading-loose md:text-left">
-        <span>&copy; {new Date().getFullYear()} . All rights reserved </span>
+    <footer className="py-2 px-4 w-full bottom-0 fixed ">
+      <p className="text-center flex items-center justify-center w-full text-sm leading-loose md:text-left">
         <span>
           Built by{" "}
           <Link

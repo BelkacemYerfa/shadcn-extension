@@ -1,3 +1,5 @@
 {
-  "image-upload-carousel": "Image Upload Carousel (experimental)"
+  "image-upload-carousel": {
+    "title": "Image Upload Carousel (experimental)"
+  }
 }

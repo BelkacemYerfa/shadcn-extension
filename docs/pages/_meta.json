@@ -1,4 +1,6 @@
 {
   "index": "Introduction",
-  "components": "Components"
+  "components": {
+    "title": "Components"
+  }
 }

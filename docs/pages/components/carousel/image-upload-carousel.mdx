@@ -19,11 +19,8 @@ This is a carousel that allows you to upload images and display them in a carous
 <Steps>
   ### Install the package from radix
   ```bash copy
-    npm install embla-carousel@8.0.0rc-17 embla-carousel-react@8.0.0rc-17
+    npm install embla-carousel@latest embla-carousel-react@latest
   ```
-  <Callout type="warning" emoji="⚠️" >
-    Make sure to install the correct version of the package that is specified in the installation command above , else you will get unexpected behavior from the component.
-  </Callout>
   
   ### Copy past the code that you will find in this github file
   ```link copy
@@ -49,11 +46,11 @@ This field follows the type of file that you use , it is an array of objects tha
 
 #### Example
 
-```typescript
+```typescript copy
 {
   file : File,
   preview : string
-}
+}[]
 ```
 
 ### onValueChange
@@ -76,116 +73,95 @@ This is an example of how you can use the component
   <Tabs.Tab>
   
 ```jsx 
-      import {
-        CarouselMainContainer,
-        CarouselThumbsContainer,
-        CarouselNext,
-        CarouselPrevious,
-        CarouselProvider,
-        SliderMainItem,
-      } from "./carousel/carousel";
-      import {
-        CustomUploadInput,
-        FileUploadCarouselProvider,
-        SliderMiniItemWithRemove,
-      } from "./carousel/carousel-image-upload";
+    import {
+      CarouselMainContainer,
+      CarouselThumbsContainer,
+      CarouselNext,
+      CarouselPrevious,
+      CarouselProvider,
+      SliderMainItem,
+    } from "./carousel/carousel";
+    import {
+      CustomUploadInput,
+      FileUploadCarouselProvider,
+      SliderMiniItemWithRemove,
+    } from "./carousel/carousel-image-upload";
 
-      export const CarouselImageUpload = () => {
-      const [preview, setPreview] = useState<FilePreview[] | null>(null);
-        return (
-          <CarouselProvider>
-            <FileUploadCarouselProvider<FilePreview>
-              value={preview}
-              onValueChange={setPreview}
-              dropzoneOptions={{
-                maxFiles: 5,
-                maxSize: 1024 * 1024 * 4,
-                multiple: true,
-              }}
-            >
-              {preview && preview.length > 0 ? (
-                <>
-                  {preview.length > 1 && (
-                    <>
-                      <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
-                      <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
-                    </>
-                  )}
-                  <CarouselMainContainer className="space-y-1">
-                    {preview.map((file, i) => (
-                      <SliderMainItem key={i}>
-                        <AspectRatio ratio={16 / 9}>
-                          <Image
-                            src={file.preview}
-                            objectFit="cover"
-                            alt="preview"
-                            fill
-                            className="rounded-md"
-                          />
-                        </AspectRatio>
-                      </SliderMainItem>
-                    ))}
-                  </CarouselMainContainer>
-                  <CarouselThumbsContainer>
-                    {preview.map((file, i) => (
-                      <SliderMiniItemWithRemove key={i} index={i}>
-                        <AspectRatio ratio={16 / 9}>
-                          <Image
-                            src={file.preview}
-                            objectFit="cover"
-                            alt="preview"
-                            fill
-                            className="rounded-md"
-                          />
-                        </AspectRatio>
-                      </SliderMiniItemWithRemove>
-                    ))}
-                  </CarouselThumbsContainer>
-                  <CustomUploadInput className="border-none">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className={cn(`w-full`)}
-                      //disabled={preview.length >= 2}
-                    >
-                      Choose another image
-                    </Button>
-                  </CustomUploadInput>
-                </>
-              ) : (
-                <CustomUploadInput>
-                  <div className="flex items-center justify-center flex-col pt-5 pb-6">
-                    <svg
-                      className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 16"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                      />
-                    </svg>
-                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span>
-                      &nbsp; or drag and drop
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      SVG, PNG, JPG or GIF
-                    </p>
-                  </div>
+    export const CarouselImageUpload = () => {
+    const [preview, setPreview] = useState<FilePreview[] | null>(null);
+      return (
+        <CarouselProvider>
+          <FileUploadCarouselProvider<FilePreview>
+            value={preview}
+            onValueChange={setPreview}
+            dropzoneOptions={{
+              maxFiles: 5,
+              maxSize: 1024 * 1024 * 4,
+              multiple: true,
+            }}
+          >
+            {preview && preview.length > 0 ? (
+              <>
+                {preview.length > 1 && (
+                  <>
+                    <CarouselPrevious className="-left-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+                    <CarouselNext className="-right-2 z-[100] top-[35%] -translate-y-1/2 h-6 w-6" />
+                  </>
+                )}
+                <CarouselMainContainer className="space-y-1">
+                  {preview.map((file, i) => (
+                    <SliderMainItem key={i}>
+                      <AspectRatio ratio={16 / 9}>
+                        <Image
+                          src={file.preview}
+                          objectFit="cover"
+                          alt="preview"
+                          fill
+                          className="rounded-md"
+                        />
+                      </AspectRatio>
+                    </SliderMainItem>
+                  ))}
+                </CarouselMainContainer>
+                <CarouselThumbsContainer>
+                  {preview.map((file, i) => (
+                    <SliderMiniItemWithRemove key={i} index={i}>
+                      <AspectRatio ratio={16 / 9}>
+                        <Image
+                          src={file.preview}
+                          objectFit="cover"
+                          alt="preview"
+                          fill
+                          className="rounded-md"
+                        />
+                      </AspectRatio>
+                    </SliderMiniItemWithRemove>
+                  ))}
+                </CarouselThumbsContainer>
+                <CustomUploadInput className="border-none">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={cn(`w-full`)}
+                    disabled={preview.length >= 2}
+                  >
+                    Choose another image
+                  </Button>
                 </CustomUploadInput>
-              )}
-            </FileUploadCarouselProvider>
-          </CarouselProvider>
-        );
-      };
+              </>
+            ) : (
+              <CustomUploadInput>
+                <div className="flex items-center justify-center flex-col pt-5 pb-6">
+                  <Icons.FileUpload >
+                </div>
+              </CustomUploadInput>
+            )}
+          </FileUploadCarouselProvider>
+        </CarouselProvider>
+      );
+    };
 
-      ```
+    ```
 
   </Tabs.Tab>
   <Tabs.Tab>

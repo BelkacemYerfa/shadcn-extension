@@ -5,6 +5,7 @@ import { Provider } from "@/components/provider";
 import { Toaster } from "sonner";
 import { SiteHeader } from "@/components/layouts/site-header";
 import { SiteFooter } from "@/components/layouts/site-footer";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
           <Toaster richColors position="bottom-center" />
           <SiteFooter />
         </Provider>
+        <Analytics />
       </body>
     </html>
   );

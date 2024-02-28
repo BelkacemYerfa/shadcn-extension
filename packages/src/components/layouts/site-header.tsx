@@ -8,7 +8,7 @@ import { siteConfig } from "@/config/site-config";
 
 export const SiteHeader = () => {
   return (
-    <header className="flex items-center justify-between px-4 py-2  max-w-screen-2xl border-b border-border/40 ">
+    <header className="flex items-center justify-between px-4 py-2  max-w-screen-2xl">
       <nav className="flex items-center justify-between w-full">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
