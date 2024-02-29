@@ -18,13 +18,13 @@ export const SiteHeader = () => {
             </Balancer>
           </Link>
           <Link
-            href="/"
+            href={siteConfig.links.docs}
             className="transition-colors hover:text-foreground/80 hidden md:inline-block"
           >
             Docs
           </Link>
           <Link
-            href="/"
+            href={siteConfig.links.components}
             className="transition-colors hover:text-foreground/80 hidden md:inline-block "
           >
             Components

@@ -17,14 +17,12 @@ const logo = (
   </div>
 );
 
-const footer = <></>;
-
 const config: DocsThemeConfig = {
   project: {
-    link: "https://github.com/BelkacemYerfa/shadcn-extension-components",
+    link: "https://github.com/BelkacemYerfa/shadcn-extension",
   },
   docsRepositoryBase:
-    "https://github.com/BelkacemYerfa/shadcn-extension-components/tree/master/package/src/app",
+    "https://github.com/BelkacemYerfa/shadcn-extension/tree/master/package/src/app",
   useNextSeoProps() {
     const { asPath } = useRouter();
     if (asPath !== "/") {
@@ -46,7 +44,7 @@ const config: DocsThemeConfig = {
     toggleButton: true,
   },
   footer: {
-    component: footer,
+    component: <></>,
   },
   toc: {
     backToTop: true,

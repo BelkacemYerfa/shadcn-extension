@@ -1,3 +1,5 @@
+import { LucideProps } from "lucide-react";
+
 type IconProps = React.SVGProps<SVGSVGElement>;
 
 export const Icons = {
