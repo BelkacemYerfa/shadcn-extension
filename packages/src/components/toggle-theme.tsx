@@ -10,12 +10,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useMounted } from "@/hooks/use-mounted";
+import { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const OptionMode = [
+  {
+    value: "light",
+    label: "Light",
+    icon: SunIcon,
+  },
+  {
+    value: "dark",
+    label: "Dark",
+    icon: MoonIcon,
+  },
+  {
+    value: "system",
+    label: "System",
+    icon: LaptopIcon,
+  },
+] satisfies { value: string; label: string; icon: any }[];
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const mounted = useMounted();
-  if (!mounted) return null;
-  return (
+  return mounted ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="size-9">
@@ -24,20 +43,26 @@ export function ModeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          <SunIcon className="mr-2 size-4" />
-          <span>Light</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          <MoonIcon className="mr-2 size-4" />
-          <span>Dark</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          <LaptopIcon className="mr-2 size-4" />
-          <span>System</span>
-        </DropdownMenuItem>
+      <DropdownMenuContent align="end" className="space-y-0.5">
+        {OptionMode.map((option) => {
+          const Icon = option.icon;
+          return (
+            <DropdownMenuItem
+              key={option.value}
+              onClick={() => setTheme(option.value)}
+              className={cn(
+                "flex items-center gap-2",
+                theme === option.value && "bg-accent"
+              )}
+            >
+              <Icon className="w-4 h-4" />
+              <span>{option.label}</span>
+            </DropdownMenuItem>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
+  ) : (
+    <div className="animate-pulse rounded-md bg-primary/10 size-9" />
   );
 }

@@ -4,7 +4,7 @@ import { siteConfig } from "@/config/site-config";
 
 export const SiteFooter = () => {
   return (
-    <footer className="py-2 px-4 w-full bottom-0 fixed ">
+    <footer className="py-2 px-4 w-full">
       <p className="text-center flex items-center justify-center w-full text-sm leading-loose md:text-left">
         <span>
           Built by{" "}
