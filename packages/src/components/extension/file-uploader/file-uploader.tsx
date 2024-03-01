@@ -69,7 +69,6 @@ export const FileUploader = forwardRef<
   ) => {
     const [isFileTooBig, setIsFileTooBig] = useState(false);
     const [isLOF, setIsLOF] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(-1);
     const {
       accept = {
@@ -188,9 +187,6 @@ export const FileUploader = forwardRef<
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
     });
-    const { height, width } = useResizeObserver({
-      ref: containerRef,
-    });
 
     return (
       <FileUploaderContext.Provider
@@ -204,14 +200,13 @@ export const FileUploader = forwardRef<
         }}
       >
         <div
-          ref={containerRef}
+          ref={ref}
           tabIndex={0}
           onKeyDownCapture={handleKeyDown}
           className={cn(
             "grid gap-2 w-full relative focus:outline-none",
             className
           )}
-          style={{ height, width }}
           {...props}
         >
           {children}
@@ -303,7 +298,7 @@ export const FileInput = forwardRef<
     <div
       ref={ref}
       {...props}
-      className={`w-full ${
+      className={`relative w-full ${
         isLOF ? "opacity-50 cursor-not-allowed " : "cursor-pointer "
       }`}
     >

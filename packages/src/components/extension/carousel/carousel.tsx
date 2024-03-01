@@ -226,7 +226,7 @@ const SliderMainItem = forwardRef<
       ref={ref}
       className={cn(
         `min-w-0 shrink-0 grow-0 basis-full ${
-          orientation === "vertical" ? "py-1" : "px-1"
+          orientation === "vertical" ? "mb-1" : "mr-1"
         }`,
         className
       )}
@@ -253,7 +253,7 @@ const SliderThumbItem = forwardRef<
       onClick={() => onThumbClick(index)}
       className={cn(
         "flex min-w-0 shrink-0 grow-0 basis-1/3",
-        `${orientation === "vertical" ? "py-1" : "px-1"}`,
+        `${orientation === "vertical" ? "mb-1" : "mr-1"}`,
         className
       )}
     >
