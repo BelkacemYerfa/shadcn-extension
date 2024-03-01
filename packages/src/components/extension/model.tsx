@@ -197,30 +197,27 @@ export const CarouselExample = () => {
     <Carousel
       activeKeyboard
       orientation="vertical"
-      className="max-w-xs w-full flex items-center gap-2 "
+      className="max-w-xs w-full h-fit flex items-center gap-2 "
     >
-      <div className="relative basis-3/4">
-        <CarouselNext />
-        <CarouselPrevious />
+      <div className="relative basis-3/4 ">
         <CarouselMainContainer className="h-60">
           {Array.from({ length: 10 }).map((_, index) => (
             <SliderMainItem
               key={index}
               className="border border-muted flex items-center justify-center h-52 rounded-md"
             >
-              Slide {index + 1}
+              <span>Slide {index + 1}</span>
             </SliderMainItem>
           ))}
         </CarouselMainContainer>
       </div>
+
       <CarouselThumbsContainer className="h-60 basis-1/4 ">
         {Array.from({ length: 10 }).map((_, index) => (
-          <SliderThumbItem
-            key={index}
-            index={index}
-            className="border border-muted flex items-center justify-center h-16 rounded-md"
-          >
-            Slide {index + 1}
+          <SliderThumbItem key={index} index={index}>
+            <span className="border border-muted flex items-center justify-center h-full w-full rounded-md">
+              Slide {index + 1}
+            </span>
           </SliderThumbItem>
         ))}
       </CarouselThumbsContainer>
@@ -401,7 +398,7 @@ export const OtpTest = () => {
     toast.success(`Success , Your Otp code is : ${data.otp}`);
   };
   return (
-    <div className="max-w-xs flex items-center justify-center outline outline-1 outline-muted rounded-md p-4">
+    <div className="max-w-xs h-fit flex items-center justify-center outline outline-1 outline-muted rounded-md p-4">
       <div className="w-full space-y-2">
         <div className="space-y-1">
           <h2 className="font-semibold">OTP verification</h2>
@@ -441,7 +438,7 @@ export const BreadCrumbTest = () => {
   return (
     <BreadCrumb variant={"link"} className="gap-1">
       <BreadCrumbItem
-        className="px-2 h-8"
+        className="px-2 h-8 bg-muted"
         isActive
         activeVariant={{
           variant: "ghost",
@@ -450,7 +447,7 @@ export const BreadCrumbTest = () => {
         <Link href="/">Home</Link>
       </BreadCrumbItem>
       <BreadCrumbSeparator className="" />
-      <BreadCrumbItem className="px-2 ">Settings</BreadCrumbItem>
+      <BreadCrumbItem className="px-2 underline">Settings</BreadCrumbItem>
       <BreadCrumbSeparator />
       <BreadCrumbEllipsis className="px-2" />
       <BreadCrumbSeparator />
@@ -501,32 +498,22 @@ export const FileUploaderTest = () => {
       value={files}
       onValueChange={setFiles}
       dropzoneOptions={dropZoneConfig}
-      className="w-full max-w-md space-y-1"
+      className="relative max-w-xs space-y-1"
     >
       <FileInput className="border border-dashed border-gray-500">
-        <div className="flex items-center justify-center flex-col pt-3 pb-4">
+        <div className="flex items-center justify-center flex-col pt-3 pb-4 w-full ">
           <FileSvgDraw />
         </div>
       </FileInput>
       <FileUploaderContent className="h-48 ">
-        <Carousel>
-          <CarouselMainContainer>
-            {files &&
-              files.length > 0 &&
-              files.map((file, i) => (
-                <SliderMainItem key={i} className="basis-1/3">
-                  <FileUploaderItem index={i} className="relative  w-full h-32">
-                    <Image
-                      src={URL.createObjectURL(file)}
-                      alt="preview"
-                      fill
-                      className="rounded-md object-cover"
-                    />
-                  </FileUploaderItem>
-                </SliderMainItem>
-              ))}
-          </CarouselMainContainer>
-        </Carousel>
+        {files &&
+          files.length > 0 &&
+          files.map((file, i) => (
+            <FileUploaderItem key={i} index={i}>
+              <Paperclip className="h-4 w-4 stroke-current" />
+              <span>{file.name}</span>
+            </FileUploaderItem>
+          ))}
       </FileUploaderContent>
     </FileUploader>
   );
@@ -806,34 +793,24 @@ export const MultiSelectTest = () => {
   const [value, setValue] = useState<string[]>([]);
   const [loop, setLoop] = useState<boolean>(false);
   return (
-    <div className="flex gap-2 max-w-lg w-full ">
-      <MultiSelector
-        value={value}
-        onValueChange={setValue}
-        className="max-w-xs"
-        loop={loop}
-      >
-        <MultiSelectorTrigger>
-          <MultiSelectorInput placeholder="Select your framework" />
-        </MultiSelectorTrigger>
-        <MultiSelectorContent>
-          <MultiSelectorList>
-            {options.map((option, i) => (
-              <MultiSelectorItem key={i} value={option.value}>
-                {option.label}
-              </MultiSelectorItem>
-            ))}
-          </MultiSelectorList>
-        </MultiSelectorContent>
-      </MultiSelector>
-      <Button
-        type="button"
-        variant={"outline"}
-        className="h-10"
-        onClick={() => setLoop(!loop)}
-      >
-        {loop ? "Disable Loop" : "Enable Loop"}
-      </Button>
-    </div>
+    <MultiSelector
+      value={value}
+      onValueChange={setValue}
+      className="max-w-xs"
+      loop={loop}
+    >
+      <MultiSelectorTrigger>
+        <MultiSelectorInput placeholder="Select your framework" />
+      </MultiSelectorTrigger>
+      <MultiSelectorContent>
+        <MultiSelectorList>
+          {options.map((option, i) => (
+            <MultiSelectorItem key={i} value={option.value}>
+              {option.label}
+            </MultiSelectorItem>
+          ))}
+        </MultiSelectorList>
+      </MultiSelectorContent>
+    </MultiSelector>
   );
 };

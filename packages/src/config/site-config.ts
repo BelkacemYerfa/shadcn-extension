@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Shadcn Extension",
   url: "https://shadcn-extension-landing.vercel.app/",
-  ogImage: "",
+  ogImage: "https://shadcn-extension-landing.vercel.app/og.png",
   description:
     "Discover new possibilities with the extended Shadcn UI library. More components, more layouts, more creativity.",
   links: {
