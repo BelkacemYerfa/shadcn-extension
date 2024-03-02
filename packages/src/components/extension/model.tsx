@@ -1,6 +1,11 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useState } from "react";
 import {
   CarouselMainContainer,
@@ -36,6 +41,7 @@ import {
   BreadCrumb,
   BreadCrumbEllipsis,
   BreadCrumbItem,
+  BreadCrumbPopover,
   BreadCrumbSeparator,
 } from "./breadcrumb/bread-crumb";
 import Link from "next/link";
@@ -436,22 +442,36 @@ export const OtpTest = () => {
 
 export const BreadCrumbTest = () => {
   return (
-    <BreadCrumb variant={"link"} className="gap-1">
-      <BreadCrumbItem
-        className="px-2 h-8 bg-muted"
-        isActive
-        activeVariant={{
-          variant: "ghost",
-        }}
-      >
+    <BreadCrumb variant={"ghost"} className="gap-1">
+      <BreadCrumbItem className="px-2 h-8 " index={0}>
         <Link href="/">Home</Link>
       </BreadCrumbItem>
       <BreadCrumbSeparator className="" />
-      <BreadCrumbItem className="px-2 underline">Settings</BreadCrumbItem>
+      <BreadCrumbItem index={1} className="px-2">
+        Settings
+      </BreadCrumbItem>
       <BreadCrumbSeparator />
-      <BreadCrumbEllipsis className="px-2" />
+      <BreadCrumbPopover>
+        <PopoverTrigger className="hover:bg-muted flex items-center justify-center size-8 rounded-md focus:outline-none">
+          <BreadCrumbEllipsis
+            index={2}
+            className="px-2 flex items-center justify-center size-8 rounded-md"
+          />
+          <span className="sr-only">open rest links</span>
+        </PopoverTrigger>
+        <PopoverContent className="flex items-center flex-col p-1 max-w-52">
+          <BreadCrumbItem index={3} className="px-2 w-full">
+            Profile
+          </BreadCrumbItem>
+          <BreadCrumbItem index={4} className="px-2 w-full">
+            Account
+          </BreadCrumbItem>
+        </PopoverContent>
+      </BreadCrumbPopover>
       <BreadCrumbSeparator />
-      <BreadCrumbItem className="px-2">Account</BreadCrumbItem>
+      <BreadCrumbItem index={5} className="px-2">
+        Account
+      </BreadCrumbItem>
     </BreadCrumb>
   );
 };

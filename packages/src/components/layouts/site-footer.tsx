@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { siteConfig } from "@/config/site-config";
+import { SocialLinks } from "../social-links";
 
 export const SiteFooter = () => {
   return (
-    <footer className="py-2 px-4 w-full fixed bottom-0">
-      <p className="text-center flex items-center justify-center w-full text-sm leading-loose md:text-left">
+    <footer className="py-2 px-4 fixed bottom-0 flex items-center justify-between xs:justify-center w-full">
+      <p className="text-sm leading-loose xs:text-left">
         <span>
           Built by{" "}
           <Link
@@ -17,6 +18,7 @@ export const SiteFooter = () => {
           </Link>
         </span>
       </p>
+      <SocialLinks className="flex xs:hidden" />
     </footer>
   );
 };

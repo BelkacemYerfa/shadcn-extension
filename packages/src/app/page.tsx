@@ -1,3 +1,4 @@
+import { BreadCrumbTest } from "@/components/extension/model";
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/config/site-config";
@@ -52,6 +53,7 @@ export default function Home() {
             <Icons.gitHub className="h-4 w-4 fill-current" />
           </Link>
         </div>
+        <BreadCrumbTest />
       </section>
     </main>
   );
