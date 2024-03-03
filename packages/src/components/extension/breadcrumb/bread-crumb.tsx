@@ -2,7 +2,11 @@
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { Popover } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { VariantProps } from "class-variance-authority";
@@ -42,10 +46,15 @@ const useBreadcrumb = () => {
 
 interface BreadCrumbProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof buttonVariants> {
+  orientation?: "horizontal" | "vertical";
+}
+
+// TODO: add support for orientation
 
 export const BreadCrumb = ({
   className,
+  orientation = "horizontal",
   variant,
   size,
   children,
@@ -73,27 +82,46 @@ export const BreadCrumb = ({
         setActiveIndex(value[prevIndex]);
       };
 
-      if (e.key === "ArrowRight" || e.key === "Backspace") {
-        moveNext();
-      } else if (e.key === "ArrowLeft" || e.key === "Backspace") {
-        movePrev();
-      } else if (e.key === "Escape") {
+      switch (e.key) {
+        case "ArrowDown":
+          if (orientation === "vertical") {
+            moveNext();
+          }
+          break;
+        case "ArrowUp":
+          if (orientation === "vertical") {
+            movePrev();
+          }
+          break;
+        case "ArrowRight":
+          if (orientation === "horizontal") {
+            moveNext();
+          }
+          break;
+        case "ArrowLeft":
+          if (orientation === "horizontal") {
+            movePrev();
+          }
+          break;
+      }
+
+      if (e.key === "Escape") {
         if (activeIndex !== -1) {
           if (prevValue.length > 0) setValue(prevValue);
           setOpen(false);
-          if (value.includes(activeIndex)) {
-            if (!prevValue.includes(activeIndex)) {
-              setActiveIndex(target);
-              console.log("target : ", target);
-            } else {
-              setActiveIndex(activeIndex);
-            }
+          if (
+            value.includes(activeIndex) &&
+            !prevValue.includes(activeIndex) &&
+            prevValue.length > 0
+          ) {
+            setActiveIndex(target);
             return;
           }
           setActiveIndex(-1);
         }
       } else if (e.key === "Enter" && activeIndex === target) {
-        setOpen(true);
+        if (prevValue.length > 0) setValue(prevValue);
+        setOpen(!open);
       }
     },
     [activeIndex, value, prevValue]
@@ -145,8 +173,8 @@ type BreadCrumbItemProps =
     );
 
 export const BreadCrumbItem = forwardRef<
-  HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement> & BreadCrumbItemProps
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & BreadCrumbItemProps
 >(({ className, isActive, activeVariant, index, children, ...props }, ref) => {
   const {
     variant,
@@ -179,15 +207,18 @@ export const BreadCrumbItem = forwardRef<
   }, [index, onValueChange]);
 
   return (
-    <Button
+    <div
       ref={ref}
-      {...Variants}
-      className={cn(className, isSelected ? "bg-muted" : "")}
+      className={cn(
+        buttonVariants(Variants),
+        className,
+        isSelected ? "bg-muted focus-visible:ring-0 ring-0" : ""
+      )}
       {...props}
       onClick={() => setActiveIndex(index)}
     >
       {children}
-    </Button>
+    </div>
   );
 });
 
@@ -255,3 +286,20 @@ export const BreadCrumbPopover = forwardRef<
 });
 
 BreadCrumbPopover.displayName = "BreadCrumbPopover";
+
+export const BreadCrumbTrigger = PopoverTrigger;
+
+BreadCrumbTrigger.displayName = "BreadCrumbTrigger";
+
+export const BreadCrumbContent = forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(({ children, ...props }, ref) => {
+  return (
+    <PopoverContent {...props} ref={ref}>
+      {children}
+    </PopoverContent>
+  );
+});
+
+BreadCrumbContent.displayName = "BreadCrumbContent";

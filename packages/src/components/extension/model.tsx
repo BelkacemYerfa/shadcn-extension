@@ -39,10 +39,12 @@ import {
 import Image from "next/image";
 import {
   BreadCrumb,
+  BreadCrumbContent,
   BreadCrumbEllipsis,
   BreadCrumbItem,
   BreadCrumbPopover,
   BreadCrumbSeparator,
+  BreadCrumbTrigger,
 } from "./breadcrumb/bread-crumb";
 import Link from "next/link";
 import {
@@ -442,8 +444,8 @@ export const OtpTest = () => {
 
 export const BreadCrumbTest = () => {
   return (
-    <BreadCrumb variant={"ghost"} className="gap-1">
-      <BreadCrumbItem className="px-2 h-8 " index={0}>
+    <BreadCrumb orientation="vertical" variant={"ghost"} className="gap-1">
+      <BreadCrumbItem className="px-2 h-8" index={0}>
         <Link href="/">Home</Link>
       </BreadCrumbItem>
       <BreadCrumbSeparator className="" />
@@ -452,21 +454,21 @@ export const BreadCrumbTest = () => {
       </BreadCrumbItem>
       <BreadCrumbSeparator />
       <BreadCrumbPopover>
-        <PopoverTrigger className="hover:bg-muted flex items-center justify-center size-8 rounded-md focus:outline-none">
+        <BreadCrumbTrigger className="hover:bg-muted flex items-center justify-center size-8 rounded-md focus:outline-none">
           <BreadCrumbEllipsis
             index={2}
             className="px-2 flex items-center justify-center size-8 rounded-md"
           />
           <span className="sr-only">open rest links</span>
-        </PopoverTrigger>
-        <PopoverContent className="flex items-center flex-col p-1 max-w-52">
-          <BreadCrumbItem index={3} className="px-2 w-full">
-            Profile
-          </BreadCrumbItem>
-          <BreadCrumbItem index={4} className="px-2 w-full">
+        </BreadCrumbTrigger>
+        <BreadCrumbContent className="flex items-center flex-col p-1 max-w-40">
+          <BreadCrumbItem index={3} className="px-2 size-8 w-full">
             Account
           </BreadCrumbItem>
-        </PopoverContent>
+          <BreadCrumbItem index={4} className="px-2 size-8 w-full">
+            Settings
+          </BreadCrumbItem>
+        </BreadCrumbContent>
       </BreadCrumbPopover>
       <BreadCrumbSeparator />
       <BreadCrumbItem index={5} className="px-2">
