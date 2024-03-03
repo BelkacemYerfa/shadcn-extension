@@ -17,7 +17,6 @@ import { createContext } from "react";
 
 type CarouselContextProps = {
   carouselOptions?: EmblaOptionsType;
-  activeKeyboard?: boolean;
   orientation?: "vertical" | "horizontal";
   plugins?: Parameters<typeof useEmblaCarousel>[1];
 };
@@ -53,7 +52,6 @@ const Carousel = forwardRef<
   (
     {
       carouselOptions,
-      activeKeyboard = false,
       orientation = "horizontal",
       plugins,
       children,
@@ -82,19 +80,6 @@ const Carousel = forwardRef<
     const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
 
-    const handleKeyDown = useCallback(
-      (event: React.KeyboardEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        if (!emblaMainApi) return;
-        if (event.key === "ArrowLeft") {
-          emblaMainApi.scrollPrev();
-        } else if (event.key === "ArrowRight") {
-          emblaMainApi.scrollNext();
-        }
-      },
-      [emblaMainApi]
-    );
-
     const ScrollNext = useCallback(() => {
       if (!emblaMainApi) return;
       emblaMainApi.scrollNext();
@@ -104,6 +89,36 @@ const Carousel = forwardRef<
       if (!emblaMainApi) return;
       emblaMainApi.scrollPrev();
     }, [emblaMainApi]);
+
+    const handleKeyDown = useCallback(
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        if (!emblaMainApi) return;
+        switch (event.key) {
+          case "ArrowLeft":
+            if (orientation === "horizontal") {
+              ScrollPrev();
+            }
+            break;
+          case "ArrowRight":
+            if (orientation === "horizontal") {
+              ScrollNext();
+            }
+            break;
+          case "ArrowUp":
+            if (orientation === "vertical") {
+              ScrollPrev();
+            }
+            break;
+          case "ArrowDown":
+            if (orientation === "vertical") {
+              ScrollNext();
+            }
+            break;
+        }
+      },
+      [emblaMainApi, orientation]
+    );
 
     const onThumbClick = useCallback(
       (index: number) => {
@@ -153,7 +168,7 @@ const Carousel = forwardRef<
         <div
           tabIndex={0}
           ref={ref}
-          onKeyDownCapture={activeKeyboard ? handleKeyDown : undefined}
+          onKeyDownCapture={handleKeyDown}
           className={cn(
             "grid gap-2 w-full relative focus:outline-none",
             className

@@ -32,7 +32,7 @@ This component has 2 ways to use it , you can use the built in component , if yo
 <Steps>
   ### Install the package from radix
   ```bash copy
-    npm install @radix-ui/react-accordion
+    npm install @radix-ui/react-accordion use-resize-observer
   ```
   ### Copy paste the code that you will find in this github folder
   ```link copy
@@ -111,6 +111,8 @@ Array of the ids of the elements that should be expended by default (optional)
 
 Currently, the TreeView component is fully accessible and supports keyboard navigation.
 
+### Keyboard Navigation
+
 | key             |             Description              |
 | :-------------- | :----------------------------------: |
 | `Tab`           |        enter a nested folder         |
@@ -121,76 +123,77 @@ Currently, the TreeView component is fully accessible and supports keyboard navi
 
 ## Usage Examples
 
-### Basic Usage
+### Basic Usage :
 
-<Tabs items={["Tree View Component" , "Tree Api" ]} >
-  <Tabs.Tab>
-    ```jsx
-    import { TreeView, TreeViewElement } from "@/components/extension/tree-view";
+This is a basic example of how to use the TreeView component
 
-    const elements: TreeViewElement[] = [
+```jsx
+import { TreeView, TreeViewElement } from "@/components/extension/tree-view";
+
+const elements: TreeViewElement[] = [
+  {
+    id: "1",
+    name: "Element 1",
+    isSelectable: true,
+    children: [
       {
-        id: "1",
-        name: "Element 1",
+        id: "11",
+        name: "Element 11",
         isSelectable: true,
-        children: [
-          {
-            id: "11",
-            name: "Element 11",
-            isSelectable: true,
-          },
-          {
-            id: "12",
-            name: "Element 12",
-            isSelectable: true,
-          },
-        ],
       },
-    ];
+      {
+        id: "12",
+        name: "Element 12",
+        isSelectable: true,
+      },
+    ],
+  },
+];
 
-    export const CustomFilesTreeView = () => {
-      return <TreeView elements={elements} initialSelectedId="1" />;
-    };
-    ```
+export const CustomFilesTreeView = () => {
+  return <TreeView elements={elements} initialSelectedId="1" />;
+};
+```
 
-  </Tabs.Tab>
-  <Tabs.Tab >
-    ```jsx
-     import { Tree ,Folder , File } from "@/components/extension/tree-view/tree-view-api.tsx";
-     export const TreeFileTest = () => {
-        return (
-          <Tree
-            className="rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1"
-            initialExpendedItems={["components"]}
-            initialSelectedId="carousel.tsx"
-          >
-            <Folder element="src">
-              <File element="app.tsx">
-                <p> app.tsx </p>
-              </File>
-              <Folder element="components">
-                <File element="input.tsx">
-                  <p> input.tsx </p>
-                </File>
-                <File element="button.tsx">
-                  <p> button.tsx </p>
-                </File>
-                <Folder element="pages">
-                  <File element="interface.ts">
-                    <p>interface.ts</p>
-                  </File>
-                </Folder>
-              </Folder>
-              <Folder element="ui">
-                <File element="carousel.tsx">
-                  <p>carousel.tsx</p>
-                </File>
-              </Folder>
-            </Folder>
-          </Tree>
-        );
-      };
-    ```
-  </Tabs.Tab>
-  
-</Tabs>
+But if you want to build your custom tree view with your own behvoir you can use the built in primitive api to build your custom tree view.
+
+```jsx
+import {
+  Tree,
+  Folder,
+  File,
+} from "@/components/extension/tree-view/tree-view-api.tsx";
+export const TreeFileTest = () => {
+  return (
+    <Tree
+      className="rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1"
+      initialExpendedItems={["components"]}
+      initialSelectedId="carousel.tsx"
+    >
+      <Folder element="src">
+        <File element="app.tsx">
+          <p> app.tsx </p>
+        </File>
+        <Folder element="components">
+          <File element="input.tsx">
+            <p> input.tsx </p>
+          </File>
+          <File element="button.tsx">
+            <p> button.tsx </p>
+          </File>
+          <Folder element="pages">
+            <File element="interface.ts">
+              <p>interface.ts</p>
+            </File>
+          </Folder>
+        </Folder>
+        <Folder element="ui">
+          <File element="carousel.tsx">
+            <p>carousel.tsx</p>
+          </File>
+        </Folder>
+      </Folder>
+    </Tree>
+  );
+};
+```

@@ -2,7 +2,7 @@ import { Callout, Steps, Tabs } from "nextra/components";
 
 # MultiSelect
 
-A mulit select that assembles the missing features of the select element from [Shadcn ui]()
+A mulit select that assembles the missing features of the select element from [Shadcn ui](https://ui.shadcn.com/docs/components/select)
 
 ```jsx copy
 import {
@@ -87,50 +87,51 @@ A boolean that will determine if the list of selected items will loop or not whe
 #### Examples
 
 ```jsx {21} copy
-    import {
-    MultiSelector,
-    MultiSelectorContent,
-    MultiSelectorInput,
-    MultiSelectorItem,
-    MultiSelectorList,
-    MultiSelectorTrigger,
-    } from "@/components/extension/fancy-multi-select/multi-select-api";
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "@/components/extension/fancy-multi-select/multi-select-api";
 
-    type MultiSelectProps = {
-      options: { label: string; value: string }[];
-    };
+type MultiSelectProps = {
+  options: { label: string; value: string }[];
+};
 
-    export const MultiSelectTest = ({ options } : MultiSelectProps) => {
-      const [value, setValue] = useState<string[]>([]);
+export const MultiSelectTest = ({ options } : MultiSelectProps) => {
+  const [value, setValue] = useState<string[]>([]);
 
-      return (
-          <MultiSelector
-            value={value}
-            onValueChange={setValue}
-            loop
-            className="max-w-xs"
-          >
-            <MultiSelectorTrigger>
-              <MultiSelectorInput placeholder="Select your framework" />
-            </MultiSelectorTrigger>
-            <MultiSelectorContent>
-              <MultiSelectorList>
-                {options.map((option, i) => (
-                  <MultiSelectorItem key={i} value={option.value}>
-                    {option.label}
-                  </MultiSelectorItem>
-                ))}
-              </MultiSelectorList>
-            </MultiSelectorContent>
-          </MultiSelector>
-       );
-     };
-
+  return (
+      <MultiSelector
+        value={value}
+        onValueChange={setValue}
+        loop
+        className="max-w-xs"
+      >
+        <MultiSelectorTrigger>
+          <MultiSelectorInput placeholder="Select your framework" />
+        </MultiSelectorTrigger>
+        <MultiSelectorContent>
+          <MultiSelectorList>
+            {options.map((option, i) => (
+              <MultiSelectorItem key={i} value={option.value}>
+                {option.label}
+              </MultiSelectorItem>
+            ))}
+          </MultiSelectorList>
+        </MultiSelectorContent>
+      </MultiSelector>
+  );
+};
 ```
 
 ## Accessibility
 
 The MultiSelect component is built with accessibility in mind. It is fully keyboard navigable and screen reader friendly.
+
+### Keyboard Navigation
 
 | key                     |             Description             |
 | :---------------------- | :---------------------------------: |

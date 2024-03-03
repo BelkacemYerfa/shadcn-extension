@@ -68,6 +68,72 @@ export type FilePreview = {
   preview: string;
 };
 
+const options = [
+  {
+    value: "Next",
+    label: "Next",
+  },
+  {
+    value: "React",
+    label: "React",
+  },
+  {
+    value: "Tailwind",
+    label: "Tailwind",
+  },
+  {
+    value: "Remix",
+    label: "Remix",
+  },
+  {
+    value: "Astro",
+    label: "Astro",
+  },
+  {
+    value: "Svelte",
+    label: "Svelte",
+  },
+  {
+    value: "Solid",
+    label: "Solid",
+  },
+  {
+    value: "Vue",
+    label: "Vue",
+  },
+  {
+    value: "Nuxt",
+    label: "Nuxt",
+    disabled: true,
+  },
+  {
+    value: "Angular",
+    label: "Angular",
+  },
+  {
+    value: "Ember",
+    label: "Ember",
+    disabled: true,
+  },
+  {
+    value: "Preact",
+    label: "Preact",
+    disabled: true,
+  },
+  {
+    value: "Sapper",
+    label: "Sapper",
+  },
+  {
+    value: "Marko",
+    label: "Marko",
+  },
+  {
+    value: "Riot",
+    label: "Riot",
+  },
+];
+
 export const Model = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
@@ -203,7 +269,6 @@ const MultiCarousel = () => {
 export const CarouselExample = () => {
   return (
     <Carousel
-      activeKeyboard
       orientation="vertical"
       className="max-w-xs w-full h-fit flex items-center gap-2 "
     >
@@ -219,8 +284,7 @@ export const CarouselExample = () => {
           ))}
         </CarouselMainContainer>
       </div>
-
-      <CarouselThumbsContainer className="h-60 basis-1/4 ">
+      <CarouselThumbsContainer className="h-60 basis-1/4">
         {Array.from({ length: 10 }).map((_, index) => (
           <SliderThumbItem key={index} index={index}>
             <span className="border border-muted flex items-center justify-center h-full w-full rounded-md">
@@ -234,44 +298,6 @@ export const CarouselExample = () => {
 };
 
 export const CommanderUsingUseState = () => {
-  const options = [
-    {
-      value: "Next",
-      label: "Next",
-    },
-    {
-      value: "React",
-      label: "React",
-    },
-    {
-      value: "Tailwind",
-      label: "Tailwind",
-    },
-    {
-      value: "Remix",
-      label: "Remix",
-    },
-    {
-      value: "Astro",
-      label: "Astro",
-    },
-    {
-      value: "Svelte",
-      label: "Svelte",
-    },
-    {
-      value: "Solid",
-      label: "Solid",
-    },
-    {
-      value: "Vue",
-      label: "Vue",
-    },
-    {
-      value: "Nuxt",
-      label: "Nuxt",
-    },
-  ];
   const [command, setCommand] = useState<string[]>(["Hello"]);
   return (
     <form
@@ -292,71 +318,6 @@ export const CommanderUsingUseState = () => {
 };
 
 export const Commander = () => {
-  const options = [
-    {
-      value: "Next",
-      label: "Next",
-    },
-    {
-      value: "React",
-      label: "React",
-    },
-    {
-      value: "Tailwind",
-      label: "Tailwind",
-    },
-    {
-      value: "Remix",
-      label: "Remix",
-    },
-    {
-      value: "Astro",
-      label: "Astro",
-    },
-    {
-      value: "Svelte",
-      label: "Svelte",
-    },
-    {
-      value: "Solid",
-      label: "Solid",
-    },
-    {
-      value: "Vue",
-      label: "Vue",
-    },
-    {
-      value: "Nuxt",
-      label: "Nuxt",
-    },
-    {
-      value: "SvelteKit",
-      label: "SvelteKit",
-    },
-    {
-      value: "Vite",
-      label: "Vite",
-      disabled: true,
-    },
-    {
-      value: "Snowpack",
-      label: "Snowpack",
-      disabled: true,
-    },
-    {
-      value: "Parcel",
-      label: "Parcel",
-    },
-    {
-      value: "Webpack",
-      label: "Webpack",
-    },
-    {
-      value: "Gatsby",
-      label: "Gatsby",
-      disabled: true,
-    },
-  ];
   const form = useForm({
     defaultValues: {
       command: [],
@@ -747,71 +708,6 @@ export const TreeViewTest = () => {
 };
 
 export const MultiSelectTest = () => {
-  const options = [
-    {
-      value: "Next",
-      label: "Next",
-    },
-    {
-      value: "React",
-      label: "React",
-    },
-    {
-      value: "Tailwind",
-      label: "Tailwind",
-    },
-    {
-      value: "Remix",
-      label: "Remix",
-    },
-    {
-      value: "Astro",
-      label: "Astro",
-    },
-    {
-      value: "Svelte",
-      label: "Svelte",
-    },
-    {
-      value: "Solid",
-      label: "Solid",
-    },
-    {
-      value: "Vue",
-      label: "Vue",
-    },
-    {
-      value: "Nuxt",
-      label: "Nuxt",
-    },
-    {
-      value: "SvelteKit",
-      label: "SvelteKit",
-    },
-    {
-      value: "Vite",
-      label: "Vite",
-      disabled: true,
-    },
-    {
-      value: "Snowpack",
-      label: "Snowpack",
-      disabled: true,
-    },
-    {
-      value: "Parcel",
-      label: "Parcel",
-    },
-    {
-      value: "Webpack",
-      label: "Webpack",
-    },
-    {
-      value: "Gatsby",
-      label: "Gatsby",
-      disabled: true,
-    },
-  ];
   const [value, setValue] = useState<string[]>([]);
   const [loop, setLoop] = useState<boolean>(false);
   return (
