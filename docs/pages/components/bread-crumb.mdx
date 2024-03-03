@@ -50,11 +50,12 @@ https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/package
 
 The BreadCrumb component accepts the following props:
 
-| Prop          |         Type          | Default value |
-| :------------ | :-------------------: | ------------: |
-| variant       | typeof buttonVariants |       Default |
-| isActive      |        boolean        |         false |
-| activeVariant |  type buttonVariants  | default style |
+| Prop          |            Type            | Default value |
+| :------------ | :------------------------: | ------------: |
+| variant       |   typeof buttonVariants    |       Default |
+| isActive      |          boolean           |         false |
+| activeVariant |    type buttonVariants     | default style |
+| orientation   | "vertical" or "horizental" |      vertical |
 
 ### variant
 
@@ -73,6 +74,50 @@ The activeVariant prop is used to change the style of the BreadCrumb component w
   specified
 </Callout>
 
+### orientation
+
+Sets the orientation of the BreadCrumb component , it accepts two values "vertical" or "horizental" , the default value is "horizental", check the keyboard navigation section to see the behavior
+
 ## Accessibility
 
-The BreadCrumb component is accessible , but it does not support keyboard navigation currently , we are working on it , and it will be available soon
+The BreadCrumb component is accessible by default , support keyboard navigation and screen readers
+
+### Keyboard Navigation
+
+| key                                    |                        Description                        |
+| :------------------------------------- | :-------------------------------------------------------: |
+| `Escape`                               | closes BreadCrumb Popover/gets out of scope selected link |
+| `Enter`                                |              Opens/closes BreadCrumb Popover              |
+| `ArrowDown` / `ArrowRight`             |        Verticly/horizently Increments by one step         |
+| `ArrowUp` / `ArrowLeft` or `Backspace` |        Verticly/horizently Decrements by one step         |
+
+## Usage
+
+The BreadCrumb component is used to show the path of the user in the application , it is used to show the user the path he took to get to the current page
+
+```jsx copy
+import {
+  BreadCrumb,
+  BreadCrumbEllipsis,
+  BreadCrumbItem,
+  BreadCrumbSeparator,
+} from "@/components/extension/breadcrumb/bread-crumb";
+
+export const CurrentPath = () => {
+  return (
+    <BreadCrumb orientation="vertical" variant={"ghost"} className="gap-1">
+      <BreadCrumbItem className="px-2 h-8" index={0}>
+        <Link href="/">Home</Link>
+      </BreadCrumbItem>
+      <BreadCrumbSeparator className="" />
+      <BreadCrumbItem index={1} className="px-2">
+        <Link href="/settings">Settings</Link>Settings
+      </BreadCrumbItem>
+      <BreadCrumbSeparator />
+      <BreadCrumbItem index={5} className="px-2">
+        <Link href="/account">Account</Link>
+      </BreadCrumbItem>
+    </BreadCrumb>
+  );
+};
+```

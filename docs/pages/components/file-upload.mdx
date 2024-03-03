@@ -22,18 +22,14 @@ export const FileUpload = () => {
       className="w-full max-w-md space-y-1"
     >
       <FileInput className="border border-dashed border-gray-500">
-        <Button variant={"outline"}>
-          Upload a file
-        </Button>
+        {/* placeholder input */}
       </FileInput>
       <FileUploaderContent className="h-48 ">
           {files &&
            files.length > 0 &&
            files.map((file, i) => (
                <FileUploaderItem index={i} >
-                <span>
-                  {file.name}
-                </span>
+               { /* Custom render */}
                </FileUploaderItem>
            ))}
       </FileUploaderContent>
@@ -48,9 +44,7 @@ export const FileUpload = () => {
   ### Install the package
 
 ```bash copy
-  npm install use-resize-observer
-  npm install react-dropzone
-  npm install sonner
+  npm install use-resize-observer react-dropzone sonner
   npx shadcn@latest add ScrollArea
 ```
 
@@ -90,6 +84,8 @@ Those are options specified to the dropzone hook from `react-dropzone` , you can
 
 The File upload component is accessible by default , it also supports keyboard navigation and screen readers
 
+### Keyboard Navigation
+
 | key                     |             Description             |
 | :---------------------- | :---------------------------------: |
 | `Escape`                |         closes the selected         |
@@ -97,3 +93,50 @@ The File upload component is accessible by default , it also supports keyboard n
 | `ArrowDown`             | Increments by one step horzintanly  |
 | `ArrowUp`               | Decrements by one step horzintanly  |
 | `Delete` or `Backspace` | Removes the selected item from list |
+
+## Usage
+
+This is an simple example of how to use the File upload component
+
+```jsx copy
+import {
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+  FileInput,
+} from "@/components/extension/file-uploader/file-uploader";
+
+
+export const AdminFileUploader = () => {
+  const [files, setFiles] = useState<File[] | null>(null);
+  const dropZoneConfig = {
+ /*    maxFiles: 5,
+    maxSize: 1024 * 1024 * 4,
+    multiple: true, */
+    // here put the options of the dropzone hook
+  };
+  return (
+    <FileUploader
+      value={files}
+      onValueChange={setFiles}
+      dropzoneOptions={dropZoneConfig}
+      className="relative max-w-xs space-y-1"
+    >
+      <FileInput className="border border-dashed border-gray-500">
+        <Button variant={"outline"}>Upload a file</Button>
+      </FileInput>
+      <FileUploaderContent className="h-48 ">
+        {files &&
+          files.length > 0 &&
+          files.map((file, i) => (
+            <FileUploaderItem key={i} index={i}>
+              <Paperclip className="h-4 w-4 stroke-current" />
+              <span>{file.name}</span>
+            </FileUploaderItem>
+          ))}
+      </FileUploaderContent>
+    </FileUploader>
+  );
+};
+
+```
