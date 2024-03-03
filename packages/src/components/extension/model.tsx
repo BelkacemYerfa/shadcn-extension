@@ -699,7 +699,7 @@ export const TreeViewTest = () => {
     <div className="flex gap-2 pl-2">
       <TreeView
         elements={elements}
-        initialSelectedId="Element 21"
+        initialSelectedId="Element 7"
         initialExpendedItems={["Element 9"]}
         indicator={true}
       />
