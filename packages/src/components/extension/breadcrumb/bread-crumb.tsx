@@ -22,9 +22,9 @@ import {
 type BreadCrumbContextProps = {
   activeIndex: number;
   setActiveIndex: (activeIndex: number) => void;
-  value: string[];
-  onValueChange: Dispatch<SetStateAction<string[]>>;
-  onPrevValueChange: Dispatch<SetStateAction<string[]>>;
+  value: number[];
+  onValueChange: Dispatch<SetStateAction<number[]>>;
+  onPrevValueChange: Dispatch<SetStateAction<number[]>>;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   setTarget: (target: number) => void;
@@ -51,38 +51,52 @@ export const BreadCrumb = ({
   children,
   ...props
 }: BreadCrumbProps) => {
-  const [value, setValue] = useState<string[]>([]);
-  const [prevValue, setPrevValue] = useState<string[]>([]);
+  const [value, setValue] = useState<number[]>([]);
+  const [prevValue, setPrevValue] = useState<number[]>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const [target, setTarget] = useState(0);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
       e.preventDefault();
       const length = value.length - 1;
-      if (e.key === "ArrowRight" || e.key === "Backspace") {
+
+      const moveNext = () => {
         const nextIndex = activeIndex + 1 > length ? 0 : activeIndex + 1;
-        setActiveIndex(Number(value[nextIndex]));
-      } else if (e.key === "ArrowLeft") {
-        const currentIndex = value.indexOf(activeIndex.toFixed()) - 1;
+        setActiveIndex(value[nextIndex]);
+      };
+
+      const movePrev = () => {
+        const currentIndex = value.indexOf(activeIndex) - 1;
         const prevIndex = currentIndex < 0 ? length : currentIndex;
-        setActiveIndex(Number(value[prevIndex]));
+        setActiveIndex(value[prevIndex]);
+      };
+
+      if (e.key === "ArrowRight" || e.key === "Backspace") {
+        moveNext();
+      } else if (e.key === "ArrowLeft" || e.key === "Backspace") {
+        movePrev();
       } else if (e.key === "Escape") {
         if (activeIndex !== -1) {
-          setValue(prevValue);
-          if (
-            value.includes(activeIndex.toString()) &&
-            !prevValue.includes(activeIndex.toString())
-          ) {
-            setActiveIndex(target);
-          }
+          if (prevValue.length > 0) setValue(prevValue);
           setOpen(false);
-        } else setActiveIndex(-1);
+          if (value.includes(activeIndex)) {
+            if (!prevValue.includes(activeIndex)) {
+              setActiveIndex(target);
+              console.log("target : ", target);
+            } else {
+              setActiveIndex(activeIndex);
+            }
+            return;
+          }
+          setActiveIndex(-1);
+        }
       } else if (e.key === "Enter" && activeIndex === target) {
         setOpen(true);
       }
     },
-    [activeIndex, value, target, prevValue]
+    [activeIndex, value, prevValue]
   );
 
   return (
@@ -150,15 +164,13 @@ export const BreadCrumbItem = forwardRef<
   const activeVariants = activeVariant ?? variants;
   const Variants = isActive ? activeVariants : variants;
   const isSelected = isActive ?? activeIndex === index;
-  // TOD0 : a way to remove the element inside the popover after the unmount of this component
 
   useEffect(() => {
-    const targetIndex = index.toString();
     onValueChange((prev) => {
-      if (prev.includes(targetIndex)) {
+      if (prev.includes(index)) {
         return prev;
       }
-      const arr = [...prev, targetIndex];
+      const arr = [...prev, index];
       return arr.toSorted((a, b) => Number(a) - Number(b));
     });
     return () => {
@@ -192,7 +204,7 @@ export const BreadCrumbSeparator = forwardRef<
       ) : (
         <ChevronRight className={cn("h-4 w-4", className)} />
       )}
-      <span className="sr-only">the next page</span>
+      <span className="sr-only">next page</span>
     </span>
   );
 });
@@ -207,12 +219,11 @@ export const BreadCrumbEllipsis = forwardRef<
   const isSelected = activeIndex === index;
   useEffect(() => {
     setTarget(index);
-    const targetIndex = index.toString();
     onValueChange((prev) => {
-      if (prev.includes(targetIndex)) {
+      if (prev.includes(index)) {
         return prev;
       }
-      const arr = [...prev, targetIndex];
+      const arr = [...prev, index];
       return arr.toSorted((a, b) => Number(a) - Number(b));
     });
   }, [index, onValueChange]);
