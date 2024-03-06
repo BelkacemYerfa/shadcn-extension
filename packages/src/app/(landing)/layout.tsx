@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { Provider } from "@/components/provider";
-import { Toaster } from "sonner";
 import { SiteHeader } from "@/components/layouts/site-header";
 import { SiteFooter } from "@/components/layouts/site-footer";
-import { Analytics } from "@vercel/analytics/react";
 import { siteConfig } from "@/config/site-config";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Shadcn extension",
@@ -41,21 +35,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className + " flex flex-col h-screen"}>
-        <Provider>
-          <SiteHeader />
-          {children}
-          <Toaster richColors position="bottom-center" />
-        </Provider>
-        <Analytics />
-      </body>
-    </html>
+    <body>
+      <SiteHeader />
+      {children}
+      <SiteFooter />
+    </body>
   );
 }
