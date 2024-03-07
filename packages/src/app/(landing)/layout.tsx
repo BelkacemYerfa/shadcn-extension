@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { SiteHeader } from "@/components/layouts/site-header";
 import { SiteFooter } from "@/components/layouts/site-footer";
 import { siteConfig } from "@/config/site-config";
 
@@ -42,7 +40,6 @@ export default function AppLayout({
 }>) {
   return (
     <body>
-      <SiteHeader />
       {children}
       <SiteFooter />
     </body>

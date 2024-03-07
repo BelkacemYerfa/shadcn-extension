@@ -11,20 +11,26 @@ import {
 import { useDebounce } from "@/hooks/use-debounce";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
+import { Button } from "./ui/button";
+import { Monitor, Phone, Tablet } from "lucide-react";
+import { MobileIcon } from "@radix-ui/react-icons";
+import { EditorLoader } from "./loaders/editor-loader";
 
 const Playground = () => {
-  const [isPending, startTransition] = useTransition();
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("//some code here");
+  const [viewSize, setViewSize] = useState(40);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
   const mediaQuery = useMediaQuery("(min-width: 640px)");
+
+  const { theme } = useTheme();
+
   useEffect(() => {
     if (debouncedQuery.length === 0) setCode("");
 
     if (debouncedQuery.length > 0) {
-      startTransition(async () => {
-        setCode(debouncedQuery);
-      });
+      setCode(debouncedQuery);
     }
   }, [debouncedQuery]);
 
@@ -32,51 +38,118 @@ const Playground = () => {
     setQuery(value || "");
   }, []);
 
+  const changeViewSize = (view: "phone" | "tablet" | "desktop") => {
+    switch (view) {
+      case "phone":
+        setViewSize(30);
+        console.log(viewSize);
+        break;
+      case "tablet":
+        setViewSize(50);
+        break;
+      case "desktop":
+        setViewSize(75);
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <ResizablePanelGroup
       direction={mediaQuery ? "horizontal" : "vertical"}
       className="h-full grid grid-cols-1 md:grid-cols-2 gap-1"
     >
-      <ResizablePanel className="rounded-lg p-1" minSize={25}>
-        <div className="rounded-lg h-full overflow-hidden">
+      <ResizablePanel
+        className="rounded-lg p-1 basis-[50%] md:basis-[60%]"
+        minSize={25}
+        defaultSize={100 - viewSize}
+      >
+        <div className="rounded-lg h-full ring-1 ring-border overflow-hidden max-h-[calc(100vh-4rem)] overflow-y-auto ">
           <Editor
             className="h-full "
             defaultLanguage="javascript"
             defaultValue={code.trim()}
-            theme="vs-dark"
+            loading={<EditorLoader />}
+            theme={theme === "light" ? "light" : "vs-dark"}
             onChange={handleEditorChange}
             options={{
-              fontSize: 14,
-              cursorSmoothCaretAnimation: true,
+              fontSize: 16,
+              cursorSmoothCaretAnimation: "on",
               wordWrap: "on",
               scrollBeyondLastLine: false,
               fontFamily: "iaw-mono-var, Consolas, Courier New , monospace",
-              fontFeatureSettings: "liga",
               fontLigatures: true,
               lineHeight: 1.35,
               tabSize: 2,
-              autoIndent: true,
+              autoIndent: "keep",
               letterSpacing: 0,
-              renderLineHighlight: "onlyWhenFocus",
+              renderLineHighlight: "all",
               minimap: {
                 enabled: false,
               },
               contextmenu: false,
               smoothScrolling: true,
-              stickyScroll: true,
             }}
           />
         </div>
       </ResizablePanel>
       <ResizableHandle
         withHandle
-        className={cn("rounded-lg", mediaQuery ? "w-4" : "h-4")}
+        className={cn("rounded-lg", mediaQuery ? "w-4 " : "!h-4 ")}
       />
-      <ResizablePanel minSize={25} className="rounded-lg p-1">
-        <div className="rounded-lg ring-[0.5px] ring-muted-foreground h-full overflow-hidden ">
-          <LiveProvider code={code} scope={{ Test }}>
-            <LivePreview />
-          </LiveProvider>
+      <ResizablePanel
+        minSize={25}
+        defaultSize={viewSize}
+        className="rounded-lg p-1 basis-[50%] md:basis-[40%]"
+      >
+        <div className="rounded-lg ring-1 ring-border h-full overflow-hidden bg-background relative size-full ">
+          <div className="flex items-center justify-between gap-2 p-2 h-10 border-b border-border ">
+            <div className="flex items-center gap-2">
+              <Button variant={"outline"} className="h-7 text-sm">
+                Share
+              </Button>
+              <Button variant={"outline"} className="h-7 text-sm">
+                Reset
+              </Button>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                size={"icon"}
+                variant={"outline"}
+                className="size-7"
+                onClick={() => setViewSize(70)}
+              >
+                <MobileIcon className="size-4" />
+                <span className="sr-only">phone view</span>
+              </Button>
+              <Button
+                size={"icon"}
+                variant={"outline"}
+                className="size-7"
+                onClick={() => changeViewSize("tablet")}
+              >
+                <Tablet className="size-4" />
+                <span className="sr-only">phone view</span>
+              </Button>
+              <Button
+                size={"icon"}
+                variant={"outline"}
+                className="size-7"
+                onClick={() => changeViewSize("desktop")}
+              >
+                <Monitor className="size-4" />
+                <span className="sr-only">phone view</span>
+              </Button>
+            </div>
+          </div>
+          <div className="relative max-h-[calc(100vh-7rem)] overflow-y-auto size-full">
+            <LiveProvider code={code} scope={{ Test }}>
+              <div className="text-destructive text-center font-bold">
+                <LiveError />
+              </div>
+              <LivePreview />
+            </LiveProvider>
+          </div>
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
