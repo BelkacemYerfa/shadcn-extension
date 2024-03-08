@@ -723,7 +723,11 @@ export const MultiSelectTest = () => {
       <MultiSelectorContent>
         <MultiSelectorList>
           {options.map((option, i) => (
-            <MultiSelectorItem key={i} value={option.value}>
+            <MultiSelectorItem
+              key={i}
+              value={option.value}
+              disabled={undefined}
+            >
               {option.label}
             </MultiSelectorItem>
           ))}

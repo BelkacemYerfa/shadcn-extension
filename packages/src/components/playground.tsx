@@ -13,18 +13,30 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
-import { Monitor, Phone, Tablet } from "lucide-react";
+import { Monitor, Tablet } from "lucide-react";
 import { MobileIcon } from "@radix-ui/react-icons";
 import { EditorLoader } from "./loaders/editor-loader";
+import { MultiSelectTest } from "./extension/model";
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "./extension/fancy-multi-select/multi-select-api";
 
-const Playground = () => {
-  const [code, setCode] = useState("//some code here");
+type PlaygroundProps = {
+  defaultCode?: string;
+};
+
+const Playground = ({ defaultCode }: PlaygroundProps) => {
+  const { theme } = useTheme();
+  const mediaQuery = useMediaQuery("(min-width: 640px)");
+  const [code, setCode] = useState(defaultCode || "//Type your code here");
   const [viewSize, setViewSize] = useState(40);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
-  const mediaQuery = useMediaQuery("(min-width: 640px)");
-
-  const { theme } = useTheme();
 
   useEffect(() => {
     if (debouncedQuery.length === 0) setCode("");
@@ -142,8 +154,13 @@ const Playground = () => {
               </Button>
             </div>
           </div>
-          <div className="relative max-h-[calc(100vh-7rem)] overflow-y-auto size-full">
-            <LiveProvider code={code} scope={{ Test }}>
+          <div className="relative max-h-[calc(100vh-7rem)] overflow-y-auto size-full p-5">
+            <LiveProvider
+              code={code}
+              scope={{
+                MultiSelectTest,
+              }}
+            >
               <div className="text-destructive text-center font-bold">
                 <LiveError />
               </div>
@@ -157,7 +174,7 @@ const Playground = () => {
 };
 
 const Test = () => {
-  return <div>Test</div>;
+  return <MultiSelectTest />;
 };
 
 export default Playground;
