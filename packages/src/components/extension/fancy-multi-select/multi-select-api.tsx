@@ -209,7 +209,7 @@ const MultiSelectorContent = forwardRef<
   const { open } = useMultiSelect();
   return (
     <div ref={ref} className="relative">
-      {open && children}
+      {children}
     </div>
   );
 });
