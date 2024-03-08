@@ -10,9 +10,7 @@ import Balancer from "react-wrap-balancer";
 export default function Home() {
   return (
     <main className="py-24 max-w-2xl mx-auto space-y-6  ">
-      <MultiSelectTest />
-
-      {/* <section className="flex flex-col items-center justify-center gap-4 ">
+      <section className="flex flex-col items-center justify-center gap-4 ">
         <h1
           className="text-center animate-fade-up text-4xl font-extrabold tracking-tight opacity-0 sm:text-5xl md:text-6xl lg:text-7xl"
           style={{
@@ -55,7 +53,7 @@ export default function Home() {
             <Icons.gitHub className="h-4 w-4 fill-current" />
           </Link>
         </div>
-      </section> */}
+      </section>
     </main>
   );
 }
