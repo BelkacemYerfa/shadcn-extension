@@ -67,6 +67,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        vs_code: {
+          DEFAULT: "#1e1e1e",
+          foreground: "#ffffff",
+        },
       },
       keyframes: {
         "accordion-down": {
