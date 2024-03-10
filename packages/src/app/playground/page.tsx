@@ -3,7 +3,7 @@
 import { PlaygroundLoader } from "@/components/loaders/playground-loader";
 import { Suspense, lazy } from "react";
 
-const Playground = lazy(() => import("@/components/playground"));
+const Playground = lazy(() => import("@/components/playground/playground"));
 
 export default function PlaygroundPage() {
   return (

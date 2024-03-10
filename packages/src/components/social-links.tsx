@@ -7,7 +7,7 @@ import { buttonVariants } from "./ui/button";
 
 export const SocialLinks = ({ className }: { className: string }) => {
   return (
-    <div className={cn("items-center gap-1 xs:gap-2", className)}>
+    <div className={cn("items-center gap-1 xs:gap-1.5", className)}>
       <Link
         href={siteConfig.links.twitter}
         className={cn(

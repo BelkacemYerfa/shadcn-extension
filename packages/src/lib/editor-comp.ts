@@ -21,10 +21,12 @@ import {
   BreadCrumbSeparator,
   BreadCrumbTrigger,
 } from "@/components/extension/breadcrumb/bread-crumb";
+import "./file";
 
 type EditorComponent = {
   title: string;
   dependencies: Record<string, any>;
+  example?: string;
 }[];
 
 export const editorComponentsConfig: EditorComponent = [
@@ -104,6 +106,35 @@ export const editorComponentsConfig: EditorComponent = [
       MultiSelectorList,
       MultiSelectorTrigger,
     },
+    example: `() => {
+  const [value, setValue] = React.useState([]);
+  const options = [
+    { label: "React", value: "react" },
+    { label: "Vue", value: "vue" },
+    { label: "Angular", value: "angular" },
+  ];
+  return (
+    <MultiSelector
+      value={value}
+      onValueChange={setValue}
+      className="max-w-xs"
+      loop={false}
+    >
+      <MultiSelectorTrigger>
+        <MultiSelectorInput placeholder="Select your framework" />
+      </MultiSelectorTrigger>
+      <MultiSelectorContent>
+        <MultiSelectorList>
+          {options.map((option, i) => (
+            <MultiSelectorItem key={i} value={option.value}>
+              {option.label}
+            </MultiSelectorItem>
+          ))}
+        </MultiSelectorList>
+      </MultiSelectorContent>
+    </MultiSelector>
+  );
+};`,
   },
   {
     title: "Bread Crumb",
