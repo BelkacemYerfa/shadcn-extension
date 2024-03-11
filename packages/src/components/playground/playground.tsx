@@ -1,7 +1,14 @@
 "use client";
 
 import Editor, { Monaco, useMonaco } from "@monaco-editor/react";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  memo,
+  useTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -13,29 +20,20 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { Button } from "../ui/button";
 import { EditorLoader } from "../loaders/editor-loader";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { getHighlighter } from "shiki";
 import { shikiToMonaco } from "@shikijs/monaco";
 import { editorComponentsConfig as Components } from "@/lib/editor-comp";
 import { LivePlaygroundPreview } from "./playground-preview";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useMounted } from "@/hooks/use-mounted";
 import { PlaygroundSearchSelector } from "../drop-downs/search-selector";
+import { useSearchParams } from "next/navigation";
 
 type PlaygroundProps = {
   defaultCode?: string;
 };
 
-const VIEW_SIZE = 40;
+const VIEW_SIZE = 33;
 const MIN_SIZE = 25;
 const AVA_THEMES = ["one-dark-pro", "github-light", "github-dark"];
-const THEMES = [...AVA_THEMES, "light", "vs-dark"];
 const COMPONENTS = Components.map((comp) => comp.title);
 
 const createArrObjFromArr = (arr: string[]) => {
@@ -51,13 +49,28 @@ const highlighter = async () => {
     langs: ["javascript", "typescript"],
   });
 };
+
 const Playground = memo(({ defaultCode }: PlaygroundProps) => {
-  const { theme } = useTheme();
-  const [selectedTheme, setSelectedTheme] = useState(
-    theme === "light" ? "light" : "vs-dark"
-  );
-  const monaco = useMonaco();
+  const monacoInstance = useMonaco();
   const mediaQuery = useMediaQuery("(min-width: 640px)");
+  const searchParams = useSearchParams();
+
+  const comp = searchParams.get("comp");
+
+  useEffect(() => {
+    if (comp) {
+      const isCompExist = COMPONENTS.includes(comp);
+      setComp(isCompExist ? comp : "");
+    }
+  }, [comp]);
+
+  useEffect(() => {
+    if (monacoInstance) {
+      handleEditorBeforeMount(monacoInstance);
+    }
+  }, [monacoInstance]);
+
+  const [selectedTheme, setSelectedTheme] = useState("one-dark-pro");
   const [code, setCode] = useState(defaultCode || "//Type your code here");
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
@@ -79,23 +92,19 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
     shikiToMonaco(highlighterInstance, monaco);
   };
 
-  useEffect(() => {
-    if (monaco) {
-      handleEditorBeforeMount(monaco);
-    }
-  }, [monaco]);
-
   const dependencies = useMemo(() => {
-    return Components.find((comp) => comp.title === component);
+    const comp = Components.find((comp) => comp.title === component);
+    setCode(comp?.example ?? "");
+    return comp;
   }, [component]);
-  console.log("dependencies", dependencies);
+
   return (
     <ResizablePanelGroup
       direction={mediaQuery ? "horizontal" : "vertical"}
       className="h-full grid grid-cols-1 md:grid-cols-2 gap-1"
     >
       <ResizablePanel
-        className="rounded-lg basis-1/2 md:basis-[60%] h-full p-1 "
+        className="rounded-lg col-span-1 md:col-span-2 h-full p-1 "
         minSize={MIN_SIZE}
         defaultSize={100 - VIEW_SIZE}
       >
@@ -111,7 +120,7 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
             <PlaygroundSearchSelector
               value={selectedTheme}
               onValueChange={setSelectedTheme}
-              options={createArrObjFromArr(THEMES)}
+              options={createArrObjFromArr(AVA_THEMES)}
               placeholder="Select Theme"
               noneResult="No theme found."
             />
@@ -126,6 +135,9 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
               theme={selectedTheme}
               onChange={handleEditorChange}
               beforeMount={handleEditorBeforeMount}
+              onMount={(_, monaco) => {
+                handleEditorBeforeMount(monaco);
+              }}
               options={{
                 fontSize: 16,
                 cursorSmoothCaretAnimation: "on",
@@ -156,7 +168,7 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
       <ResizablePanel
         minSize={MIN_SIZE}
         defaultSize={VIEW_SIZE}
-        className="rounded-lg p-1 basis-1/2 md:basis-[40%]"
+        className="rounded-lg col-span-1 md:col-span-2 h-full p-1 "
       >
         <div className="ring-1 rounded-lg ring-border h-full overflow-hidden bg-background relative size-full ">
           <div className="flex items-center justify-between gap-2 p-2 h-10 border-b border-border ">
