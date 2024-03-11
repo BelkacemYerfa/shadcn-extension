@@ -26,6 +26,7 @@ import { editorComponentsConfig as Components } from "@/lib/editor-comp";
 import { LivePlaygroundPreview } from "./playground-preview";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMounted } from "@/hooks/use-mounted";
+import { PlaygroundSearchSelector } from "../drop-downs/search-selector";
 
 type PlaygroundProps = {
   defaultCode?: string;
@@ -35,6 +36,14 @@ const VIEW_SIZE = 40;
 const MIN_SIZE = 25;
 const AVA_THEMES = ["one-dark-pro", "github-light", "github-dark"];
 const THEMES = [...AVA_THEMES, "light", "vs-dark"];
+const COMPONENTS = Components.map((comp) => comp.title);
+
+const createArrObjFromArr = (arr: string[]) => {
+  return arr.map((v) => ({
+    label: v,
+    value: v,
+  }));
+};
 
 const highlighter = async () => {
   return await getHighlighter({
@@ -48,12 +57,11 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
     theme === "light" ? "light" : "vs-dark"
   );
   const monaco = useMonaco();
-  const mounted = useMounted();
   const mediaQuery = useMediaQuery("(min-width: 640px)");
   const [code, setCode] = useState(defaultCode || "//Type your code here");
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
-  const [value, setValue] = useState<string>("");
+  const [component, setComp] = useState<string>("");
   useEffect(() => {
     if (debouncedQuery.length === 0) setCode("");
 
@@ -78,9 +86,9 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
   }, [monaco]);
 
   const dependencies = useMemo(() => {
-    return Components.find((comp) => comp.title === value);
-  }, [value]);
-
+    return Components.find((comp) => comp.title === component);
+  }, [component]);
+  console.log("dependencies", dependencies);
   return (
     <ResizablePanelGroup
       direction={mediaQuery ? "horizontal" : "vertical"}
@@ -93,24 +101,20 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
       >
         <div className="rounded-lg dark:bg-vs_code bg-vs_code-foreground overflow-hidden ring-1 ring-border h-full">
           <div className="flex items-center justify-end gap-2 p-2 h-12 border-b border-border">
-            {!mounted ? (
-              <>
-                <Skeleton className="bg-background rounded-lg " />
-                <Skeleton className="bg-background rounded-lg " />
-              </>
-            ) : (
-              <>
-                <PlaygroundComponentSelector
-                  value={value}
-                  onValueChange={setValue}
-                />
-                <PlaygroundThemeSelector
-                  value={selectedTheme}
-                  onValueChange={setSelectedTheme}
-                  THEMES={THEMES}
-                />
-              </>
-            )}
+            <PlaygroundSearchSelector
+              value={component}
+              onValueChange={setComp}
+              options={createArrObjFromArr(COMPONENTS)}
+              placeholder="Select Component"
+              noneResult="No component found."
+            />
+            <PlaygroundSearchSelector
+              value={selectedTheme}
+              onValueChange={setSelectedTheme}
+              options={createArrObjFromArr(THEMES)}
+              placeholder="Select Theme"
+              noneResult="No theme found."
+            />
           </div>
           <div className="h-full max-h-[calc(100vh-7rem)]">
             <Editor
@@ -179,58 +183,5 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
 });
 
 Playground.displayName = "Playground";
-
-type PlaygroundThemeSelectorProps = {
-  value: string;
-  onValueChange: (value: string) => void;
-  THEMES: string[];
-};
-
-const PlaygroundThemeSelector = ({
-  value,
-  onValueChange,
-  THEMES,
-}: PlaygroundThemeSelectorProps) => {
-  return (
-    <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue>{value}</SelectValue>
-      </SelectTrigger>
-      <SelectContent className="dark:bg-vs_code bg-vs_code-foreground ">
-        {THEMES.map((theme) => (
-          <SelectItem key={theme} value={theme}>
-            {theme}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-};
-
-type PlaygroundComponentSelectorProps = {
-  value: string;
-  onValueChange: (value: string) => void;
-  components?: string[];
-};
-
-export const PlaygroundComponentSelector = ({
-  value,
-  onValueChange,
-}: PlaygroundComponentSelectorProps) => {
-  return (
-    <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select Component" />
-      </SelectTrigger>
-      <SelectContent className="dark:bg-vs_code bg-vs_code-foreground ">
-        {Components.map((comp) => (
-          <SelectItem key={comp.title} value={comp.title}>
-            {comp.title}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-};
 
 export default Playground;
