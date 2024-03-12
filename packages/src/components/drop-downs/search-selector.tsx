@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +24,8 @@ type ThemeComboboxProps = {
   options: { label: string; value: string }[];
   placeholder?: string;
   noneResult?: string;
-};
+  createQuery: (params: Record<string, string | number | null>) => string;
+} & ({ comp: true; theme?: undefined } | { comp?: undefined; theme: true });
 
 export const PlaygroundSearchSelector = ({
   value,
@@ -32,8 +33,12 @@ export const PlaygroundSearchSelector = ({
   options,
   placeholder = "Select ...",
   noneResult = "Doesn't exist.",
+  createQuery,
+  comp,
+  theme,
 }: ThemeComboboxProps) => {
   const [open, setOpen] = React.useState(false);
+  const router = useRouter();
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -60,6 +65,11 @@ export const PlaygroundSearchSelector = ({
                 value={opt.value}
                 onSelect={() => {
                   onValueChange(opt.value);
+                  router.push(
+                    `?${createQuery({
+                      [comp ? "comp" : "theme"]: opt.value,
+                    })}`
+                  );
                   setOpen(false);
                 }}
               >

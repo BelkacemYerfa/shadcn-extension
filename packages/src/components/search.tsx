@@ -61,7 +61,7 @@ export const SearchPopOver = () => {
         )}
         onClick={() => setIsOpen(true)}
       >
-        <span className="inline-flex truncate">Search docs...</span>
+        <span className="inline-flex truncate">Search docs</span>
 
         <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
           <span className="text-xs">{isMac ? "⌘" : "Ctrl"}</span>K

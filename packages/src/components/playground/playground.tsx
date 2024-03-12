@@ -17,7 +17,6 @@ import {
 import { useDebounce } from "@/hooks/use-debounce";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
 import { Button } from "../ui/button";
 import { EditorLoader } from "../loaders/editor-loader";
 import { getHighlighter } from "shiki";
@@ -26,6 +25,7 @@ import { editorComponentsConfig as Components } from "@/lib/editor-comp";
 import { LivePlaygroundPreview } from "./playground-preview";
 import { PlaygroundSearchSelector } from "../drop-downs/search-selector";
 import { useSearchParams } from "next/navigation";
+import { Skeleton } from "../ui/skeleton";
 
 type PlaygroundProps = {
   defaultCode?: string;
@@ -51,30 +51,30 @@ const highlighter = async () => {
 };
 
 const Playground = memo(({ defaultCode }: PlaygroundProps) => {
-  const monacoInstance = useMonaco();
   const mediaQuery = useMediaQuery("(min-width: 640px)");
   const searchParams = useSearchParams();
-
+  const monaco = useMonaco();
   const comp = searchParams.get("comp");
+  const theme = searchParams.get("theme");
+  const [selectedTheme, setSelectedTheme] = useState("one-dark-pro");
 
   useEffect(() => {
-    if (comp) {
-      const isCompExist = COMPONENTS.includes(comp);
-      setComp(isCompExist ? comp : "");
-    }
+    if (!comp) return;
+    const isCompExist = COMPONENTS.includes(comp);
+    setComp(isCompExist ? comp : "");
   }, [comp]);
 
   useEffect(() => {
-    if (monacoInstance) {
-      handleEditorBeforeMount(monacoInstance);
-    }
-  }, [monacoInstance]);
+    if (!monaco) return;
+    handleEditorBeforeMount(monaco);
+  }, [monaco]);
 
-  const [selectedTheme, setSelectedTheme] = useState("one-dark-pro");
+  const [isPending, startTransition] = useTransition();
   const [code, setCode] = useState(defaultCode || "//Type your code here");
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
   const [component, setComp] = useState<string>("");
+
   useEffect(() => {
     if (debouncedQuery.length === 0) setCode("");
 
@@ -87,11 +87,33 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
     setQuery(value || "");
   }, []);
 
-  const handleEditorBeforeMount = async (monaco: Monaco) => {
-    const highlighterInstance = await highlighter();
-    shikiToMonaco(highlighterInstance, monaco);
-  };
+  const handleEditorBeforeMount = useCallback(
+    (monaco: Monaco) => {
+      startTransition(async () => {
+        const highlighterInstance = await highlighter();
+        shikiToMonaco(highlighterInstance, monaco);
+        if (!theme) return;
+        const isThemeExist = AVA_THEMES.includes(theme);
+        setSelectedTheme(isThemeExist ? theme : "one-dark-pro");
+      });
+    },
+    [theme]
+  );
+  const createQueryString = useCallback(
+    (params: Record<string, string | number | null>) => {
+      const newSearchParams = new URLSearchParams(searchParams?.toString());
 
+      for (const [key, value] of Object.entries(params)) {
+        if (value === null) {
+          newSearchParams.delete(key);
+        } else {
+          newSearchParams.set(key, String(value));
+        }
+      }
+      return newSearchParams.toString();
+    },
+    [searchParams]
+  );
   const dependencies = useMemo(() => {
     const comp = Components.find((comp) => comp.title === component);
     setCode(comp?.example ?? "");
@@ -116,48 +138,56 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
               options={createArrObjFromArr(COMPONENTS)}
               placeholder="Select Component"
               noneResult="No component found."
+              createQuery={createQueryString}
+              comp
             />
-            <PlaygroundSearchSelector
-              value={selectedTheme}
-              onValueChange={setSelectedTheme}
-              options={createArrObjFromArr(AVA_THEMES)}
-              placeholder="Select Theme"
-              noneResult="No theme found."
-            />
+            {isPending ? (
+              <Skeleton className="w-40 h-8" />
+            ) : (
+              <PlaygroundSearchSelector
+                value={selectedTheme}
+                onValueChange={setSelectedTheme}
+                options={createArrObjFromArr(AVA_THEMES)}
+                placeholder="Select Theme"
+                noneResult="No theme found."
+                createQuery={createQueryString}
+                theme
+              />
+            )}
           </div>
           <div className="h-full max-h-[calc(100vh-7rem)]">
-            <Editor
-              className="h-full outline-0"
-              defaultLanguage="javascript"
-              defaultValue={code.trim()}
-              value={dependencies?.example?.trim() ?? code.trim()}
-              loading={<EditorLoader />}
-              theme={selectedTheme}
-              onChange={handleEditorChange}
-              beforeMount={handleEditorBeforeMount}
-              onMount={(_, monaco) => {
-                handleEditorBeforeMount(monaco);
-              }}
-              options={{
-                fontSize: 16,
-                cursorSmoothCaretAnimation: "on",
-                wordWrap: "on",
-                scrollBeyondLastLine: false,
-                fontFamily: "iaw-mono-var, Consolas, Courier New , monospace",
-                fontLigatures: true,
-                lineHeight: 1.35,
-                tabSize: 2,
-                autoIndent: "keep",
-                letterSpacing: 0,
-                renderLineHighlight: "none",
-                minimap: {
-                  enabled: false,
-                },
-                renderLineHighlightOnlyWhenFocus: false,
-                contextmenu: false,
-                smoothScrolling: true,
-              }}
-            />
+            {isPending ? (
+              <EditorLoader />
+            ) : (
+              <Editor
+                className="h-full outline-0"
+                defaultLanguage="javascript"
+                defaultValue={code.trim()}
+                value={dependencies?.example?.trim() ?? code.trim()}
+                loading={<EditorLoader />}
+                theme={selectedTheme}
+                onChange={handleEditorChange}
+                options={{
+                  fontSize: 16,
+                  cursorSmoothCaretAnimation: "on",
+                  wordWrap: "on",
+                  scrollBeyondLastLine: false,
+                  fontFamily: "iaw-mono-var, Consolas, Courier New , monospace",
+                  fontLigatures: true,
+                  lineHeight: 1.35,
+                  tabSize: 2,
+                  autoIndent: "keep",
+                  letterSpacing: 0,
+                  renderLineHighlight: "none",
+                  minimap: {
+                    enabled: false,
+                  },
+                  renderLineHighlightOnlyWhenFocus: false,
+                  contextmenu: false,
+                  smoothScrolling: true,
+                }}
+              />
+            )}
           </div>
         </div>
       </ResizablePanel>
