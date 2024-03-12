@@ -35,10 +35,9 @@ export const PlaygroundSearchSelector = ({
   noneResult = "Doesn't exist.",
   createQuery,
   comp,
-  theme,
 }: ThemeComboboxProps) => {
-  const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

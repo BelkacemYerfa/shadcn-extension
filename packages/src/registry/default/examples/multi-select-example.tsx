@@ -1,20 +1,25 @@
+"use client";
+import { useState } from "react";
 import {
   MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
   MultiSelectorTrigger,
+  MultiSelectorInput,
+  MultiSelectorContent,
+  MultiSelectorList,
+  MultiSelectorItem,
 } from "@/registry/default/extension/fancy-multi-select/multi-select-api";
-import { useState } from "react";
 
-() => {
+const options = [
+  { label: "React", value: "react" },
+  { label: "Vue", value: "vue" },
+  { label: "Angular", value: "angular" },
+  { label: "Svelte", value: "svelte" },
+  { label: "Ember", value: "ember" },
+  { label: "Preact", value: "preact" },
+];
+
+export const MultiSelectTest = () => {
   const [value, setValue] = useState<string[]>([]);
-  const options = [
-    { label: "React", value: "react" },
-    { label: "Vue", value: "vue" },
-    { label: "Angular", value: "angular" },
-  ];
   return (
     <MultiSelector
       value={value}

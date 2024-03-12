@@ -61,8 +61,8 @@ const examples: Registry = [
   {
     name: "fancy-multi-select-example",
     type: "components:example",
-    dependencies: ["fancy-multi-select"],
-    files: ["examples/fancy-multi-select-example.tsx"],
+    dependencies: ["multi-select"],
+    files: ["examples/multi-select-example.tsx"],
   },
   {
     name: "otp-input-example",

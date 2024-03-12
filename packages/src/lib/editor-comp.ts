@@ -21,7 +21,6 @@ import {
   BreadCrumbSeparator,
   BreadCrumbTrigger,
 } from "@/components/extension/breadcrumb/bread-crumb";
-import "./file";
 import Link from "next/link";
 
 type EditorComponent = {

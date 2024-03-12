@@ -73,7 +73,7 @@ export const Index: Record<string, any> = {
       type: "components:example",
       registryDependencies: undefined,
       component: React.lazy(() => import("@/registry/default/example/fancy-multi-select-example")),
-      files: ["registry/default/examples/fancy-multi-select-example.tsx"],
+      files: ["registry/default/examples/multi-select-example.tsx"],
     },
     "otp-input-example": {
       name: "otp-input-example",

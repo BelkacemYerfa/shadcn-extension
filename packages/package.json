@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:registry": "npx tsx --tsconfig ./tsconfig.scripts.json ./src/script/registry-builder.ts"
+    "build:registry": "npx tsx --tsconfig ./src/script/tsconfig.scripts.json ./src/script/registry-builder.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
