@@ -6,7 +6,7 @@ import {
   FileUploaderContent,
   FileUploaderItem,
   FileInput,
-} from "@/registry/default/extension/file-uploader/file-uploader";
+} from "@/registry/default/extension/file-upload";
 import { Paperclip } from "lucide-react";
 
 const FileSvgDraw = () => {
@@ -38,7 +38,7 @@ const FileSvgDraw = () => {
   );
 };
 
-export const FileUploaderTest = () => {
+const FileUploaderTest = () => {
   const [files, setFiles] = useState<File[] | null>(null);
   const dropZoneConfig = {
     maxFiles: 5,
@@ -70,3 +70,5 @@ export const FileUploaderTest = () => {
     </FileUploader>
   );
 };
+
+export default FileUploaderTest;

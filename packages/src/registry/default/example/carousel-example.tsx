@@ -6,9 +6,9 @@ import {
   CarouselThumbsContainer,
   SliderMainItem,
   SliderThumbItem,
-} from "@/registry/default/extension/carousel/carousel";
+} from "@/registry/default/extension/carousel";
 
-export const CarouselExample = () => {
+const CarouselExample = () => {
   return (
     <Carousel
       orientation="vertical"
@@ -38,3 +38,5 @@ export const CarouselExample = () => {
     </Carousel>
   );
 };
+
+export default CarouselExample;

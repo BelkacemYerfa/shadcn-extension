@@ -10,9 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { OtpStyledInput } from "@/registry/default/extension/otp-input/otp-input";
+import { OtpStyledInput } from "@/registry/default/extension/otp-input";
 
-export const OtpTest = () => {
+const OtpTest = () => {
   const form = useForm({
     defaultValues: {
       otp: "",
@@ -59,3 +59,5 @@ export const OtpTest = () => {
     </div>
   );
 };
+
+export default OtpTest;

@@ -8,10 +8,9 @@ import {
   BreadCrumbTrigger,
   BreadCrumbContent,
   BreadCrumbEllipsis,
-} from "@/registry/default/extension/breadcrumb/bread-crumb";
+} from "@/registry/default/extension/breadcrumb";
 import Link from "next/link";
-
-export const BreadCrumbTest = () => {
+const BreadCrumbTest = () => {
   return (
     <BreadCrumb orientation="vertical" variant={"ghost"} className="gap-1">
       <BreadCrumbItem className="px-2 h-8" index={0}>
@@ -46,3 +45,5 @@ export const BreadCrumbTest = () => {
     </BreadCrumb>
   );
 };
+
+export default BreadCrumbTest;

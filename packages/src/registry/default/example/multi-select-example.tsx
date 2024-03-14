@@ -7,7 +7,7 @@ import {
   MultiSelectorContent,
   MultiSelectorList,
   MultiSelectorItem,
-} from "@/registry/default/extension/fancy-multi-select/multi-select-api";
+} from "@/registry/default/extension/multi-select";
 
 const options = [
   { label: "React", value: "react" },
@@ -18,7 +18,7 @@ const options = [
   { label: "Preact", value: "preact" },
 ];
 
-export const MultiSelectTest = () => {
+const MultiSelectTest = () => {
   const [value, setValue] = useState<string[]>([]);
   return (
     <MultiSelector
@@ -42,3 +42,5 @@ export const MultiSelectTest = () => {
     </MultiSelector>
   );
 };
+
+export default MultiSelectTest;

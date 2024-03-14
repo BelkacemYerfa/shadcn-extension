@@ -12,7 +12,11 @@ export const LivePlaygroundPreview = ({
   example,
 }: LivePlaygroundPreviewProps) => {
   return (
-    <LiveProvider code={code ?? example} scope={{ ...dependencies }}>
+    <LiveProvider
+      code={code ?? example}
+      scope={{ ...dependencies }}
+      noInline={true}
+    >
       <div className="text-destructive text-center font-bold">
         <LiveError />
       </div>

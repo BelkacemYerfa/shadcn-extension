@@ -96,6 +96,11 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
         const isThemeExist = AVA_THEMES.includes(theme);
         setSelectedTheme(isThemeExist ? theme : "one-dark-pro");
       });
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        "declare module 'react' {\n",
+        "file:///node_modules/@types/react/index.d.ts"
+      );
+      monaco.Uri.parse("file:///node_modules/react/index.js");
     },
     [theme]
   );
@@ -175,7 +180,7 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
                   fontFamily: "iaw-mono-var, Consolas, Courier New , monospace",
                   fontLigatures: true,
                   lineHeight: 1.35,
-                  tabSize: 2,
+                  tabSize: 1,
                   autoIndent: "keep",
                   letterSpacing: 0,
                   renderLineHighlight: "none",

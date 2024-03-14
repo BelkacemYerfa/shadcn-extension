@@ -37,7 +37,6 @@ export const editorComponentsConfig: EditorComponent = [
       File,
       Folder,
       CollapseButton,
-      react: require("react"),
       elements: [
         {
           id: "1",
@@ -188,7 +187,6 @@ export const editorComponentsConfig: EditorComponent = [
   {
     title: "Multi Selector",
     dependencies: {
-      react: require("react"),
       MultiSelector,
       MultiSelectorContent,
       MultiSelectorInput,
@@ -230,7 +228,6 @@ export const editorComponentsConfig: EditorComponent = [
     title: "Bread Crumb",
     dependencies: {
       Link,
-      react: require("react"),
       BreadCrumb,
       BreadCrumbContent,
       BreadCrumbItem,

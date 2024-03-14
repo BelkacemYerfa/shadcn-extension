@@ -4,7 +4,7 @@ import {
   FileUploadCarouselProvider,
   CustomUploadInput,
   SliderThumbItemWithRemove,
-} from "@/registry/default/extension/carousel/carousel-image-upload";
+} from "@/registry/default/extension/image-carousel-upload";
 import {
   Carousel,
   SliderMainItem,
@@ -12,7 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
   CarouselThumbsContainer,
-} from "@/registry/default/extension/carousel/carousel";
+} from "@/registry/default/extension/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ type FilePreview = {
   file: File;
 };
 
-export const MultiCarouselUploader = () => {
+const MultiCarouselUploader = () => {
   const [preview, setPreview] = useState<FilePreview[] | null>(null);
   return (
     <Carousel>
@@ -125,3 +125,5 @@ export const MultiCarouselUploader = () => {
     </Carousel>
   );
 };
+
+export default MultiCarouselUploader;

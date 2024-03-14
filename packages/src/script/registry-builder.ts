@@ -7,7 +7,9 @@ import { registry } from "../registry/components";
 import { registrySchema } from "../registry/schema";
 import { styles } from "../registry/styles";
 
-const registryPath = path.join(process.cwd(), "__registry__");
+console.log("📝 Writing registry index...");
+
+const registryPath = path.join(process.cwd(), "src/__registry__");
 
 const result = registrySchema.safeParse(registry);
 
@@ -38,7 +40,7 @@ for (const style of styles) {
     // }
 
     const resolveFiles = item.files.map(
-      (file) => `registry/${style.name}/${file}`
+      (file) => `src/registry/${style.name}/${file}`
     );
 
     const type = item.type.split(":")[1];
@@ -66,7 +68,7 @@ if (!fs.existsSync(registryPath)) {
   fs.mkdirSync(registryPath);
 }
 // Write style index.
-rimraf.sync(path.join(process.cwd(), "__registry__/index.tsx"));
-fs.writeFileSync(path.join(process.cwd(), "__registry__/index.tsx"), index);
+rimraf.sync(path.join(process.cwd(), "src/__registry__/index.tsx"));
+fs.writeFileSync(path.join(process.cwd(), "src/__registry__/index.tsx"), index);
 
 console.log("✅ Done!");

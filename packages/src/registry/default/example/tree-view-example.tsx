@@ -5,9 +5,9 @@ import {
   Folder,
   File,
   CollapseButton,
-} from "@/registry/default/extension/tree-view/tree-view-api";
+} from "@/registry/default/extension/tree-view-api";
 
-export const TreeFileTest = () => {
+const TreeFileTest = () => {
   const elements = [
     {
       id: "1",
@@ -97,3 +97,5 @@ export const TreeFileTest = () => {
     </Tree>
   );
 };
+
+export default TreeFileTest;

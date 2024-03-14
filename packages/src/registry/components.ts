@@ -2,7 +2,7 @@ import { Registry } from "./schema";
 
 const extension: Registry = [
   {
-    name: "tree-view",
+    name: "tree-view-api",
     type: "components:extension",
     dependencies: ["@radix-ui/react-accordion"],
     files: ["extension/tree-view-api.tsx"],
@@ -14,10 +14,10 @@ const extension: Registry = [
     files: ["extension/file-upload.tsx"],
   },
   {
-    name: "fancy-multi-select",
+    name: "multi-select",
     type: "components:extension",
     dependencies: ["command", "cmdk"],
-    files: ["extension/multi-select-api.tsx"],
+    files: ["extension/multi-select.tsx"],
   },
   {
     name: "otp-input",
@@ -32,10 +32,10 @@ const extension: Registry = [
     files: ["extension/carousel.tsx"],
   },
   {
-    name: "breadcrumbs",
+    name: "breadcrumb",
     type: "components:extension",
-    dependencies: ["button", "@radix-ui/react-popover"],
-    files: ["extension/breadcrumbs.tsx"],
+    dependencies: ["Button", "@radix-ui/react-popover"],
+    files: ["extension/breadcrumb.tsx"],
   },
   {
     name: "image-carousel-upload",
@@ -49,44 +49,44 @@ const examples: Registry = [
   {
     name: "tree-view-example",
     type: "components:example",
-    dependencies: ["tree-view"],
-    files: ["examples/tree-view-example.tsx"],
+    registryDependencies: ["tree-view-api"],
+    files: ["example/tree-view-example.tsx"],
   },
   {
     name: "file-upload-example",
     type: "components:example",
-    dependencies: ["file-upload"],
-    files: ["examples/file-upload-example.tsx"],
+    registryDependencies: ["file-upload"],
+    files: ["example/file-upload-example.tsx"],
   },
   {
-    name: "fancy-multi-select-example",
+    name: "multi-select-example",
     type: "components:example",
-    dependencies: ["multi-select"],
-    files: ["examples/multi-select-example.tsx"],
+    registryDependencies: ["multi-select"],
+    files: ["example/multi-select-example.tsx"],
   },
   {
     name: "otp-input-example",
     type: "components:example",
-    dependencies: ["otp-input"],
-    files: ["examples/otp-input-example.tsx"],
+    registryDependencies: ["otp-input"],
+    files: ["example/otp-input-example.tsx"],
   },
   {
     name: "carousel-example",
     type: "components:example",
-    dependencies: ["carousel"],
-    files: ["examples/carousel-example.tsx"],
+    registryDependencies: ["carousel"],
+    files: ["example/carousel-example.tsx"],
   },
   {
     name: "breadcrumbs-example",
     type: "components:example",
-    dependencies: ["breadcrumbs"],
-    files: ["examples/breadcrumbs-example.tsx"],
+    registryDependencies: ["breadcrumbs"],
+    files: ["example/breadcrumbs-example.tsx"],
   },
   {
     name: "image-carousel-upload-example",
     type: "components:example",
-    dependencies: ["image-carousel-upload"],
-    files: ["examples/image-carousel-upload-example.tsx"],
+    registryDependencies: ["image-carousel-upload"],
+    files: ["example/image-carousel-upload-example.tsx"],
   },
 ];
 
