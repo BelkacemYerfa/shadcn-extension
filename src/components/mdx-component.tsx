@@ -11,15 +11,9 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
+import { ComponentPreview } from "./component-preview";
 
 const mdxComponents = {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  Alert,
-  AlertTitle,
-  AlertDescription,
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h1
       className={cn(
@@ -144,15 +138,15 @@ const mdxComponents = {
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
       className={cn(
-        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm",
+        "relative rounded  px-[0.3rem] py-[0.2rem] font-mono text-sm",
         className
       )}
       {...props}
     />
   ),
+  ComponentPreview,
   Image,
   Callout,
-
   Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
     <h3
       className={cn(

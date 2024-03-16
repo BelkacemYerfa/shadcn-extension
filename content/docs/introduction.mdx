@@ -1,17 +1,51 @@
 ---
-title: "2023 Blog Refresh"
-date: "2023-11-19"
-summary: "Including some of my latest hot takes (okay they are pretty mild)."
+title: Introduction
+description: An open source component collection , that extend your ui library , built using shadcn component
+date: 2024-03-16
 ---
 
-I updated my blog this weekend and wanted to share some thoughts along the way:
+Welcome to Shadcn-extension-component documentation! This is a guide to help you get started with Shadcn-extension-component. Shadcn-extension-component is an extend for Shadcn/ui component library that provides a set of components for building web applications. It is built on top of [Shadcn/ui](https://ui.shadcn.com/).
 
-- [Content Management](#content-management)
-- [Performance](#performance)
-- [Opinions](#opinions)
+## Motivation
 
-<Callout emoji="⚠️">
+Shadcn-extension-component is a set of components that are built on top of Shadcn-ui . It extends the component that are provided by shadcn and use the one there to build some common component for the most web apps . It is built with the following goals in mind:
 
-**Disclaimer:** My site is my “breakable toy”. I enjoy and _intentionally_ change technology and try new patterns here. I'd encourage you to do the same and then write about why you made those choices.
+- **Customizable**: Shadcn-extension-component is designed to be highly customizable. It provides a set of components that can be easily customized to fit your needs.
+- **Easy to use**: Shadcn-extension-component is designed to be easy to use. It provides a set of components that are easy to use and can be easily integrated into your web application.
+- **No need for installation**: Shadcn-extension-component does not require any installation. just copy past the code and install the shadcn/ui component that it uses.
 
-</Callout>
+## Getting Started
+
+To get started with Shadcn-extension-component, you need to have a basic understanding of ReactJs/NextJs and Tailwinds . You also need to have a basic understanding of Shadcn-ui. If you are new to Shadcn-ui, you can check out the [Shadcn-ui documentation](https://ui.shadcn.com/).
+
+## Installation
+
+To install Shadcn-extension-component, you need to configure the shadcn/ui component that it uses. You can do this by following the instructions in the [Shadcn-ui documentation](https://ui.shadcn.com/).
+
+## Usage
+
+To use Shadcn-extension-component, you need to copy past the components that you want to use from the `shadcn-extension-component` . You can then use these components in your web application.
+
+Example:
+
+```jsx
+import React from "react";
+
+import { BreadCrumb } from "@/component/shadcn-extension-component";
+
+export const BreadCrumbTest = () => {
+  return (
+    <BreadCrumb variant="ghost">
+      <BreadCrumbItem>Home</BreadCrumbItem>
+      <BreadCrumbSeparator />
+      <BreadCrumbItem>Settings</BreadCrumbItem>
+      <BreadCrumbSeparator />
+      <BreadCrumbItem>Info</BreadCrumbItem>
+    </BreadCrumb>
+  );
+};
+```
+
+## Contributing
+
+If you would like to contribute to Shadcn-extension-component, you can do so by following the instructions in the [CONTRIBUTING.md](https://github.com/BelkacemYerfa/shadcn-extension/blob/master/CONTRIBUTING.md) file.

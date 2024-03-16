@@ -1,3 +1,6 @@
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeShiki from "@shikijs/rehype";
+
 import { defineConfig, s } from "velite";
 
 const computedFields = <T extends { slug: string }>(data: T) => ({
@@ -16,13 +19,14 @@ export default defineConfig({
           title: s.string().max(99),
           description: s.string().max(999).optional(),
           date: s.isodate(),
-          published: s.boolean().default(true),
-          featured: s.boolean().default(false),
           toc: s.toc(),
           body: s.mdx(),
         })
         // more additional fields (computed fields)
         .transform(computedFields),
     },
+  },
+  mdx: {
+    rehypePlugins: [rehypePrettyCode, rehypeShiki],
   },
 });

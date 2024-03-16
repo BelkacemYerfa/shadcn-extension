@@ -7,8 +7,8 @@ export const siteConfig = {
   links: {
     twitter: "https://twitter.com/bylka0207",
     github: "https://github.com/BelkacemYerfa/shadcn-extension",
-    docs: "https://shadcn-extension.vercel.app/",
-    components: "https://shadcn-extension.vercel.app/components/tree-view",
+    docs: "/docs/introduction",
+    components: "/components",
   },
 };
 
