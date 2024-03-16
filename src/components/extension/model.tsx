@@ -723,7 +723,11 @@ export const TreeViewTest = () => {
       <MultiSelectorContent>
         <MultiSelectorList>
           {options.map((option, i) => (
-            <MultiSelectorItem key={i} value={option.value}>
+            <MultiSelectorItem
+              key={i}
+              value={option.value}
+              disabled={option.disabled}
+            >
               {option.label}
             </MultiSelectorItem>
           ))}
