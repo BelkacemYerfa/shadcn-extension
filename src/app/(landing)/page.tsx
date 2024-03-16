@@ -1,4 +1,3 @@
-import { MultiSelectTest } from "@/components/extension/model";
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/config/site-config";
