@@ -2,7 +2,7 @@
 
 Accessible and customizable components , that extends [shadcn](https://ui.shadcn.com/) components.
 
-![hero](packages/public/og.png)
+![hero](public/og.png)
 
 ## Documentation
 
