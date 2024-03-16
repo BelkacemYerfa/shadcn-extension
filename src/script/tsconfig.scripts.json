@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es6",
+    "module": "ES6",
+    "esModuleInterop": true,
+    "isolatedModules": false
+  },
+  "include": [".contentlayer/generated", "scripts/**/*.ts"],
+  "exclude": ["node_modules"]
+}

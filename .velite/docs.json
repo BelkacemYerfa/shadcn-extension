@@ -1,0 +1,105 @@
+[
+  {
+    "slug": "docs/introduction",
+    "title": "2023 Blog Refresh",
+    "date": "2023-11-19T00:00:00.000Z",
+    "published": true,
+    "featured": false,
+    "toc": [],
+    "body": "const{Fragment:e,jsx:n,jsxs:t}=arguments[0];function _createMdxContent(o){const r={a:\"a\",em:\"em\",li:\"li\",p:\"p\",strong:\"strong\",ul:\"ul\",...o.components},{Callout:i}=r;return i||function(e,n){throw new Error(\"Expected \"+(n?\"component\":\"object\")+\" `\"+e+\"` to be defined: you likely forgot to import, pass, or provide it.\")}(\"Callout\",!0),t(e,{children:[n(r.p,{children:\"I updated my blog this weekend and wanted to share some thoughts along the way:\"}),\"\\n\",t(r.ul,{children:[\"\\n\",n(r.li,{children:n(r.a,{href:\"#content-management\",children:\"Content Management\"})}),\"\\n\",n(r.li,{children:n(r.a,{href:\"#performance\",children:\"Performance\"})}),\"\\n\",n(r.li,{children:n(r.a,{href:\"#opinions\",children:\"Opinions\"})}),\"\\n\"]}),\"\\n\",n(i,{emoji:\"⚠️\",children:t(r.p,{children:[n(r.strong,{children:\"Disclaimer:\"}),\" My site is my “breakable toy”. I enjoy and \",n(r.em,{children:\"intentionally\"}),\" change technology and try new patterns here. I'd encourage you to do the same and then write about why you made those choices.\"]})})]})}return{default:function(e={}){const{wrapper:t}=e.components||{};return t?n(t,{...e,children:n(_createMdxContent,{...e})}):_createMdxContent(e)}};",
+    "slugAsParams": "introduction"
+  },
+  {
+    "slug": "docs/multi-select",
+    "title": "MultiSelect",
+    "date": "2021-06-29T00:00:00.000Z",
+    "published": true,
+    "featured": false,
+    "toc": [
+      {
+        "title": "MultiSelect",
+        "url": "#multiselect",
+        "items": [
+          {
+            "title": "Installation",
+            "url": "#installation",
+            "items": [
+              {
+                "title": "Copy paste the code that you will find in this github folder",
+                "url": "#copy-paste-the-code-that-you-will-find-in-this-github-folder",
+                "items": []
+              }
+            ]
+          },
+          {
+            "title": "API Reference",
+            "url": "#api-reference",
+            "items": [
+              {
+                "title": "Props",
+                "url": "#props",
+                "items": []
+              },
+              {
+                "title": "Value",
+                "url": "#value",
+                "items": []
+              },
+              {
+                "title": "setValue",
+                "url": "#setvalue",
+                "items": []
+              },
+              {
+                "title": "loop",
+                "url": "#loop",
+                "items": [
+                  {
+                    "title": "Examples",
+                    "url": "#examples",
+                    "items": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Accessibility",
+            "url": "#accessibility",
+            "items": [
+              {
+                "title": "Keyboard Navigation",
+                "url": "#keyboard-navigation",
+                "items": []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "body": "const{Fragment:e,jsx:t,jsxs:n}=arguments[0];function _createMdxContent(l){const r={a:\"a\",code:\"code\",h1:\"h1\",h2:\"h2\",h3:\"h3\",h4:\"h4\",p:\"p\",pre:\"pre\",table:\"table\",tbody:\"tbody\",td:\"td\",th:\"th\",thead:\"thead\",tr:\"tr\",...l.components},{Steps:i}=r;return i||function(e,t){throw new Error(\"Expected \"+(t?\"component\":\"object\")+\" `\"+e+\"` to be defined: you likely forgot to import, pass, or provide it.\")}(\"Steps\",!0),n(e,{children:[t(r.h1,{children:\"MultiSelect\"}),\"\\n\",n(r.p,{children:[\"A mulit select that assembles the missing features of the select element from \",t(r.a,{href:\"https://ui.shadcn.com/docs/components/select\",children:\"Shadcn ui\"})]}),\"\\n\",t(r.pre,{children:t(r.code,{className:\"language-jsx\",children:'import {\\r\\n  MultiSelector,\\r\\n  MultiSelectorContent,\\r\\n  MultiSelectorInput,\\r\\n  MultiSelectorItem,\\r\\n  MultiSelectorList,\\r\\n  MultiSelectorTrigger,\\r\\n} from \"@/components/extension/fancy-multi-select/multi-select-api\";\\r\\n\\r\\nexport const MultiSelectTest = () => {\\r\\n  const options = [\\r\\n   /*array values*/\\r\\n  ];\\r\\n  const [value, setValue] = useState<string[]>([]);\\r\\n  return (\\r\\n      <MultiSelector\\r\\n        value={value}\\r\\n        onValueChange={setValue}\\r\\n      >\\r\\n        <MultiSelectorTrigger>\\r\\n          <MultiSelectorInput placeholder=\"Select your framework\" />\\r\\n        </MultiSelectorTrigger>\\r\\n        <MultiSelectorContent>\\r\\n          <MultiSelectorList>\\r\\n            {options.map((option, i) => (\\r\\n              <MultiSelectorItem key={i} value={option.value}>\\r\\n                {option.label}\\r\\n              </MultiSelectorItem>\\r\\n            ))}\\r\\n          </MultiSelectorList>\\r\\n        </MultiSelectorContent>\\r\\n      </MultiSelector>\\r\\n  );\\r\\n};\\r\\n\\n'})}),\"\\n\",t(r.h2,{children:\"Installation\"}),\"\\n\",n(i,{children:[t(r.h3,{children:\"Install the package\"}),t(r.pre,{children:t(r.code,{className:\"language-bash\",children:\"  npm install cmdk\\r\\n  npx shadcn-ui@latest add command\\n\"})}),t(r.h3,{children:\"Copy paste the code that you will find in this github folder\"}),t(r.pre,{children:t(r.code,{className:\"language-link\",children:\"https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/packages/src/components/extension/fancy-multi-select\\n\"})})]}),\"\\n\",t(r.h2,{children:\"API Reference\"}),\"\\n\",t(r.h3,{children:\"Props\"}),\"\\n\",t(r.p,{children:\"The MultiSelect component accepts the following props:\"}),\"\\n\",n(r.table,{children:[t(r.thead,{children:n(r.tr,{children:[t(r.th,{style:{textAlign:\"left\"},children:\"Prop\"}),t(r.th,{style:{textAlign:\"center\"},children:\"Type\"}),t(r.th,{style:{textAlign:\"right\"},children:\"Default value\"})]})}),n(r.tbody,{children:[n(r.tr,{children:[t(r.td,{style:{textAlign:\"left\"},children:\"value\"}),t(r.td,{style:{textAlign:\"center\"},children:\"string[]\"}),t(r.td,{style:{textAlign:\"right\"},children:\"--\"})]}),n(r.tr,{children:[t(r.td,{style:{textAlign:\"left\"},children:\"setValue\"}),t(r.td,{style:{textAlign:\"center\"},children:\"(value : string)=>void\"}),t(r.td,{style:{textAlign:\"right\"},children:\"--\"})]}),n(r.tr,{children:[t(r.td,{style:{textAlign:\"left\"},children:\"loop\"}),t(r.td,{style:{textAlign:\"center\"},children:\"boolean\"}),t(r.td,{style:{textAlign:\"right\"},children:\"false\"})]})]})]}),\"\\n\",t(r.h3,{children:\"Value\"}),\"\\n\",t(r.p,{children:\"The state of the selected items\"}),\"\\n\",t(r.h3,{children:\"setValue\"}),\"\\n\",t(r.p,{children:\"A function that will be called when the value of the MultiSelect changes\"}),\"\\n\",t(r.h3,{children:\"loop\"}),\"\\n\",t(r.p,{children:\"A boolean that will determine if the list of selected items will loop or not when the user navigates with the arrow keys\"}),\"\\n\",t(r.h4,{children:\"Examples\"}),\"\\n\",t(r.pre,{children:t(r.code,{className:\"language-jsx\",children:'import {\\r\\n  MultiSelector,\\r\\n  MultiSelectorContent,\\r\\n  MultiSelectorInput,\\r\\n  MultiSelectorItem,\\r\\n  MultiSelectorList,\\r\\n  MultiSelectorTrigger,\\r\\n} from \"@/components/extension/fancy-multi-select/multi-select-api\";\\r\\n\\r\\ntype MultiSelectProps = {\\r\\n  options: { label: string; value: string }[];\\r\\n};\\r\\n\\r\\nexport const MultiSelectTest = ({ options } : MultiSelectProps) => {\\r\\n  const [value, setValue] = useState<string[]>([]);\\r\\n\\r\\n  return (\\r\\n      <MultiSelector\\r\\n        value={value}\\r\\n        onValueChange={setValue}\\r\\n        loop\\r\\n        className=\"max-w-xs\"\\r\\n      >\\r\\n        <MultiSelectorTrigger>\\r\\n          <MultiSelectorInput placeholder=\"Select your framework\" />\\r\\n        </MultiSelectorTrigger>\\r\\n        <MultiSelectorContent>\\r\\n          <MultiSelectorList>\\r\\n            {options.map((option, i) => (\\r\\n              <MultiSelectorItem key={i} value={option.value}>\\r\\n                {option.label}\\r\\n              </MultiSelectorItem>\\r\\n            ))}\\r\\n          </MultiSelectorList>\\r\\n        </MultiSelectorContent>\\r\\n      </MultiSelector>\\r\\n  );\\r\\n};\\n'})}),\"\\n\",t(r.h2,{children:\"Accessibility\"}),\"\\n\",t(r.p,{children:\"The MultiSelect component is built with accessibility in mind. It is fully keyboard navigable and screen reader friendly.\"}),\"\\n\",t(r.h3,{children:\"Keyboard Navigation\"}),\"\\n\",n(r.table,{children:[t(r.thead,{children:n(r.tr,{children:[t(r.th,{style:{textAlign:\"left\"},children:\"key\"}),t(r.th,{style:{textAlign:\"center\"},children:\"Description\"})]})}),n(r.tbody,{children:[n(r.tr,{children:[t(r.td,{style:{textAlign:\"left\"},children:t(r.code,{children:\"Escape\"})}),t(r.td,{style:{textAlign:\"center\"},children:\"closes the list\"})]}),n(r.tr,{children:[t(r.td,{style:{textAlign:\"left\"},children:t(r.code,{children:\"Enter\"})}),t(r.td,{style:{textAlign:\"center\"},children:\"opens the list\"})]}),n(r.tr,{children:[t(r.td,{style:{textAlign:\"left\"},children:t(r.code,{children:\"Space\"})}),t(r.td,{style:{textAlign:\"center\"},children:\"opens the list\"})]}),n(r.tr,{children:[t(r.td,{style:{textAlign:\"left\"},children:t(r.code,{children:\"ArrowRight\"})}),t(r.td,{style:{textAlign:\"center\"},children:\"Increments by one step horzintanly\"})]}),n(r.tr,{children:[t(r.td,{style:{textAlign:\"left\"},children:t(r.code,{children:\"ArrowLeft\"})}),t(r.td,{style:{textAlign:\"center\"},children:\"Decrements by one step horzintanly\"})]}),n(r.tr,{children:[n(r.td,{style:{textAlign:\"left\"},children:[t(r.code,{children:\"Delete\"}),\" or \",t(r.code,{children:\"Backspace\"})]}),t(r.td,{style:{textAlign:\"center\"},children:\"Removes the selected item from list\"})]})]})]})]})}return{default:function(e={}){const{wrapper:n}=e.components||{};return n?t(n,{...e,children:t(_createMdxContent,{...e})}):_createMdxContent(e)}};",
+    "slugAsParams": "multi-select"
+  },
+  {
+    "slug": "docs/tree-view",
+    "title": "Accordion",
+    "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
+    "date": "2021-06-29T00:00:00.000Z",
+    "published": true,
+    "featured": false,
+    "toc": [
+      {
+        "title": "Installation",
+        "url": "#installation",
+        "items": []
+      },
+      {
+        "title": "Usage",
+        "url": "#usage",
+        "items": []
+      }
+    ],
+    "body": "const{Fragment:n,jsx:e,jsxs:r}=arguments[0];function _createMdxContent(o){const i={code:\"code\",h2:\"h2\",p:\"p\",pre:\"pre\",...o.components},{Step:c,Steps:t,Tabs:d,TabsContent:a,TabsList:l,TabsTrigger:s}=i;return c||_missingMdxReference(\"Step\",!0),t||_missingMdxReference(\"Steps\",!0),d||_missingMdxReference(\"Tabs\",!0),a||_missingMdxReference(\"TabsContent\",!0),l||_missingMdxReference(\"TabsList\",!0),s||_missingMdxReference(\"TabsTrigger\",!0),r(n,{children:[e(i.h2,{children:\"Installation\"}),\"\\n\",r(d,{defaultValue:\"cli\",children:[r(l,{children:[e(s,{value:\"cli\",children:\"CLI\"}),e(s,{value:\"manual\",children:\"Manual\"})]}),e(a,{value:\"cli\",children:r(t,{children:[e(c,{children:\"Run the following command:\"}),e(i.pre,{children:e(i.code,{className:\"language-bash\",children:\"npx shadcn-ui@latest add accordion\\n\"})}),r(c,{children:[\"Update \",e(i.code,{children:\"tailwind.config.js\"})]}),r(i.p,{children:[\"Add the following animations to your \",e(i.code,{children:\"tailwind.config.js\"}),\" file:\"]}),e(i.pre,{children:e(i.code,{className:\"language-js\",children:'/** @type {import(\\'tailwindcss\\').Config} */\\r\\nmodule.exports = {\\r\\n  theme: {\\r\\n    extend: {\\r\\n      keyframes: {\\r\\n        \"accordion-down\": {\\r\\n          from: { height: \"0\" },\\r\\n          to: { height: \"var(--radix-accordion-content-height)\" },\\r\\n        },\\r\\n        \"accordion-up\": {\\r\\n          from: { height: \"var(--radix-accordion-content-height)\" },\\r\\n          to: { height: \"0\" },\\r\\n        },\\r\\n      },\\r\\n      animation: {\\r\\n        \"accordion-down\": \"accordion-down 0.2s ease-out\",\\r\\n        \"accordion-up\": \"accordion-up 0.2s ease-out\",\\r\\n      },\\r\\n    },\\r\\n  },\\r\\n};\\n'})})]})}),e(a,{value:\"manual\",children:r(t,{children:[e(c,{children:\"Install the following dependencies:\"}),e(i.pre,{children:e(i.code,{className:\"language-bash\",children:\"npm install @radix-ui/react-accordion\\n\"})}),e(c,{children:\"Copy and paste the following code into your project.\"}),e(c,{children:\"Update the import paths to match your project setup.\"}),r(c,{children:[\"Update \",e(i.code,{children:\"tailwind.config.js\"})]}),r(i.p,{children:[\"Add the following animations to your \",e(i.code,{children:\"tailwind.config.js\"}),\" file:\"]}),e(i.pre,{children:e(i.code,{className:\"language-js\",children:'/** @type {import(\\'tailwindcss\\').Config} */\\r\\nmodule.exports = {\\r\\n  theme: {\\r\\n    extend: {\\r\\n      keyframes: {\\r\\n        \"accordion-down\": {\\r\\n          from: { height: \"0\" },\\r\\n          to: { height: \"var(--radix-accordion-content-height)\" },\\r\\n        },\\r\\n        \"accordion-up\": {\\r\\n          from: { height: \"var(--radix-accordion-content-height)\" },\\r\\n          to: { height: \"0\" },\\r\\n        },\\r\\n      },\\r\\n      animation: {\\r\\n        \"accordion-down\": \"accordion-down 0.2s ease-out\",\\r\\n        \"accordion-up\": \"accordion-up 0.2s ease-out\",\\r\\n      },\\r\\n    },\\r\\n  },\\r\\n};\\n'})})]})})]}),\"\\n\",e(i.h2,{children:\"Usage\"}),\"\\n\",e(i.pre,{children:e(i.code,{className:\"language-tsx\",children:'import {\\r\\n  Accordion,\\r\\n  AccordionContent,\\r\\n  AccordionItem,\\r\\n  AccordionTrigger,\\r\\n} from \"@/components/ui/accordion\";\\n'})}),\"\\n\",e(i.pre,{children:e(i.code,{className:\"language-tsx\",children:'<Accordion type=\"single\" collapsible>\\r\\n  <AccordionItem value=\"item-1\">\\r\\n    <AccordionTrigger>Is it accessible?</AccordionTrigger>\\r\\n    <AccordionContent>\\r\\n      Yes. It adheres to the WAI-ARIA design pattern.\\r\\n    </AccordionContent>\\r\\n  </AccordionItem>\\r\\n</Accordion>\\n'})})]})}return{default:function(n={}){const{wrapper:r}=n.components||{};return r?e(r,{...n,children:e(_createMdxContent,{...n})}):_createMdxContent(n)}};function _missingMdxReference(n,e){throw new Error(\"Expected \"+(e?\"component\":\"object\")+\" `\"+n+\"` to be defined: you likely forgot to import, pass, or provide it.\")}",
+    "slugAsParams": "tree-view"
+  }
+]
