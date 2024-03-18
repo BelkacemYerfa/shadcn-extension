@@ -65,7 +65,7 @@ const TreeFileTest = () => {
   ];
   return (
     <Tree
-      className="rounded-md outline h-60 max-w-96 w-full outline-1 outline-muted overflow-hidden py-1"
+      className="rounded-md outline h-60 max-w-96 w-full bg-background outline-1 outline-muted overflow-hidden py-1"
       initialExpendedItems={["components"]}
       initialSelectedId="carousel.tsx"
       elements={elements}

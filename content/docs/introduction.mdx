@@ -1,51 +1,134 @@
 ---
-title: Introduction
-description: An open source component collection , that extend your ui library , built using shadcn component
-date: 2024-03-16
+title: Accordion
+description: A vertically stacked set of interactive headings that each reveal a section of content.
+component: true
+links:
+  doc: https://www.radix-ui.com/docs/primitives/components/accordion
+  api: https://www.radix-ui.com/docs/primitives/components/accordion#api-reference
 ---
 
-Welcome to Shadcn-extension-component documentation! This is a guide to help you get started with Shadcn-extension-component. Shadcn-extension-component is an extend for Shadcn/ui component library that provides a set of components for building web applications. It is built on top of [Shadcn/ui](https://ui.shadcn.com/).
-
-## Motivation
-
-Shadcn-extension-component is a set of components that are built on top of Shadcn-ui . It extends the component that are provided by shadcn and use the one there to build some common component for the most web apps . It is built with the following goals in mind:
-
-- **Customizable**: Shadcn-extension-component is designed to be highly customizable. It provides a set of components that can be easily customized to fit your needs.
-- **Easy to use**: Shadcn-extension-component is designed to be easy to use. It provides a set of components that are easy to use and can be easily integrated into your web application.
-- **No need for installation**: Shadcn-extension-component does not require any installation. just copy past the code and install the shadcn/ui component that it uses.
-
-## Getting Started
-
-To get started with Shadcn-extension-component, you need to have a basic understanding of ReactJs/NextJs and Tailwinds . You also need to have a basic understanding of Shadcn-ui. If you are new to Shadcn-ui, you can check out the [Shadcn-ui documentation](https://ui.shadcn.com/).
+<ComponentPreview
+  name="tree-view-example"
+  className="[&_.preview>[data-orientation=vertical]]:sm:max-w-[70%]"
+/>
 
 ## Installation
 
-To install Shadcn-extension-component, you need to configure the shadcn/ui component that it uses. You can do this by following the instructions in the [Shadcn-ui documentation](https://ui.shadcn.com/).
+<Tabs defaultValue="cli">
 
-## Usage
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
 
-To use Shadcn-extension-component, you need to copy past the components that you want to use from the `shadcn-extension-component` . You can then use these components in your web application.
+<TabsContent value="cli">
 
-Example:
+<Steps>
 
-```jsx
-import React from "react";
+<Step>Run the following command:</Step>
 
-import { BreadCrumb } from "@/component/shadcn-extension-component";
+```bash
+npx shadcn-ui@latest add accordion
+```
 
-export const BreadCrumbTest = () => {
-  return (
-    <BreadCrumb variant="ghost">
-      <BreadCrumbItem>Home</BreadCrumbItem>
-      <BreadCrumbSeparator />
-      <BreadCrumbItem>Settings</BreadCrumbItem>
-      <BreadCrumbSeparator />
-      <BreadCrumbItem>Info</BreadCrumbItem>
-    </BreadCrumb>
-  );
+<Step>Update `tailwind.config.js`</Step>
+
+Add the following animations to your `tailwind.config.js` file:
+
+```js title="tailwind.config.js" {5-18}
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  theme: {
+    extend: {
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+    },
+  },
 };
 ```
 
-## Contributing
+</Steps>
 
-If you would like to contribute to Shadcn-extension-component, you can do so by following the instructions in the [CONTRIBUTING.md](https://github.com/BelkacemYerfa/shadcn-extension/blob/master/CONTRIBUTING.md) file.
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install @radix-ui/react-accordion
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+<Step>Update `tailwind.config.js`</Step>
+
+Add the following animations to your `tailwind.config.js` file:
+
+```js title="tailwind.config.js" {5-18}
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  theme: {
+    extend: {
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+    },
+  },
+};
+```
+
+</Steps>
+
+</TabsContent>
+
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+```
+
+```tsx
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>
+      Yes. It adheres to the WAI-ARIA design pattern.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```

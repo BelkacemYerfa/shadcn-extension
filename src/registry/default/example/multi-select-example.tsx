@@ -24,7 +24,7 @@ const MultiSelectTest = () => {
     <MultiSelector
       value={value}
       onValueChange={setValue}
-      className="max-w-xs"
+      className=" max-w-xs"
       loop={false}
     >
       <MultiSelectorTrigger>

@@ -12,7 +12,7 @@ import { useCallback, useEffect, useState } from "react";
 import { cn, isMacOs } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { docsConfig } from "@/config/docs-config";
+import { Pages, docsConfig } from "@/config/docs-config";
 import { FileIcon, Search } from "lucide-react";
 import { Credenza, CredenzaContent } from "./ui/credenza";
 import { ModeToggle } from "./toggle-theme";
@@ -89,6 +89,26 @@ export const SearchPopOver = () => {
               <CommandEmpty className={cn("py-6 text-center text-sm")}>
                 No products found.
               </CommandEmpty>
+              <CommandGroup
+                className="capitalize block md:hidden"
+                heading="Pages"
+              >
+                {Pages.map(
+                  (page) =>
+                    page.path && (
+                      <CommandItem
+                        key={page.path}
+                        onSelect={() =>
+                          handleSelect(() => router.push(`${page.path}`))
+                        }
+                        className=" text-sm rounded-lg cursor-pointer h-9 "
+                      >
+                        <FileIcon className="w-4 h-4" />
+                        <span className="ml-2">{page.title}</span>
+                      </CommandItem>
+                    )
+                )}
+              </CommandGroup>
               {docsConfig.map((group) => (
                 <CommandGroup
                   key={group.title}

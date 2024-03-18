@@ -22,8 +22,8 @@ export const OtpStyledInput = ({
           className={cn("!w-12 !appearance-none", className)}
         />
       )}
-      containerStyle={`flex justify-center items-center  text-2xl font-bold ${
-        props.renderSeparator ? "gap-1" : "gap-3"
+      containerStyle={`flex justify-center items-center flex-wrap  text-2xl font-bold ${
+        props.renderSeparator ? "gap-1" : "gap-x-3 gap-y-2"
       }`}
     />
   );

@@ -24,7 +24,7 @@ const OtpTest = () => {
     toast.success(`Success , Your Otp code is : ${data.otp}`);
   };
   return (
-    <div className="max-w-xs h-fit flex items-center justify-center outline outline-1 outline-muted rounded-md p-4">
+    <div className="max-w-xs h-fit flex items-center justify-center outline outline-1 outline-muted rounded-md p-4 bg-background">
       <div className="w-full space-y-2">
         <div className="space-y-1">
           <h2 className="font-semibold">OTP verification</h2>

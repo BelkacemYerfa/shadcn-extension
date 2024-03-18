@@ -12,7 +12,11 @@ import {
 import Link from "next/link";
 const BreadCrumbTest = () => {
   return (
-    <BreadCrumb orientation="vertical" variant={"ghost"} className="gap-1">
+    <BreadCrumb
+      orientation="horizontal"
+      variant={"ghost"}
+      className="gap-1 bg-background rounded-lg"
+    >
       <BreadCrumbItem className="px-2 h-8" index={0}>
         <Link href="/">Home</Link>
       </BreadCrumbItem>

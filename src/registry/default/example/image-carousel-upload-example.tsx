@@ -55,7 +55,7 @@ type FilePreview = {
 const MultiCarouselUploader = () => {
   const [preview, setPreview] = useState<FilePreview[] | null>(null);
   return (
-    <Carousel>
+    <Carousel className="bg-background">
       <FileUploadCarouselProvider<FilePreview>
         value={preview}
         onValueChange={setPreview}

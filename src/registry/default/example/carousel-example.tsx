@@ -12,7 +12,7 @@ const CarouselExample = () => {
   return (
     <Carousel
       orientation="vertical"
-      className="max-w-xs w-full h-fit flex items-center gap-2 "
+      className="max-w-xs w-full h-fit flex items-center gap-2"
     >
       <div className="relative basis-3/4 ">
         <CarouselMainContainer className="h-60">

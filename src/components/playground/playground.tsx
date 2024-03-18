@@ -85,7 +85,10 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
   const handleEditorBeforeMount = useCallback(
     (monaco: Monaco) => {
       startTransition(async () => {
-        const highlighterInstance = await highlighter();
+        const highlighterInstance = await getHighlighter({
+          themes: AVA_THEMES,
+          langs: ["javascript", "typescript"],
+        });
         shikiToMonaco(highlighterInstance, monaco);
         if (!theme) return;
         const isThemeExist = AVA_THEMES.includes(theme);

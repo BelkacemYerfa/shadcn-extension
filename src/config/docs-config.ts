@@ -4,6 +4,17 @@ export type DocsConfig = {
   pages?: DocsConfig[];
 };
 
+export const Pages: DocsConfig[] = [
+  {
+    title: "Docs",
+    path: "/docs",
+  },
+  {
+    title: "Components",
+    path: "/components",
+  },
+];
+
 export const docsConfig: DocsConfig[] = [
   {
     title: "Getting Started",

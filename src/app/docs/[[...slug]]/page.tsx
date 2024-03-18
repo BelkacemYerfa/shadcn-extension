@@ -1,32 +1,40 @@
 import { Metadata } from "next";
-import { docs } from "../../../../.velite";
-import { MDXContent } from "@/components/mdx-component";
+import { allDocs as docs } from "contentlayer/generated";
+import { Mdx } from "@/components/mdx-component";
 import { notFound } from "next/navigation";
 import { DocsPager } from "@/components/pager";
 
 type DocsPageProps = {
   params: {
-    slug: string;
+    slug: string[];
   };
 };
 
-const getDocSlug = (slug: string) => {
-  return docs.find((i) => i.slug === "docs/" + slug);
-};
+async function getDocFromParams({ params }: DocsPageProps) {
+  const slug = params.slug?.join("/") || "";
+  const doc = docs.find((doc) => doc.slugAsParams === slug);
 
-export function generateMetadata({ params }: DocsPageProps): Metadata {
-  const currentDoc = getDocSlug(params.slug);
+  if (!doc) {
+    return null;
+  }
+
+  return doc;
+}
+
+export async function generateMetadata({
+  params,
+}: DocsPageProps): Promise<Metadata> {
+  const currentDoc = await getDocFromParams({ params });
   if (currentDoc == null) return {};
   return { title: currentDoc.title, description: currentDoc.description };
 }
-export default function CurrentSlugPage({ params: { slug } }: DocsPageProps) {
-  const currentDoc = getDocSlug(slug);
-  console.log(slug);
+export default async function CurrentSlugPage({ params }: DocsPageProps) {
+  const currentDoc = await getDocFromParams({ params });
   if (!currentDoc) notFound();
   return (
     <article className="prose prose-neutral dark:prose-invert py-3 ">
       <h1>{currentDoc.title}</h1>
-      <MDXContent code={currentDoc.body} />
+      <Mdx code={currentDoc.body.code} />
       <DocsPager doc={currentDoc} />
     </article>
   );
