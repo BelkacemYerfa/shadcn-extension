@@ -89,12 +89,12 @@ export const Index: Record<string, any> = {
       component: React.lazy(() => import("@/registry/default/example/carousel-example")),
       files: ["src/registry/default/example/carousel-example.tsx"],
     },
-    "breadcrumbs-example": {
-      name: "breadcrumbs-example",
+    "breadcrumb-example": {
+      name: "breadcrumb-example",
       type: "components:example",
-      registryDependencies: ["breadcrumbs"],
-      component: React.lazy(() => import("@/registry/default/example/breadcrumbs-example")),
-      files: ["src/registry/default/example/breadcrumbs-example.tsx"],
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(() => import("@/registry/default/example/breadcrumb-example")),
+      files: ["src/registry/default/example/breadcrumb-example.tsx"],
     },
     "image-carousel-upload-example": {
       name: "image-carousel-upload-example",

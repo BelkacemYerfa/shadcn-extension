@@ -82,7 +82,6 @@ export default makeSource({
     rehypePlugins: [
       rehypeSlug,
       rehypeComponent,
-
       rehypePrettyCode,
       () => (tree) => {
         visit(tree, (node) => {

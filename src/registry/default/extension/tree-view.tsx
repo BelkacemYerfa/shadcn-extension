@@ -55,10 +55,7 @@ export const TreeView = ({
   return (
     <div
       ref={containerRef}
-      className={cn(
-        "rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1 relative ",
-        className
-      )}
+      className={cn("rounded-md overflow-hidden py-1 relative ", className)}
     >
       <Tree
         initialSelectedId={initialSelectedId}
@@ -99,7 +96,6 @@ export const TreeItem = forwardRef<
             {element.children && element.children?.length > 0 ? (
               <Folder
                 element={element.name}
-                indicator={indicator}
                 isSelectable={element.isSelectable}
               >
                 <TreeItem

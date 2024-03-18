@@ -14,8 +14,6 @@ import React, {
 } from "react";
 import useResizeObserver from "use-resize-observer";
 import { Button } from "@/components/ui/button";
-import { CaretSortIcon } from "@radix-ui/react-icons";
-import exp from "constants";
 
 type TreeViewElement = {
   id: string;
@@ -31,6 +29,8 @@ type TreeContextProps = {
   handleExpand: (id: string) => void;
   selectItem: (id: string) => void;
   setExpendedItems?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  openIcon?: React.ReactNode;
+  closeIcon?: React.ReactNode;
 };
 
 const TreeContext = createContext<TreeContextProps | null>(null);
@@ -50,6 +50,8 @@ type TreeViewProps = {
   indicator?: boolean;
   elements?: TreeViewElement[];
   initialExpendedItems?: string[];
+  openIcon?: React.ReactNode;
+  closeIcon?: React.ReactNode;
 } & TreeViewComponentProps;
 
 const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
@@ -61,6 +63,8 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
       initialExpendedItems,
       children,
       indicator = true,
+      openIcon,
+      closeIcon,
       ...props
     },
     ref
@@ -146,10 +150,12 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
           selectItem,
           setExpendedItems,
           indicator,
+          openIcon,
+          closeIcon,
         }}
       >
         <div ref={containerRef} className={cn("w-full h-80", className)}>
-          <ScrollArea ref={ref} style={style} className="relative px-2">
+          <ScrollArea ref={ref} className="relative px-2">
             <AccordionPrimitive.Root
               type="multiple"
               defaultValue={expendedItems}
@@ -174,7 +180,6 @@ interface FolderComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 type FolderProps = {
   expendedItems?: string[];
-  indicator?: boolean;
   element: string;
   isSelectable?: boolean;
 } & FolderComponentProps;
@@ -183,8 +188,14 @@ const Folder = forwardRef<
   HTMLDivElement,
   FolderProps & React.HTMLAttributes<HTMLDivElement>
 >(({ className, element, isSelectable = true, children, ...props }, ref) => {
-  const { handleExpand, expendedItems, indicator, setExpendedItems } =
-    useTree();
+  const {
+    handleExpand,
+    expendedItems,
+    indicator,
+    setExpendedItems,
+    openIcon,
+    closeIcon,
+  } = useTree();
 
   return (
     <AccordionPrimitive.Item
@@ -193,17 +204,17 @@ const Folder = forwardRef<
       {...props}
     >
       <AccordionPrimitive.Trigger
-        className={`flex items-center gap-1 text-sm ${
-          !isSelectable ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-        } `}
+        className={cn(
+          `flex items-center gap-1 text-sm`,
+          !isSelectable ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
+          className
+        )}
         disabled={!isSelectable}
         onClick={() => handleExpand(element)}
       >
-        {expendedItems?.includes(element) ? (
-          <FolderOpenIcon className="h-4 w-4" />
-        ) : (
-          <FolderIcon className="h-4 w-4" />
-        )}
+        {expendedItems?.includes(element)
+          ? openIcon ?? <FolderOpenIcon className="h-4 w-4" />
+          : closeIcon ?? <FolderIcon className="h-4 w-4" />}
         <span>{element}</span>
       </AccordionPrimitive.Trigger>
       <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
@@ -234,6 +245,7 @@ const File = forwardRef<
     element: string;
     handleSelect?: (id: string) => void;
     isSelectable?: boolean;
+    fileIcon?: React.ReactNode;
   } & React.HTMLAttributes<HTMLButtonElement>
 >(
   (
@@ -242,6 +254,7 @@ const File = forwardRef<
       className,
       handleSelect,
       isSelectable = true,
+      fileIcon,
       children,
       ...props
     },
@@ -261,11 +274,12 @@ const File = forwardRef<
             {
               "bg-muted": isSelected && isSelectable,
             },
-            isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed"
+            isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed",
+            className
           )}
           onClick={() => selectItem(element)}
         >
-          <FileIcon className="h-4 w-4" />
+          {fileIcon ?? <FileIcon className="h-4 w-4" />}
           {children}
         </AccordionPrimitive.Trigger>
       </AccordionPrimitive.Item>

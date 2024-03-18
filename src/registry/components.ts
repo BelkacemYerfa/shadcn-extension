@@ -77,10 +77,10 @@ const examples: Registry = [
     files: ["example/carousel-example.tsx"],
   },
   {
-    name: "breadcrumbs-example",
+    name: "breadcrumb-example",
     type: "components:example",
-    registryDependencies: ["breadcrumbs"],
-    files: ["example/breadcrumbs-example.tsx"],
+    registryDependencies: ["breadcrumb"],
+    files: ["example/breadcrumb-example.tsx"],
   },
   {
     name: "image-carousel-upload-example",
