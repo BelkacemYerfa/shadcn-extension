@@ -1,9 +1,6 @@
 import { Index } from "@/__registry__";
+import { ComponentCard } from "@/components/cards/component-card";
 import { SiteFooter } from "@/components/layouts/site-footer";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-import { Suspense } from "react";
 
 export default function ComponentsPage() {
   return (
@@ -20,37 +17,9 @@ export default function ComponentsPage() {
         {Object.entries(Index).map(([_, value]) => {
           return Object.entries(value).map(
             ([key, newValue]: [key: string, newValue: any]) => {
-              const componentName = key
-                .replace("example", "")
-                .split("-")
-                .join(" ");
-              const Component = newValue.component;
+              const componentName = key;
               return newValue.type === "components:example" ? (
-                <Card key={key} className="space-y-2 border-0">
-                  <CardTitle>
-                    <Link
-                      href={`/docs/${componentName
-                        .trim()
-                        .toLowerCase()
-                        .split(" ")
-                        .join("-")}`}
-                      className="flex items-center gap-2 group"
-                    >
-                      <span className="capitalize text-foreground/80 text-base font-semibold duration-300 ease-in-out group-hover:text-foreground ">
-                        {componentName}
-                      </span>
-                      <ArrowRight className="size-3 duration-200 ease-in-out group-hover:translate-x-1" />
-                    </Link>
-                  </CardTitle>
-                  <CardContent className="relative h-60 dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] rounded-md p-3 flex items-center justify-center ring-1 ring-border overflow-hidden">
-                    <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-                    <Suspense fallback={<p>loading</p>}>
-                      <div className=" mx-auto scale-75 w-full ">
-                        {<Component />}
-                      </div>
-                    </Suspense>
-                  </CardContent>
-                </Card>
+                <ComponentCard key={key} name={componentName} />
               ) : null;
             }
           );

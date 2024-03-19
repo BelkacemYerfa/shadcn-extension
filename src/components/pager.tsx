@@ -43,7 +43,6 @@ export function DocsPager({ doc }: DocsPagerProps) {
 
 export function getPagerForDoc(doc: Doc) {
   const flattenedLinks = [null, ...flatten(docsConfig), null];
-  console.log(doc.slug);
   const activeIndex = flattenedLinks.findIndex(
     (link) => "/" + doc.slug === link?.path
   );

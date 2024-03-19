@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import {
   Popover,

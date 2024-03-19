@@ -1,3 +1,4 @@
+import { siteConfig } from "@/config/site-config";
 import {
   TreeViewElement,
   Tree,
@@ -5,27 +6,59 @@ import {
   File,
   CollapseButton,
 } from "@/registry/default/extension/tree-view-api";
-import { ChevronDown, ChevronRight, Circle } from "lucide-react";
+import { ChevronDown, ChevronRight, Circle, MoveRight } from "lucide-react";
+import Link from "next/link";
 import { forwardRef } from "react";
 
 type TocProps = {
   toc: TreeViewElement[];
+  slug: string;
 };
 
-export const Toc = ({ toc }: TocProps) => {
+export const Toc = ({ toc, slug }: TocProps) => {
   return (
-    <Tree
-      className="h-fit "
-      indicator={false}
-      elements={toc}
-      openIcon={<ChevronDown className="size-4" />}
-      closeIcon={<ChevronRight className="size-4" />}
-    >
-      {toc.map((item) => (
-        <TreeItem key={item.id} elements={[item]} />
-      ))}
-      <CollapseButton elements={toc} expandAll />
-    </Tree>
+    <div className="space-y-2 ml-4 ">
+      <div className="space-y-2">
+        <h2 className="text-base text-foreground sm:text-xl font-semibold px-2">
+          Table of Content
+        </h2>
+        <Tree
+          className="h-fit p-0"
+          indicator={false}
+          elements={toc}
+          openIcon={<ChevronDown className="size-4" />}
+          closeIcon={<ChevronRight className="size-4" />}
+        >
+          {toc.map((item) => (
+            <TreeItem key={item.id} elements={[item]} />
+          ))}
+          <CollapseButton elements={toc} expandAll />
+        </Tree>
+      </div>
+      <div className="h-px w-full bg-border" />
+      <div className="flex flex-col space-y-1.5 px-4">
+        <h2 className="text-base text-foreground sm:text-xl font-semibold ">
+          Github
+        </h2>
+        <div className="flex flex-col space-y-1">
+          <Link
+            target="_blank"
+            href={`${siteConfig.links.github.toString()}/issues/new?assignees=&labels=bug&template=bug_report.md&title=Feedback`}
+            className="text-sm group text-muted-foreground group hover:text-foreground/90 duration-200 transition-colors flex items-center gap-2"
+          >
+            <span>Questions? Give us feedback</span>
+            <MoveRight className="size-4 group-hover:translate-x-1 duration-200 transition-transform" />
+          </Link>
+          <Link
+            target="_blank"
+            href={`${siteConfig.links.github.toString()}/tree/playground/content${slug}.mdx`}
+            className="text-sm text-muted-foreground hover:text-foreground/90 duration-200 transition-colors "
+          >
+            Edit this page
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

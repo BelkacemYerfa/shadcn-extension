@@ -82,7 +82,12 @@ export default makeSource({
     rehypePlugins: [
       rehypeSlug,
       rehypeComponent,
-      rehypePrettyCode,
+      [
+        rehypePrettyCode,
+        {
+          theme: "one-dark-pro",
+        },
+      ],
       () => (tree) => {
         visit(tree, (node) => {
           if (node?.type === "element" && node?.tagName === "div") {

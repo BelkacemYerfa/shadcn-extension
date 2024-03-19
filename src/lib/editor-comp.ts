@@ -22,6 +22,7 @@ import {
   BreadCrumbTrigger,
 } from "@/registry/default/extension/breadcrumb";
 import Link from "next/link";
+import React from "react";
 
 type EditorComponent = {
   title: string;
@@ -185,8 +186,9 @@ export const editorComponentsConfig: EditorComponent = [
 };`,
   },
   {
-    title: "Multi Selector",
+    title: "Multi Select",
     dependencies: {
+      react: React,
       MultiSelector,
       MultiSelectorContent,
       MultiSelectorInput,
