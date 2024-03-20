@@ -1,4 +1,4 @@
-import { LucideProps } from "lucide-react";
+import { AlertTriangle, Info, LucideProps } from "lucide-react";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -34,4 +34,9 @@ export const Icons = {
       ></path>
     </svg>
   ),
+};
+
+export const MdxIcons = {
+  Info: (props: LucideProps) => <Info {...props} />,
+  AlertTriangle: (props: LucideProps) => <AlertTriangle {...props} />,
 };

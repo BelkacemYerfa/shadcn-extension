@@ -28,9 +28,6 @@ const LinksProperties = defineNestedType(() => ({
     doc: {
       type: "string",
     },
-    api: {
-      type: "string",
-    },
   },
 }));
 
@@ -54,16 +51,6 @@ export const Doc = defineDocumentType(() => ({
     links: {
       type: "nested",
       of: LinksProperties,
-    },
-    featured: {
-      type: "boolean",
-      default: false,
-      required: false,
-    },
-    component: {
-      type: "boolean",
-      default: false,
-      required: false,
     },
     toc: {
       type: "boolean",

@@ -19,7 +19,7 @@ export const Toc = ({ toc, slug }: TocProps) => {
   return (
     <div className="space-y-2 ml-4 ">
       <div className="space-y-2">
-        <h2 className="text-base text-foreground sm:text-xl font-semibold px-2">
+        <h2 className="text-sm text-foreground sm:text-base font-semibold px-2">
           Table of Content
         </h2>
         <Tree
@@ -36,8 +36,8 @@ export const Toc = ({ toc, slug }: TocProps) => {
         </Tree>
       </div>
       <div className="h-px w-full bg-border" />
-      <div className="flex flex-col space-y-1.5 px-4">
-        <h2 className="text-base text-foreground sm:text-xl font-semibold ">
+      <div className="flex flex-col space-y-1.5 px-3">
+        <h2 className="text-sm text-foreground sm:text-base font-semibold ">
           Github
         </h2>
         <div className="flex flex-col space-y-1">

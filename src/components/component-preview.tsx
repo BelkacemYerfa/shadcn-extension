@@ -54,7 +54,7 @@ export function ComponentPreview({
       return Button?.props?.value || Button?.props?.__rawString__ || null;
     }
   }, [Code]);
-
+  console.log(codeString);
   return (
     <div
       className={cn(
@@ -80,8 +80,8 @@ export function ComponentPreview({
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="preview" className="relative rounded-md border">
-          <div className="flex items-center justify-between p-4">
+        <TabsContent value="preview" className="relative rounded-md border p-2">
+          {/* <div className="flex items-center justify-between p-4">
             {extractedClassNames ? (
               <CopyWithClassNames
                 value={codeString}
@@ -90,13 +90,13 @@ export function ComponentPreview({
             ) : (
               codeString && <CopyButton value={codeString} />
             )}
-          </div>
+          </div> */}
 
           {Preview}
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">
-            <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
+            <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto overflow-hidden">
               {Code}
             </div>
           </div>

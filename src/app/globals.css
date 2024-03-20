@@ -103,11 +103,15 @@
 }
 
 [data-rehype-pretty-code-figure] code {
-  @apply text-sm !leading-loose;
+  @apply text-sm/6;
 }
 
 [data-rehype-pretty-code-figure] code[data-line-numbers] {
   counter-reset: line;
+}
+
+[data-rehype-pretty-code-figure] > pre > code {
+  @apply bg-transparent;
 }
 
 [data-rehype-pretty-code-figure] code[data-line-numbers] > [data-line]::before {

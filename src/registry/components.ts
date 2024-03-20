@@ -2,6 +2,12 @@ import { Registry } from "./schema";
 
 const extension: Registry = [
   {
+    name: "tree-view",
+    type: "components:extension",
+    dependencies: ["@radix-ui/react-accordion"],
+    files: ["extension/tree-view.tsx"],
+  },
+  {
     name: "tree-view-api",
     type: "components:extension",
     dependencies: ["@radix-ui/react-accordion"],

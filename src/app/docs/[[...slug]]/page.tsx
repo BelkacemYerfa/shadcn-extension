@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 import { DocsPager } from "@/components/pager";
 import { Toc } from "@/components/layouts/toc";
 import { getTableOfContents } from "@/lib/toc";
+import Balancer from "react-wrap-balancer";
+import { cn } from "@/lib/utils";
+import { MdxIcons } from "@/components/icons";
 
 type DocsPageProps = {
   params: {
@@ -26,26 +29,36 @@ async function getDocFromParams({ params }: DocsPageProps) {
 export async function generateMetadata({
   params,
 }: DocsPageProps): Promise<Metadata> {
-  const currentDoc = await getDocFromParams({ params });
-  if (currentDoc == null) return {};
-  return { title: currentDoc.title, description: currentDoc.description };
+  const doc = await getDocFromParams({ params });
+  if (doc == null) return {};
+  return { title: doc.title, description: doc.description };
 }
 export default async function CurrentSlugPage({ params }: DocsPageProps) {
-  const currentDoc = await getDocFromParams({ params });
+  const doc = await getDocFromParams({ params });
 
-  if (!currentDoc) notFound();
-  const toc = await getTableOfContents(currentDoc.body.raw);
-  if (!toc.children) return <p>issue</p>;
+  if (!doc) notFound();
+  const toc = await getTableOfContents(doc.body.raw);
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-      <article className="col-span-1 md:col-span-3 lg:col-span-2 prose prose-neutral dark:prose-invert pt-2 pb-3 ">
-        <h1>{currentDoc.title}</h1>
-        <Mdx code={currentDoc.body.code} />
-        <DocsPager doc={currentDoc} />
+      <article className="col-span-1 md:col-span-3 lg:col-span-2 pt-2 pb-3 space-y-10">
+        <div className="space-y-2 not-prose">
+          <h1 className={cn("scroll-m-20 text-4xl font-bold tracking-tight")}>
+            {doc.title}
+          </h1>
+          {doc.description && (
+            <p className="text-lg text-muted-foreground">
+              <Balancer>{doc.description}</Balancer>
+            </p>
+          )}
+        </div>
+        <Mdx code={doc.body.code} />
+        <DocsPager doc={doc} />
       </article>
-      <div className="col-span-1 fixed top-14 z-30 ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:hidden lg:sticky lg:block py-2 space-y-4">
-        <Toc toc={toc.children} slug={currentDoc.slug} />
-      </div>
+      {toc.children && (
+        <div className="col-span-1 fixed top-14 z-30 ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:hidden lg:sticky lg:block py-2 space-y-4">
+          <Toc toc={toc.children} slug={doc.slug} />
+        </div>
+      )}
     </div>
   );
 }

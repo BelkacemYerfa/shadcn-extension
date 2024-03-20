@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMDXComponent } from "next-contentlayer-temp/hooks";
 import { NpmCommands } from "../types/unist";
-
 import { Event } from "@/lib/events";
 import { cn } from "@/lib/utils";
 import { Callout } from "@/components/callout";
@@ -23,6 +22,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Style } from "@/registry/styles";
+import { ComponentSource } from "./component-source";
+import { MdxIcons } from "./icons";
+import { MDXTable } from "./tables/mdx-table";
 
 const components = {
   Accordion,
@@ -171,6 +173,7 @@ const components = {
     __withMeta__?: boolean;
     __src__?: string;
     __event__?: Event["name"];
+    __npmCommand__?: boolean;
   } & NpmCommands) => {
     return (
       <StyleWrapper styleName={__style__}>
@@ -194,17 +197,18 @@ const components = {
   },
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
-      className={cn(
-        "relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm",
-        className
-      )}
+      className={cn("relative rounded bg-muted font-mono text-sm", className)}
       {...props}
     />
   ),
   Image,
   Callout,
+  ComponentSource,
   ComponentPreview,
+  MdxIcons,
+  CopyButton,
   AspectRatio,
+  MDXTable,
   CodeBlockWrapper: ({ ...props }) => (
     <CodeBlockWrapper className="rounded-md border" {...props} />
   ),
@@ -262,7 +266,6 @@ const components = {
       {...props}
     />
   ),
-
   Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
     <Link
       className={cn("font-medium underline underline-offset-4", className)}

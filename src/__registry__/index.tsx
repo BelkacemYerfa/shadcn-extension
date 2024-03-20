@@ -5,6 +5,13 @@ import * as React from "react"
 
 export const Index: Record<string, any> = {
     "default": {
+    "tree-view": {
+      name: "tree-view",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(() => import("@/registry/default/extension/tree-view")),
+      files: ["src/registry/default/extension/tree-view.tsx"],
+    },
     "tree-view-api": {
       name: "tree-view-api",
       type: "components:extension",
