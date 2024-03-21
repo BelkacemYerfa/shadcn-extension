@@ -7,6 +7,11 @@ const nextConfig = {
   redirects() {
     return [
       {
+        source: "/docs",
+        destination: "/docs/introduction",
+        permanent: true,
+      },
+      {
         source: "/docs/components",
         destination: "/components",
         permanent: true,

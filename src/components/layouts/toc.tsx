@@ -69,7 +69,7 @@ const TreeItem = forwardRef<
   } & React.HTMLAttributes<HTMLUListElement>
 >(({ className, elements, ...props }, ref) => {
   return (
-    <ul ref={ref} className="w-full space-y-2" {...props}>
+    <ul ref={ref} className="w-full space-y-1" {...props}>
       {elements instanceof Array ? (
         elements.map((element) => (
           <li key={element.id} className="w-full space-y-2">

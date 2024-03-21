@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 export const SideBar = () => {
   const pathname = usePathname();
   return (
-    <div className="flex flex-col py-2 gap-5 w-full">
+    <div className="flex flex-col py-2 gap-5 ">
       {docsConfig.map((section, _) => (
         <div key={section.title} className="flex items-start flex-col gap-1  ">
           <h2 className="text-base px-2">{section.title}</h2>

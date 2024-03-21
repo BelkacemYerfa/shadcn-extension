@@ -48,57 +48,68 @@ export function MDXTable({ data }: MDXTableProps) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((row, rowIndex) =>
-          rowIndex !== 0 ? (
-            <TableRow key={rowIndex} className="hover:bg-transparent">
-              {fields.map((field) => {
-                const isArray = row[field].value instanceof Array;
-                return (
-                  <TableCell key={`${rowIndex}-${field}`}>
-                    <div className="flex items-center gap-1">
-                      <kbd
-                        key={field}
-                        className={cn(
-                          "pointer-events-none h-5 select-none rounded px-1.5 font-mono font-medium opacity-100 flex items-center gap-1",
-                          {
-                            "bg-primary/95 text-primary-foreground ":
-                              field === fields[0],
-                            "bg-muted":
-                              field !== fields[0] &&
-                              row[field].value !== NonValue &&
-                              isArray,
-                          }
-                        )}
-                      >
-                        {isArray
-                          ? (row[field].value as string[]).map(
-                              (value, index) => (
-                                <>
-                                  <span key={`${index}-value`}>{value}</span>
-                                  {index !== row[field].value.length - 1 && (
-                                    <span key={`${index}-separator`}>|</span>
-                                  )}
-                                </>
+        {data.map(
+          (row, rowIndex) =>
+            rowIndex !== 0 && (
+              <TableRow
+                key={`${rowIndex}-${fields[rowIndex]}`}
+                className="hover:bg-transparent"
+              >
+                {fields.map((field) => {
+                  const isArray = row[field].value instanceof Array;
+                  const length = row[field].value.length - 1;
+                  return (
+                    <TableCell key={`${rowIndex}-${row[field].value}`}>
+                      <div className="flex items-center gap-1">
+                        <kbd
+                          className={cn(
+                            "pointer-events-none h-5 select-none rounded px-1 font-mono font-medium opacity-100 flex items-center gap-1",
+                            {
+                              "bg-primary/95 text-primary-foreground ":
+                                field === fields[0],
+                              "bg-muted":
+                                field !== fields[0] &&
+                                row[field].value !== NonValue &&
+                                isArray,
+                            }
+                          )}
+                        >
+                          {isArray
+                            ? (row[field].value as string[]).map(
+                                (value, index) => (
+                                  <>
+                                    <span key={`${index}-${value}`}>
+                                      {length > 1 ? (
+                                        <span>&quot;{value}&quot;</span>
+                                      ) : (
+                                        value
+                                      )}
+                                    </span>
+                                    {index !== row[field].value.length - 1 && (
+                                      <span key={`${index}-separator`}>|</span>
+                                    )}
+                                  </>
+                                )
                               )
-                            )
-                          : row[field].value}
-                        {row[field].required && (
-                          <span className="text-primary-foreground font-bold text-sm">
-                            *
-                          </span>
+                            : row[field].value}
+                          {row[field].required && (
+                            <span className="text-primary-foreground font-bold text-sm">
+                              *
+                            </span>
+                          )}
+                        </kbd>
+                        {row[field].description && (
+                          <MiniInfoPopover>
+                            {row[field].description ||
+                              "This field is required."}
+                          </MiniInfoPopover>
                         )}
-                      </kbd>
-                      {row[field].description && (
-                        <MiniInfoPopover>
-                          {row[field].description || "This field is required."}
-                        </MiniInfoPopover>
-                      )}
-                    </div>
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          ) : null
+                      </div>
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            )
         )}
       </TableBody>
     </Table>

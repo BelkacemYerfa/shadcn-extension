@@ -7,7 +7,9 @@ import { Toc } from "@/components/layouts/toc";
 import { getTableOfContents } from "@/lib/toc";
 import Balancer from "react-wrap-balancer";
 import { cn } from "@/lib/utils";
-import { MdxIcons } from "@/components/icons";
+import { DocsBreadcrumb } from "@/components/doc-breadcrumb";
+import { siteConfig } from "@/config/site-config";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type DocsPageProps = {
   params: {
@@ -31,17 +33,39 @@ export async function generateMetadata({
 }: DocsPageProps): Promise<Metadata> {
   const doc = await getDocFromParams({ params });
   if (doc == null) return {};
-  return { title: doc.title, description: doc.description };
+  return {
+    title: doc.title,
+    description: doc.description,
+    openGraph: {
+      type: "website",
+      url: new URL(`/docs/${doc.slug}`, siteConfig.url).toString(),
+      locale: "en_US",
+      title: siteConfig.name,
+      description: siteConfig.description,
+      siteName: siteConfig.name,
+      images: [
+        {
+          url: siteConfig.ogImage,
+          width: 1200,
+          height: 630,
+          alt: siteConfig.name,
+        },
+      ],
+    },
+  };
 }
 export default async function CurrentSlugPage({ params }: DocsPageProps) {
   const doc = await getDocFromParams({ params });
 
   if (!doc) notFound();
+
   const toc = await getTableOfContents(doc.body.raw);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-      <article className="col-span-1 md:col-span-3 lg:col-span-2 pt-2 pb-3 space-y-10">
+    <main className="grid grid-cols-1 md:grid-cols-3 gap-2 pt-2 pb-3 h-full">
+      <article className="col-span-1 md:col-span-3 lg:col-span-2 space-y-10">
         <div className="space-y-2 not-prose">
+          <DocsBreadcrumb slug={params.slug} />
           <h1 className={cn("scroll-m-20 text-4xl font-bold tracking-tight")}>
             {doc.title}
           </h1>
@@ -55,10 +79,16 @@ export default async function CurrentSlugPage({ params }: DocsPageProps) {
         <DocsPager doc={doc} />
       </article>
       {toc.children && (
-        <div className="col-span-1 fixed top-14 z-30 ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:hidden lg:sticky lg:block py-2 space-y-4">
-          <Toc toc={toc.children} slug={doc.slug} />
+        <div className="hidden ml-4 text-sm xl:block">
+          <div className="sticky top-10 -mt-10 pt-4">
+            <ScrollArea className="pb-10">
+              <div className="sticky top-10 -mt-10 h-[calc(100vh-3.5rem)] py-12">
+                <Toc toc={toc.children} slug={doc.slug} />
+              </div>
+            </ScrollArea>
+          </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }

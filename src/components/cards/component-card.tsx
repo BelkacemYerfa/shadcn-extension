@@ -2,7 +2,7 @@
 
 import { Index } from "@/__registry__";
 import { styles } from "@/registry/styles";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@ui/card";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -35,7 +35,7 @@ export const ComponentCard = ({ name }: ComponentCardProps) => {
   const componentName = name.replace("example", "").split("-").join(" ");
 
   return (
-    <Card className="space-y-2 border-0 ">
+    <Card className="space-y-2 border-0 shadow-none ">
       <CardTitle>
         <Link
           href={`/docs/${componentName
