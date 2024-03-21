@@ -10,6 +10,11 @@ import { cn } from "@/lib/utils";
 import { DocsBreadcrumb } from "@/components/doc-breadcrumb";
 import { siteConfig } from "@/config/site-config";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { badgeVariants } from "@/components/ui/badge";
+import Link from "next/link";
+import { extractDomain } from "@/lib/extract-domain";
+import { Icons } from "@/components/icons";
+import { PrimitiveLink } from "@/components/primitive-link";
 
 type DocsPageProps = {
   params: {
@@ -66,14 +71,25 @@ export default async function CurrentSlugPage({ params }: DocsPageProps) {
       <article className="col-span-1 md:col-span-3 lg:col-span-2 space-y-10">
         <div className="space-y-2 not-prose">
           <DocsBreadcrumb slug={params.slug} />
-          <h1 className={cn("scroll-m-20 text-4xl font-bold tracking-tight")}>
-            {doc.title}
-          </h1>
-          {doc.description && (
-            <p className="text-lg text-muted-foreground">
-              <Balancer>{doc.description}</Balancer>
-            </p>
-          )}
+          <div>
+            <h1 className={cn("scroll-m-20 text-4xl font-bold tracking-tight")}>
+              {doc.title}
+            </h1>
+            {doc.description && (
+              <p className="text-lg text-muted-foreground">
+                <Balancer>{doc.description}</Balancer>
+              </p>
+            )}
+            {doc.links && (
+              <div className="flex items-center space-x-2 pt-2">
+                {doc.links.map((link: any) => (
+                  <PrimitiveLink key={link.url} href={link.url}>
+                    {link.title}
+                  </PrimitiveLink>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
         <Mdx code={doc.body.code} />
         <DocsPager doc={doc} />

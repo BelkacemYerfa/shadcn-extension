@@ -53,7 +53,7 @@ export function MDXTable({ data }: MDXTableProps) {
             rowIndex !== 0 && (
               <TableRow
                 key={`${rowIndex}-${fields[rowIndex]}`}
-                className="hover:bg-transparent"
+                className="hover:bg-transparent "
               >
                 {fields.map((field) => {
                   const isArray = row[field].value instanceof Array;
@@ -63,7 +63,7 @@ export function MDXTable({ data }: MDXTableProps) {
                       <div className="flex items-center gap-1">
                         <kbd
                           className={cn(
-                            "pointer-events-none h-5 select-none rounded px-1 font-mono font-medium opacity-100 flex items-center gap-1",
+                            "pointer-events-none select-none rounded px-1 font-mono font-medium opacity-100 flex items-center gap-1",
                             {
                               "bg-primary/95 text-primary-foreground ":
                                 field === fields[0],

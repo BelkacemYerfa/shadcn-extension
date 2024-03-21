@@ -25,16 +25,6 @@ const TreeFileTest = () => {
           name: "components",
           children: [
             {
-              id: "4",
-              isSelectable: true,
-              name: "input.tsx",
-            },
-            {
-              id: "5",
-              isSelectable: true,
-              name: "button.tsx",
-            },
-            {
               id: "20",
               isSelectable: true,
               name: "pages",
@@ -75,12 +65,6 @@ const TreeFileTest = () => {
           <p> app.tsx </p>
         </File>
         <Folder element="components">
-          <File element="input.tsx">
-            <p> input.tsx </p>
-          </File>
-          <File element="button.tsx">
-            <p> button.tsx </p>
-          </File>
           <Folder element="pages">
             <File element="interface.ts">
               <p>interface.ts</p>

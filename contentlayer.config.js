@@ -25,7 +25,10 @@ const computedFields = {
 const LinksProperties = defineNestedType(() => ({
   name: "LinksProperties",
   fields: {
-    doc: {
+    url: {
+      type: "string",
+    },
+    title: {
       type: "string",
     },
   },
@@ -49,7 +52,7 @@ export const Doc = defineDocumentType(() => ({
       default: true,
     },
     links: {
-      type: "nested",
+      type: "list",
       of: LinksProperties,
     },
     toc: {

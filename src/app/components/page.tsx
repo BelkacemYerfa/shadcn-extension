@@ -4,8 +4,8 @@ import { SiteFooter } from "@/components/layouts/site-footer";
 
 export default function ComponentsPage() {
   return (
-    <main>
-      <div className="mx-auto max-w-7xl flex-1 pt-20 pb-3 px-4 space-y-6">
+    <main className="mx-auto max-w-7xl flex-1 pt-20 space-y-2">
+      <div className="px-4 space-y-6">
         <div className="">
           <h1 className="text-base text-foreground sm:text-2xl font-semibold ">
             Browse Components
