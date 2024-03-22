@@ -3,17 +3,13 @@ import { allDocs as docs } from "contentlayer/generated";
 import { Mdx } from "@/components/mdx-component";
 import { notFound } from "next/navigation";
 import { DocsPager } from "@/components/pager";
-import { Toc } from "@/components/layouts/toc";
+import { DocMainTOC, Toc } from "@/components/layouts/toc";
 import { getTableOfContents } from "@/lib/toc";
 import Balancer from "react-wrap-balancer";
 import { cn } from "@/lib/utils";
 import { DocsBreadcrumb } from "@/components/doc-breadcrumb";
 import { siteConfig } from "@/config/site-config";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { badgeVariants } from "@/components/ui/badge";
-import Link from "next/link";
-import { extractDomain } from "@/lib/extract-domain";
-import { Icons } from "@/components/icons";
 import { PrimitiveLink } from "@/components/primitive-link";
 
 type DocsPageProps = {
@@ -82,7 +78,7 @@ export default async function CurrentSlugPage({ params }: DocsPageProps) {
             )}
             {doc.links && (
               <div className="flex items-center space-x-2 pt-2">
-                {doc.links.map((link: any) => (
+                {doc.links.map((link) => (
                   <PrimitiveLink key={link.url} href={link.url}>
                     {link.title}
                   </PrimitiveLink>
@@ -95,11 +91,11 @@ export default async function CurrentSlugPage({ params }: DocsPageProps) {
         <DocsPager doc={doc} />
       </article>
       {toc.children && (
-        <div className="hidden ml-4 text-sm xl:block">
+        <div className="hidden ml-4 text-sm lg:block">
           <div className="sticky top-10 -mt-10 pt-4">
             <ScrollArea className="pb-10">
               <div className="sticky top-10 -mt-10 h-[calc(100vh-3.5rem)] py-12">
-                <Toc toc={toc.children} slug={doc.slug} />
+                <DocMainTOC toc={toc.children} slug={doc.slug} />
               </div>
             </ScrollArea>
           </div>

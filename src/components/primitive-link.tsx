@@ -24,9 +24,10 @@ export const PrimitiveLink = async ({
   ...props
 }: PrimitiveLinkProps) => {
   if (!href) return null;
+
   const currentDomain = await extractDomain(href);
-  console.log(currentDomain);
   const Icon = Icons[currentDomain as keyof typeof Icons];
+
   return (
     <Link
       href={href}

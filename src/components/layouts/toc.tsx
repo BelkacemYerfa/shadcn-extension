@@ -1,4 +1,8 @@
+"use client";
+
 import { siteConfig } from "@/config/site-config";
+import { useActiveSection } from "@/hooks/use-active-section";
+import { cn } from "@/lib/utils";
 import {
   TreeViewElement,
   Tree,
@@ -8,33 +12,17 @@ import {
 } from "@/registry/default/extension/tree-view-api";
 import { ChevronDown, ChevronRight, Circle, MoveRight } from "lucide-react";
 import Link from "next/link";
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 
 type TocProps = {
   toc: TreeViewElement[];
   slug: string;
 };
 
-export const Toc = ({ toc, slug }: TocProps) => {
+export const DocMainTOC = ({ toc, slug }: TocProps) => {
   return (
     <div className="space-y-2 ml-4 ">
-      <div className="space-y-2">
-        <h2 className="text-sm text-foreground sm:text-base font-semibold px-2">
-          Table of Content
-        </h2>
-        <Tree
-          className="h-fit p-0"
-          indicator={false}
-          elements={toc}
-          openIcon={<ChevronDown className="size-4" />}
-          closeIcon={<ChevronRight className="size-4" />}
-        >
-          {toc.map((item) => (
-            <TreeItem key={item.id} elements={[item]} />
-          ))}
-          <CollapseButton elements={toc} expandAll />
-        </Tree>
-      </div>
+      <Toc toc={toc} />
       <div className="h-px w-full bg-border" />
       <div className="flex flex-col space-y-1.5 px-3">
         <h2 className="text-sm text-foreground sm:text-base font-semibold ">
@@ -62,12 +50,48 @@ export const Toc = ({ toc, slug }: TocProps) => {
   );
 };
 
+export const Toc = ({ toc }: { toc: TreeViewElement[] }) => {
+  const items = React.useMemo(
+    () =>
+      toc
+        .flatMap((item) => [item.id, item?.children?.map((item) => item.id)])
+        .flat()
+        .filter(Boolean)
+        .map((id) => id?.split("#")[1])
+        .filter((value): value is string => typeof value === "string"),
+    [toc]
+  );
+
+  const activeId = useActiveSection(items);
+
+  return (
+    <div className="space-y-2">
+      <h2 className="text-sm text-foreground sm:text-base font-semibold px-2">
+        Table of Content
+      </h2>
+      <Tree
+        className="h-fit p-0"
+        indicator={false}
+        elements={toc}
+        openIcon={<ChevronDown className="size-4" />}
+        closeIcon={<ChevronRight className="size-4" />}
+      >
+        {toc.map((item) => (
+          <TreeItem key={item.id} elements={[item]} activeItem={activeId} />
+        ))}
+        <CollapseButton elements={toc} expandAll />
+      </Tree>
+    </div>
+  );
+};
+
 const TreeItem = forwardRef<
   HTMLUListElement,
   {
     elements?: TreeViewElement[] | TreeViewElement;
+    activeItem?: string;
   } & React.HTMLAttributes<HTMLUListElement>
->(({ className, elements, ...props }, ref) => {
+>(({ className, elements, activeItem, ...props }, ref) => {
   return (
     <ul ref={ref} className="w-full space-y-1" {...props}>
       {elements instanceof Array ? (
@@ -77,11 +101,14 @@ const TreeItem = forwardRef<
               <Folder
                 element={element.name}
                 isSelectable={element.isSelectable}
+                isSelect={activeItem === element.id.split("#")[1]}
+                className="px-px pr-1"
               >
                 <TreeItem
                   key={element.id}
                   aria-label={`folder ${element.name}`}
                   elements={element.children}
+                  activeItem={activeItem}
                 />
               </Folder>
             ) : (
@@ -90,7 +117,8 @@ const TreeItem = forwardRef<
                 key={element.id}
                 element={element.name}
                 isSelectable={element.isSelectable}
-                className="px-1"
+                isSelect={activeItem === element.id.split("#")[1]}
+                className={"px-1"}
                 fileIcon={<Circle className="size-2" />}
               >
                 <a href={element.id} className="ml-1">

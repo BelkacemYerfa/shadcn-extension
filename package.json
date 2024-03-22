@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test:build": "npm run typecheck && npm run build:registry && next build && npm start",
     "build:registry": "npx tsx --tsconfig ./src/script/tsconfig.scripts.json ./src/script/registry-builder.ts",
-    "typecheck": "contentlayer-temp build && tsc --noEmit"
+    "typecheck": "contentlayer-temp build && tsc --noEmit",
+    "format": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",

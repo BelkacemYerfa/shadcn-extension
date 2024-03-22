@@ -25,6 +25,11 @@
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
 
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+
+    --info: 218 81% 59%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
@@ -53,6 +58,11 @@
 
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
+
+    --warning: 48 100% 50%;
+    --warning-foreground: 38 92% 50%;
+
+    --info: 218 81% 59%;
 
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;

@@ -4,8 +4,6 @@ description: A tree view that assembles all the functionalities of the Accordion
 links:
   - title: radix-ui
     url: https://www.radix-ui.com/docs/primitives/components/accordion
-  - title: shadcn
-    url: https://ui.shadcn.com/components/accordion
 ---
 
 <ComponentPreview
@@ -49,8 +47,8 @@ npm install @radix-ui/react-accordion
 
 <Step>Copy and paste the following code into your project.</Step>
 
-<Alert className="mt-4">
-  <MdxIcons.Info className="size-4 stroke-blue-500" />
+<Alert className="mt-4" variant="info">
+  <MdxIcons.Info className="size-4" />
   <AlertTitle>Good to know</AlertTitle>
   <AlertDescription>
     Note that if you want to setup the tree view, you need to have alse the tree
@@ -147,9 +145,7 @@ The TreeView component accepts the following props:
             to the TreeView component
             <p>
               See the props in this&nbsp;
-              <a href="#treeviewelement" className="">
-                section
-              </a>
+              <a href="#treeviewelement">section</a>
             </p>
           </>
         ),
@@ -169,8 +165,8 @@ The TreeView component accepts the following props:
   ]}
 />
 
-<Alert className="mt-4">
-  <MdxIcons.AlertTriangle className="size-4 stroke-yellow-500" />
+<Alert className="mt-4" variant="warning">
+  <MdxIcons.AlertTriangle className="size-4" />
   <AlertTitle>Heads up</AlertTitle>
   <AlertDescription>
     The `initialExpendedItems` with `expendAll` can not work together, if you
@@ -248,22 +244,120 @@ Currently, the TreeView component is fully accessible and supports keyboard navi
 
 ## Usage
 
+The TreeView component has two different ways to be used, that you can choose , based on your choice , that you have picked in the installation [section](#installation).
+
+<Tabs defaultValue="tree-view">
+<TabsList>
+  <TabsTrigger value="tree-view">Tree view</TabsTrigger>
+  <TabsTrigger value="tree-view-api">Tree view api</TabsTrigger>
+</TabsList>
+<TabsContent value="tree-view">
 ```tsx
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { TreeView } from "@/components/extension/tree-view";
 ```
 
 ```tsx
-<Accordion type="single" collapsible>
-  <AccordionItem value="item-1">
-    <AccordionTrigger>Is it accessible?</AccordionTrigger>
-    <AccordionContent>
-      Yes. It adheres to the WAI-ARIA design pattern.
-    </AccordionContent>
-  </AccordionItem>
-</Accordion>
+const elements = [
+  {
+    id: "1",
+    name: "components",
+    children: [
+      {
+        id: "2",
+        name: "extension",
+        children: [
+          {
+            id: "3",
+            name: "tree-view.tsx",
+          },
+          {
+            id: "4",
+            name: "tree-view-api.tsx",
+          },
+        ],
+      },
+      {
+        id: "5",
+        name: "dashboard-tree.tsx",
+      },
+    ],
+  },
+];
 ```
+
+```tsx
+export default function TreeViewExample() {
+  return (
+    <TreeView
+      elements={elements}
+      initialSelectedId="3"
+      initialExpendedItems={["1", "2"]}
+    />
+  );
+}
+```
+
+</TabsContent>
+<TabsContent value="tree-view-api">
+```tsx
+import {
+  Tree,
+  Folder ,
+  File ,
+  CollapseButton
+} from "@/components/extension/tree-view-api";
+```
+```tsx
+const elements = [
+  {
+    id: "1",
+    name: "components",
+    children: [
+      {
+        id: "2",
+        name: "extension",
+        children: [
+          {
+            id: "3",
+            name: "tree-view.tsx",
+          },
+          {
+            id: "4",
+            name: "tree-view-api.tsx",
+          },
+        ],
+      },
+      {
+        id: "5",
+        name: "dashboard-tree.tsx",
+      },
+    ],
+  },
+]
+```
+```tsx
+<Tree
+  initialSelectedId={"dashboard-tree.tsx"}
+  initialExpendedItems={["components"]}
+>
+  <Folder element="components">
+    <Folder element="extension">
+      <File element="tree-view.tsx">
+        <span>tree-view.tsx</span>
+      </File>
+      <File element="tree-view-api.tsx">
+        <span>tree-view-api.tsx</span>
+      </File>
+    </Folder>
+    <File element="dashboard-tree.tsx">
+      <span>dashboard-tree.tsx</span>
+    </File>
+  </Folder>
+</Tree>
+```
+
+</TabsContent>
+
+</Tabs>
+
+## Examples
