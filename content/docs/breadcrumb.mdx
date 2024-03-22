@@ -1,35 +1,45 @@
 ---
 title: Breadcrumb
-description: Displays the path to the current resource using a hierarchy of links.
-component: true
+description: A component for detecting the path to the current page using links.
 links:
-  doc: https://www.radix-ui.com/docs/primitives/components/accordion
-  api: https://www.radix-ui.com/docs/primitives/components/accordion#api-reference
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/popover
 ---
 
-<ComponentPreview name="breadcrumb-demo" className="[&_.preview]:p-2" />
+<ComponentPreview name="breadcrumb-example" className="[&_.preview]:p-2" />
 
 ## Installation
 
-<Tabs defaultValue="cli">
+<Tabs defaultValue="manual">
 
 <TabsList>
-  <TabsTrigger value="cli">CLI</TabsTrigger>
   <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
 </TabsList>
-<TabsContent value="cli">
-
-```bash
-npx shadcn-ui@latest add breadcrumb
-```
-
-</TabsContent>
 
 <TabsContent value="manual">
 
 <Steps>
 
+<Step>Run the following command:</Step>
+
+```bash
+npx shadcn-ui@latest add button
+npx shadcn-ui@latest add popover
+```
+
+<Alert className="mt-4" variant="info">
+  <MdxIcons.Info className="size-4" />
+  <AlertTitle>Good to know</AlertTitle>
+  <AlertDescription>
+    you need to install those components to properly use the Breadcrumb
+    component.
+  </AlertDescription>
+</Alert>
+
 <Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="breadcrumb" />
 
 <Step>Update the import paths to match your project setup.</Step>
 
@@ -37,7 +47,94 @@ npx shadcn-ui@latest add breadcrumb
 
 </TabsContent>
 
+<TabsContent value="cli">
+
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
 </Tabs>
+
+## API Reference
+
+### Props
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+      },
+      type: {
+        value: "type",
+      },
+      defaultValue: {
+        value: "default value",
+      },
+    },
+    {
+      prop: {
+        value: "variant",
+        description: (
+          <>
+            Variant styles for the each breadcrumb item , same as the{" "}
+            <a
+              target="_blank"
+              href="https://ui.shadcn.com/docs/components/button#link"
+            >
+              button variants
+            </a>
+          </>
+        ),
+      },
+      type: {
+        value: ["typeof buttonVariants"],
+      },
+      defaultValue: {
+        value: ["default"],
+      },
+    },
+    {
+      prop: {
+        value: "isActive",
+        description: "Boolean to indicate the active breadcrumb item.",
+      },
+      type: {
+        value: ["boolean"],
+      },
+      defaultValue: {
+        value: ["false"],
+      },
+    },
+    {
+      prop: {
+        value: "activeVariant",
+        description: "Variant styles for the active breadcrumb item.",
+      },
+      type: {
+        value: ["typeof buttonVariants"],
+      },
+      defaultValue: {
+        value: ["default"],
+      },
+    },
+    {
+      prop: {
+        value: "orientation",
+        description: "The orientation of the breadcrumb items.",
+      },
+      type: {
+        value: ["horizontal", "vertical"],
+      },
+      defaultValue: {
+        value: ["horizontal"],
+      },
+    },
+  ]}
+/>
 
 ## Usage
 
@@ -45,147 +142,27 @@ npx shadcn-ui@latest add breadcrumb
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from "@/components/extension/breadcrumb";
+import { Link } from "next/link";
 ```
 
 ```tsx
 <Breadcrumb>
   <BreadcrumbList>
     <BreadcrumbItem>
-      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+      <Link href="/">Home</Link>
     </BreadcrumbItem>
     <BreadcrumbSeparator />
     <BreadcrumbItem>
-      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+      <Link href="/components">Components</Link>
     </BreadcrumbItem>
     <BreadcrumbSeparator />
-    <BreadcrumbItem>
-      <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-    </BreadcrumbItem>
+    <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
   </BreadcrumbList>
 </Breadcrumb>
 ```
 
 ## Examples
-
-### Custom separator
-
-Use a custom component as `children` for `<BreadcrumbSeparator />` to create a custom separator.
-
-<ComponentPreview name="breadcrumb-separator" />
-
-```tsx showLineNumbers {1,10-12}
-import { Slash } from "lucide-react"
-
-...
-
-<Breadcrumb>
-  <BreadcrumbList>
-    <BreadcrumbItem>
-      <BreadcrumbLink href="/">Home</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbSeparator>
-      <Slash />
-    </BreadcrumbSeparator>
-    <BreadcrumbItem>
-      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-    </BreadcrumbItem>
-  </BreadcrumbList>
-</Breadcrumb>
-```
-
----
-
-### Dropdown
-
-You can compose `<BreadcrumbItem />` with a `<DropdownMenu />` to create a dropdown in the breadcrumb.
-
-<ComponentPreview name="breadcrumb-dropdown" className="[&_.preview]:p-2" />
-
-```tsx showLineNumbers {1-6,11-21}
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-...
-
-<BreadcrumbItem>
-  <DropdownMenu>
-    <DropdownMenuTrigger className="flex items-center gap-1">
-      Components
-      <ChevronDownIcon />
-    </DropdownMenuTrigger>
-    <DropdownMenuContent align="start">
-      <DropdownMenuItem>Documentation</DropdownMenuItem>
-      <DropdownMenuItem>Themes</DropdownMenuItem>
-      <DropdownMenuItem>GitHub</DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-</BreadcrumbItem>
-```
-
----
-
-### Collapsed
-
-We provide a `<BreadcrumbEllipsis />` component to show a collapsed state when the breadcrumb is too long.
-
-<ComponentPreview name="breadcrumb-ellipsis" className="[&_.preview]:p-2" />
-
-```tsx showLineNumbers {1,9}
-import { BreadcrumbEllipsis } from "@/components/ui/breadcrumb"
-
-...
-
-<Breadcrumb>
-  <BreadcrumbList>
-    {/* ... */}
-    <BreadcrumbItem>
-      <BreadcrumbEllipsis />
-    </BreadcrumbItem>
-    {/* ... */}
-  </BreadcrumbList>
-</Breadcrumb>
-```
-
----
-
-### Link component
-
-To use a custom link component from your routing library, you can use the `asChild` prop on `<BreadcrumbLink />`.
-
-<ComponentPreview name="breadcrumb-link" />
-
-```tsx showLineNumbers {1,8-10}
-import { Link } from "next/link"
-
-...
-
-<Breadcrumb>
-  <BreadcrumbList>
-    <BreadcrumbItem>
-      <BreadcrumbLink asChild>
-        <Link href="/">Home</Link>
-      </BreadcrumbLink>
-    </BreadcrumbItem>
-    {/* ... */}
-  </BreadcrumbList>
-</Breadcrumb>
-```
-
----
-
-### Responsive
-
-Here's an example of a responsive breadcrumb that composes `<BreadcrumbItem />` with `<BreadcrumbEllipsis />`, `<DropdownMenu />`, and `<Drawer />`.
-
-It displays a dropdown on desktop and a drawer on mobile.
-
-<ComponentPreview name="tree-view-example" className="[&_.preview]:p-2" />

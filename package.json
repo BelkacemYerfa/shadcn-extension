@@ -7,7 +7,7 @@
     "build": "contentlayer-temp build && npm run build:registry && next build",
     "start": "next start",
     "lint": "next lint",
-    "test:build": "npm run typecheck && npm run build:registry && next build && npm start",
+    "test:build": "npm run typecheck && npm run build:registry && next build && npm start -p 3001",
     "build:registry": "npx tsx --tsconfig ./src/script/tsconfig.scripts.json ./src/script/registry-builder.ts",
     "typecheck": "contentlayer-temp build && tsc --noEmit",
     "format": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache"

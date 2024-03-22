@@ -9,6 +9,7 @@ import { codeImport } from "remark-code-import";
 import remarkGfm from "remark-gfm";
 import { visit } from "unist-util-visit";
 import { rehypeComponent } from "./src/lib/rehype-component";
+import { rehypeNpmCommand } from "./src/lib/rehype-installation-command";
 
 /** @type {import('@contentlayer-temp/source-files').ComputedFields} */
 const computedFields = {
@@ -72,6 +73,31 @@ export default makeSource({
     rehypePlugins: [
       rehypeSlug,
       rehypeComponent,
+      () => (tree) => {
+        visit(tree, (node) => {
+          if (node?.type === "element" && node?.tagName === "pre") {
+            const [codeEl] = node.children;
+            if (codeEl.tagName !== "code") {
+              return;
+            }
+
+            if (codeEl.data?.meta) {
+              // Extract event from meta and pass it down the tree.
+              const regex = /event="([^"]*)"/;
+              const match = codeEl.data?.meta.match(regex);
+              if (match) {
+                node.__event__ = match ? match[1] : null;
+                codeEl.data.meta = codeEl.data.meta.replace(regex, "");
+              }
+            }
+
+            node.__rawString__ = codeEl.children?.[0].value;
+            node.__src__ = node.properties?.__src__;
+            node.__style__ = node.properties?.__style__;
+          }
+        });
+      },
+      rehypeNpmCommand,
       [
         rehypePrettyCode,
         {
@@ -80,8 +106,8 @@ export default makeSource({
       ],
       () => (tree) => {
         visit(tree, (node) => {
-          if (node?.type === "element" && node?.tagName === "div") {
-            if (!("data-rehype-pretty-code-fragment" in node.properties)) {
+          if (node?.type === "element" && node?.tagName === "figure") {
+            if (!("data-rehype-pretty-code-figure" in node.properties)) {
               return;
             }
 

@@ -129,7 +129,7 @@
   counter-reset: line;
 }
 
-[data-rehype-pretty-code-figure] > pre > code {
+[data-rehype-pretty-code-figure] > div > pre > code {
   @apply bg-transparent;
 }
 

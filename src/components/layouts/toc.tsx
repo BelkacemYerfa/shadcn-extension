@@ -100,6 +100,7 @@ const TreeItem = forwardRef<
             {element.children && element.children?.length > 0 ? (
               <Folder
                 element={element.name}
+                id={element.id}
                 isSelectable={element.isSelectable}
                 isSelect={activeItem === element.id.split("#")[1]}
                 className="px-px pr-1"
@@ -115,6 +116,7 @@ const TreeItem = forwardRef<
               <File
                 aria-label={`File ${element.name}`}
                 key={element.id}
+                id={element.id}
                 element={element.name}
                 isSelectable={element.isSelectable}
                 isSelect={activeItem === element.id.split("#")[1]}
@@ -133,6 +135,7 @@ const TreeItem = forwardRef<
           <File
             aria-label={`file ${elements?.name}`}
             element={elements?.name ?? " "}
+            id={elements?.id ?? ""}
             isSelectable={elements?.isSelectable}
           >
             <span>{elements?.name}</span>

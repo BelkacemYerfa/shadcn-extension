@@ -96,12 +96,12 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
           currentElement: TreeViewElement,
           currentPath: string[] = []
         ) => {
-          const newPath = [...currentPath, currentElement.name];
-          if (currentElement.name === selectId) {
+          const newPath = [...currentPath, currentElement.id];
+          if (currentElement.id === selectId) {
             if (currentElement.isSelectable) {
               setExpendedItems((prev) => [...(prev ?? []), ...newPath]);
             } else {
-              if (newPath.includes(currentElement.name)) {
+              if (newPath.includes(currentElement.id)) {
                 newPath.pop();
                 setExpendedItems((prev) => [...(prev ?? []), ...newPath]);
               }
@@ -176,11 +176,30 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
 
 Tree.displayName = "Tree";
 
+const TreeIndicator = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "h-full w-px bg-muted absolute left-1.5 py-3 rounded-md hover:bg-slate-300 duration-300 ease-in-out",
+        className
+      )}
+      {...props}
+    />
+  );
+});
+
+TreeIndicator.displayName = "TreeIndicator";
+
 interface FolderComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 type FolderProps = {
   expendedItems?: string[];
   element: string;
+  id: string;
   isSelectable?: boolean;
   isSelect?: boolean;
 } & FolderComponentProps;
@@ -190,7 +209,15 @@ const Folder = forwardRef<
   FolderProps & React.HTMLAttributes<HTMLDivElement>
 >(
   (
-    { className, element, isSelectable = true, isSelect, children, ...props },
+    {
+      className,
+      element,
+      id,
+      isSelectable = true,
+      isSelect,
+      children,
+      ...props
+    },
     ref
   ) => {
     const {
@@ -204,7 +231,7 @@ const Folder = forwardRef<
 
     return (
       <AccordionPrimitive.Item
-        value={element}
+        value={id}
         className="relative overflow-hidden h-full"
         {...props}
       >
@@ -219,16 +246,16 @@ const Folder = forwardRef<
             }
           )}
           disabled={!isSelectable}
-          onClick={() => handleExpand(element)}
+          onClick={() => handleExpand(id)}
         >
-          {expendedItems?.includes(element)
+          {expendedItems?.includes(id)
             ? openIcon ?? <FolderOpenIcon className="h-4 w-4" />
             : closeIcon ?? <FolderIcon className="h-4 w-4" />}
           <span>{element}</span>
         </AccordionPrimitive.Trigger>
         <AccordionPrimitive.Content className="text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative overflow-hidden h-full">
           {element && indicator && (
-            <div className="h-full w-[1px] bg-muted absolute left-1.5 py-3 rounded-md hover:bg-slate-300 duration-300 ease-in-out " />
+            <TreeIndicator className="absolute" aria-hidden="true" />
           )}
           <AccordionPrimitive.Root
             type="multiple"
@@ -253,6 +280,7 @@ const File = forwardRef<
   HTMLButtonElement,
   {
     element: string;
+    id: string;
     handleSelect?: (id: string) => void;
     isSelectable?: boolean;
     isSelect?: boolean;
@@ -262,6 +290,7 @@ const File = forwardRef<
   (
     {
       element,
+      id,
       className,
       handleSelect,
       isSelectable = true,
@@ -273,9 +302,9 @@ const File = forwardRef<
     ref
   ) => {
     const { selectedId, selectItem } = useTree();
-    const isSelected = isSelect ?? selectedId === element;
+    const isSelected = isSelect ?? selectedId === id;
     return (
-      <AccordionPrimitive.Item value={element} className="relative">
+      <AccordionPrimitive.Item value={id} className="relative">
         <AccordionPrimitive.Trigger
           ref={ref}
           {...props}
@@ -289,7 +318,7 @@ const File = forwardRef<
             isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed",
             className
           )}
-          onClick={() => selectItem(element)}
+          onClick={() => selectItem(id)}
         >
           {fileIcon ?? <FileIcon className="h-4 w-4" />}
           {children}
@@ -317,7 +346,7 @@ const CollapseButton = forwardRef<
         element.children &&
         element.children.length > 0
       ) {
-        setExpendedItems?.((prev) => [...(prev ?? []), element.name]);
+        setExpendedItems?.((prev) => [...(prev ?? []), element.id]);
         element.children.forEach(expandTree);
       }
     };

@@ -96,6 +96,7 @@ export const TreeItem = forwardRef<
             {element.children && element.children?.length > 0 ? (
               <Folder
                 element={element.name}
+                id={element.id}
                 isSelectable={element.isSelectable}
               >
                 <TreeItem
@@ -107,6 +108,7 @@ export const TreeItem = forwardRef<
               </Folder>
             ) : (
               <File
+                id={element.id}
                 aria-label={`File ${element.name}`}
                 key={element.id}
                 element={element.name}
@@ -122,6 +124,7 @@ export const TreeItem = forwardRef<
           <File
             aria-label={`file ${elements?.name}`}
             element={elements?.name ?? " "}
+            id={elements?.id ?? ""}
             isSelectable={elements?.isSelectable}
           >
             <span>{elements?.name}</span>

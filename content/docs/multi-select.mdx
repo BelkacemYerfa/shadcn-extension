@@ -1,134 +1,141 @@
 ---
-title: Accordion
-description: A vertically stacked set of interactive headings that each reveal a section of content.
-component: true
+title: Multi Select
+description: A mulit select that lets you select multiple items from a list.
 links:
-  doc: https://www.radix-ui.com/docs/primitives/components/accordion
-  api: https://www.radix-ui.com/docs/primitives/components/accordion#api-reference
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/command
 ---
 
-<ComponentPreview
-  name="tree-view-example"
-  className="[&_.preview>[data-orientation=vertical]]:sm:max-w-[70%]"
-/>
+<ComponentPreview name="multi-select-example" />
 
 ## Installation
 
-<Tabs defaultValue="cli">
+<Tabs defaultValue="manual">
 
 <TabsList>
-  <TabsTrigger value="cli">CLI</TabsTrigger>
   <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
 </TabsList>
-
-<TabsContent value="cli">
-
-<Steps>
-
-<Step>Run the following command:</Step>
-
-```bash
-npx shadcn-ui@latest add accordion
-```
-
-<Step>Update `tailwind.config.js`</Step>
-
-Add the following animations to your `tailwind.config.js` file:
-
-```js title="tailwind.config.js" {5-18}
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  theme: {
-    extend: {
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
-    },
-  },
-};
-```
-
-</Steps>
-
-</TabsContent>
 
 <TabsContent value="manual">
 
 <Steps>
 
-<Step>Install the following dependencies:</Step>
+<Step>
+  Check the installation setup for the command component in [shadcn
+  ui](https://ui.shadcn.com/docs/components/command)
+</Step>
 
 ```bash
-npm install @radix-ui/react-accordion
+npx shadcn-ui@latest add command
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
 
+<ComponentSource name="multi-select" />
+
 <Step>Update the import paths to match your project setup.</Step>
-
-<Step>Update `tailwind.config.js`</Step>
-
-Add the following animations to your `tailwind.config.js` file:
-
-```js title="tailwind.config.js" {5-18}
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  theme: {
-    extend: {
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
-    },
-  },
-};
-```
 
 </Steps>
 
 </TabsContent>
 
+<TabsContent value="cli">
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
 </Tabs>
+
+## API Reference
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+      },
+      type: {
+        value: "type",
+      },
+      defaultValue: {
+        value: "defaultValue",
+      },
+    },
+    {
+      prop: {
+        value: "value",
+        description:
+          "The value array that contains the values of the selected items.",
+      },
+      type: {
+        value: ["string[]"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "onValueChange",
+        description: "The function that will be called when the value changes.",
+      },
+      type: {
+        value: ["(value: string[]) => void"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "loop",
+        description:
+          "If true, the selection will loop around when it reaches the end of current selected elements",
+      },
+      type: {
+        value: ["boolean"],
+      },
+      defaultValue: {
+        value: ["false"],
+      },
+    },
+  ]}
+/>
+
+## Accessibility
+
+The Accordion component adheres to the WAI-ARIA design pattern. It is accessible
 
 ## Usage
 
 ```tsx
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "@/components/extension/multi-select";
 ```
 
 ```tsx
-<Accordion type="single" collapsible>
-  <AccordionItem value="item-1">
-    <AccordionTrigger>Is it accessible?</AccordionTrigger>
-    <AccordionContent>
-      Yes. It adheres to the WAI-ARIA design pattern.
-    </AccordionContent>
-  </AccordionItem>
-</Accordion>
+<MultiSelector value={value} onValueChange={setValue} loop className="max-w-xs">
+  <MultiSelectorTrigger>
+    <MultiSelectorInput placeholder="Select your framework" />
+  </MultiSelectorTrigger>
+  <MultiSelectorContent>
+    <MultiSelectorList>
+      <MultiSelectorItem value={"React"}>React</MultiSelectorItem>
+      <MultiSelectorItem value={"Vue"}>Vue</MultiSelectorItem>
+      <MultiSelectorItem value={"Svelte"}>Svelte</MultiSelectorItem>
+    </MultiSelectorList>
+  </MultiSelectorContent>
+</MultiSelector>
 ```
+
+## Example

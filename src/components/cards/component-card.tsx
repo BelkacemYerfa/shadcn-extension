@@ -28,7 +28,6 @@ export const ComponentCard = ({ name }: ComponentCardProps) => {
       );
     }
 
-    setTimeout(() => {}, 10000);
     return <Component />;
   }, [name]);
 

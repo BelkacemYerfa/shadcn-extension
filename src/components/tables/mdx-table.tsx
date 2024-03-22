@@ -57,7 +57,7 @@ export function MDXTable({ data }: MDXTableProps) {
               >
                 {fields.map((field) => {
                   const isArray = row[field].value instanceof Array;
-                  const length = row[field].value.length - 1;
+                  const length = row[field].value.length;
                   return (
                     <TableCell key={`${rowIndex}-${row[field].value}`}>
                       <div className="flex items-center gap-1">

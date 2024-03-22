@@ -45,16 +45,14 @@ export function ComponentPreview({
   }, [name]);
 
   const codeString = React.useMemo(() => {
-    if (
-      typeof Code?.props["data-rehype-pretty-code-fragment"] !== "undefined"
-    ) {
+    if (typeof Code?.props["data-rehype-pretty-code-figure"] !== "undefined") {
       const [, Button] = React.Children.toArray(
         Code.props.children
       ) as React.ReactElement[];
       return Button?.props?.value || Button?.props?.__rawString__ || null;
     }
   }, [Code]);
-  console.log(codeString);
+
   return (
     <div
       className={cn(
@@ -80,7 +78,10 @@ export function ComponentPreview({
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="preview" className="relative rounded-md border p-2">
+        <TabsContent
+          value="preview"
+          className="relative rounded-md border p-2 data-[state=active]:flex flex-col items-center justify-center w-full h-72"
+        >
           {/* <div className="flex items-center justify-between p-4">
             {extractedClassNames ? (
               <CopyWithClassNames
@@ -91,12 +92,11 @@ export function ComponentPreview({
               codeString && <CopyButton value={codeString} />
             )}
           </div> */}
-
           {Preview}
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">
-            <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto overflow-hidden">
+            <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto overflow-hidden relative">
               {Code}
             </div>
           </div>

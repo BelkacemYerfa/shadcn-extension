@@ -60,6 +60,7 @@ export function rehypeComponent() {
             source = source.replaceAll("export default", "export");
 
             // Add code as children so that rehype can take over at build time.
+
             node.children?.push(
               u("element", {
                 tagName: "pre",
@@ -121,6 +122,7 @@ export function rehypeComponent() {
             );
 
             // Add code as children so that rehype can take over at build time.
+
             node.children?.push(
               u("element", {
                 tagName: "pre",

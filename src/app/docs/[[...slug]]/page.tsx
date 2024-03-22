@@ -67,25 +67,24 @@ export default async function CurrentSlugPage({ params }: DocsPageProps) {
       <article className="col-span-1 md:col-span-3 lg:col-span-2 space-y-10">
         <div className="space-y-2 not-prose">
           <DocsBreadcrumb slug={params.slug} />
-          <div>
-            <h1 className={cn("scroll-m-20 text-4xl font-bold tracking-tight")}>
-              {doc.title}
-            </h1>
-            {doc.description && (
-              <p className="text-lg text-muted-foreground">
-                <Balancer>{doc.description}</Balancer>
-              </p>
-            )}
-            {doc.links && (
-              <div className="flex items-center space-x-2 pt-2">
-                {doc.links.map((link) => (
-                  <PrimitiveLink key={link.url} href={link.url}>
-                    {link.title}
-                  </PrimitiveLink>
-                ))}
-              </div>
-            )}
-          </div>
+
+          <h1 className={cn("scroll-m-20 text-4xl font-bold tracking-tight")}>
+            {doc.title}
+          </h1>
+          {doc.description && (
+            <p className="text-lg text-muted-foreground">
+              <Balancer>{doc.description}</Balancer>
+            </p>
+          )}
+          {doc.links && (
+            <div className="flex items-center space-x-2 pt-2">
+              {doc.links.map((link) => (
+                <PrimitiveLink key={link.url} href={link.url}>
+                  {link.title}
+                </PrimitiveLink>
+              ))}
+            </div>
+          )}
         </div>
         <Mdx code={doc.body.code} />
         <DocsPager doc={doc} />

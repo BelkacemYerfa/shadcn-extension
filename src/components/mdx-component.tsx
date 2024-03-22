@@ -10,8 +10,7 @@ import { cn } from "@/lib/utils";
 import { Callout } from "@/components/callout";
 import { CodeBlockWrapper } from "@/components/code-block-wrapper";
 import { ComponentPreview } from "@/components/component-preview";
-import { CopyButton } from "@/components/copy-button";
-import { StyleWrapper } from "@/components/style-wrapper";
+import { CopyButton, CopyNpmCommandButton } from "@/components/copy-button";
 import {
   Accordion,
   AccordionContent,
@@ -173,10 +172,9 @@ const components = {
     __withMeta__?: boolean;
     __src__?: string;
     __event__?: Event["name"];
-    __npmCommand__?: boolean;
   } & NpmCommands) => {
     return (
-      <StyleWrapper styleName={__style__}>
+      <div className="relative">
         <pre
           className={cn(
             "mb-4 mt-6 max-h-[40rem] overflow-x-auto rounded-lg py-4",
@@ -189,10 +187,24 @@ const components = {
             value={__rawString__}
             src={__src__}
             event={__event__}
-            className={cn("absolute right-4 top-4", __withMeta__ && "top-16")}
+            className={cn("absolute right-6 top-4", __withMeta__ && "top-16")}
           />
         )}
-      </StyleWrapper>
+        {__npmCommand__ &&
+          __yarnCommand__ &&
+          __pnpmCommand__ &&
+          __bunCommand__ && (
+            <CopyNpmCommandButton
+              commands={{
+                __npmCommand__,
+                __yarnCommand__,
+                __pnpmCommand__,
+                __bunCommand__,
+              }}
+              className={cn("absolute right-4 top-4", __withMeta__ && "top-16")}
+            />
+          )}
+      </div>
     );
   },
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
@@ -209,7 +221,6 @@ const components = {
   ComponentSource,
   ComponentPreview,
   MdxIcons,
-  CopyButton,
   AspectRatio,
   MDXTable,
   CodeBlockWrapper: ({ ...props }) => (
