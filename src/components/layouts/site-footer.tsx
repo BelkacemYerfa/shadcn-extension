@@ -4,7 +4,7 @@ import { SocialLinks } from "../social-links";
 
 export const SiteFooter = () => {
   return (
-    <footer className="py-2 px-4 fixed bottom-0 flex items-center justify-between xs:justify-center w-full">
+    <footer className="py-2 px-4 flex items-center justify-between xs:justify-center w-full">
       <p className="text-sm leading-loose xs:text-left">
         <span>
           Built by{" "}

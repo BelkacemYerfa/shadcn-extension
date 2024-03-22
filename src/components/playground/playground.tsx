@@ -1,6 +1,5 @@
 "use client";
 
-import Editor, { Monaco, useMonaco } from "@monaco-editor/react";
 import {
   memo,
   useTransition,
@@ -8,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  lazy,
 } from "react";
 import {
   ResizableHandle,
@@ -17,15 +17,16 @@ import {
 import { useDebounce } from "@/hooks/use-debounce";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { EditorLoader } from "../loaders/editor-loader";
 import { getHighlighter } from "shiki";
 import { shikiToMonaco } from "@shikijs/monaco";
 import { editorComponentsConfig as Components } from "@/lib/editor-comp";
 import { LivePlaygroundPreview } from "./playground-preview";
-import { PlaygroundSearchSelector } from "../drop-downs/search-selector";
+import { PlaygroundSearchSelector } from "@/components/drop-downs/search-selector";
 import { useSearchParams } from "next/navigation";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
+import Editor, { Monaco, useMonaco } from "@monaco-editor/react";
 
 type PlaygroundProps = {
   defaultCode?: string;
@@ -65,7 +66,7 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
   }, [comp]);
 
   const [isPending, startTransition] = useTransition();
-  const [code, setCode] = useState(defaultCode || "//Type your code here");
+  const [code, setCode] = useState(defaultCode ?? "//Type your code here");
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
   const [component, setComp] = useState<string>("");
@@ -85,7 +86,10 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
   const handleEditorBeforeMount = useCallback(
     (monaco: Monaco) => {
       startTransition(async () => {
-        const highlighterInstance = await highlighter();
+        const highlighterInstance = await getHighlighter({
+          themes: AVA_THEMES,
+          langs: ["javascript", "typescript"],
+        });
         shikiToMonaco(highlighterInstance, monaco);
         if (!theme) return;
         const isThemeExist = AVA_THEMES.includes(theme);
@@ -164,7 +168,7 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
               <Editor
                 className="h-full outline-0"
                 defaultLanguage="javascript"
-                defaultValue={code.trim()}
+                defaultValue={defaultCode}
                 value={dependencies?.example?.trim() ?? code.trim()}
                 loading={<EditorLoader />}
                 theme={selectedTheme}
@@ -219,6 +223,7 @@ const Playground = memo(({ defaultCode }: PlaygroundProps) => {
               example={dependencies?.example?.trim()}
               dependencies={dependencies?.dependencies}
             />
+            {/*  <pre>{defaultCode}</pre> */}
           </div>
         </div>
       </ResizablePanel>

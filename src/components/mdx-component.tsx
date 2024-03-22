@@ -1,7 +1,16 @@
-import * as runtime from "react/jsx-runtime";
+"use client";
+
+import * as React from "react";
 import Image from "next/image";
-import { Callout } from "./callout";
+import Link from "next/link";
+import { useMDXComponent } from "next-contentlayer-temp/hooks";
+import { NpmCommands } from "../types/unist";
+import { Event } from "@/lib/events";
 import { cn } from "@/lib/utils";
+import { Callout } from "@/components/callout";
+import { CodeBlockWrapper } from "@/components/code-block-wrapper";
+import { ComponentPreview } from "@/components/component-preview";
+import { CopyButton, CopyNpmCommandButton } from "@/components/copy-button";
 import {
   Accordion,
   AccordionContent,
@@ -9,10 +18,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Link from "next/link";
+import { Style } from "@/registry/styles";
+import { ComponentSource } from "./component-source";
+import { MdxIcons } from "./icons";
+import { MDXTable } from "./tables/mdx-table";
 
-const mdxComponents = {
+const components = {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -141,10 +154,63 @@ const mdxComponents = {
       {...props}
     />
   ),
+  pre: ({
+    className,
+    __rawString__,
+    __npmCommand__,
+    __yarnCommand__,
+    __pnpmCommand__,
+    __bunCommand__,
+    __withMeta__,
+    __src__,
+    __event__,
+    __style__,
+    ...props
+  }: React.HTMLAttributes<HTMLPreElement> & {
+    __style__?: Style["name"];
+    __rawString__?: string;
+    __withMeta__?: boolean;
+    __src__?: string;
+    __event__?: Event["name"];
+  } & NpmCommands) => {
+    return (
+      <div className="relative">
+        <pre
+          className={cn(
+            "mb-4 mt-6 max-h-[40rem] overflow-x-auto rounded-lg py-4",
+            className
+          )}
+          {...props}
+        />
+        {__rawString__ && !__npmCommand__ && (
+          <CopyButton
+            value={__rawString__}
+            src={__src__}
+            event={__event__}
+            className={cn("absolute right-6 top-4", __withMeta__ && "top-16")}
+          />
+        )}
+        {__npmCommand__ &&
+          __yarnCommand__ &&
+          __pnpmCommand__ &&
+          __bunCommand__ && (
+            <CopyNpmCommandButton
+              commands={{
+                __npmCommand__,
+                __yarnCommand__,
+                __pnpmCommand__,
+                __bunCommand__,
+              }}
+              className={cn("absolute right-4 top-4", __withMeta__ && "top-16")}
+            />
+          )}
+      </div>
+    );
+  },
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
       className={cn(
-        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm",
+        "relative rounded px-[0.3rem] bg-muted font-mono text-sm",
         className
       )}
       {...props}
@@ -152,7 +218,14 @@ const mdxComponents = {
   ),
   Image,
   Callout,
-
+  ComponentSource,
+  ComponentPreview,
+  MdxIcons,
+  AspectRatio,
+  MDXTable,
+  CodeBlockWrapper: ({ ...props }) => (
+    <CodeBlockWrapper className="rounded-md border" {...props} />
+  ),
   Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
     <h3
       className={cn(
@@ -207,7 +280,6 @@ const mdxComponents = {
       {...props}
     />
   ),
-
   Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
     <Link
       className={cn("font-medium underline underline-offset-4", className)}
@@ -225,17 +297,21 @@ const mdxComponents = {
   ),
 };
 
-const useMDXComponent = (code: string) => {
-  const fn = new Function(code);
-  return fn({ ...runtime }).default;
-};
-
 interface MdxProps {
   code: string;
-  components?: Record<string, React.ComponentType>;
 }
 
-export const MDXContent = ({ code, components }: MdxProps) => {
-  const Component = useMDXComponent(code);
-  return <Component components={{ ...mdxComponents, ...components }} />;
-};
+export function Mdx({ code }: MdxProps) {
+  const config = {
+    style: "default",
+  };
+  const Component = useMDXComponent(code, {
+    style: config.style,
+  });
+
+  return (
+    <div className="mdx">
+      <Component components={components} />
+    </div>
+  );
+}

@@ -8,15 +8,15 @@ import { SearchPopOver } from "../search";
 
 export const SiteHeader = () => {
   return (
-    <header className="flex items-center justify-between px-4 py-2  max-w-screen-2xl h-12 border-b border-border">
-      <nav className="flex items-center justify-between w-full">
+    <header className="fixed w-full top-0 left-0 flex items-center justify-between px-4 py-2 h-12 border-b border-border bg-background z-10">
+      <nav className="mx-auto max-w-screen-2xl flex items-center justify-between w-full">
         <div className="flex items-center gap-4">
-          <a href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2  truncate">
             <Icons.logo className="h-5 w-5 fill-current" />
-            <Balancer as={"span"} className="hidden font-bold sm:inline-block">
+            <Balancer as={"span"} className=" font-bold truncate ">
               {siteConfig.name}
             </Balancer>
-          </a>
+          </Link>
           <Link
             href={siteConfig.links.docs}
             className="transition-colors hover:text-foreground/80 hidden md:inline-block"

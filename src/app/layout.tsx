@@ -48,7 +48,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "flex flex-col h-screen")}>
+      <body
+        className={cn(
+          inter.className,
+          "flex flex-col h-[100dvh] scroll-smooth"
+        )}
+      >
         <Provider>
           <SiteHeader />
           {children}

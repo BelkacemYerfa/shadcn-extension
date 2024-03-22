@@ -12,10 +12,7 @@ import {
 const options = [
   { label: "React", value: "react" },
   { label: "Vue", value: "vue" },
-  { label: "Angular", value: "angular" },
   { label: "Svelte", value: "svelte" },
-  { label: "Ember", value: "ember" },
-  { label: "Preact", value: "preact" },
 ];
 
 const MultiSelectTest = () => {

@@ -4,6 +4,7 @@
 import { toc } from "mdast-util-toc";
 import { remark } from "remark";
 import { visit } from "unist-util-visit";
+import { TreeViewElement } from "@/registry/default/extension/tree-view-api";
 
 const textTypes = ["text", "emphasis", "strong", "inlineCode"];
 
@@ -16,17 +17,7 @@ function flattenNode(node) {
   return p.join(``);
 }
 
-interface Item {
-  title: string;
-  url: string;
-  items?: Item[];
-}
-
-interface Items {
-  items?: Item[];
-}
-
-function getItems(node, current): Items {
+function getItems(node, current): TreeViewElement[] {
   if (!node) {
     return {};
   }
@@ -34,12 +25,14 @@ function getItems(node, current): Items {
   if (node.type === "paragraph") {
     visit(node, (item) => {
       if (item.type === "link") {
-        current.url = item.url;
-        current.title = flattenNode(node);
+        current.id = item.url;
+        current.name = flattenNode(node);
+        current.isSelectable = true;
       }
 
       if (item.type === "text") {
-        current.title = flattenNode(node);
+        current.name = flattenNode(node);
+        current.isSelectable = true;
       }
     });
 
@@ -47,7 +40,7 @@ function getItems(node, current): Items {
   }
 
   if (node.type === "list") {
-    current.items = node.children.map((i) => getItems(i, {}));
+    current.children = node.children.map((i) => getItems(i, {}));
 
     return current;
   } else if (node.type === "listItem") {
@@ -70,7 +63,7 @@ const getToc = () => (node, file) => {
   file.data = items;
 };
 
-export type TableOfContents = Items;
+export type TableOfContents = TreeViewElement;
 
 export async function getTableOfContents(
   content: string

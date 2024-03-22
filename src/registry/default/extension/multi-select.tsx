@@ -117,7 +117,7 @@ const MultiSelector = ({
       <Command
         onKeyDown={handleKeyDown}
         className={cn(
-          "overflow-visible bg-transparent flex flex-col gap-2",
+          "overflow-visible bg-transparent flex flex-col space-y-2",
           className
         )}
       >
@@ -142,7 +142,7 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg",
+        "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg bg-background",
         className
       )}
       {...props}

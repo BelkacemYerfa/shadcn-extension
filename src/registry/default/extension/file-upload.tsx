@@ -20,7 +20,6 @@ import {
   DropzoneOptions,
 } from "react-dropzone";
 import { toast } from "sonner";
-import useResizeObserver from "use-resize-observer";
 import { Trash2 as RemoveIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -204,8 +203,11 @@ export const FileUploader = forwardRef<
           tabIndex={0}
           onKeyDownCapture={handleKeyDown}
           className={cn(
-            "grid gap-2 w-full relative focus:outline-none",
-            className
+            "grid w-full relative focus:outline-none overflow-hidden ",
+            className,
+            {
+              "gap-2": value && value.length > 0,
+            }
           )}
           {...props}
         >
@@ -224,26 +226,17 @@ export const FileUploaderContent = forwardRef<
 >(({ children, className, ...props }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { height, width } = useResizeObserver({
-    ref: containerRef,
-  });
   return (
     <div
       className={cn("relative w-full")}
       ref={containerRef}
       aria-description="content file holder"
     >
-      <ScrollArea
-        style={{
-          width,
-          height,
-        }}
-        className="px-1"
-      >
+      <ScrollArea className="px-1 m-0">
         <div
           {...props}
           ref={ref}
-          className={cn("flex flex-col gap-1", className)}
+          className={cn("flex flex-col rounded-xl", className)}
         >
           {children}
         </div>

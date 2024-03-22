@@ -10,7 +10,11 @@ type LivePlaygroundPreviewProps = {
 export const LivePlaygroundPreview = memo(
   ({ code, dependencies, example }: LivePlaygroundPreviewProps) => {
     return (
-      <LiveProvider code={code ?? example} scope={{ ...dependencies }}>
+      <LiveProvider
+        noInline={true}
+        code={code ?? example}
+        scope={{ ...dependencies }}
+      >
         <div className="text-destructive text-center font-bold">
           <LiveError />
         </div>

@@ -1,8 +1,27 @@
+import { createContentlayerPlugin } from "next-contentlayer-temp";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configure `pageExtensions`` to include MDX files
-  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
-  // Optionally, add any other Next.js config below
+  reactStrictMode: true,
+  swcMinify: true,
+  redirects() {
+    return [
+      {
+        source: "/docs",
+        destination: "/docs/introduction",
+        permanent: true,
+      },
+      {
+        source: "/docs/components",
+        destination: "/components",
+        permanent: true,
+      },
+    ];
+  },
 };
 
-export default nextConfig;
+const withContentlayer = createContentlayerPlugin({
+  // Additional Contentlayer config options
+});
+
+export default withContentlayer(nextConfig);

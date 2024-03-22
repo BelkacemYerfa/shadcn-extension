@@ -2,6 +2,12 @@ import { Registry } from "./schema";
 
 const extension: Registry = [
   {
+    name: "tree-view",
+    type: "components:extension",
+    dependencies: ["@radix-ui/react-accordion"],
+    files: ["extension/tree-view.tsx"],
+  },
+  {
     name: "tree-view-api",
     type: "components:extension",
     dependencies: ["@radix-ui/react-accordion"],
@@ -77,10 +83,10 @@ const examples: Registry = [
     files: ["example/carousel-example.tsx"],
   },
   {
-    name: "breadcrumbs-example",
+    name: "breadcrumb-example",
     type: "components:example",
-    registryDependencies: ["breadcrumbs"],
-    files: ["example/breadcrumbs-example.tsx"],
+    registryDependencies: ["breadcrumb"],
+    files: ["example/breadcrumb-example.tsx"],
   },
   {
     name: "image-carousel-upload-example",

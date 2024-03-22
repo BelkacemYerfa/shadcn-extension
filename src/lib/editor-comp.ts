@@ -3,7 +3,7 @@ import {
   File,
   Folder,
   CollapseButton,
-} from "@/components/extension/tree-view/tree-view-api";
+} from "@/registry/default/extension/tree-view-api";
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -11,7 +11,7 @@ import {
   MultiSelectorItem,
   MultiSelectorList,
   MultiSelectorTrigger,
-} from "@/components/extension/fancy-multi-select/multi-select-api";
+} from "@/registry/default/extension/multi-select";
 import {
   BreadCrumb,
   BreadCrumbContent,
@@ -20,8 +20,9 @@ import {
   BreadCrumbPopover,
   BreadCrumbSeparator,
   BreadCrumbTrigger,
-} from "@/components/extension/breadcrumb/bread-crumb";
+} from "@/registry/default/extension/breadcrumb";
 import Link from "next/link";
+import React from "react";
 
 type EditorComponent = {
   title: string;
@@ -185,8 +186,9 @@ export const editorComponentsConfig: EditorComponent = [
 };`,
   },
   {
-    title: "Multi Selector",
+    title: "Multi Select",
     dependencies: {
+      react: React,
       MultiSelector,
       MultiSelectorContent,
       MultiSelectorInput,

@@ -55,10 +55,7 @@ export const TreeView = ({
   return (
     <div
       ref={containerRef}
-      className={cn(
-        "rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1 relative ",
-        className
-      )}
+      className={cn("rounded-md overflow-hidden py-1 relative ", className)}
     >
       <Tree
         initialSelectedId={initialSelectedId}
@@ -99,7 +96,7 @@ export const TreeItem = forwardRef<
             {element.children && element.children?.length > 0 ? (
               <Folder
                 element={element.name}
-                indicator={indicator}
+                id={element.id}
                 isSelectable={element.isSelectable}
               >
                 <TreeItem
@@ -111,6 +108,7 @@ export const TreeItem = forwardRef<
               </Folder>
             ) : (
               <File
+                id={element.id}
                 aria-label={`File ${element.name}`}
                 key={element.id}
                 element={element.name}
@@ -126,6 +124,7 @@ export const TreeItem = forwardRef<
           <File
             aria-label={`file ${elements?.name}`}
             element={elements?.name ?? " "}
+            id={elements?.id ?? ""}
             isSelectable={elements?.isSelectable}
           >
             <span>{elements?.name}</span>

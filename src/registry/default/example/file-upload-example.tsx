@@ -50,14 +50,14 @@ const FileUploaderTest = () => {
       value={files}
       onValueChange={setFiles}
       dropzoneOptions={dropZoneConfig}
-      className="relative max-w-xs space-y-1"
+      className="relative bg-background rounded-lg p-2 "
     >
-      <FileInput className="border border-dashed border-gray-500">
+      <FileInput className="outline-dashed outline-1 outline-white">
         <div className="flex items-center justify-center flex-col pt-3 pb-4 w-full ">
           <FileSvgDraw />
         </div>
       </FileInput>
-      <FileUploaderContent className="h-48 ">
+      <FileUploaderContent>
         {files &&
           files.length > 0 &&
           files.map((file, i) => (

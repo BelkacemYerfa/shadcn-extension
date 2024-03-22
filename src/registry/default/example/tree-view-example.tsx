@@ -25,16 +25,6 @@ const TreeFileTest = () => {
           name: "components",
           children: [
             {
-              id: "4",
-              isSelectable: true,
-              name: "input.tsx",
-            },
-            {
-              id: "5",
-              isSelectable: true,
-              name: "button.tsx",
-            },
-            {
               id: "20",
               isSelectable: true,
               name: "pages",
@@ -65,30 +55,23 @@ const TreeFileTest = () => {
   ];
   return (
     <Tree
-      className="rounded-md outline h-60 w-96 outline-1 outline-muted overflow-hidden py-1"
-      initialExpendedItems={["components"]}
-      initialSelectedId="carousel.tsx"
+      className="rounded-md h-52 max-w-96 w-full bg-background  overflow-hidden py-1"
+      initialSelectedId="21"
       elements={elements}
     >
-      <Folder element="src">
-        <File element="app.tsx">
+      <Folder element="src" id="1">
+        <File element="app.tsx" id="2">
           <p> app.tsx </p>
         </File>
-        <Folder element="components">
-          <File element="input.tsx">
-            <p> input.tsx </p>
-          </File>
-          <File element="button.tsx">
-            <p> button.tsx </p>
-          </File>
-          <Folder element="pages">
-            <File element="interface.ts">
+        <Folder id="3" element="components">
+          <Folder id="20" element="pages">
+            <File id="21" element="interface.ts">
               <p>interface.ts</p>
             </File>
           </Folder>
         </Folder>
-        <Folder element="ui">
-          <File element="carousel.tsx">
+        <Folder id="6" element="ui">
+          <File element="carousel.tsx" id="7">
             <p>carousel.tsx</p>
           </File>
         </Folder>

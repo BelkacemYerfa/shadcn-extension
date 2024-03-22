@@ -1,0 +1,177 @@
+---
+title: Carousel
+description: This is a carousel component support all embla carousel features.
+links:
+  - title: embla-carousel
+    url: https://www.embla-carousel.com/get-started/react/
+---
+
+<ComponentPreview name="carousel-example" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Run the following command:</Step>
+
+```bash
+npm embla-carousel embla-carousel-react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="carousel" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+<TabsContent value="cli">
+
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
+</Tabs>
+
+## API Reference
+
+### Props
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+      },
+      type: {
+        value: "type",
+      },
+      defaultValue: {
+        value: "default value",
+      },
+    },
+    {
+      prop: {
+        value: "carouselOptions",
+        description: (
+          <>
+            The options for the carousel. Check the embla{" "}
+            <a
+              target="_blank"
+              href="https://www.embla-carousel.com/api/options/#reference"
+            >
+              docs
+            </a>{" "}
+            for more information.
+          </>
+        ),
+      },
+      type: {
+        value: ["EmblaCarouselOptions"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "orientation",
+        description:
+          "The orientation of the carousel. It can be horizontal or vertical.",
+      },
+      type: {
+        value: ["horizontal", "vertical"],
+      },
+      defaultValue: {
+        value: ["horizontal"],
+      },
+    },
+  ]}
+/>
+
+## Accessibility
+
+The carousel is accessible by default. Where it follows the WAI-ARIA guidelines , also it fully supports keyboard navigation.
+
+### Keyboard Navigation
+
+<MDXTable
+  data={[
+    {
+      key: {
+        value: "key",
+      },
+      description: {
+        value: "description",
+      },
+    },
+    {
+      key: {
+        value: "ArrowRight/ArrowDown ",
+      },
+      description: {
+        value: "Move to the next slide",
+      },
+    },
+    {
+      key: {
+        value: "ArrowLeft/ArrowUp",
+      },
+      description: {
+        value: "Move to the previous slide",
+      },
+    },
+  ]}
+/>
+
+## Usage
+
+The carousel component is a wrapper around the `embla-carousel` library. It provides a simple API to create a carousel with a few lines of code.
+
+```tsx
+import {
+  Carousel,
+  CarouselMainContainer,
+  CarouselThumbsContainer,
+  SliderMainItem,
+  SliderThumbItem,
+} from "@/components/extension/carousel";
+```
+
+```tsx
+<Carousel
+  carouselOptions={
+    /*Check embla carousel for this options*/
+  }
+  orientation="vertical"
+>
+  <CarouselMainContainer className="h-60">
+    <SliderMainItem> slide 1 </SliderMainItem>
+    <SliderMainItem> slide 2 </SliderMainItem>
+    <SliderMainItem> ... </SliderMainItem>
+  </CarouselMainContainer>
+
+  <CarouselThumbsContainer className="h-60">
+    <SliderThumbItem index={1}> slide 1 </SliderThumbItem>
+    <SliderThumbItem index={2}> slide 2 </SliderThumbItem>
+    <SliderThumbItem index={...}> ... </SliderThumbItem>
+  </CarouselThumbsContainer>
+</Carousel>
+```
+
+## Example

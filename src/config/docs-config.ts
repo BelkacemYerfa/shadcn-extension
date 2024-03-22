@@ -1,10 +1,19 @@
-type DocsConfig = {
+export type DocsConfig = {
   title: string;
-  pages: {
-    title: string;
-    path: string;
-  }[];
+  path?: string;
+  pages?: DocsConfig[];
 };
+
+export const Pages: DocsConfig[] = [
+  {
+    title: "Docs",
+    path: "/docs",
+  },
+  {
+    title: "Components",
+    path: "/components",
+  },
+];
 
 export const docsConfig: DocsConfig[] = [
   {

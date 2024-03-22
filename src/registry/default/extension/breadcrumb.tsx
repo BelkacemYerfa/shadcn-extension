@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import {
   Popover,
@@ -163,11 +163,11 @@ type BreadCrumbItemProps =
       index: number;
     } & (
       | {
-          isActive: true;
+          isActive: boolean;
           activeVariant?: VariantProps<typeof buttonVariants>;
         }
       | {
-          isActive?: false;
+          isActive?: undefined;
           activeVariant?: undefined;
         }
     );
@@ -191,7 +191,7 @@ export const BreadCrumbItem = forwardRef<
   };
   const activeVariants = activeVariant ?? variants;
   const Variants = isActive ? activeVariants : variants;
-  const isSelected = isActive ?? activeIndex === index;
+  const isSelected = activeIndex === index;
 
   useEffect(() => {
     onValueChange((prev) => {

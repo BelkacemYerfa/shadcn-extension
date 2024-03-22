@@ -1,95 +1,118 @@
 ---
-title: MultiSelect
-date: 2021-06-29
+title: Multi Select
+description: A mulit select that lets you select multiple items from a list.
+links:
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/command
 ---
 
-# MultiSelect
-
-A mulit select that assembles the missing features of the select element from [Shadcn ui](https://ui.shadcn.com/docs/components/select)
-
-```jsx copy
-import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
-} from "@/components/extension/fancy-multi-select/multi-select-api";
-
-export const MultiSelectTest = () => {
-  const options = [
-   /*array values*/
-  ];
-  const [value, setValue] = useState<string[]>([]);
-  return (
-      <MultiSelector
-        value={value}
-        onValueChange={setValue}
-      >
-        <MultiSelectorTrigger>
-          <MultiSelectorInput placeholder="Select your framework" />
-        </MultiSelectorTrigger>
-        <MultiSelectorContent>
-          <MultiSelectorList>
-            {options.map((option, i) => (
-              <MultiSelectorItem key={i} value={option.value}>
-                {option.label}
-              </MultiSelectorItem>
-            ))}
-          </MultiSelectorList>
-        </MultiSelectorContent>
-      </MultiSelector>
-  );
-};
-
-```
+<ComponentPreview name="multi-select-example" />
 
 ## Installation
 
+<Tabs defaultValue="manual">
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual">
+
 <Steps>
-  ### Install the package
 
-```bash copy
-  npm install cmdk
-  npx shadcn-ui@latest add command
+<Step>
+  Check the installation setup for the command component in [shadcn
+  ui](https://ui.shadcn.com/docs/components/command)
+</Step>
+
+```bash
+npx shadcn-ui@latest add command
 ```
 
-### Copy paste the code that you will find in this github folder
+<Step>Copy and paste the following code into your project.</Step>
 
-```link copy
-https://github.com/BelkacemYerfa/shadcn-extension-components/blob/master/packages/src/components/extension/fancy-multi-select
-```
+<ComponentSource name="multi-select" />
+
+<Step>Update the import paths to match your project setup.</Step>
 
 </Steps>
 
+</TabsContent>
+
+<TabsContent value="cli">
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
+</Tabs>
+
 ## API Reference
 
-### Props
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+      },
+      type: {
+        value: "type",
+      },
+      defaultValue: {
+        value: "defaultValue",
+      },
+    },
+    {
+      prop: {
+        value: "value",
+        description:
+          "The value array that contains the values of the selected items.",
+      },
+      type: {
+        value: ["string[]"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "onValueChange",
+        description: "The function that will be called when the value changes.",
+      },
+      type: {
+        value: ["(value: string[]) => void"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "loop",
+        description:
+          "If true, the selection will loop around when it reaches the end of current selected elements",
+      },
+      type: {
+        value: ["boolean"],
+      },
+      defaultValue: {
+        value: ["false"],
+      },
+    },
+  ]}
+/>
 
-The MultiSelect component accepts the following props:
+## Accessibility
 
-| Prop     |          Type          | Default value |
-| :------- | :--------------------: | ------------: |
-| value    |        string[]        |            -- |
-| setValue | (value : string)=>void |            -- |
-| loop     |        boolean         |         false |
+The Accordion component adheres to the WAI-ARIA design pattern. It is accessible
 
-### Value
+## Usage
 
-The state of the selected items
-
-### setValue
-
-A function that will be called when the value of the MultiSelect changes
-
-### loop
-
-A boolean that will determine if the list of selected items will loop or not when the user navigates with the arrow keys
-
-#### Examples
-
-```jsx {21} copy
+```tsx
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -97,50 +120,22 @@ import {
   MultiSelectorItem,
   MultiSelectorList,
   MultiSelectorTrigger,
-} from "@/components/extension/fancy-multi-select/multi-select-api";
-
-type MultiSelectProps = {
-  options: { label: string; value: string }[];
-};
-
-export const MultiSelectTest = ({ options } : MultiSelectProps) => {
-  const [value, setValue] = useState<string[]>([]);
-
-  return (
-      <MultiSelector
-        value={value}
-        onValueChange={setValue}
-        loop
-        className="max-w-xs"
-      >
-        <MultiSelectorTrigger>
-          <MultiSelectorInput placeholder="Select your framework" />
-        </MultiSelectorTrigger>
-        <MultiSelectorContent>
-          <MultiSelectorList>
-            {options.map((option, i) => (
-              <MultiSelectorItem key={i} value={option.value}>
-                {option.label}
-              </MultiSelectorItem>
-            ))}
-          </MultiSelectorList>
-        </MultiSelectorContent>
-      </MultiSelector>
-  );
-};
+} from "@/components/extension/multi-select";
 ```
 
-## Accessibility
+```tsx
+<MultiSelector value={value} onValueChange={setValue} loop className="max-w-xs">
+  <MultiSelectorTrigger>
+    <MultiSelectorInput placeholder="Select your framework" />
+  </MultiSelectorTrigger>
+  <MultiSelectorContent>
+    <MultiSelectorList>
+      <MultiSelectorItem value={"React"}>React</MultiSelectorItem>
+      <MultiSelectorItem value={"Vue"}>Vue</MultiSelectorItem>
+      <MultiSelectorItem value={"Svelte"}>Svelte</MultiSelectorItem>
+    </MultiSelectorList>
+  </MultiSelectorContent>
+</MultiSelector>
+```
 
-The MultiSelect component is built with accessibility in mind. It is fully keyboard navigable and screen reader friendly.
-
-### Keyboard Navigation
-
-| key                     |             Description             |
-| :---------------------- | :---------------------------------: |
-| `Escape`                |           closes the list           |
-| `Enter`                 |           opens the list            |
-| `Space`                 |           opens the list            |
-| `ArrowRight`            | Increments by one step horzintanly  |
-| `ArrowLeft`             | Decrements by one step horzintanly  |
-| `Delete` or `Backspace` | Removes the selected item from list |
+## Example
