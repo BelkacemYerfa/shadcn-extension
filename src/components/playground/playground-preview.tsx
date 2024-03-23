@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { LivePreview, LiveProvider, LiveError } from "react-live";
+import { LivePreview, LiveProvider, LiveError, withLive } from "react-live";
 
 type LivePlaygroundPreviewProps = {
   code?: string;

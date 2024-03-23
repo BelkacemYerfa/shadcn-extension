@@ -62,7 +62,6 @@ export const readFieContent = (name: string) => {
 export const getComponentDependencies = (name: string) => {
   const fileContent = readFieContent(name);
   const dependencies = extractDependencies(fileContent);
-  const componentContent = extractComponentContent(fileContent);
 
   return dependencies;
 };

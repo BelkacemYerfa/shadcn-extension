@@ -1,4 +1,10 @@
-import { AlertTriangle, Info, LucideProps } from "lucide-react";
+import {
+  AlertTriangle,
+  Bell,
+  Info,
+  LucideProps,
+  TextCursorInput,
+} from "lucide-react";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -138,7 +144,7 @@ export const Icons = {
           id="a"
         />
       </defs>
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <g transform="translate(0 81.355)">
           <mask id="b" fill="#fff">
             <use xlinkHref="#a" />
@@ -159,6 +165,8 @@ export const Icons = {
       </g>
     </svg>
   ),
+  Sonner: (props: LucideProps) => <Bell {...props} />,
+  Devfolioco: (props: LucideProps) => <TextCursorInput {...props} />,
 };
 
 export const MdxIcons = {
