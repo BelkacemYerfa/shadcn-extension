@@ -51,7 +51,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          "flex flex-col h-[100dvh] scroll-smooth"
+          "flex flex-col min-h-screen supports-[min-h-[100dvh]]:min-h-[100dvh] scroll-smooth"
         )}
       >
         <Provider>

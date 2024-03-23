@@ -77,8 +77,11 @@ export function MDXTable({ data }: MDXTableProps) {
                           {isArray
                             ? (row[field].value as string[]).map(
                                 (value, index) => (
-                                  <>
-                                    <span key={`${index}-${value}`}>
+                                  <div
+                                    key={`${index}-${value}`}
+                                    className="flex items-center gap-1"
+                                  >
+                                    <span>
                                       {length > 1 ? (
                                         <span>&quot;{value}&quot;</span>
                                       ) : (
@@ -88,7 +91,7 @@ export function MDXTable({ data }: MDXTableProps) {
                                     {index !== row[field].value.length - 1 && (
                                       <span key={`${index}-separator`}>|</span>
                                     )}
-                                  </>
+                                  </div>
                                 )
                               )
                             : row[field].value}

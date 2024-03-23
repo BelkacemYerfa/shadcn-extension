@@ -19,9 +19,9 @@ const CarouselExample = () => {
           {Array.from({ length: 10 }).map((_, index) => (
             <SliderMainItem
               key={index}
-              className="border border-muted flex items-center justify-center h-52 rounded-md"
+              className="border border-muted flex items-center justify-center h-52 rounded-md  "
             >
-              <span>Slide {index + 1}</span>
+              Slide {index + 1}
             </SliderMainItem>
           ))}
         </CarouselMainContainer>
@@ -29,7 +29,7 @@ const CarouselExample = () => {
       <CarouselThumbsContainer className="h-60 basis-1/4">
         {Array.from({ length: 10 }).map((_, index) => (
           <SliderThumbItem key={index} index={index}>
-            <span className="border border-muted flex items-center justify-center h-full w-full rounded-md">
+            <span className=" border border-muted flex items-center justify-center h-full w-full rounded-md cursor-pointer">
               Slide {index + 1}
             </span>
           </SliderThumbItem>
