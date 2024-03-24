@@ -120,6 +120,7 @@ export function rehypeComponent() {
               `@/registry/${style.name}/`,
               "@/components/"
             );
+            source = source.replaceAll("export default", "export");
 
             // Add code as children so that rehype can take over at build time.
 

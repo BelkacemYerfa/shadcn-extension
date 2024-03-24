@@ -4,6 +4,7 @@ import {
   getComponentDependencies,
 } from "@/lib/element-parser";
 import dynamic from "next/dynamic";
+import { notFound } from "next/navigation";
 
 const Playground = dynamic(() => import("@/components/playground/playground"), {
   ssr: true,
@@ -14,9 +15,17 @@ type PlaygroundPageProps = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
+const CheckSiteLive = () => {
+  if (process.env.NODE_ENV === "production") {
+    notFound();
+  }
+};
+
 export default async function PlaygroundPage({
   searchParams,
 }: PlaygroundPageProps) {
+  CheckSiteLive();
+
   const currentComponent = searchParams?.comp ?? "Tree View";
   const contentFile = getComponentContent(currentComponent as string);
   const contentDependencies = getComponentDependencies(

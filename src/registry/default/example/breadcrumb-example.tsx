@@ -15,9 +15,9 @@ const BreadCrumbTest = () => {
     <BreadCrumb
       orientation="horizontal"
       variant={"ghost"}
-      className="gap-1 bg-background rounded-lg"
+      className="gap-1 bg-background rounded-lg px-4"
     >
-      <BreadCrumbItem className="px-2 h-8" index={0}>
+      <BreadCrumbItem className="px-2 h-7" index={0}>
         <Link href="/">Home</Link>
       </BreadCrumbItem>
       <BreadCrumbSeparator className="" />

@@ -4,7 +4,7 @@ import "./globals.css";
 import { Provider } from "@/components/provider";
 import { Toaster } from "sonner";
 import { SiteHeader } from "@/components/layouts/site-header";
-import { Analytics } from "@vercel/analytics/react";
+import { CSPostHogProvider } from "@/components/analytics";
 import { siteConfig } from "@/config/site-config";
 import { cn } from "@/lib/utils";
 
@@ -54,12 +54,13 @@ export default function RootLayout({
           "flex flex-col min-h-screen supports-[min-h-[100dvh]]:min-h-[100dvh] scroll-smooth"
         )}
       >
-        <Provider>
-          <SiteHeader />
-          {children}
-          <Toaster richColors position="bottom-center" />
-        </Provider>
-        <Analytics />
+        <CSPostHogProvider>
+          <Provider>
+            <SiteHeader />
+            {children}
+            <Toaster richColors position="bottom-center" />
+          </Provider>
+        </CSPostHogProvider>
       </body>
     </html>
   );
