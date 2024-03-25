@@ -37,7 +37,7 @@ export const TreeView = ({
   className,
   initialSelectedId,
   initialExpendedItems,
-  expandAll = false,
+  expandAll,
   indicator = false,
 }: TreeViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,13 +55,17 @@ export const TreeView = ({
   return (
     <div
       ref={containerRef}
-      className={cn("rounded-md overflow-hidden py-1 relative ", className)}
+      className={cn(
+        "w-full rounded-md overflow-hidden py-1 relative",
+        className
+      )}
     >
       <Tree
         initialSelectedId={initialSelectedId}
         initialExpendedItems={initialExpendedItems}
         elements={elements}
         style={{ height, width }}
+        className="w-full h-full overflow-y-auto"
       >
         {getVirtualItems().map((element) => (
           <TreeItem
@@ -89,7 +93,7 @@ export const TreeItem = forwardRef<
   } & React.HTMLAttributes<HTMLUListElement>
 >(({ className, elements, indicator, ...props }, ref) => {
   return (
-    <ul ref={ref} className="w-full" {...props}>
+    <ul ref={ref} className="w-full space-y-1 " {...props}>
       {elements instanceof Array ? (
         elements.map((element) => (
           <li key={element.id} className="w-full">

@@ -31,7 +31,7 @@ export const SiteHeader = () => {
                   key={page.title}
                   href={page.path}
                   className={cn(
-                    "transition-colors text-foreground/70 hidden md:inline-block font-semibold",
+                    "transition-colors text-foreground/70 hidden md:inline-block",
                     isActive && "text-foreground"
                   )}
                 >

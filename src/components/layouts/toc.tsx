@@ -70,7 +70,7 @@ export const Toc = ({ toc }: { toc: TreeViewElement[] }) => {
         Table of Content
       </h2>
       <Tree
-        className="h-fit p-0"
+        className="min-h-full p-0"
         indicator={false}
         elements={toc}
         openIcon={<ChevronDown className="size-4" />}
@@ -136,6 +136,7 @@ const TreeItem = forwardRef<
             aria-label={`file ${elements?.name}`}
             element={elements?.name ?? " "}
             id={elements?.id ?? ""}
+            isSelect={activeItem === elements?.id.split("#")[1]}
             isSelectable={elements?.isSelectable}
           >
             <span>{elements?.name}</span>
