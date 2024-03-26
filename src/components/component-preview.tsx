@@ -82,16 +82,7 @@ export function ComponentPreview({
           value="preview"
           className="relative rounded-md border bg-muted/50 p-2 data-[state=active]:flex flex-col items-center justify-center w-full min-h-[20rem]"
         >
-          {/* <div className="flex items-center justify-between p-4">
-            {extractedClassNames ? (
-              <CopyWithClassNames
-                value={codeString}
-                classNames={extractedClassNames}
-              />
-            ) : (
-              codeString && <CopyButton value={codeString} />
-            )}
-          </div> */}
+          {codeString && <CopyButton value={codeString} />}
           <div className="w-full max-w-sm flex items-center justify-center">
             {Preview}
           </div>
