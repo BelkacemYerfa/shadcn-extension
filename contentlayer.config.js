@@ -61,6 +61,11 @@ export const Doc = defineDocumentType(() => ({
       default: true,
       required: false,
     },
+    state: {
+      type: "enum",
+      values: ["deprecated", "new", "updated"],
+      required: false,
+    },
   },
   computedFields,
 }));

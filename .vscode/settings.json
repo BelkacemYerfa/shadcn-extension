@@ -84,7 +84,6 @@
     "**/.vscode": true,
     "**/.eslintrc.cjs": true,
     "**/.editorconfig": true,
-    "**/.gitignore": true,
     "**/.lintstagedrc.mjs": true,
     "**/.markdownlint.json": true,
     "**/.markdownlintignore": true,
@@ -97,8 +96,6 @@
     "**/postcss.config.cjs": true,
     "**/prettier.config.js": true,
     "**/README.md": true,
-    "**/next.config.js": true,
-    "**/tailwind.config.ts": true,
     "**/drizzle.config.ts": true,
     "**/migrate.ts": true,
     "**/.env.example": true
@@ -117,5 +114,6 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": true,
   "window.zoomLevel": 0.75,
-  "cSpell.languageSettings": []
+  "cSpell.languageSettings": [],
+  "rust-analyzer.debug.engineSettings": {}
 }
