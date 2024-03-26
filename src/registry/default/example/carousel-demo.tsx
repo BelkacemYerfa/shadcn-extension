@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Carousel,
   CarouselMainContainer,
@@ -25,8 +23,12 @@ const CarouselExample = () => {
       </div>
       <CarouselThumbsContainer className="h-60 basis-1/4">
         {Array.from({ length: 10 }).map((_, index) => (
-          <SliderThumbItem key={index} index={index} className="rounded-md">
-            <span className="border border-muted flex items-center justify-center h-full w-full rounded-md cursor-pointer">
+          <SliderThumbItem
+            key={index}
+            index={index}
+            className="rounded-md bg-transparent"
+          >
+            <span className="border border-muted flex items-center justify-center h-full w-full rounded-md cursor-pointer bg-background">
               Slide {index + 1}
             </span>
           </SliderThumbItem>

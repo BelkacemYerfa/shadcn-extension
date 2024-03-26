@@ -47,9 +47,8 @@ export const TreeItem = ({ elements }: TreeItemProps) => {
               id={element.id}
               element={element.name}
               isSelectable={element.isSelectable}
-              className={"px-1"}
             >
-              <span className="ml-1">{element?.name}</span>
+              <span>{element?.name}</span>
             </File>
           )}
         </li>
@@ -141,6 +140,10 @@ const TOCWrapper = () => {
           ],
         },
       ],
+    },
+    {
+      id: "18",
+      name: "env.ts",
     },
   ];
   return <TOC toc={toc} />;

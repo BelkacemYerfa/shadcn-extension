@@ -417,8 +417,7 @@ components
 In the following example we're going to use this elements array :
 
 
-```tsx
-
+```tsx showLineNumbers
 const elements :TreeViewElement[]  = [
     {
       id: "1",
@@ -502,6 +501,10 @@ const elements :TreeViewElement[]  = [
         },
       ],
     },
+    {
+      id: "18",
+      name: "env.ts",
+    },
   ]
 ```
 
@@ -511,7 +514,7 @@ const elements :TreeViewElement[]  = [
 
 <Step> First we create the TOC component </Step>
 
-```tsx title="components/Table_of_content/tree.tsx"
+```tsx showLineNumbers title="components/Table_of_content/tree.tsx"
 import { Tree , TreeViewElement } from "@/components/extension/tree-view-api";
 import { TreeItem } from "./tree-item.tsx"
 
@@ -535,7 +538,7 @@ return (
 
 <Step> Then the TreeItem element </Step>
 
-```tsx title="components/Table_of_content/tree-item.tsx"
+```tsx showLineNumbers title="components/Table_of_content/tree-item.tsx"
 import { File , Folder , TreeViewElement } from "@/components/extension/tree-view-api";
 
 type TreeItemProps = {
@@ -585,7 +588,7 @@ Now let's break the code above :
 
 - We have created a `TreeItem` component that will be responsible for rendering the elements of the tree view.
 
-```tsx {7,10-17}
+```tsx showLineNumbers {7,10-17}
 import { File , Folder , TreeViewElement } from "@/components/extension/tree-view-api";
 
 type TreeItemProps = {
@@ -610,7 +613,7 @@ return (
 
 - First we check if the element has children or not , if it has children we render a `Folder` component , otherwise we render a `File` component.
 
-```tsx {1 , 2-13 , 15-24}
+```tsx showLineNumbers {1 , 2-13 , 15-24}
 {element.children && element.children?.length > 0 ? (
   <Folder
     element={element.name}
@@ -648,7 +651,7 @@ But wait, as you might notice we didn't loop over the elements as usual (using l
 
 Now we can use the create the main component `TOC` that will contain all of this logic, and we will pass the elements to it.
 
-```tsx title="components/Table_of_content/toc.tsx"
+```tsx showLineNumbers title="components/Table_of_content/toc.tsx"
 import { Tree , TreeViewElement } from "@/components/extension/tree-view-api";
 
 const TOCWrapper = ()=> {

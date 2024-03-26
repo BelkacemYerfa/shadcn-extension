@@ -121,6 +121,42 @@ const examples: Registry = [
     registryDependencies: ["tree-view-api"],
     files: ["example/tree-view/tree-view-guide.tsx"],
   },
+  {
+    name: "carousel-orientation",
+    type: "components:example",
+    registryDependencies: ["carousel"],
+    files: ["example/carousel/carousel-orientation.tsx"],
+  },
+  {
+    name: "carousel-plugin",
+    type: "components:example",
+    registryDependencies: ["carousel"],
+    files: ["example/carousel/carousel-plugin.tsx"],
+  },
+  {
+    name: "carousel-indicator",
+    type: "components:example",
+    registryDependencies: ["carousel"],
+    files: ["example/carousel/carousel-indicator.tsx"],
+  },
+  {
+    name: "multi-select-state",
+    type: "components:example",
+    registryDependencies: ["multi-select"],
+    files: ["example/multi-select/multi-select-state.tsx"],
+  },
+  {
+    name: "multi-select-zod",
+    type: "components:example",
+    registryDependencies: ["multi-select"],
+    files: ["example/multi-select/multi-select-zod.tsx"],
+  },
+  {
+    name: "otp-input-zod",
+    type: "components:example",
+    registryDependencies: ["otp-input"],
+    files: ["example/otp-input/otp-input-zod.tsx"],
+  },
 ];
 
 export const registry: Registry = [...extension, ...demos, ...examples];

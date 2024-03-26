@@ -156,7 +156,7 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
         }}
       >
         <div ref={containerRef} className={cn("size-full", className)}>
-          <ScrollArea ref={ref} style={style} className="relative px-2">
+          <ScrollArea ref={ref} className="h-full relative px-2">
             <AccordionPrimitive.Root
               type="multiple"
               defaultValue={expendedItems}

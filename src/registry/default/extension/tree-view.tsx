@@ -88,13 +88,13 @@ TreeView.displayName = "TreeView";
 export const TreeItem = forwardRef<
   HTMLUListElement,
   {
-    elements?: TreeViewElement[] | TreeViewElement;
+    elements?: TreeViewElement[];
     indicator?: boolean;
   } & React.HTMLAttributes<HTMLUListElement>
 >(({ className, elements, indicator, ...props }, ref) => {
   return (
     <ul ref={ref} className="w-full space-y-1 " {...props}>
-      {elements instanceof Array ? (
+      {elements &&
         elements.map((element) => (
           <li key={element.id} className="w-full">
             {element.children && element.children?.length > 0 ? (
@@ -122,19 +122,7 @@ export const TreeItem = forwardRef<
               </File>
             )}
           </li>
-        ))
-      ) : (
-        <li className="px-1">
-          <File
-            aria-label={`file ${elements?.name}`}
-            element={elements?.name ?? " "}
-            id={elements?.id ?? ""}
-            isSelectable={elements?.isSelectable}
-          >
-            <span>{elements?.name}</span>
-          </File>
-        </li>
-      )}
+        ))}
     </ul>
   );
 });
