@@ -96,9 +96,10 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
           currentElement: TreeViewElement,
           currentPath: string[] = []
         ) => {
+          const isSelectable = currentElement.isSelectable ?? true;
           const newPath = [...currentPath, currentElement.id];
           if (currentElement.id === selectId) {
-            if (currentElement.isSelectable) {
+            if (isSelectable) {
               setExpendedItems((prev) => [...(prev ?? []), ...newPath]);
             } else {
               if (newPath.includes(currentElement.id)) {
@@ -110,7 +111,7 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
           }
 
           if (
-            currentElement.isSelectable &&
+            isSelectable &&
             currentElement.children &&
             currentElement.children.length > 0
           ) {
@@ -154,8 +155,8 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
           closeIcon,
         }}
       >
-        <div ref={containerRef} className={cn("w-full h-80", className)}>
-          <ScrollArea ref={ref} className="relative px-2">
+        <div ref={containerRef} className={cn("size-full", className)}>
+          <ScrollArea ref={ref} className="h-full relative px-2">
             <AccordionPrimitive.Root
               type="multiple"
               defaultValue={expendedItems}
@@ -336,16 +337,13 @@ const CollapseButton = forwardRef<
     elements: TreeViewElement[];
     expandAll?: boolean;
   } & React.HTMLAttributes<HTMLButtonElement>
->(({ className, elements, expandAll, children, ...props }, ref) => {
+>(({ className, elements, expandAll = false, children, ...props }, ref) => {
   const { expendedItems, setExpendedItems } = useTree();
 
   const expendAllTree = useCallback((elements: TreeViewElement[]) => {
     const expandTree = (element: TreeViewElement) => {
-      if (
-        element.isSelectable &&
-        element.children &&
-        element.children.length > 0
-      ) {
+      const isSelectable = element.isSelectable ?? true;
+      if (isSelectable && element.children && element.children.length > 0) {
         setExpendedItems?.((prev) => [...(prev ?? []), element.id]);
         element.children.forEach(expandTree);
       }
@@ -359,6 +357,7 @@ const CollapseButton = forwardRef<
   }, []);
 
   useEffect(() => {
+    console.log(expandAll);
     if (expandAll) {
       expendAllTree(elements);
     }

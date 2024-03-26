@@ -31,7 +31,7 @@ export const ComponentCard = ({ name }: ComponentCardProps) => {
     return <Component />;
   }, [name]);
 
-  const componentName = name.replace("example", "").split("-").join(" ");
+  const componentName = name.replace("demo", "").split("-").join(" ");
 
   return (
     <Card className="space-y-2 border-0 shadow-none ">

@@ -80,7 +80,7 @@ export function ComponentPreview({
         </div>
         <TabsContent
           value="preview"
-          className="relative rounded-md border p-2 data-[state=active]:flex flex-col items-center justify-center w-full h-72"
+          className="relative rounded-md border bg-muted/50 p-2 data-[state=active]:flex flex-col items-center justify-center w-full min-h-[20rem]"
         >
           {/* <div className="flex items-center justify-between p-4">
             {extractedClassNames ? (
@@ -92,7 +92,9 @@ export function ComponentPreview({
               codeString && <CopyButton value={codeString} />
             )}
           </div> */}
-          {Preview}
+          <div className="w-full max-w-sm flex items-center justify-center">
+            {Preview}
+          </div>
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">

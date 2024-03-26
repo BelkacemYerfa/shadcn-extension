@@ -19,11 +19,11 @@ import React, {
   useState,
 } from "react";
 
-type MultiSelectorProps = {
+interface MultiSelectorProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string[];
   onValueChange: (value: string[]) => void;
   loop?: boolean;
-} & React.HTMLAttributes<HTMLDivElement>;
+}
 
 type MultiSelectContextProps = {
   value: string[];

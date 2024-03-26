@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Icons } from "../icons";
 import { Balancer } from "react-wrap-balancer";
@@ -5,8 +7,12 @@ import { siteConfig } from "@/config/site-config";
 import { SocialLinks } from "../social-links";
 import { ModeToggle } from "../toggle-theme";
 import { SearchPopOver } from "../search";
+import { Pages } from "@/config/docs-config";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export const SiteHeader = () => {
+  const pathname = usePathname();
   return (
     <header className="fixed w-full top-0 left-0 flex items-center justify-between px-4 py-2 h-12 border-b border-border bg-background z-10">
       <nav className="mx-auto max-w-screen-2xl flex items-center justify-between w-full">
@@ -17,18 +23,23 @@ export const SiteHeader = () => {
               {siteConfig.name}
             </Balancer>
           </Link>
-          <Link
-            href={siteConfig.links.docs}
-            className="transition-colors hover:text-foreground/80 hidden md:inline-block"
-          >
-            Docs
-          </Link>
-          <Link
-            href={siteConfig.links.components}
-            className="transition-colors hover:text-foreground/80 hidden md:inline-block "
-          >
-            Components
-          </Link>
+          {Pages.map((page) => {
+            const isActive = pathname.includes(page.path ?? "");
+            return (
+              page.path && (
+                <Link
+                  key={page.title}
+                  href={page.path}
+                  className={cn(
+                    "transition-colors text-foreground/70 hidden md:inline-block",
+                    isActive && "text-foreground"
+                  )}
+                >
+                  {page.title}
+                </Link>
+              )
+            );
+          })}
         </div>
         <div className="flex items-center gap-1 xs:gap-2">
           <SearchPopOver />

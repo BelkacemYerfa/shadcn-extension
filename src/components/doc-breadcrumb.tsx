@@ -25,11 +25,11 @@ export const DocsBreadcrumb = ({ slug }: DocsBreadcrumbProps) => {
       {pathItems.map((path, index) => {
         const isActive = slug.join("/") === path;
         return (
-          <>
-            <Link
-              key={`${index}-${path}-link`}
-              href={`/${pathItems.slice(0, index + 1).join("/")}`}
-            >
+          <div
+            key={`${index}`}
+            className="flex items-center justify-start gap-1"
+          >
+            <Link href={`/${pathItems.slice(0, index + 1).join("/")}`}>
               <BreadCrumbItem
                 index={index + 1}
                 isActive={isActive}
@@ -45,9 +45,9 @@ export const DocsBreadcrumb = ({ slug }: DocsBreadcrumbProps) => {
               </BreadCrumbItem>
             </Link>
             {index !== pathItems.length - 1 && (
-              <BreadCrumbSeparator key={`${index}-separator-${path}`} />
+              <BreadCrumbSeparator key={`${index}-separator`} />
             )}
-          </>
+          </div>
         );
       })}
     </BreadCrumb>

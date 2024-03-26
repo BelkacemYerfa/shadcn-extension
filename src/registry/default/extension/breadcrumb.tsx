@@ -199,7 +199,7 @@ export const BreadCrumbItem = forwardRef<
         return prev;
       }
       const arr = [...prev, index];
-      return arr.toSorted((a, b) => Number(a) - Number(b));
+      return arr.sort((a, b) => Number(a) - Number(b));
     });
     return () => {
       onPrevValueChange(value);

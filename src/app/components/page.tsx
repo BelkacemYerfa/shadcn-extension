@@ -1,6 +1,12 @@
 import { Index } from "@/__registry__";
 import { ComponentCard } from "@/components/cards/component-card";
 import { SiteFooter } from "@/components/layouts/site-footer";
+import { type Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Components",
+  description: "Browse all the components available in the registry.",
+};
 
 export default function ComponentsPage() {
   return (
@@ -19,7 +25,7 @@ export default function ComponentsPage() {
             return Object.entries(value).map(
               ([key, newValue]: [key: string, newValue: any]) => {
                 const componentName = key;
-                return newValue.type === "components:example" ? (
+                return newValue.type === "components:demo" ? (
                   <ComponentCard key={key} name={componentName} />
                 ) : null;
               }

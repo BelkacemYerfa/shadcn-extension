@@ -21,7 +21,7 @@ type TocProps = {
 
 export const DocMainTOC = ({ toc, slug }: TocProps) => {
   return (
-    <div className="space-y-2 ml-4 ">
+    <div className="flex flex-col space-y-2 ml-4 ">
       <Toc toc={toc} />
       <div className="h-px w-full bg-border" />
       <div className="flex flex-col space-y-1.5 px-3">
@@ -65,12 +65,12 @@ export const Toc = ({ toc }: { toc: TreeViewElement[] }) => {
   const activeId = useActiveSection(items);
 
   return (
-    <div className="space-y-2">
+    <div className="flex-1 space-y-2">
       <h2 className="text-sm text-foreground sm:text-base font-semibold px-2">
         Table of Content
       </h2>
       <Tree
-        className="h-fit p-0"
+        className="h-full p-0"
         indicator={false}
         elements={toc}
         openIcon={<ChevronDown className="size-4" />}
@@ -88,60 +88,47 @@ export const Toc = ({ toc }: { toc: TreeViewElement[] }) => {
 const TreeItem = forwardRef<
   HTMLUListElement,
   {
-    elements?: TreeViewElement[] | TreeViewElement;
+    elements: TreeViewElement[];
     activeItem?: string;
   } & React.HTMLAttributes<HTMLUListElement>
 >(({ className, elements, activeItem, ...props }, ref) => {
   return (
     <ul ref={ref} className="w-full space-y-1" {...props}>
-      {elements instanceof Array ? (
-        elements.map((element) => (
-          <li key={element.id} className="w-full space-y-2">
-            {element.children && element.children?.length > 0 ? (
-              <Folder
-                element={element.name}
-                id={element.id}
-                isSelectable={element.isSelectable}
-                isSelect={activeItem === element.id.split("#")[1]}
-                className="px-px pr-1"
-              >
-                <TreeItem
-                  key={element.id}
-                  aria-label={`folder ${element.name}`}
-                  elements={element.children}
-                  activeItem={activeItem}
-                />
-              </Folder>
-            ) : (
-              <File
-                aria-label={`File ${element.name}`}
+      {elements.map((element) => (
+        <li key={element.id} className="w-full space-y-2">
+          {element.children && element.children?.length > 0 ? (
+            <Folder
+              element={element.name}
+              id={element.id}
+              isSelectable={element.isSelectable}
+              isSelect={activeItem === element.id.split("#")[1]}
+              className="px-px pr-1"
+            >
+              <TreeItem
                 key={element.id}
-                id={element.id}
-                element={element.name}
-                isSelectable={element.isSelectable}
-                isSelect={activeItem === element.id.split("#")[1]}
-                className={"px-1"}
-                fileIcon={<Circle className="size-2" />}
-              >
-                <a href={element.id} className="ml-1">
-                  {element?.name}
-                </a>
-              </File>
-            )}
-          </li>
-        ))
-      ) : (
-        <li className="px-1">
-          <File
-            aria-label={`file ${elements?.name}`}
-            element={elements?.name ?? " "}
-            id={elements?.id ?? ""}
-            isSelectable={elements?.isSelectable}
-          >
-            <span>{elements?.name}</span>
-          </File>
+                aria-label={`folder ${element.name}`}
+                elements={element.children}
+                activeItem={activeItem}
+              />
+            </Folder>
+          ) : (
+            <File
+              aria-label={`item ${element.name}`}
+              key={element.id}
+              id={element.id}
+              element={element.name}
+              isSelectable={element.isSelectable}
+              isSelect={activeItem === element.id.split("#")[1]}
+              className={"px-1"}
+              fileIcon={<Circle className="size-2" />}
+            >
+              <a href={element.id} className="ml-1">
+                {element?.name}
+              </a>
+            </File>
+          )}
         </li>
-      )}
+      ))}
     </ul>
   );
 });

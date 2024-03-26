@@ -1,134 +1,210 @@
 ---
-title: Accordion
-description: A vertically stacked set of interactive headings that each reveal a section of content.
-component: true
+title: File Upload
+description: an input component that allows file uploading.
 links:
-  doc: https://www.radix-ui.com/docs/primitives/components/accordion
-  api: https://www.radix-ui.com/docs/primitives/components/accordion#api-reference
+  - title: react-dropzone
+    url: https://react-dropzone.js.org/#src
+  - title: sonner
+    url: https://sonner.emilkowal.ski/
 ---
 
-<ComponentPreview
-  name="tree-view-example"
-  className="[&_.preview>[data-orientation=vertical]]:sm:max-w-[70%]"
-/>
+<ComponentPreview name="file-upload-example" />
 
 ## Installation
 
-<Tabs defaultValue="cli">
+<Tabs defaultValue="manual">
 
 <TabsList>
-  <TabsTrigger value="cli">CLI</TabsTrigger>
   <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
 </TabsList>
 
-<TabsContent value="cli">
+<TabsContent value="manual">
 
 <Steps>
 
 <Step>Run the following command:</Step>
 
 ```bash
-npx shadcn-ui@latest add accordion
+npm i react-dropzone
+npm i sonner
 ```
 
-<Step>Update `tailwind.config.js`</Step>
+<Step>Copy and paste the following code into your project.</Step>
 
-Add the following animations to your `tailwind.config.js` file:
+<ComponentSource name="file-upload" />
 
-```js title="tailwind.config.js" {5-18}
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  theme: {
-    extend: {
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
-    },
-  },
-};
-```
+<Step>Update the import paths to match your project setup.</Step>
 
 </Steps>
 
 </TabsContent>
 
-<TabsContent value="manual">
+<TabsContent value="cli">
 
-<Steps>
-
-<Step>Install the following dependencies:</Step>
-
-```bash
-npm install @radix-ui/react-accordion
-```
-
-<Step>Copy and paste the following code into your project.</Step>
-
-<Step>Update the import paths to match your project setup.</Step>
-
-<Step>Update `tailwind.config.js`</Step>
-
-Add the following animations to your `tailwind.config.js` file:
-
-```js title="tailwind.config.js" {5-18}
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  theme: {
-    extend: {
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
-    },
-  },
-};
-```
-
-</Steps>
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
 
 </TabsContent>
 
 </Tabs>
 
+## API Reference
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+
+      },
+      type: {
+        value: "type",
+      },
+      defaultValue: {
+        value: "defaultValue",
+      },
+    },
+    {
+      prop: {
+        value: "value",
+        description: "an array of files that are selected by the user",
+      },
+      type: {
+        value: ["File[]"],
+      },
+      defaultValue: {
+        value: ["null"],
+      },
+    },
+    {
+      prop: {
+        value: "onValueChange",
+        description: "A callback function that is called when the value changes.",
+      },
+      type: {
+        value: ["(value: File[]) => void"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop : {
+        value: "reSelect",
+        description: "if true , all the current selected file will be all removed if new files are selected.",
+      } ,
+      type : {
+        value: ["boolean"]
+      } ,
+      defaultValue : {
+        value: ["false"]
+      }
+    },
+    {
+      prop: {
+        value: "dropzoneOptions",
+        description: (
+          <>
+            those are options to be passed to the useDropzone hook from
+            react-dropzone you can check the type{" "}
+            <a target="_blank" src="https://react-dropzone.js.org/#src">
+              here
+            </a>
+          </>
+        ),
+      },
+      type: {
+        value: ["DropzoneOptions"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+
+]}
+/>
+
+## Accessibility
+
+The Accordion component adheres to the WAI-ARIA design pattern. It is accessible by keyboard and screen readers.
+
+## Keyboard Navigation
+
+<MDXTable
+  data={[
+    {
+      key: {
+        value: "key",
+      },
+      description: {
+        value: "description",
+      },
+    },
+    {
+      key: {
+        value: "Enter",
+      },
+      description: {
+        value: "opens the file upload pc interface",
+      },
+    },
+
+    {
+      key: {
+        value: "ArrowUp",
+      },
+      description: {
+        value: "Move to the previous item",
+      },
+    },
+    {
+      key: {
+        value: "ArrowDown",
+      },
+      description: {
+        value: "Move to the next item",
+      },
+    },
+    {
+      key: {
+        value: "Delete/Backspace",
+      },
+      description: {
+        value: "remove the selected item , otherwise removes the last item ",
+      },
+    },
+
+]}
+/>
+
 ## Usage
 
 ```tsx
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+  FileInput,
+} from "@/components/extension/file-uploader";
 ```
 
 ```tsx
-<Accordion type="single" collapsible>
-  <AccordionItem value="item-1">
-    <AccordionTrigger>Is it accessible?</AccordionTrigger>
-    <AccordionContent>
-      Yes. It adheres to the WAI-ARIA design pattern.
-    </AccordionContent>
-  </AccordionItem>
-</Accordion>
+<FileUploader
+  value={files}
+  onValueChange={setFiles}
+  dropzoneOptions={dropZoneConfig}
+  className="relative max-w-xs space-y-1"
+>
+  <FileInput className="border border-dashed border-gray-500">
+    <Button variant={"outline"}>Upload a file</Button>
+  </FileInput>
+  <FileUploaderContent className="h-48 ">
+    <FileUploaderItem index={i}>file 1</FileUploaderItem>
+    <FileUploaderItem index={i}>file 2</FileUploaderItem>
+    <FileUploaderItem index={i}>...</FileUploaderItem>
+  </FileUploaderContent>
+</FileUploader>
 ```

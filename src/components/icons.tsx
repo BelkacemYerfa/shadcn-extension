@@ -1,4 +1,10 @@
-import { AlertTriangle, Info, LucideProps } from "lucide-react";
+import {
+  AlertTriangle,
+  Bell,
+  Info,
+  LucideProps,
+  TextCursorInput,
+} from "lucide-react";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -102,8 +108,8 @@ export const Icons = {
           x2="100%"
           y2="0%"
         >
-          <stop offset="0%" stop-color="#8ab4f8" />
-          <stop offset="100%" stop-color="#c1a8e2" />
+          <stop offset="0%" stopColor="#8ab4f8" />
+          <stop offset="100%" stopColor="#c1a8e2" />
         </linearGradient>
         <filter id="dark-theme-blur-filter">
           <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" />
@@ -138,12 +144,12 @@ export const Icons = {
           id="a"
         />
       </defs>
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <g transform="translate(0 81.355)">
           <mask id="b" fill="#fff">
             <use xlinkHref="#a" />
           </mask>
-          <use fill="#D0021B" fill-rule="nonzero" xlinkHref="#a" />
+          <use fill="#D0021B" fillRule="nonzero" xlinkHref="#a" />
           <path
             d="M71.141 41.968c37.301 0 67.54-14.771 67.54-34.226s-30.239-35.226-67.54-35.226c-37.3 0-67.539 15.771-67.539 35.226s30.238 34.226 67.54 34.226z"
             fillOpacity=".186"
@@ -159,6 +165,8 @@ export const Icons = {
       </g>
     </svg>
   ),
+  Sonner: (props: LucideProps) => <Bell {...props} />,
+  Devfolioco: (props: LucideProps) => <TextCursorInput {...props} />,
 };
 
 export const MdxIcons = {

@@ -51,49 +51,112 @@ const extension: Registry = [
   },
 ];
 
-const examples: Registry = [
+const demos: Registry = [
   {
-    name: "tree-view-example",
-    type: "components:example",
+    name: "tree-view-demo",
+    type: "components:demo",
     registryDependencies: ["tree-view-api"],
-    files: ["example/tree-view-example.tsx"],
+    files: ["example/tree-view-demo.tsx"],
   },
   {
-    name: "file-upload-example",
-    type: "components:example",
+    name: "file-upload-demo",
+    type: "components:demo",
     registryDependencies: ["file-upload"],
-    files: ["example/file-upload-example.tsx"],
+    files: ["example/file-upload-demo.tsx"],
   },
   {
-    name: "multi-select-example",
-    type: "components:example",
+    name: "multi-select-demo",
+    type: "components:demo",
     registryDependencies: ["multi-select"],
-    files: ["example/multi-select-example.tsx"],
+    files: ["example/multi-select-demo.tsx"],
   },
   {
-    name: "otp-input-example",
-    type: "components:example",
+    name: "otp-input-demo",
+    type: "components:demo",
     registryDependencies: ["otp-input"],
-    files: ["example/otp-input-example.tsx"],
+    files: ["example/otp-input-demo.tsx"],
   },
   {
-    name: "carousel-example",
-    type: "components:example",
+    name: "carousel-demo",
+    type: "components:demo",
     registryDependencies: ["carousel"],
-    files: ["example/carousel-example.tsx"],
+    files: ["example/carousel-demo.tsx"],
   },
   {
-    name: "breadcrumb-example",
-    type: "components:example",
+    name: "breadcrumb-demo",
+    type: "components:demo",
     registryDependencies: ["breadcrumb"],
-    files: ["example/breadcrumb-example.tsx"],
+    files: ["example/breadcrumb-demo.tsx"],
   },
   {
-    name: "image-carousel-upload-example",
-    type: "components:example",
+    name: "image-carousel-upload-demo",
+    type: "components:demo",
     registryDependencies: ["image-carousel-upload"],
-    files: ["example/image-carousel-upload-example.tsx"],
+    files: ["example/image-carousel-upload-demo.tsx"],
   },
 ];
 
-export const registry: Registry = [...extension, ...examples];
+const examples: Registry = [
+  {
+    name: "tree-view-builtin-indicator",
+    type: "components:example",
+    registryDependencies: ["tree-view"],
+    files: ["example/tree-view/tree-view-builtin-indicator.tsx"],
+  },
+  {
+    name: "tree-view-builtin-expand",
+    type: "components:example",
+    registryDependencies: ["tree-view"],
+    files: ["example/tree-view/tree-view-builtin-expand.tsx"],
+  },
+  {
+    name: "tree-view-builtin-select",
+    type: "components:example",
+    registryDependencies: ["tree-view"],
+    files: ["example/tree-view/tree-view-builtin-select.tsx"],
+  },
+  {
+    name: "tree-view-guide",
+    type: "components:example",
+    registryDependencies: ["tree-view-api"],
+    files: ["example/tree-view/tree-view-guide.tsx"],
+  },
+  {
+    name: "carousel-orientation",
+    type: "components:example",
+    registryDependencies: ["carousel"],
+    files: ["example/carousel/carousel-orientation.tsx"],
+  },
+  {
+    name: "carousel-plugin",
+    type: "components:example",
+    registryDependencies: ["carousel"],
+    files: ["example/carousel/carousel-plugin.tsx"],
+  },
+  {
+    name: "carousel-indicator",
+    type: "components:example",
+    registryDependencies: ["carousel"],
+    files: ["example/carousel/carousel-indicator.tsx"],
+  },
+  {
+    name: "multi-select-state",
+    type: "components:example",
+    registryDependencies: ["multi-select"],
+    files: ["example/multi-select/multi-select-state.tsx"],
+  },
+  {
+    name: "multi-select-zod",
+    type: "components:example",
+    registryDependencies: ["multi-select"],
+    files: ["example/multi-select/multi-select-zod.tsx"],
+  },
+  {
+    name: "otp-input-zod",
+    type: "components:example",
+    registryDependencies: ["otp-input"],
+    files: ["example/otp-input/otp-input-zod.tsx"],
+  },
+];
+
+export const registry: Registry = [...extension, ...demos, ...examples];

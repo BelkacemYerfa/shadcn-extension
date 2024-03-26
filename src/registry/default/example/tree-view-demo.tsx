@@ -55,7 +55,7 @@ const TreeFileTest = () => {
   ];
   return (
     <Tree
-      className="rounded-md h-52 max-w-96 w-full bg-background  overflow-hidden py-1"
+      className="rounded-md h-60 bg-background overflow-hidden p-2"
       initialSelectedId="21"
       elements={elements}
     >

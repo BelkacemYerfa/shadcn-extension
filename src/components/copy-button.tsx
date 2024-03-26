@@ -5,7 +5,7 @@ import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { ClipboardIcon as CopyIcon } from "lucide-react";
 
-import { Event, trackEvent } from "@/lib/events";
+import { Event } from "@/lib/events";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +25,8 @@ interface CopyButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 export async function copyToClipboardWithMeta(value: string, event?: Event) {
   navigator.clipboard.writeText(value);
   if (event) {
-    trackEvent(event);
+    //TODO : make it work after CLI build
+    console.log(event);
   }
 }
 
@@ -49,7 +50,7 @@ export function CopyButton({
       size="icon"
       variant="ghost"
       className={cn(
-        "relative z-10 h-6 w-6 text-zinc-50 hover:bg-zinc-700 hover:text-zinc-50",
+        "relative h-6 w-6 text-zinc-50 hover:bg-zinc-700 hover:text-zinc-50",
         className
       )}
       onClick={() => {

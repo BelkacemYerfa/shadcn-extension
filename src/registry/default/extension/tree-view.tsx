@@ -37,7 +37,7 @@ export const TreeView = ({
   className,
   initialSelectedId,
   initialExpendedItems,
-  expandAll = false,
+  expandAll,
   indicator = false,
 }: TreeViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,13 +55,17 @@ export const TreeView = ({
   return (
     <div
       ref={containerRef}
-      className={cn("rounded-md overflow-hidden py-1 relative ", className)}
+      className={cn(
+        "w-full rounded-md overflow-hidden py-1 relative",
+        className
+      )}
     >
       <Tree
         initialSelectedId={initialSelectedId}
         initialExpendedItems={initialExpendedItems}
         elements={elements}
         style={{ height, width }}
+        className="w-full h-full overflow-y-auto"
       >
         {getVirtualItems().map((element) => (
           <TreeItem
@@ -84,13 +88,13 @@ TreeView.displayName = "TreeView";
 export const TreeItem = forwardRef<
   HTMLUListElement,
   {
-    elements?: TreeViewElement[] | TreeViewElement;
+    elements?: TreeViewElement[];
     indicator?: boolean;
   } & React.HTMLAttributes<HTMLUListElement>
 >(({ className, elements, indicator, ...props }, ref) => {
   return (
-    <ul ref={ref} className="w-full" {...props}>
-      {elements instanceof Array ? (
+    <ul ref={ref} className="w-full space-y-1 " {...props}>
+      {elements &&
         elements.map((element) => (
           <li key={element.id} className="w-full">
             {element.children && element.children?.length > 0 ? (
@@ -118,19 +122,7 @@ export const TreeItem = forwardRef<
               </File>
             )}
           </li>
-        ))
-      ) : (
-        <li className="px-1">
-          <File
-            aria-label={`file ${elements?.name}`}
-            element={elements?.name ?? " "}
-            id={elements?.id ?? ""}
-            isSelectable={elements?.isSelectable}
-          >
-            <span>{elements?.name}</span>
-          </File>
-        </li>
-      )}
+        ))}
     </ul>
   );
 });

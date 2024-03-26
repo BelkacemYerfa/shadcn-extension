@@ -136,6 +136,57 @@ npx shadcn-ui@latest add popover
   ]}
 />
 
+## Accessibility
+
+the Breadcrumb component is accessible by default, and it follows the WAI-ARIA guidelines.
+
+## Keyboard Navigation
+
+<MDXTable
+  data={[
+    {
+      key: {
+        value: "key",
+      },
+      description: {
+        value: "description",
+      },
+    },
+    {
+      key: {
+        value: "Escape",
+      },
+      description: {
+        value: "closes BreadCrumb Popover/gets out of scope selected link",
+      },
+    },
+    {
+      key: {
+        value: "Enter",
+      },
+      description: {
+        value: " Opens/closes BreadCrumb Popover",
+      },
+    },
+    {
+      key: {
+        value: "ArrowDown/ArrowRight ",
+      },
+      description: {
+        value: "Moves focus to the next link",
+      },
+    },
+    {
+      key: {
+        value: "ArrowUp/ArrowLeft",
+      },
+      description: {
+        value: "Moves focus to the previous link",
+      },
+    },
+  ]}
+/>
+
 ## Usage
 
 ```tsx
