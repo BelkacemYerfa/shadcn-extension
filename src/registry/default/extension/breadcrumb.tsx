@@ -255,7 +255,7 @@ export const BreadCrumbEllipsis = forwardRef<
         return prev;
       }
       const arr = [...prev, index];
-      return arr.toSorted((a, b) => Number(a) - Number(b));
+      return arr.sort((a, b) => Number(a) - Number(b));
     });
   }, [index, onValueChange]);
   return (

@@ -6,7 +6,7 @@ links:
     url: https://ui.shadcn.com/docs/components/popover
 ---
 
-<ComponentPreview name="breadcrumb-example" className="[&_.preview]:p-2" />
+<ComponentPreview name="breadcrumb-demo" />
 
 ## Installation
 
@@ -217,3 +217,28 @@ import { Link } from "next/link";
 ```
 
 ## Examples
+
+### BreadCrumb Separator
+
+<ComponentPreview name="breadcrumb-separator" />
+
+### BreadCrumb variants
+
+By default, the Breadcrumb component uses the `default` variant for each item. You can change the variant by passing the `variant` prop to the `BreadcrumbItem` component.
+
+<ComponentPreview name="breadcrumb-variants" />
+
+<Alert className="mt-4" variant="info">
+  <MdxIcons.Info className="size-4" />
+  <AlertTitle>Good to know</AlertTitle>
+  <AlertDescription>
+    The `variant` prop is the same as the button variants from shadcn, you can check the
+    button [documentation](https://ui.shadcn.com/docs/components/popover) for more information.
+  </AlertDescription>
+</Alert>
+
+### BreadCrumb Popover
+
+This popover can be used to display the full path if it's too long to fit in the screen.
+
+<ComponentPreview name="breadcrumb-popover" />

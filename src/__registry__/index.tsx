@@ -187,6 +187,27 @@ export const Index: Record<string, any> = {
       component: React.lazy(() => import("@/registry/default/example/file-upload/file-upload-zod.tsx")),
       files: ["src/registry/default/example/file-upload/file-upload-zod.tsx"],
     },
+    "breadcrumb-separator": {
+      name: "breadcrumb-separator",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(() => import("@/registry/default/example/breadcrumb/breadcrumb-separator.tsx")),
+      files: ["src/registry/default/example/breadcrumb/breadcrumb-separator.tsx"],
+    },
+    "breadcrumb-variants": {
+      name: "breadcrumb-variants",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(() => import("@/registry/default/example/breadcrumb/breadcrumb-variants.tsx")),
+      files: ["src/registry/default/example/breadcrumb/breadcrumb-variants.tsx"],
+    },
+    "breadcrumb-popover": {
+      name: "breadcrumb-popover",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(() => import("@/registry/default/example/breadcrumb/breadcrumb-popover.tsx")),
+      files: ["src/registry/default/example/breadcrumb/breadcrumb-popover.tsx"],
+    },
     "image-carousel-upload-example": {
       name: "image-carousel-upload-example",
       type: "components:example",

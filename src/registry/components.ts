@@ -163,6 +163,24 @@ const examples: Registry = [
     registryDependencies: ["file-upload"],
     files: ["example/file-upload/file-upload-zod.tsx"],
   },
+  {
+    name: "breadcrumb-separator",
+    type: "components:example",
+    registryDependencies: ["breadcrumb"],
+    files: ["example/breadcrumb/breadcrumb-separator.tsx"],
+  },
+  {
+    name: "breadcrumb-variants",
+    type: "components:example",
+    registryDependencies: ["breadcrumb"],
+    files: ["example/breadcrumb/breadcrumb-variants.tsx"],
+  },
+  {
+    name: "breadcrumb-popover",
+    type: "components:example",
+    registryDependencies: ["breadcrumb"],
+    files: ["example/breadcrumb/breadcrumb-popover.tsx"],
+  },
   // Under development
   {
     name: "image-carousel-upload-example",
