@@ -88,12 +88,6 @@ const demos: Registry = [
     registryDependencies: ["breadcrumb"],
     files: ["example/breadcrumb-demo.tsx"],
   },
-  {
-    name: "image-carousel-upload-demo",
-    type: "components:demo",
-    registryDependencies: ["image-carousel-upload"],
-    files: ["example/image-carousel-upload-demo.tsx"],
-  },
 ];
 
 const examples: Registry = [
@@ -156,6 +150,25 @@ const examples: Registry = [
     type: "components:example",
     registryDependencies: ["otp-input"],
     files: ["example/otp-input/otp-input-zod.tsx"],
+  },
+  {
+    name: "file-upload-dropzone",
+    type: "components:example",
+    registryDependencies: ["file-upload"],
+    files: ["example/file-upload/file-upload-dropzone.tsx"],
+  },
+  {
+    name: "file-upload-zod",
+    type: "components:example",
+    registryDependencies: ["file-upload"],
+    files: ["example/file-upload/file-upload-zod.tsx"],
+  },
+  // Under development
+  {
+    name: "image-carousel-upload-example",
+    type: "components:example",
+    registryDependencies: ["image-carousel-upload"],
+    files: ["example/image-carousel-upload-example.tsx"],
   },
 ];
 

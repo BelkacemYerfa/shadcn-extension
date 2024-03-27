@@ -203,7 +203,7 @@ export const FileUploader = forwardRef<
           tabIndex={0}
           onKeyDownCapture={handleKeyDown}
           className={cn(
-            "grid w-full relative focus:outline-none overflow-hidden ",
+            "grid w-full focus:outline-none overflow-hidden ",
             className,
             {
               "gap-2": value && value.length > 0,
@@ -228,19 +228,17 @@ export const FileUploaderContent = forwardRef<
 
   return (
     <div
-      className={cn("relative w-full")}
+      className={cn("w-full px-1")}
       ref={containerRef}
       aria-description="content file holder"
     >
-      <ScrollArea className="px-1 m-0">
-        <div
-          {...props}
-          ref={ref}
-          className={cn("flex flex-col rounded-xl", className)}
-        >
-          {children}
-        </div>
-      </ScrollArea>
+      <div
+        {...props}
+        ref={ref}
+        className={cn("flex flex-col rounded-xl", className)}
+      >
+        {children}
+      </div>
     </div>
   );
 });

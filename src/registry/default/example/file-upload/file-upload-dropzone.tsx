@@ -18,8 +18,8 @@ const FileUploadDropzone = () => {
       "image/*": [".jpg", ".jpeg", ".png"],
     },
     multiple: true,
-    maxFiles: 5,
-    maxSize: 5 * 1024 * 1024,
+    maxFiles: 4,
+    maxSize: 1 * 1024 * 1024,
   } satisfies DropzoneOptions;
 
   return (
