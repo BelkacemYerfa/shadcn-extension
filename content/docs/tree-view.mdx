@@ -461,50 +461,6 @@ const elements :TreeViewElement[]  = [
       ],
     },
     {
-      id: "9",
-      name: "registry",
-      children: [
-        {
-          id: "10",
-          name: "default",
-          children: [
-            {
-              id: "11",
-              name: "extension",
-              children: [
-                {
-                  id: "12",
-                  name: "tree-view.tsx",
-                },
-                {
-                  id: "13",
-                  name: "tree-view-api.tsx",
-                },
-              ],
-            },
-            {
-              id: "14",
-              name: "dashboard-tree.tsx",
-            },
-          ],
-        },
-        {
-          id: "15",
-          name: "pages",
-          children: [
-            {
-              id: "16",
-              name: "page.tsx",
-            },
-            {
-              id: "17",
-              name: "page-guide.tsx",
-            },
-          ],
-        },
-      ],
-    },
-    {
       id: "18",
       name: "env.ts",
     },
@@ -520,7 +476,7 @@ const elements :TreeViewElement[]  = [
 First we create the TOC component.
 
 ```tsx showLineNumbers title="components/Table_of_content/tree.tsx"
-import { Tree , TreeViewElement } from "@/components/extension/tree-view-api";
+import { Tree , TreeViewElement , CollapseButton } from "@/components/extension/tree-view-api";
 import { TreeItem } from "./tree-item.tsx"
 
 type TOCProps = {
@@ -536,10 +492,13 @@ return (
           <TreeItem key={element.id}  elements={[element]} />
         )
       }
+      <CollapseButton elements={toc} expandAll={true} />
     </Tree>
   )
 }
 ```
+
+Here we can see that we created a `TOC` component that will be responsible for rendering all the tree , the CollapseButton is used for the expandAll functionality.
 
 <Step> TreeItem component </Step>
 
