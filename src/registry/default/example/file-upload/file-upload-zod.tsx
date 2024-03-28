@@ -120,7 +120,7 @@ const FileUploadDropzone = () => {
             control={form.control}
             name="message"
             render={({ field }) => (
-              <FormItem className="p-0">
+              <FormItem className="p-0 w-full">
                 <Input
                   {...field}
                   className={`border focus-visible:ring-0 border-none w-full`}

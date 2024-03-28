@@ -156,3 +156,12 @@
 [data-rehype-pretty-code-figure] [data-chars-id] {
   @apply border-b-2 p-1 shadow-none;
 }
+
+[data-rehype-pretty-code-figure] {
+  @apply mt-2 text-sm font-medium bg-[#282c34] rounded-lg;
+}
+
+[data-rehype-pretty-code-figure] > figcaption {
+  background: rgba(200, 200, 255, 0.1);
+  @apply px-3 text-sm w-full rounded-t-md;
+}
