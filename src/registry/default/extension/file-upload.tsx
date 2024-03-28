@@ -22,7 +22,6 @@ import {
 import { toast } from "sonner";
 import { Trash2 as RemoveIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 type FileUploaderContextType = {
   dropzoneState: DropzoneState;
