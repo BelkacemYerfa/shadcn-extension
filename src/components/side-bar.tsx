@@ -6,7 +6,11 @@ import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { usePathname } from "next/navigation";
 
-export const SideBar = () => {
+type SideBarProps = {
+  setOpen?: (open: boolean) => void;
+};
+
+export const SideBar = ({ setOpen }: SideBarProps) => {
   const pathname = usePathname();
   return (
     <div className="flex flex-col py-2 gap-5 ">
@@ -19,6 +23,7 @@ export const SideBar = () => {
                 <Link
                   href={page?.path || "/"}
                   key={page.title}
+                  onClick={() => setOpen?.(false)}
                   className={cn(
                     buttonVariants({
                       variant: "ghost",

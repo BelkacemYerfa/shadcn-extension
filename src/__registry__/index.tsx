@@ -208,6 +208,20 @@ export const Index: Record<string, any> = {
       component: React.lazy(() => import("@/registry/default/example/breadcrumb/breadcrumb-popover.tsx")),
       files: ["src/registry/default/example/breadcrumb/breadcrumb-popover.tsx"],
     },
+    "breadcrumb-active": {
+      name: "breadcrumb-active",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(() => import("@/registry/default/example/breadcrumb/breadcrumb-active.tsx")),
+      files: ["src/registry/default/example/breadcrumb/breadcrumb-active.tsx"],
+    },
+    "breadcrumb-orientation": {
+      name: "breadcrumb-orientation",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(() => import("@/registry/default/example/breadcrumb/breadcrumb-orientation.tsx")),
+      files: ["src/registry/default/example/breadcrumb/breadcrumb-orientation.tsx"],
+    },
     "image-carousel-upload-example": {
       name: "image-carousel-upload-example",
       type: "components:example",

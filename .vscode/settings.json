@@ -79,7 +79,6 @@
     "**/.lintstagedrc.mjs": true,
     "**/.markdownlint.json": true,
     "**/.markdownlintignore": true,
-    "**/.next": true,
     "**/.prettierignore": true,
     "**/.svn": true,
     "**/.todo.md": true,
