@@ -53,7 +53,7 @@ function extractComponentContent(fileContent: string): string {
 }
 
 export const readFieContent = (name: string) => {
-  const correctName = name.toLowerCase().split(" ").join("-") + "-example";
+  const correctName = name.toLowerCase().split(" ").join("-") + "-demo";
   const filePath = `src/registry/default/example/${correctName}.tsx`;
   const file = fs.readFileSync(filePath, "utf-8");
   return file;

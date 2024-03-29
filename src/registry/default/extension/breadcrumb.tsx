@@ -82,6 +82,7 @@ export const BreadCrumb = ({
         const prevIndex = currentIndex < 0 ? length : currentIndex;
         setActiveIndex(value[prevIndex]);
       };
+      console.log("right");
 
       switch (e.key) {
         case "ArrowDown":
@@ -145,8 +146,8 @@ export const BreadCrumb = ({
       }}
     >
       <div
-        {...props}
-        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        onKeyDownCapture={handleKeyDown}
         className={cn(
           "flex items-center justify-center flex-wrap gap-2",
           {
@@ -155,6 +156,7 @@ export const BreadCrumb = ({
           },
           className
         )}
+        {...props}
       >
         {children}
       </div>
@@ -222,8 +224,8 @@ export const BreadCrumbItem = forwardRef<
         className,
         isSelected ? "bg-muted focus-visible:ring-0 ring-0" : ""
       )}
-      {...props}
       onClick={() => setActiveIndex(index)}
+      {...props}
     >
       {children}
     </div>

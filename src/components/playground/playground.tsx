@@ -27,6 +27,12 @@ import { PlaygroundSearchSelector } from "@/components/drop-downs/search-selecto
 import { useSearchParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import Editor, { Monaco, useMonaco } from "@monaco-editor/react";
+import {
+  Tree,
+  File,
+  Folder,
+  CollapseButton,
+} from "@/registry/default/extension/tree-view-api";
 
 type PlaygroundProps = {
   defaultCode?: string;
@@ -654,7 +660,7 @@ const Playground = memo(({ defaultCode, dependencies }: PlaygroundProps) => {
             ) : (
               <Editor
                 className="h-full outline-0"
-                defaultLanguage="javascript"
+                defaultLanguage="typescript"
                 defaultValue={defaultCode}
                 value={
                   fileContent.find((file) => file.file === chosenFile)?.content
@@ -710,7 +716,12 @@ const Playground = memo(({ defaultCode, dependencies }: PlaygroundProps) => {
             <LivePlaygroundPreview
               code={code.trim()}
               example={dependencies?.example?.trim()}
-              dependencies={dependencies?.importedItems}
+              dependencies={{
+                Tree,
+                Folder,
+                File,
+                CollapseButton,
+              }}
             />
             {/*  <pre>{defaultCode}</pre> */}
           </div>

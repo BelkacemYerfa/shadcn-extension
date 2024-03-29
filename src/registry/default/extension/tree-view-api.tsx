@@ -12,7 +12,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import useResizeObserver from "use-resize-observer";
 import { Button } from "@/components/ui/button";
 
 type TreeViewElement = {
@@ -134,14 +133,6 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
       }
     }, [initialSelectedId, elements]);
 
-    const {
-      ref: containerRef,
-      height,
-      width,
-    } = useResizeObserver<HTMLDivElement>({});
-
-    const style = props.style ?? { height, width };
-
     return (
       <TreeContext.Provider
         value={{
@@ -155,7 +146,7 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
           closeIcon,
         }}
       >
-        <div ref={containerRef} className={cn("size-full", className)}>
+        <div className={cn("size-full", className)}>
           <ScrollArea ref={ref} className="h-full relative px-2">
             <AccordionPrimitive.Root
               type="multiple"
