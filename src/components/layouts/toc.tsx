@@ -31,7 +31,7 @@ export const DocMainTOC = ({ toc, slug }: TocProps) => {
         <div className="flex flex-col space-y-1">
           <Link
             target="_blank"
-            href={`${siteConfig.links.github.toString()}/issues/new?assignees=&labels=bug&template=bug_report.md&title=Feedback`}
+            href={`${siteConfig.links.github.toString()}/issues/new?title=Feedback`}
             className="text-sm group text-muted-foreground group hover:text-foreground/90 duration-200 transition-colors flex items-center gap-2"
           >
             <span>Questions? Give us feedback</span>
@@ -39,7 +39,7 @@ export const DocMainTOC = ({ toc, slug }: TocProps) => {
           </Link>
           <Link
             target="_blank"
-            href={`${siteConfig.links.github.toString()}/tree/playground/content${slug}.mdx`}
+            href={`${siteConfig.links.github.toString()}/tree/master/content${slug}.mdx`}
             className="text-sm text-muted-foreground hover:text-foreground/90 duration-200 transition-colors "
           >
             Edit this page
