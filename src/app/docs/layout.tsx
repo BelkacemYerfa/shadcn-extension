@@ -43,7 +43,7 @@ export default function DocsLayout({
   return (
     <>
       <div className="container flex-1 items-start md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-10 pt-14">
-        <div className="fixed top-14  -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block">
+        <div className="fixed left-0 top-14 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block">
           <ScrollArea className="h-full max-h-full">
             <SideBar />
           </ScrollArea>

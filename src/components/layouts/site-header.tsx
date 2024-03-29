@@ -11,6 +11,10 @@ import { Pages } from "@/config/docs-config";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Banner } from "@/components/banner";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { SideBar } from "../side-bar";
+import { Menu } from "lucide-react";
+import { useState } from "react";
 
 export const SiteHeader = () => {
   const pathname = usePathname();
@@ -20,9 +24,13 @@ export const SiteHeader = () => {
       <div className="flex items-center justify-between px-4 py-2 h-12 border-b border-border bg-background">
         <nav className="mx-auto max-w-screen-2xl flex items-center justify-between w-full">
           <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2  truncate">
+            <MobileSideBar />
+            <Link href="/" className="flex items-center gap-2 ">
               <Icons.logo className="h-5 w-5 fill-current" />
-              <Balancer as={"span"} className=" font-bold truncate ">
+              <Balancer
+                as={"span"}
+                className=" font-bold truncate text-ellipsis "
+              >
                 {siteConfig.name}
               </Balancer>
             </Link>
@@ -54,5 +62,22 @@ export const SiteHeader = () => {
         </nav>
       </div>
     </header>
+  );
+};
+
+const MobileSideBar = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="md:hidden">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger>
+          <Menu className="size-4" />
+          <span className="sr-only">menu</span>
+        </SheetTrigger>
+        <SheetContent side={"left"}>
+          <SideBar setOpen={setOpen} />
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 };

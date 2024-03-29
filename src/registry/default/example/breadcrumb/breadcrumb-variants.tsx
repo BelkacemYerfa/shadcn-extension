@@ -1,12 +1,17 @@
 "use client";
 
-import { Select, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   BreadCrumb,
   BreadCrumbItem,
   BreadCrumbSeparator,
 } from "@/registry/default/extension/breadcrumb";
-import { SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -22,12 +27,15 @@ const BreadCrumbVariantPicker = ({
   return (
     <div className="absolute right-2 top-2">
       <Select defaultValue="ghost" value={variant} onValueChange={setVariant}>
-        <SelectTrigger className="">
-          <SelectValue placeholder="Select a variant " />
+        <SelectTrigger className="w-36 h-8 bg-background  ">
+          <SelectValue>
+            <span className="text-muted-foreground text-xs">Variant : </span>
+            <span>{variant}</span>
+          </SelectValue>
         </SelectTrigger>
         <SelectContent align="end">
           {OPTIONS.map((opt, index) => (
-            <SelectItem key={`${opt}-${index}`} value={opt}>
+            <SelectItem key={`${opt}-${index}`} value={opt} className="text-sm">
               {opt}
             </SelectItem>
           ))}

@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BreadCrumb,
   BreadCrumbItem,
@@ -25,7 +23,6 @@ const BreadCrumbTest = () => {
       <BreadCrumbItem className="px-2 h-7" index={1}>
         Dashboard
       </BreadCrumbItem>
-
       <BreadCrumbSeparator />
       <BreadCrumbPopover>
         <BreadCrumbTrigger className="hover:bg-muted flex items-center justify-center size-8 rounded-md focus:outline-none">
