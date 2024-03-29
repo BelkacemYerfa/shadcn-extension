@@ -295,10 +295,11 @@ const CarouselIndicator = forwardRef<
     <Button
       ref={ref}
       size="icon"
-      className={cn("h-1 w-6 rounded-full", {
-        "bg-primary": isSlideActive,
-        "bg-primary/50": !isSlideActive,
-      })}
+      className={cn(
+        "h-1 w-6 rounded-full",
+        "data-[active='false']:bg-primary/50 data-[active='true']:bg-primary",
+        className
+      )}
       onClick={() => onThumbClick(index)}
       {...props}
     >
