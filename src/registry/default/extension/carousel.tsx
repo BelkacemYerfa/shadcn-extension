@@ -300,6 +300,7 @@ const CarouselIndicator = forwardRef<
         "data-[active='false']:bg-primary/50 data-[active='true']:bg-primary",
         className
       )}
+      data-active={isSlideActive}
       onClick={() => onThumbClick(index)}
       {...props}
     >
