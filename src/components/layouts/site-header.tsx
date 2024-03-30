@@ -25,9 +25,12 @@ export const SiteHeader = () => {
         <nav className="mx-auto max-w-screen-2xl flex items-center justify-between w-full">
           <div className="flex items-center gap-4">
             <MobileMenu />
-            <Link href="/" className="flex items-center gap-2  truncate">
+            <Link href="/" className="flex items-center gap-2 ">
               <Icons.logo className="h-5 w-5 fill-current" />
-              <Balancer as={"span"} className=" font-bold truncate ">
+              <Balancer
+                as={"span"}
+                className=" font-bold truncate text-ellipsis "
+              >
                 {siteConfig.name}
               </Balancer>
             </Link>

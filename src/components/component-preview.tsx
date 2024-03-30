@@ -83,9 +83,11 @@ export function ComponentPreview({
           className="relative rounded-md border bg-muted/50 p-2 data-[state=active]:flex flex-col items-center justify-center w-full min-h-[20rem]"
         >
           {codeString && <CopyButton value={codeString} />}
-          <div className="w-full max-w-sm flex items-center justify-center">
-            {Preview}
-          </div>
+          <React.Suspense fallback={<div className="h-full">Loading...</div>}>
+            <div className="w-full max-w-sm flex items-center justify-center">
+              {Preview}
+            </div>
+          </React.Suspense>
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">

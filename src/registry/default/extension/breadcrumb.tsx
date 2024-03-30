@@ -25,6 +25,7 @@ import {
 
 type BreadCrumbContextProps = {
   activeIndex: number;
+  orientation: "horizontal" | "vertical";
   setActiveIndex: (activeIndex: number) => void;
   value: number[];
   onValueChange: Dispatch<SetStateAction<number[]>>;
@@ -133,6 +134,7 @@ export const BreadCrumb = ({
       value={{
         variant,
         size,
+        orientation,
         activeIndex,
         value,
         onValueChange: setValue,
@@ -148,6 +150,10 @@ export const BreadCrumb = ({
         onKeyDownCapture={handleKeyDown}
         className={cn(
           "flex items-center justify-center flex-wrap gap-2",
+          {
+            "flex-row": orientation === "horizontal",
+            "flex-col": orientation === "vertical",
+          },
           className
         )}
         {...props}
@@ -187,10 +193,12 @@ export const BreadCrumbItem = forwardRef<
     setActiveIndex,
     onPrevValueChange,
   } = useBreadcrumb();
+
   const variants = {
     variant,
     size,
   };
+
   const activeVariants = activeVariant ?? variants;
   const Variants = isActive ? activeVariants : variants;
   const isSelected = activeIndex === index;
@@ -230,8 +238,16 @@ export const BreadCrumbSeparator = forwardRef<
   HTMLSpanElement,
   React.HTMLAttributes<HTMLSpanElement>
 >(({ className, children, ...props }, ref) => {
+  const { orientation } = useBreadcrumb();
   return (
-    <span ref={ref} {...props}>
+    <span
+      ref={ref}
+      {...props}
+      className={cn("flex items-center justify-center size-4", {
+        "rotate-0": orientation === "horizontal",
+        "rotate-90": orientation === "vertical",
+      })}
+    >
       {children ? (
         children
       ) : (
@@ -297,8 +313,14 @@ export const BreadCrumbContent = forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
 >(({ children, ...props }, ref) => {
+  const { orientation } = useBreadcrumb();
+
   return (
-    <PopoverContent {...props} ref={ref}>
+    <PopoverContent
+      {...props}
+      side={orientation === "horizontal" ? "bottom" : "right"}
+      ref={ref}
+    >
       {children}
     </PopoverContent>
   );

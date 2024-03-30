@@ -3,6 +3,7 @@ import {
   BreadCrumbItem,
   BreadCrumbSeparator,
 } from "@/registry/default/extension/breadcrumb";
+import { Slash } from "lucide-react";
 import Link from "next/link";
 
 const Pages = [
@@ -20,7 +21,7 @@ const Pages = [
   },
 ];
 
-const BreadCrumbTest = () => {
+const BreadcrumbOrientation = () => {
   return (
     <BreadCrumb
       orientation="vertical"
@@ -43,4 +44,4 @@ const BreadCrumbTest = () => {
   );
 };
 
-export default BreadCrumbTest;
+export default BreadcrumbOrientation;

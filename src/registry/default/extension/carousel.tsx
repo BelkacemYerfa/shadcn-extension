@@ -160,6 +160,7 @@ const Carousel = forwardRef<
           activeIndex,
           onThumbClick,
           handleKeyDown,
+          carouselOptions,
           orientation:
             orientation ||
             (carouselOptions?.axis === "y" ? "vertical" : "horizontal"),
@@ -188,9 +189,20 @@ const CarouselMainContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
-  const { mainRef, orientation } = useCarousel();
+  const { mainRef, orientation, carouselOptions } = useCarousel();
   return (
-    <div ref={mainRef} className="overflow-hidden" {...props}>
+    <div
+      {...props}
+      ref={mainRef}
+      className="overflow-hidden"
+      dir={
+        orientation === "horizontal"
+          ? carouselOptions?.direction === "rtl"
+            ? "rtl"
+            : "ltr"
+          : undefined
+      }
+    >
       <div
         ref={ref}
         className={cn(
@@ -211,9 +223,20 @@ const CarouselThumbsContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
-  const { thumbsRef, orientation } = useCarousel();
+  const { thumbsRef, orientation, carouselOptions } = useCarousel();
   return (
-    <div ref={thumbsRef} className="overflow-hidden " {...props}>
+    <div
+      {...props}
+      ref={thumbsRef}
+      className="overflow-hidden "
+      dir={
+        orientation === "horizontal"
+          ? carouselOptions?.direction === "rtl"
+            ? "rtl"
+            : "ltr"
+          : undefined
+      }
+    >
       <div
         ref={ref}
         className={cn(
@@ -315,8 +338,17 @@ const CarouselPrevious = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { canScrollPrev, scrollPrev, orientation } = useCarousel();
-
+  const {
+    canScrollNext,
+    canScrollPrev,
+    scrollNext,
+    scrollPrev,
+    orientation,
+    carouselOptions,
+  } = useCarousel();
+  const direction = carouselOptions?.direction ?? "ltr";
+  const scroll = direction === "rtl" ? scrollNext : scrollPrev;
+  const canScroll = direction === "rtl" ? canScrollNext : canScrollPrev;
   return (
     <Button
       ref={ref}
@@ -329,8 +361,8 @@ const CarouselPrevious = forwardRef<
           : "-left-2 top-1/2 -translate-y-1/2",
         className
       )}
-      onClick={scrollPrev}
-      disabled={!canScrollPrev}
+      onClick={scroll}
+      disabled={!canScroll}
       {...props}
     >
       <ChevronLeftIcon className="h-4 w-4" />
@@ -344,7 +376,17 @@ const CarouselNext = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { canScrollNext, scrollNext, orientation } = useCarousel();
+  const {
+    canScrollNext,
+    canScrollPrev,
+    scrollNext,
+    scrollPrev,
+    orientation,
+    carouselOptions,
+  } = useCarousel();
+  const direction = carouselOptions?.direction ?? "ltr";
+  const scroll = direction === "rtl" ? scrollPrev : scrollNext;
+  const canScroll = direction === "rtl" ? canScrollPrev : canScrollNext;
   return (
     <Button
       ref={ref}
@@ -357,8 +399,8 @@ const CarouselNext = forwardRef<
           : "-right-2 top-1/2 -translate-y-1/2",
         className
       )}
-      onClick={scrollNext}
-      disabled={!canScrollNext}
+      onClick={scroll}
+      disabled={!canScroll}
       {...props}
     >
       <ChevronRightIcon className="h-4 w-4" />

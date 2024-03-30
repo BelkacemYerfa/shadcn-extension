@@ -6,9 +6,9 @@ import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { usePathname } from "next/navigation";
 
-type SideBarProps = {
+interface SideBarProps {
   setOpen?: (open: boolean) => void;
-};
+}
 
 export const SideBar = ({ setOpen }: SideBarProps) => {
   const pathname = usePathname();

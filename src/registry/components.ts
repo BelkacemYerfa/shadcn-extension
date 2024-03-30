@@ -193,6 +193,14 @@ const examples: Registry = [
     registryDependencies: ["breadcrumb"],
     files: ["example/breadcrumb/breadcrumb-orientation.tsx"],
   },
+
+  {
+    name: "breadcrumb-active",
+    type: "components:example",
+    registryDependencies: ["breadcrumb"],
+    files: ["example/breadcrumb/breadcrumb-active.tsx"],
+  },
+
   // Under development
   {
     name: "image-carousel-upload-example",
