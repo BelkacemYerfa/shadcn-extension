@@ -10,9 +10,12 @@ const CarouselOrientation = () => {
     <Carousel
       plugins={[
         AutoScroll({
-          speed: 4,
+          speed: 1,
         }),
       ]}
+      carouselOptions={{
+        loop: true,
+      }}
     >
       <CarouselMainContainer className="h-60">
         {Array.from({ length: 5 }).map((_, index) => (

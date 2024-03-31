@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function ComponentsPage() {
   return (
-    <main className="mx-auto max-w-7xl flex-1 pt-20 space-y-2">
-      <div className="px-4 space-y-6">
+    <main className="mx-auto max-w-6xl w-full flex-1 pt-20 space-y-2">
+      <div className="px-4 space-y-6 w-full">
         <div className="">
           <h1 className="text-base text-foreground sm:text-2xl font-semibold ">
             Browse Components
@@ -20,7 +20,7 @@ export default function ComponentsPage() {
             Navigate to all the components available in the registry.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10 w-full">
           {Object.entries(Index).map(([_, value]) => {
             return Object.entries(value).map(
               ([key, newValue]: [key: string, newValue: any]) => {

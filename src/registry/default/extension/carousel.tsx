@@ -45,6 +45,11 @@ const useCarousel = () => {
 
 const CarouselContext = createContext<CarouselContextType | null>(null);
 
+// TODO : add support for vertical rtl support for the carousel
+// ref : https://github.com/davidjerleke/embla-carousel/issues/784
+
+type DirectionOption = "ltr" | "rtl" | undefined;
+
 const Carousel = forwardRef<
   HTMLDivElement,
   CarouselContextProps & React.HTMLAttributes<HTMLDivElement>
@@ -53,6 +58,7 @@ const Carousel = forwardRef<
     {
       carouselOptions,
       orientation = "horizontal",
+      dir,
       plugins,
       children,
       className,
@@ -64,6 +70,10 @@ const Carousel = forwardRef<
       {
         ...carouselOptions,
         axis: orientation === "vertical" ? "y" : "x",
+        direction:
+          orientation === "horizontal"
+            ? carouselOptions?.direction
+            : (dir as DirectionOption),
       },
       plugins
     );
@@ -167,6 +177,7 @@ const Carousel = forwardRef<
         }}
       >
         <div
+          {...props}
           tabIndex={0}
           ref={ref}
           onKeyDownCapture={handleKeyDown}
@@ -174,7 +185,7 @@ const Carousel = forwardRef<
             "grid gap-2 w-full relative focus:outline-none",
             className
           )}
-          {...props}
+          dir={orientation === "horizontal" ? carouselOptions?.direction : dir}
         >
           {children}
         </div>
@@ -188,21 +199,14 @@ Carousel.displayName = "Carousel";
 const CarouselMainContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => {
+>(({ className, dir, children, ...props }, ref) => {
   const { mainRef, orientation, carouselOptions } = useCarousel();
+
+  const direction =
+    orientation === "horizontal" ? carouselOptions?.direction : dir;
+
   return (
-    <div
-      {...props}
-      ref={mainRef}
-      className="overflow-hidden"
-      dir={
-        orientation === "horizontal"
-          ? carouselOptions?.direction === "rtl"
-            ? "rtl"
-            : "ltr"
-          : undefined
-      }
-    >
+    <div {...props} ref={mainRef} className="overflow-hidden" dir={direction}>
       <div
         ref={ref}
         className={cn(
@@ -222,21 +226,14 @@ CarouselMainContainer.displayName = "CarouselMainContainer";
 const CarouselThumbsContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => {
+>(({ className, dir, children, ...props }, ref) => {
   const { thumbsRef, orientation, carouselOptions } = useCarousel();
+
+  const direction =
+    orientation === "horizontal" ? carouselOptions?.direction : dir;
+
   return (
-    <div
-      {...props}
-      ref={thumbsRef}
-      className="overflow-hidden "
-      dir={
-        orientation === "horizontal"
-          ? carouselOptions?.direction === "rtl"
-            ? "rtl"
-            : "ltr"
-          : undefined
-      }
-    >
+    <div {...props} ref={thumbsRef} className="overflow-hidden" dir={direction}>
       <div
         ref={ref}
         className={cn(
@@ -337,7 +334,7 @@ CarouselIndicator.displayName = "CarouselIndicator";
 const CarouselPrevious = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+>(({ className, dir, variant = "outline", size = "icon", ...props }, ref) => {
   const {
     canScrollNext,
     canScrollPrev,
@@ -346,7 +343,8 @@ const CarouselPrevious = forwardRef<
     orientation,
     carouselOptions,
   } = useCarousel();
-  const direction = carouselOptions?.direction ?? "ltr";
+  const direction =
+    orientation === "horizontal" ? carouselOptions?.direction : dir;
   const scroll = direction === "rtl" ? scrollNext : scrollPrev;
   const canScroll = direction === "rtl" ? canScrollNext : canScrollPrev;
   return (
@@ -375,7 +373,7 @@ CarouselPrevious.displayName = "CarouselPrevious";
 const CarouselNext = forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+>(({ className, dir, variant = "outline", size = "icon", ...props }, ref) => {
   const {
     canScrollNext,
     canScrollPrev,
@@ -384,7 +382,8 @@ const CarouselNext = forwardRef<
     orientation,
     carouselOptions,
   } = useCarousel();
-  const direction = carouselOptions?.direction ?? "ltr";
+  const direction =
+    orientation === "horizontal" ? carouselOptions?.direction : dir;
   const scroll = direction === "rtl" ? scrollPrev : scrollNext;
   const canScroll = direction === "rtl" ? canScrollPrev : canScrollNext;
   return (
