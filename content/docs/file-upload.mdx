@@ -8,7 +8,7 @@ links:
     url: https://sonner.emilkowal.ski/
 ---
 
-<ComponentPreview name="file-upload-example" />
+<ComponentPreview name="file-upload-demo" />
 
 ## Installation
 
@@ -208,3 +208,18 @@ import {
   </FileUploaderContent>
 </FileUploader>
 ```
+
+## Example
+
+
+### DropzoneOptions
+
+The `dropzoneOptions` prop is an object that can be passed to the `FileUploader` component to customize the useDropzone hook behavior. You can find the full list of options [here](https://react-dropzone.js.org/#src).
+
+<ComponentPreview name="file-upload-dropzone" />
+
+### Form
+
+This form uses the reSelect prop to remove all the current selected files when new files are selected.
+
+<ComponentPreview name="file-upload-zod" />

@@ -1,10 +1,9 @@
-"use client";
-
 import {
   BreadCrumb,
   BreadCrumbItem,
   BreadCrumbSeparator,
 } from "@/registry/default/extension/breadcrumb";
+import { Slash } from "lucide-react";
 import Link from "next/link";
 
 const BreadCrumbTest = () => {
@@ -17,11 +16,15 @@ const BreadCrumbTest = () => {
       <BreadCrumbItem className="px-2 h-7" index={0}>
         <Link href="/">Home</Link>
       </BreadCrumbItem>
-      <BreadCrumbSeparator className="" />
+      <BreadCrumbSeparator>
+        <Slash className="size-3 -rotate-[30deg]" />
+      </BreadCrumbSeparator>
       <BreadCrumbItem className="px-2 h-7" index={1}>
         Settings
       </BreadCrumbItem>
-      <BreadCrumbSeparator />
+      <BreadCrumbSeparator>
+        <Slash className="size-3 -rotate-[30deg]" />
+      </BreadCrumbSeparator>
       <BreadCrumbItem className="px-2 h-7" index={2}>
         Account
       </BreadCrumbItem>

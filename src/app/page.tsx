@@ -6,8 +6,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 
-//provide the set of api to the component that allow to build the ui examples
-export default function Home() {
+export default async function Home() {
   return (
     <main className="max-w-2xl mx-auto flex-1 flex flex-col">
       <section className="flex-1 flex flex-col items-center justify-center gap-4 ">

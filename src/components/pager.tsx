@@ -72,7 +72,9 @@ function flatten(
       title: link.title,
       path: link.path,
     };
-    acc.push(flatLink);
+    if (link.path) {
+      acc.push(flatLink);
+    }
 
     if (link.pages) {
       acc.push(...flatten(link.pages, currentPath));

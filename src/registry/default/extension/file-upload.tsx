@@ -22,7 +22,6 @@ import {
 import { toast } from "sonner";
 import { Trash2 as RemoveIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 type FileUploaderContextType = {
   dropzoneState: DropzoneState;
@@ -44,9 +43,9 @@ export const useFileUpload = () => {
 };
 
 type FileUploaderProps = {
-  reSelect?: boolean;
   value: File[] | null;
-  onValueChange: Dispatch<SetStateAction<File[] | null>>;
+  reSelect?: boolean;
+  onValueChange: (value: File[] | null) => void;
   dropzoneOptions: DropzoneOptions;
 };
 
@@ -58,9 +57,9 @@ export const FileUploader = forwardRef<
     {
       className,
       dropzoneOptions,
-      reSelect,
       value,
       onValueChange,
+      reSelect,
       children,
       ...props
     },
@@ -80,43 +79,36 @@ export const FileUploader = forwardRef<
 
     const reSelectAll = maxFiles === 1 ? true : reSelect;
 
-    const addFileToSet = useCallback(
-      (file: File) => {
-        if (file.size > maxSize) {
-          toast.error(`File too big , Max size is ${maxSize / 1024 / 1024}MB`);
-        }
-
-        onValueChange((prev) => {
-          if (!reSelectAll && prev && prev.length >= maxFiles) {
-            return prev;
-          }
-          return [...(prev || []), file];
-        });
+    const removeFileFromSet = useCallback(
+      (i: number) => {
+        if (!value) return;
+        const newFiles = value.filter((_, index) => index !== i);
+        onValueChange(newFiles);
       },
-      [reSelectAll]
+      [value, onValueChange]
     );
-
-    const removeFileFromSet = useCallback((index: number) => {
-      onValueChange((prev) => {
-        if (!prev) return prev;
-        const newPreview = [...prev];
-        newPreview.splice(index, 1);
-        return newPreview;
-      });
-    }, []);
 
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
+
         if (!value) return;
 
-        if (e.key === "ArrowDown") {
+        const moveNext = () => {
           const nextIndex = activeIndex + 1;
           setActiveIndex(nextIndex > value.length - 1 ? 0 : nextIndex);
-        } else if (e.key === "ArrowUp") {
+        };
+
+        const movePrev = () => {
           const nextIndex = activeIndex - 1;
           setActiveIndex(nextIndex < 0 ? value.length - 1 : nextIndex);
+        };
+
+        if (e.key === "ArrowDown") {
+          moveNext();
+        } else if (e.key === "ArrowUp") {
+          movePrev();
         } else if (e.key === "Enter" || e.key === "Space") {
           if (activeIndex === -1) {
             dropzoneState.inputRef.current?.click();
@@ -124,30 +116,37 @@ export const FileUploader = forwardRef<
         } else if (e.key === "Delete" || e.key === "Backspace") {
           if (activeIndex !== -1) {
             removeFileFromSet(activeIndex);
-            const newIndex = activeIndex - 1;
-            setActiveIndex(newIndex < 0 ? value.length - 1 : newIndex);
+            movePrev();
           }
         } else if (e.key === "Escape") {
           setActiveIndex(-1);
         }
       },
-      [value, activeIndex]
+      [value, activeIndex, removeFileFromSet]
     );
 
     const onDrop = useCallback(
       (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         const files = acceptedFiles;
 
-        if (!!reSelectAll) {
-          onValueChange([]);
-        }
-
         if (!files) {
           toast.error("file error , probably too big");
           return;
         }
 
-        files.forEach(addFileToSet);
+        const newValues: File[] = value ? [...value] : [];
+
+        if (reSelectAll) {
+          newValues.splice(0, newValues.length);
+        }
+
+        files.forEach((file) => {
+          if (newValues.length < maxFiles) {
+            newValues.push(file);
+          }
+        });
+
+        onValueChange(newValues);
 
         if (rejectedFiles.length > 0) {
           for (let i = 0; i < rejectedFiles.length; i++) {
@@ -164,7 +163,7 @@ export const FileUploader = forwardRef<
           }
         }
       },
-      [reSelectAll]
+      [reSelectAll, value]
     );
 
     useEffect(() => {
@@ -203,7 +202,7 @@ export const FileUploader = forwardRef<
           tabIndex={0}
           onKeyDownCapture={handleKeyDown}
           className={cn(
-            "grid w-full relative focus:outline-none overflow-hidden ",
+            "grid w-full focus:outline-none overflow-hidden ",
             className,
             {
               "gap-2": value && value.length > 0,
@@ -228,19 +227,17 @@ export const FileUploaderContent = forwardRef<
 
   return (
     <div
-      className={cn("relative w-full")}
+      className={cn("w-full px-1")}
       ref={containerRef}
       aria-description="content file holder"
     >
-      <ScrollArea className="px-1 m-0">
-        <div
-          {...props}
-          ref={ref}
-          className={cn("flex flex-col rounded-xl", className)}
-        >
-          {children}
-        </div>
-      </ScrollArea>
+      <div
+        {...props}
+        ref={ref}
+        className={cn("flex flex-col rounded-xl", className)}
+      >
+        {children}
+      </div>
     </div>
   );
 });

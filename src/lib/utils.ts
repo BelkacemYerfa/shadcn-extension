@@ -18,3 +18,10 @@ export function formatDate(input: string | number): string {
     year: "numeric",
   });
 }
+
+export const EXCLUDED_FILES = [
+  "/public/index.html",
+  "/package.json",
+  "/styles.css",
+  "/tsconfig.json",
+];

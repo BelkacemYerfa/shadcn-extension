@@ -15,7 +15,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@mdx-js/loader": "^3.0.1",
-    "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-collapsible": "^1.0.3",
@@ -53,10 +52,8 @@
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.1",
-    "react-live": "^4.1.6",
     "react-otp-input": "^3.1.1",
     "react-resizable-panels": "^2.0.12",
-    "react-runner": "^1.0.3",
     "react-wrap-balancer": "^1.1.0",
     "rehype-pretty-code": "^0.13.0",
     "rehype-slug": "^6.0.0",
@@ -74,14 +71,12 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@shikijs/monaco": "^1.2.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "postcss": "^8",
-    "shiki": "^1.2.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

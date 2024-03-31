@@ -3,6 +3,7 @@ import {
   TreeViewElement,
   File,
   Folder,
+  CollapseButton,
 } from "@/registry/default/extension/tree-view-api";
 
 type TOCProps = {
@@ -15,6 +16,7 @@ const TOC = ({ toc }: TOCProps) => {
       {toc.map((element, _) => (
         <TreeItem key={element.id} elements={[element]} />
       ))}
+      <CollapseButton elements={toc} expandAll={true} />
     </Tree>
   );
 };
@@ -94,50 +96,6 @@ const TOCWrapper = () => {
         {
           id: "8",
           name: "page-guide.tsx",
-        },
-      ],
-    },
-    {
-      id: "9",
-      name: "registry",
-      children: [
-        {
-          id: "10",
-          name: "default",
-          children: [
-            {
-              id: "11",
-              name: "extension",
-              children: [
-                {
-                  id: "12",
-                  name: "tree-view.tsx",
-                },
-                {
-                  id: "13",
-                  name: "tree-view-api.tsx",
-                },
-              ],
-            },
-            {
-              id: "14",
-              name: "dashboard-tree.tsx",
-            },
-          ],
-        },
-        {
-          id: "15",
-          name: "pages",
-          children: [
-            {
-              id: "16",
-              name: "page.tsx",
-            },
-            {
-              id: "17",
-              name: "page-guide.tsx",
-            },
-          ],
         },
       ],
     },
