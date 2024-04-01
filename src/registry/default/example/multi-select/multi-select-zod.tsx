@@ -69,7 +69,10 @@ const MultiSelectZod = () => {
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Invite people</FormLabel>
-              <MultiSelector onValueChange={field.onChange} value={field.value}>
+              <MultiSelector
+                onValuesChange={field.onChange}
+                values={field.value}
+              >
                 <MultiSelectorTrigger>
                   <MultiSelectorInput placeholder="Select people to invite" />
                 </MultiSelectorTrigger>
