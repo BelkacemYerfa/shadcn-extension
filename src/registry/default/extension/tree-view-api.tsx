@@ -10,6 +10,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { Button } from "@/components/ui/button";
@@ -112,7 +113,6 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
             }
             return;
           }
-
           if (
             isSelectable &&
             currentElement.children &&
@@ -123,7 +123,6 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
             });
           }
         };
-
         elements.forEach((element) => {
           findParent(element);
         });
@@ -242,7 +241,7 @@ const Folder = forwardRef<
       <AccordionPrimitive.Item
         {...props}
         value={value}
-        className="relative overflow-hidden h-full"
+        className="relative overflow-hidden h-full "
       >
         <AccordionPrimitive.Trigger
           className={cn(

@@ -1,15 +1,19 @@
 "use client";
 
 import {
-  Tree,
-  Folder,
-  File,
-  CollapseButton,
-} from "@/registry/default/extension/tree-view-api";
+  FileUploader,
+  FileInput,
+  FileUploaderContent,
+  FileUploaderItem,
+} from "@/registry/default/extension/file-upload";
+import { Paperclip } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { DropzoneOptions } from "react-dropzone";
 
 export default function ExamplePage() {
   return (
-    <main className="py-20 max-w-1/2 mx-auto ">
+    <main className="py-20 max-w-xl w-full mx-auto ">
       <div className="p-5 bg-muted rounded-md w-full">
         <RTLComponentSupport />
       </div>
@@ -18,75 +22,36 @@ export default function ExamplePage() {
 }
 
 const RTLComponentSupport = () => {
-  const elements = [
-    {
-      id: "1",
-      isSelectable: true,
-      name: "src",
-      children: [
-        {
-          id: "2",
-          isSelectable: true,
-          name: "app.tsx",
-        },
-        {
-          id: "3",
-          isSelectable: true,
-          name: "components",
-          children: [
-            {
-              id: "20",
-              isSelectable: true,
-              name: "pages",
-              children: [
-                {
-                  id: "21",
-                  isSelectable: true,
-                  name: "interface.ts",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: "6",
-          isSelectable: true,
-          name: "ui",
-          children: [
-            {
-              id: "7",
-              isSelectable: true,
-              name: "carousel.tsx",
-            },
-          ],
-        },
-      ],
-    },
-  ];
+  const [files, setFiles] = useState<File[] | null>(null);
+
+  const dropZoneConfig = {
+    maxFiles: 5,
+    maxSize: 1024 * 1024 * 4,
+    multiple: true,
+  };
+
   return (
-    <Tree
-      className="rounded-md h-60 w-80 bg-background overflow-hidden p-2"
-      initialSelectedId="21"
-      elements={elements}
+    <FileUploader
+      value={files}
+      onValueChange={setFiles}
+      dropzoneOptions={dropZoneConfig}
+      className="relative bg-background rounded-lg p-2"
     >
-      <Folder element="src" value="1">
-        <File value="2">
-          <p> app.tsx </p>
-        </File>
-        <Folder value="3" element="components">
-          <Folder value="20" element="pages">
-            <File value="21">
-              <p>interface.ts</p>
-            </File>
-          </Folder>
-        </Folder>
-        <Folder value="6" element="ui">
-          <File value="7">
-            <p>carousel.tsx</p>
-          </File>
-        </Folder>
-      </Folder>
-      <CollapseButton elements={elements} />
-    </Tree>
+      <FileInput className="outline-dashed outline-1 outline-white">
+        <div className="flex items-center justify-center flex-col pt-3 pb-4 w-full ">
+          Drop me
+        </div>
+      </FileInput>
+      <FileUploaderContent>
+        {files &&
+          files.length > 0 &&
+          files.map((file, i) => (
+            <FileUploaderItem key={i} index={i} className="min-w-40">
+              <Paperclip className="h-4 w-4 stroke-current" />
+              <span>{file.name}</span>
+            </FileUploaderItem>
+          ))}
+      </FileUploaderContent>
+    </FileUploader>
   );
 };
