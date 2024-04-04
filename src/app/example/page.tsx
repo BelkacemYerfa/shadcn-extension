@@ -1,20 +1,18 @@
 "use client";
-
 import {
-  FileUploader,
-  FileInput,
-  FileUploaderContent,
-  FileUploaderItem,
-} from "@/registry/default/extension/file-upload";
-import { Paperclip } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
-import { DropzoneOptions } from "react-dropzone";
+  Carousel,
+  CarouselMainContainer,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselThumbsContainer,
+  SliderMainItem,
+  SliderThumbItem,
+} from "@/registry/default/extension/carousel";
 
 export default function ExamplePage() {
   return (
-    <main className="py-20 max-w-xl w-full mx-auto ">
-      <div className="p-5 bg-muted rounded-md w-full">
+    <main className="py-20 max-w-sm w-full mx-auto ">
+      <div className=" p-5 bg-muted rounded-md w-full">
         <RTLComponentSupport />
       </div>
     </main>
@@ -22,36 +20,67 @@ export default function ExamplePage() {
 }
 
 const RTLComponentSupport = () => {
-  const [files, setFiles] = useState<File[] | null>(null);
-
-  const dropZoneConfig = {
-    maxFiles: 5,
-    maxSize: 1024 * 1024 * 4,
-    multiple: true,
-  };
-
   return (
-    <FileUploader
-      value={files}
-      onValueChange={setFiles}
-      dropzoneOptions={dropZoneConfig}
-      className="relative bg-background rounded-lg p-2"
-    >
-      <FileInput className="outline-dashed outline-1 outline-white">
-        <div className="flex items-center justify-center flex-col pt-3 pb-4 w-full ">
-          Drop me
-        </div>
-      </FileInput>
-      <FileUploaderContent>
-        {files &&
-          files.length > 0 &&
-          files.map((file, i) => (
-            <FileUploaderItem key={i} index={i} className="min-w-40">
-              <Paperclip className="h-4 w-4 stroke-current" />
-              <span>{file.name}</span>
-            </FileUploaderItem>
+    <div className="space-y-2">
+      <Carousel orientation="horizontal" dir="rtl">
+        <CarouselMainContainer>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <SliderMainItem
+              key={index}
+              className="border border-muted flex items-center justify-center h-52 rounded-md"
+            >
+              Slide {index + 1}
+            </SliderMainItem>
           ))}
-      </FileUploaderContent>
-    </FileUploader>
+        </CarouselMainContainer>
+        <CarouselThumbsContainer>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <SliderThumbItem
+              key={index}
+              index={index}
+              className="rounded-md bg-transparent"
+            >
+              <span className="border border-muted flex items-center justify-center h-full w-full rounded-md cursor-pointer bg-background">
+                Slide {index + 1}
+              </span>
+            </SliderThumbItem>
+          ))}
+        </CarouselThumbsContainer>
+      </Carousel>
+
+      <Carousel
+        orientation="vertical"
+        className="flex items-center gap-2"
+        carouselOptions={{
+          direction: "rtl",
+        }}
+      >
+        <div className="relative basis-3/4 ">
+          <CarouselMainContainer className="h-60">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <SliderMainItem
+                key={index}
+                className="border border-muted flex items-center justify-center h-52 rounded-md"
+              >
+                Slide {index + 1}
+              </SliderMainItem>
+            ))}
+          </CarouselMainContainer>
+        </div>
+        <CarouselThumbsContainer className="h-60 basis-1/4">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <SliderThumbItem
+              key={index}
+              index={index}
+              className="rounded-md bg-transparent"
+            >
+              <span className="border border-muted flex items-center justify-center h-full w-full rounded-md cursor-pointer bg-background">
+                Slide {index + 1}
+              </span>
+            </SliderThumbItem>
+          ))}
+        </CarouselThumbsContainer>
+      </Carousel>
+    </div>
   );
 };

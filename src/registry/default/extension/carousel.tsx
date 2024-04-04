@@ -21,6 +21,8 @@ type CarouselContextProps = {
   plugins?: Parameters<typeof useEmblaCarousel>[1];
 };
 
+type DirectionOption = "ltr" | "rtl" | undefined;
+
 type CarouselContextType = {
   emblaMainApi: ReturnType<typeof useEmblaCarousel>[1];
   mainRef: ReturnType<typeof useEmblaCarousel>[0];
@@ -33,6 +35,7 @@ type CarouselContextType = {
   onThumbClick: (index: number) => void;
   handleKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => void;
   orientation: "vertical" | "horizontal";
+  direction: DirectionOption;
 } & CarouselContextProps;
 
 const useCarousel = () => {
@@ -47,8 +50,6 @@ const CarouselContext = createContext<CarouselContextType | null>(null);
 
 // TODO : add support for vertical rtl support for the carousel
 // ref : https://github.com/davidjerleke/embla-carousel/issues/784
-
-type DirectionOption = "ltr" | "rtl" | undefined;
 
 const Carousel = forwardRef<
   HTMLDivElement,
@@ -70,22 +71,22 @@ const Carousel = forwardRef<
       {
         ...carouselOptions,
         axis: orientation === "vertical" ? "y" : "x",
-        direction:
-          orientation === "horizontal"
-            ? carouselOptions?.direction
-            : (dir as DirectionOption),
+        direction: carouselOptions?.direction ?? (dir as DirectionOption),
       },
       plugins
     );
+
     const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel(
       {
         ...carouselOptions,
         axis: orientation === "vertical" ? "y" : "x",
+        direction: carouselOptions?.direction ?? (dir as DirectionOption),
         containScroll: "keepSnaps",
         dragFree: true,
       },
       plugins
     );
+
     const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
     const [canScrollNext, setCanScrollNext] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -100,6 +101,8 @@ const Carousel = forwardRef<
       emblaMainApi.scrollPrev();
     }, [emblaMainApi]);
 
+    const direction = carouselOptions?.direction ?? (dir as DirectionOption);
+
     const handleKeyDown = useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -107,11 +110,19 @@ const Carousel = forwardRef<
         switch (event.key) {
           case "ArrowLeft":
             if (orientation === "horizontal") {
+              if (direction === "rtl") {
+                ScrollNext();
+                return;
+              }
               ScrollPrev();
             }
             break;
           case "ArrowRight":
             if (orientation === "horizontal") {
+              if (direction === "rtl") {
+                ScrollPrev();
+                return;
+              }
               ScrollNext();
             }
             break;
@@ -171,6 +182,7 @@ const Carousel = forwardRef<
           onThumbClick,
           handleKeyDown,
           carouselOptions,
+          direction,
           orientation:
             orientation ||
             (carouselOptions?.axis === "y" ? "vertical" : "horizontal"),
@@ -185,7 +197,7 @@ const Carousel = forwardRef<
             "grid gap-2 w-full relative focus:outline-none",
             className
           )}
-          dir={orientation === "horizontal" ? carouselOptions?.direction : dir}
+          dir={direction}
         >
           {children}
         </div>
@@ -200,10 +212,7 @@ const CarouselMainContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, dir, children, ...props }, ref) => {
-  const { mainRef, orientation, carouselOptions } = useCarousel();
-
-  const direction =
-    orientation === "horizontal" ? carouselOptions?.direction : dir;
+  const { mainRef, orientation, direction } = useCarousel();
 
   return (
     <div {...props} ref={mainRef} className="overflow-hidden" dir={direction}>
@@ -227,10 +236,7 @@ const CarouselThumbsContainer = forwardRef<
   HTMLDivElement,
   {} & React.HTMLAttributes<HTMLDivElement>
 >(({ className, dir, children, ...props }, ref) => {
-  const { thumbsRef, orientation, carouselOptions } = useCarousel();
-
-  const direction =
-    orientation === "horizontal" ? carouselOptions?.direction : dir;
+  const { thumbsRef, orientation, direction } = useCarousel();
 
   return (
     <div {...props} ref={thumbsRef} className="overflow-hidden" dir={direction}>
@@ -341,10 +347,9 @@ const CarouselPrevious = forwardRef<
     scrollNext,
     scrollPrev,
     orientation,
-    carouselOptions,
+    direction,
   } = useCarousel();
-  const direction =
-    orientation === "horizontal" ? carouselOptions?.direction : dir;
+
   const scroll = direction === "rtl" ? scrollNext : scrollPrev;
   const canScroll = direction === "rtl" ? canScrollNext : canScrollPrev;
   return (
@@ -380,10 +385,8 @@ const CarouselNext = forwardRef<
     scrollNext,
     scrollPrev,
     orientation,
-    carouselOptions,
+    direction,
   } = useCarousel();
-  const direction =
-    orientation === "horizontal" ? carouselOptions?.direction : dir;
   const scroll = direction === "rtl" ? scrollPrev : scrollNext;
   const canScroll = direction === "rtl" ? canScrollPrev : canScrollNext;
   return (
