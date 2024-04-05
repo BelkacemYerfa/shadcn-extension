@@ -6,25 +6,32 @@ Some thoughts to help you contribute to this project
 
 ## Recommended Communication Style
 
-
-
 1. Always leave screenshots for visuals changes
 2. Always leave a detailed description in the Pull Request. Leave nothing ambiguous for the reviewer.
 3. Always review your code first. Do this by leaving comments in your coding noting questions, or interesting things for the reviewer.
 4. Always communicate. Whether it is in the issue or the pull request, keeping the lines of communication helps everyone around you.
 
-
-
 ## Development (forks are preferred)
 
-To fork the repo click here: [**fork shadcn-extenion**](https://github.com/BelkacemYerfa/shadcn-extension/fork)
+To fork the repo click here: [**fork shadcn-extension**](https://github.com/BelkacemYerfa/shadcn-extension/fork)
 
 ```shell
 $ git clone https://github.com/<your-name>/shadcn-extension.git
 $ cd shadcn-extension
 ```
 
+### Setup analytics
 
+1. Create a new project in posthog
+
+2. Copy the env variables to the `.env.example` file
+
+   ```
+   POSTHOG_API_KEY=your-api-key
+   POSTHOG_HOST=your-host
+   ```
+
+3. Rename the `.env.example` file to `.env.local`
 
 ### Adding New Components
 
@@ -32,40 +39,34 @@ $ cd shadcn-extension
 
    ```tsx
    // src/registry/default/extension/sample-component.tsx
-   
+
    interface SampleComponentProps {
      content: string;
    }
-   
-   const SampleComponent = ({content}:SampleComponentProps) => {
-     return (
-     	<div>{content ?? "Hello World!"}</div>
-     );
+
+   const SampleComponent = ({ content }: SampleComponentProps) => {
+     return <div>{content ?? "Hello World!"}</div>;
    };
-   
+
    export default SampleComponent;
    ```
 
    > Be sure to follow best practices and guidelines set forth in this document.
 
-   
-
 2. Register the component in the `extension` array in `src/registry/default/components.ts`
 
    ```ts
    import { Registry } from "./schema";
-   
+
    const extension: Registry = [
-   	{
-   		name: "sample-component",
-   		type: "components:extension",
-   		dependencies: [], // include names of any packages this component depends on.
-   		files: ["extension/sample-component.tsx"]
-   	}
+     {
+       name: "sample-component",
+       type: "components:extension",
+       dependencies: [], // include names of any packages this component depends on.
+       files: ["extension/sample-component.tsx"],
+     },
    ];
    ```
-
-   
 
 3. Then run the **registry build** script
 
@@ -75,8 +76,6 @@ $ cd shadcn-extension
 
    > This should generate a new version of the `src/__registry__/index.tsx` file.
 
-
-
 ### Adding Demos
 
 Demos are used in the docs to show the base implementation of the component using our provided defaults.
@@ -85,15 +84,13 @@ Demos are used in the docs to show the base implementation of the component usin
 
    ```tsx
    // src/registry/default/example/sample-component-demo.tsx
-   
+
    import { SampleComponent } from "@/registry/default/extension/sample-component";
-   
+
    const SampleComponentTest = () => {
-     return (
-       <SampleComponent />
-     );
+     return <SampleComponent />;
    };
-   
+
    export default SampleComponentTest;
    ```
 
@@ -101,7 +98,7 @@ Demos are used in the docs to show the base implementation of the component usin
 
    ```ts
    // src/registry/default/components.ts
-   
+
    const demos: Registry = [
      {
        name: "sample-component-demo",
@@ -112,8 +109,6 @@ Demos are used in the docs to show the base implementation of the component usin
    ];
    ```
 
-
-
 ### Adding Examples
 
 Examples are similar to demos, but used to individually demonstrate different variants, props or features of each component.
@@ -122,15 +117,13 @@ Examples are similar to demos, but used to individually demonstrate different va
 
    ```tsx
    // src/registry/default/example/sample-component/sample-component-content.tsx
-   
+
    import { SampleComponent } from "@/registry/default/extension/sample-component";
-   
+
    const SampleComponentContentTest = () => {
-     return (
-       <SampleComponent content="This is how we use the content prop" />
-     );
+     return <SampleComponent content="This is how we use the content prop" />;
    };
-   
+
    export default SampleComponentContentTest;
    ```
 
@@ -138,7 +131,7 @@ Examples are similar to demos, but used to individually demonstrate different va
 
    ```ts
    // src/registry/default/components.ts
-   
+
    const examples: Registry = [
      {
        name: "sample-component-content",
@@ -149,23 +142,17 @@ Examples are similar to demos, but used to individually demonstrate different va
    ];
    ```
 
-   
-
 ### Adding New Docs
 
 ```js
 // todo: add instructions for contributing to documentation
 ```
 
-
-
 ## Builds
 
 ```shell
 npm run build
 ```
-
-
 
 ## PR Validation
 
@@ -175,12 +162,10 @@ Examples for valid PR titles:
 - `feat: add new prop to the Avatar component`
 - `refactor!: remove unused imports from the Avatar component`
 
-*Note that since PR titles only have a single line, you have to use the ! syntax for breaking changes.*
+_Note that since PR titles only have a single line, you have to use the ! syntax for breaking changes._
 
 See [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for more examples.
 
 ## License
-
-
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/BelkacemYerfa/shadcn-extension/blob/master/LICENSE.md) file for details.
