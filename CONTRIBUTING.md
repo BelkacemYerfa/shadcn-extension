@@ -97,7 +97,7 @@ Demos are used in the docs to show the base implementation of the component usin
    export default SampleComponent;
    ```
 
-2. Then add the demo to the `demo` array in the component registry file: `src/registry/default/components.ts`
+2. Then add the demo to the `demos` array in the component registry file: `src/registry/default/components.ts`
 
    ```ts
    // src/registry/default/components.ts
@@ -134,12 +134,12 @@ Examples are similar to demos, but used to individually demonstrate different va
    export default SampleComponentContentTest;
    ```
 
-2. Then add the demo to the `example` array in the component registry file: `src/registry/default/components.ts`
+2. Then add the demo to the `examples` array in the component registry file: `src/registry/default/components.ts`
 
    ```ts
    // src/registry/default/components.ts
    
-   const demos: Registry = [
+   const examples: Registry = [
      {
        name: "sample-component-content",
        type: "components:demo",
