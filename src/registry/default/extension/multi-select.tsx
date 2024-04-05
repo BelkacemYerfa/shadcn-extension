@@ -19,13 +19,13 @@ import React, {
   useState,
 } from "react";
 
-interface MultiSelectorProps extends React.HTMLAttributes<HTMLDivElement> {
-  value: string[];
-  onValueChange: (value: string[]) => void;
+type MultiSelectorProps = {
+  values: string[];
+  onValuesChange: (value: string[]) => void;
   loop?: boolean;
-}
+} & React.ComponentPropsWithoutRef<typeof CommandPrimitive>;
 
-type MultiSelectContextProps = {
+interface MultiSelectContextProps {
   value: string[];
   onValueChange: (value: any) => void;
   open: boolean;
@@ -34,7 +34,7 @@ type MultiSelectContextProps = {
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   activeIndex: number;
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
-};
+}
 
 const MultiSelectContext = createContext<MultiSelectContextProps | null>(null);
 
@@ -47,11 +47,13 @@ const useMultiSelect = () => {
 };
 
 const MultiSelector = ({
-  value,
-  onValueChange,
+  values: value,
+  onValuesChange: onValueChange,
   loop = false,
   className,
   children,
+  dir,
+  ...props
 }: MultiSelectorProps) => {
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState<boolean>(false);
@@ -68,8 +70,22 @@ const MultiSelector = ({
     [value]
   );
 
+  // TODO : change from else if use to switch case statement
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
+      const moveNext = () => {
+        const nextIndex = activeIndex + 1;
+        setActiveIndex(
+          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex
+        );
+      };
+
+      const movePrev = () => {
+        const prevIndex = activeIndex - 1;
+        setActiveIndex(prevIndex < 0 ? value.length - 1 : prevIndex);
+      };
+
       if ((e.key === "Backspace" || e.key === "Delete") && value.length > 0) {
         if (inputValue.length === 0) {
           if (activeIndex !== -1 && activeIndex < value.length) {
@@ -90,12 +106,18 @@ const MultiSelector = ({
         } else {
           setOpen(false);
         }
-      } else if (e.key === "ArrowLeft") {
-        const index = activeIndex - 1;
-        setActiveIndex(index < 0 ? value.length - 1 : index);
-      } else if (e.key === "ArrowRight" && (activeIndex !== -1 || loop)) {
-        const index = activeIndex + 1;
-        setActiveIndex(index > value.length - 1 ? (loop ? 0 : -1) : index);
+      } else if (dir === "rtl") {
+        if (e.key === "ArrowRight") {
+          movePrev();
+        } else if (e.key === "ArrowLeft" && (activeIndex !== -1 || loop)) {
+          moveNext();
+        }
+      } else {
+        if (e.key === "ArrowLeft") {
+          movePrev();
+        } else if (e.key === "ArrowRight" && (activeIndex !== -1 || loop)) {
+          moveNext();
+        }
       }
     },
     [value, inputValue, activeIndex, loop]
@@ -120,6 +142,8 @@ const MultiSelector = ({
           "overflow-visible bg-transparent flex flex-col space-y-2",
           className
         )}
+        dir={dir}
+        {...props}
       >
         {children}
       </Command>

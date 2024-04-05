@@ -520,7 +520,7 @@ return (
           {element.children && element.children?.length > 0 ? (
             <Folder
               element={element.name}
-              id={element.id}
+              value={element.id}
               isSelectable={element.isSelectable}
               className="px-px pr-1"
             >
@@ -533,7 +533,7 @@ return (
           ) : (
             <File
               key={element.id}
-              id={element.id}
+              value={element.id}
               element={element.name}
               isSelectable={element.isSelectable}
               className={"px-1"}
@@ -583,7 +583,7 @@ return (
 {element.children && element.children?.length > 0 ? (
   <Folder
     element={element.name}
-    id={element.id}
+    value={element.id}
     isSelectable={element.isSelectable}
     className="px-px pr-1"
   >
@@ -596,7 +596,7 @@ return (
 ) : (
   <File
     key={element.id}
-    id={element.id}
+    value={element.id}
     element={element.name}
     isSelectable={element.isSelectable}
     className={"px-1"}
