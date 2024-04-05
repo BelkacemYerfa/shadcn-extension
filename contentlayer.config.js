@@ -2,7 +2,7 @@ import {
   defineDocumentType,
   defineNestedType,
   makeSource,
-} from "@contentlayer-temp/source-files";
+} from "@contentlayer2/source-files";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import { codeImport } from "remark-code-import";
@@ -11,7 +11,7 @@ import { visit } from "unist-util-visit";
 import { rehypeComponent } from "./src/lib/rehype-component";
 import { rehypeNpmCommand } from "./src/lib/rehype-installation-command";
 
-/** @type {import('@contentlayer-temp/source-files').ComputedFields} */
+/** @type {import('@contentlayer2/source-files').ComputedFields} */
 const computedFields = {
   slug: {
     type: "string",
