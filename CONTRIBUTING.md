@@ -50,7 +50,7 @@ $ cd shadcn-extension
 
    
 
-2. Add a new object for the component to the `extension` array in `src/registry/default/components.ts`
+2. Register the component in the `extension` array in `src/registry/default/components.ts`
 
    ```ts
    import { Registry } from "./schema";
@@ -94,10 +94,10 @@ Demos are used in the docs to show the base implementation of the component usin
      );
    };
    
-   export default SampleComponent;
+   export default SampleComponentTest;
    ```
 
-2. Then add the demo to the `demos` array in the component registry file: `src/registry/default/components.ts`
+2. Then register the demo component in `demos` array in the component registry file: `src/registry/default/components.ts`
 
    ```ts
    // src/registry/default/components.ts
@@ -118,7 +118,7 @@ Demos are used in the docs to show the base implementation of the component usin
 
 Examples are similar to demos, but used to individually demonstrate different variants, props or features of each component.
 
-1. Create a new folder for the examples in `src/registry/default/example/<component-name>.tsx`
+1. Create a new folder for the examples as `src/registry/default/example/<component-name>.tsx`
 
    ```tsx
    // src/registry/default/example/sample-component/sample-component-content.tsx
@@ -134,7 +134,7 @@ Examples are similar to demos, but used to individually demonstrate different va
    export default SampleComponentContentTest;
    ```
 
-2. Then add the demo to the `examples` array in the component registry file: `src/registry/default/components.ts`
+2. Then register the example to the `examples` array in the component registry file: `src/registry/default/components.ts`
 
    ```ts
    // src/registry/default/components.ts
@@ -142,7 +142,7 @@ Examples are similar to demos, but used to individually demonstrate different va
    const examples: Registry = [
      {
        name: "sample-component-content",
-       type: "components:demo",
+       type: "components:example",
        registryDependencies: [], // include names of any packages this component depends on.
        files: ["example/sample-component/sample-component-content.tsx"],
      },
