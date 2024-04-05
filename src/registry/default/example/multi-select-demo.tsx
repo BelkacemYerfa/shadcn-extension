@@ -18,7 +18,7 @@ const options = [
 const MultiSelectTest = () => {
   const [value, setValue] = useState<string[]>([]);
   return (
-    <MultiSelector value={value} onValueChange={setValue} loop={false}>
+    <MultiSelector values={value} onValuesChange={setValue} loop={false}>
       <MultiSelectorTrigger>
         <MultiSelectorInput placeholder="Select your framework" />
       </MultiSelectorTrigger>

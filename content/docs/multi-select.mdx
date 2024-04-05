@@ -67,7 +67,7 @@ npx shadcn-ui@latest add command
     },
     {
       prop: {
-        value: "value",
+        value: "values",
         description:
           "The value array that contains the values of the selected items.",
       },
@@ -80,7 +80,7 @@ npx shadcn-ui@latest add command
     },
     {
       prop: {
-        value: "onValueChange",
+        value: "onValuesChange",
         description: "The function that will be called when the value changes.",
       },
       type: {
@@ -179,7 +179,7 @@ import {
 ```
 
 ```tsx
-<MultiSelector value={value} onValueChange={setValue} loop className="max-w-xs">
+<MultiSelector values={value} onValuesChange={setValue} loop className="max-w-xs">
   <MultiSelectorTrigger>
     <MultiSelectorInput placeholder="Select your framework" />
   </MultiSelectorTrigger>
@@ -251,7 +251,7 @@ const MultiSelectForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Invite people</FormLabel>
-              <MultiSelector onValueChange={field.onChange} value={field.value}>
+              <MultiSelector onValuesChange={field.onChange} values={field.value}>
                {...}
                </MultiSelector>
             </FormItem>

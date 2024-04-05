@@ -14,7 +14,7 @@ const MultiSelectState = () => {
   const [value, setValue] = useState<string[]>([]);
 
   return (
-    <MultiSelector value={value} onValueChange={setValue}>
+    <MultiSelector values={value} onValuesChange={setValue}>
       <MultiSelectorTrigger>
         <MultiSelectorInput placeholder="Select items" />
       </MultiSelectorTrigger>

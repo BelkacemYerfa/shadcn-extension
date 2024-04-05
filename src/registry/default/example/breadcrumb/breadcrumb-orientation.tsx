@@ -3,7 +3,6 @@ import {
   BreadCrumbItem,
   BreadCrumbSeparator,
 } from "@/registry/default/extension/breadcrumb";
-import { Slash } from "lucide-react";
 import Link from "next/link";
 
 const Pages = [
@@ -30,7 +29,10 @@ const BreadcrumbOrientation = () => {
     >
       {Pages.map((page, index) => {
         return (
-          <div key={`${page.title}-path`} className="flex items-center gap-1">
+          <div
+            key={`${page.title}-path`}
+            className="flex flex-col items-center gap-1"
+          >
             <BreadCrumbItem index={index} className="h-8 px-2 ">
               <Link scroll={false} href={`#`}>
                 {page.title}

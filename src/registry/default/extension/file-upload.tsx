@@ -23,6 +23,8 @@ import { toast } from "sonner";
 import { Trash2 as RemoveIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 
+type DirectionOptions = "rtl" | "ltr" | undefined;
+
 type FileUploaderContextType = {
   dropzoneState: DropzoneState;
   isLOF: boolean;
@@ -30,6 +32,8 @@ type FileUploaderContextType = {
   removeFileFromSet: (index: number) => void;
   activeIndex: number;
   setActiveIndex: Dispatch<SetStateAction<number>>;
+  orientation: "horizontal" | "vertical";
+  direction: DirectionOptions;
 };
 
 const FileUploaderContext = createContext<FileUploaderContextType | null>(null);
@@ -47,6 +51,7 @@ type FileUploaderProps = {
   reSelect?: boolean;
   onValueChange: (value: File[] | null) => void;
   dropzoneOptions: DropzoneOptions;
+  orientation?: "horizontal" | "vertical";
 };
 
 export const FileUploader = forwardRef<
@@ -60,7 +65,9 @@ export const FileUploader = forwardRef<
       value,
       onValueChange,
       reSelect,
+      orientation = "vertical",
       children,
+      dir,
       ...props
     },
     ref
@@ -78,6 +85,7 @@ export const FileUploader = forwardRef<
     } = dropzoneOptions;
 
     const reSelectAll = maxFiles === 1 ? true : reSelect;
+    const direction: DirectionOptions = dir === "rtl" ? "rtl" : "ltr";
 
     const removeFileFromSet = useCallback(
       (i: number) => {
@@ -105,9 +113,23 @@ export const FileUploader = forwardRef<
           setActiveIndex(nextIndex < 0 ? value.length - 1 : nextIndex);
         };
 
-        if (e.key === "ArrowDown") {
+        const prevKey =
+          orientation === "horizontal"
+            ? direction === "ltr"
+              ? "ArrowLeft"
+              : "ArrowRight"
+            : "ArrowUp";
+
+        const nextKey =
+          orientation === "horizontal"
+            ? direction === "ltr"
+              ? "ArrowRight"
+              : "ArrowLeft"
+            : "ArrowDown";
+
+        if (e.key === nextKey) {
           moveNext();
-        } else if (e.key === "ArrowUp") {
+        } else if (e.key === prevKey) {
           movePrev();
         } else if (e.key === "Enter" || e.key === "Space") {
           if (activeIndex === -1) {
@@ -116,6 +138,10 @@ export const FileUploader = forwardRef<
         } else if (e.key === "Delete" || e.key === "Backspace") {
           if (activeIndex !== -1) {
             removeFileFromSet(activeIndex);
+            if (value.length - 1 === 0) {
+              setActiveIndex(-1);
+              return;
+            }
             movePrev();
           }
         } else if (e.key === "Escape") {
@@ -195,6 +221,8 @@ export const FileUploader = forwardRef<
           removeFileFromSet,
           activeIndex,
           setActiveIndex,
+          orientation,
+          direction,
         }}
       >
         <div
@@ -208,6 +236,7 @@ export const FileUploader = forwardRef<
               "gap-2": value && value.length > 0,
             }
           )}
+          dir={dir}
           {...props}
         >
           {children}
@@ -223,6 +252,7 @@ export const FileUploaderContent = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ children, className, ...props }, ref) => {
+  const { orientation } = useFileUpload();
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -234,7 +264,11 @@ export const FileUploaderContent = forwardRef<
       <div
         {...props}
         ref={ref}
-        className={cn("flex flex-col rounded-xl", className)}
+        className={cn(
+          "flex rounded-xl gap-1",
+          orientation === "horizontal" ? "flex-raw flex-wrap" : "flex-col",
+          className
+        )}
       >
         {children}
       </div>
@@ -248,7 +282,7 @@ export const FileUploaderItem = forwardRef<
   HTMLDivElement,
   { index: number } & React.HTMLAttributes<HTMLDivElement>
 >(({ className, index, children, ...props }, ref) => {
-  const { removeFileFromSet, activeIndex } = useFileUpload();
+  const { removeFileFromSet, activeIndex, direction } = useFileUpload();
   const isSelected = index === activeIndex;
   return (
     <div
@@ -266,7 +300,10 @@ export const FileUploaderItem = forwardRef<
       </div>
       <button
         type="button"
-        className="absolute top-1 right-1"
+        className={cn(
+          "absolute",
+          direction === "rtl" ? "top-1 left-1" : "top-1 right-1"
+        )}
         onClick={() => removeFileFromSet(index)}
       >
         <span className="sr-only">remove item {index}</span>

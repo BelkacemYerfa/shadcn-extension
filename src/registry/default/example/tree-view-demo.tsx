@@ -59,19 +59,19 @@ const TreeFileTest = () => {
       initialSelectedId="21"
       elements={elements}
     >
-      <Folder element="src" id="1">
-        <File element="app.tsx" id="2">
+      <Folder element="src" value="1">
+        <File value="2">
           <p> app.tsx </p>
         </File>
-        <Folder id="3" element="components">
-          <Folder id="20" element="pages">
-            <File id="21" element="interface.ts">
+        <Folder value="3" element="components">
+          <Folder value="20" element="pages">
+            <File value="21">
               <p>interface.ts</p>
             </File>
           </Folder>
         </Folder>
-        <Folder id="6" element="ui">
-          <File element="carousel.tsx" id="7">
+        <Folder value="6" element="ui">
+          <File value="7">
             <p>carousel.tsx</p>
           </File>
         </Folder>
