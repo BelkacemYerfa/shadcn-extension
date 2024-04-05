@@ -1,12 +1,11 @@
-import { createContentlayerPlugin } from "next-contentlayer-temp";
+const { createContentlayerPlugin } = require("next-contentlayer-temp");
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ["pbs.twimg.com"],
   },
-  redirects() {
+  redirects: function () {
     return [
       {
         source: "/docs",
@@ -26,4 +25,4 @@ const withContentlayer = createContentlayerPlugin({
   // Additional Contentlayer config options
 });
 
-export default withContentlayer(nextConfig);
+module.exports = withContentlayer(nextConfig);
