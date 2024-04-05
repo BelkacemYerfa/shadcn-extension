@@ -17,13 +17,20 @@ Some thoughts to help you contribute to this project
 
 ## Development (forks are preferred)
 
-To fork the repo click here: [**fork shadcn-extenion**](https://github.com/BelkacemYerfa/shadcn-extension/fork)
+1. To fork the repo click here: [**fork shadcn-extenion**](https://github.com/BelkacemYerfa/shadcn-extension/fork)
 
-```shell
-$ git clone https://github.com/<your-name>/shadcn-extension.git
-$ cd shadcn-extension
-```
+   ```shell
+   $ git clone https://github.com/<your-name>/shadcn-extension.git
+   $ cd shadcn-extension
+   ```
 
+2. Install dependences
+
+   ```shell
+   $ npm install
+   ```
+
+   
 
 
 ### Adding New Components
@@ -70,8 +77,9 @@ $ cd shadcn-extension
 3. Then run the **registry build** script
 
    ```shell
-   npm run build:registry
+   $ npm run build:registry
    ```
+
 
    > This should generate a new version of the `src/__registry__/index.tsx` file.
 
@@ -162,10 +170,34 @@ Examples are similar to demos, but used to individually demonstrate different va
 ## Builds
 
 ```shell
-npm run build
+$ npm run build
 ```
 
 
+
+## Keeping your local fork in sync with upstream
+
+1. Add the original repo as your upstream (if it doesn't already exist:
+
+   ```shell
+   $ git add upstream git@github.com:BelkacemYerfa/shadcn-extension.git
+   ```
+
+2. Then fetch the updates
+
+   ```shell
+   $ git fetch upstream
+   $ git checkout <branch-name>
+   $ git merge upstream/<branch-name>
+   ```
+
+3. Push the changes to your forked repo:
+
+   ```shell
+   $ git push origin <branch-name>
+   ```
+
+   
 
 ## PR Validation
 
