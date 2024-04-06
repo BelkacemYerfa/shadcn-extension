@@ -1,4 +1,4 @@
-import { createContentlayerPlugin } from "next-contentlayer-temp";
+import { createContentlayerPlugin } from "next-contentlayer2";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
