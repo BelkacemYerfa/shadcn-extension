@@ -10,6 +10,7 @@
     "build:test": "npm run typecheck && npm run build:registry && next build && next start -p 3001",
     "build:registry": "npx tsx --tsconfig ./src/script/tsconfig.scripts.json ./src/script/registry-builder.ts",
     "typecheck": "contentlayer2 build && tsc --noEmit",
+    "watch": "contentlayer2 dev && tsc --noEmit",
     "format": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {

@@ -152,6 +152,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(() => import("@/registry/default/example/carousel/carousel-indicator.tsx")),
       files: ["src/registry/default/example/carousel/carousel-indicator.tsx"],
     },
+    "carousel-rtl-support": {
+      name: "carousel-rtl-support",
+      type: "components:example",
+      registryDependencies: ["carousel"],
+      component: React.lazy(() => import("@/registry/default/example/carousel/carousel-rtl-support.tsx")),
+      files: ["src/registry/default/example/carousel/carousel-rtl-support.tsx"],
+    },
     "multi-select-state": {
       name: "multi-select-state",
       type: "components:example",

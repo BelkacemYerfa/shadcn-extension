@@ -138,7 +138,7 @@ const Carousel = forwardRef<
             break;
         }
       },
-      [emblaMainApi, orientation]
+      [emblaMainApi, orientation, direction]
     );
 
     const onThumbClick = useCallback(
