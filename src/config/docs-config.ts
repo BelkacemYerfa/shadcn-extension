@@ -7,7 +7,7 @@ export type DocsConfig = {
 export const Pages: DocsConfig[] = [
   {
     title: "Docs",
-    path: "/docs",
+    path: "/docs/introduction",
   },
   {
     title: "Components",
