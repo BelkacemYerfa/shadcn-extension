@@ -6,7 +6,7 @@ const nextConfig = {
   images: {
     domains: ["pbs.twimg.com"],
   },
-  redirects() {
+  redirects: function () {
     return [
       {
         source: "/docs",

@@ -98,7 +98,7 @@ Demos are used in the docs to show the base implementation of the component usin
 
    ```ts
    // src/registry/default/components.ts
-
+   
    const demos: Registry = [
      {
        name: "sample-component-demo",
@@ -131,7 +131,7 @@ Examples are similar to demos, but used to individually demonstrate different va
 
    ```ts
    // src/registry/default/components.ts
-
+      
    const examples: Registry = [
      {
        name: "sample-component-content",
@@ -144,9 +144,122 @@ Examples are similar to demos, but used to individually demonstrate different va
 
 ### Adding New Docs
 
-```js
-// todo: add instructions for contributing to documentation
+```shell
+touch src/content/docs/sample-component.mdx
 ```
+
+```markdown
+---
+title: Sample Component
+description: A simple sample component
+---
+```
+
+> We can also include links to our dependencies for each of the components here if we have any:
+> ```markd
+> ---
+> links:
+>   - title: shadcn-ui
+>     url: https://ui.shadcn.com/docs/components/input
+>   - title: react-otp-input
+>     url: https://devfolioco.github.io/react-otp-input/
+> ---
+> ```
+>
+> > this example shows how we display component dependencies in the docs
+
+````markdown
+
+<ComponentPreview name="sample-component" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="sample-component" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+<TabsContent value="cli">
+
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
+</Tabs>
+
+## Usage
+
+```tsx
+import { SampleComponent } from "@/components/extension/sample-component";
+```
+
+```tsx
+<SampleComponent
+	content="this a demo of the SampleComponent"
+/>
+```
+
+## Example
+
+### Form
+
+```tsx showLineNumbers {1 , 3 , 16-21  }
+
+{...}
+
+const SampleComponentVariant = ()=>{
+  return (
+     <SampleComponent content="variant" />
+  )
+}
+
+```
+
+<ComponentPreview name="sample-component-demo" />
+````
+
+Add to docs config:
+```ts
+// src/config/docs-config.ts
+
+export const docsConfig: DocsConfig[] = [
+  // ...
+  },
+  {
+    title: "Components",
+    pages: [
+      {
+        title: "Sample component",
+        path: "/docs/sample-component",
+      },
+    ],
+  },
+];
+
+```
+
+
+
+
 
 ## Builds
 
