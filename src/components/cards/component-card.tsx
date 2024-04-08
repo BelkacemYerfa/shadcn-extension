@@ -34,7 +34,7 @@ export const ComponentCard = ({ name }: ComponentCardProps) => {
   const componentName = name.replace("demo", "").split("-").join(" ");
 
   return (
-    <Card className="space-y-2 border-0 shadow-none ">
+    <Card className="space-y-2 border-0 shadow-none">
       <CardTitle>
         <Link
           href={`/docs/${componentName
@@ -50,7 +50,7 @@ export const ComponentCard = ({ name }: ComponentCardProps) => {
       </CardTitle>
       <CardContent className="relative h-60 dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] rounded-md p-3 flex items-center justify-center ring-1 ring-border overflow-hidden w-full">
         <FocusArea />
-        <div className=" mx-auto scale-75 w-full ">{Preview}</div>
+        <div className="mx-auto scale-75 w-full ">{Preview}</div>
       </CardContent>
     </Card>
   );

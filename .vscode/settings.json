@@ -111,7 +111,7 @@
   },
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": true,
-  "window.zoomLevel": 0.75,
+  "window.zoomLevel": 0,
   "cSpell.languageSettings": [],
   "rust-analyzer.debug.engineSettings": {}
 }

@@ -33,7 +33,7 @@ export const TreeItem = ({ elements }: TreeItemProps) => {
           {element.children && element.children?.length > 0 ? (
             <Folder
               element={element.name}
-              id={element.id}
+              value={element.id}
               isSelectable={element.isSelectable}
               className="px-px pr-1"
             >
@@ -46,8 +46,7 @@ export const TreeItem = ({ elements }: TreeItemProps) => {
           ) : (
             <File
               key={element.id}
-              id={element.id}
-              element={element.name}
+              value={element.id}
               isSelectable={element.isSelectable}
             >
               <span>{element?.name}</span>

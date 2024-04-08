@@ -23,6 +23,12 @@ import {
   useState,
 } from "react";
 
+interface BreadCrumbProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof buttonVariants> {
+  orientation?: "horizontal" | "vertical";
+}
+
 type BreadCrumbContextProps = {
   activeIndex: number;
   orientation: "horizontal" | "vertical";
@@ -33,7 +39,7 @@ type BreadCrumbContextProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   setTarget: (target: number) => void;
-} & VariantProps<typeof buttonVariants>;
+} & BreadCrumbProps;
 
 const BreadCrumbContext = createContext<BreadCrumbContextProps | null>(null);
 
@@ -45,18 +51,13 @@ const useBreadcrumb = () => {
   return context;
 };
 
-interface BreadCrumbProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof buttonVariants> {
-  orientation?: "horizontal" | "vertical";
-}
-
 // TODO: add support for orientation
 
 export const BreadCrumb = ({
   className,
   orientation = "horizontal",
   variant,
+  dir,
   size,
   children,
   ...props
@@ -82,7 +83,6 @@ export const BreadCrumb = ({
         const prevIndex = currentIndex < 0 ? length : currentIndex;
         setActiveIndex(value[prevIndex]);
       };
-      console.log("right");
 
       switch (e.key) {
         case "ArrowDown":
@@ -97,11 +97,19 @@ export const BreadCrumb = ({
           break;
         case "ArrowRight":
           if (orientation === "horizontal") {
+            if (dir === "rtl") {
+              movePrev();
+              return;
+            }
             moveNext();
           }
           break;
         case "ArrowLeft":
           if (orientation === "horizontal") {
+            if (dir === "rtl") {
+              moveNext();
+              return;
+            }
             movePrev();
           }
           break;
@@ -156,6 +164,7 @@ export const BreadCrumb = ({
           },
           className
         )}
+        dir={dir}
         {...props}
       >
         {children}
@@ -238,20 +247,21 @@ export const BreadCrumbSeparator = forwardRef<
   HTMLSpanElement,
   React.HTMLAttributes<HTMLSpanElement>
 >(({ className, children, ...props }, ref) => {
-  const { orientation } = useBreadcrumb();
+  const { orientation, dir } = useBreadcrumb();
   return (
     <span
       ref={ref}
       {...props}
-      className={cn("flex items-center justify-center size-4", {
-        "rotate-0": orientation === "horizontal",
-        "rotate-90": orientation === "vertical",
-      })}
+      dir={dir}
+      data-orientation={orientation}
+      className={cn(
+        "flex items-center justify-center size-4 data-[orientation='horizontal']:rotate-0 rtl:data-[orientation='horizontal']:rotate-180 data-[orientation='vertical']:rotate-90 "
+      )}
     >
       {children ? (
         children
       ) : (
-        <ChevronRight className={cn("h-4 w-4", className)} />
+        <ChevronRight className={cn("h-4 w-4  ", className)} />
       )}
       <span className="sr-only">next page</span>
     </span>
