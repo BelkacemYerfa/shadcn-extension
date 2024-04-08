@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "contentlayer-temp build && npm run build:registry && next build",
+    "build": "contentlayer2 build && npm run build:registry && next build",
     "start": "next start",
     "lint": "next lint",
     "build:test": "npm run typecheck && npm run build:registry && next build && next start -p 3001",
     "build:registry": "npx tsx --tsconfig ./src/script/tsconfig.scripts.json ./src/script/registry-builder.ts",
-    "typecheck": "contentlayer-temp build && tsc --noEmit",
+    "typecheck": "contentlayer2 build && tsc --noEmit",
+    "watch": "contentlayer2 dev && tsc --noEmit",
     "format": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
@@ -34,7 +35,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
-    "contentlayer-temp": "^0.4.4",
+    "contentlayer2": "^0.4.4",
     "date-fns": "^3.3.1",
     "embla-carousel": "^8.0.1",
     "embla-carousel-auto-scroll": "^8.0.1",
@@ -45,7 +46,7 @@
     "mdast-util-toc": "^7.0.0",
     "mini-svg-data-uri": "^1.4.4",
     "next": "^14.1.2",
-    "next-contentlayer-temp": "^0.4.4",
+    "next-contentlayer2": "^0.4.4",
     "next-themes": "^0.2.1",
     "posthog-js": "^1.116.5",
     "react": "^18",

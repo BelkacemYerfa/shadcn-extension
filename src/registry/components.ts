@@ -134,6 +134,12 @@ const examples: Registry = [
     files: ["example/carousel/carousel-indicator.tsx"],
   },
   {
+    name: "carousel-rtl-support",
+    type: "components:example",
+    registryDependencies: ["carousel"],
+    files: ["example/carousel/carousel-rtl-support.tsx"],
+  },
+  {
     name: "multi-select-state",
     type: "components:example",
     registryDependencies: ["multi-select"],
