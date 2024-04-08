@@ -131,7 +131,7 @@ Examples are similar to demos, but used to individually demonstrate different va
 
    ```ts
    // src/registry/default/components.ts
-   
+      
    const examples: Registry = [
      {
        name: "sample-component-content",
