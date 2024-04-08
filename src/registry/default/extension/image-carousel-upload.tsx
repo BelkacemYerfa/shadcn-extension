@@ -92,6 +92,7 @@ export function FileUploadCarouselProvider<T>({
         return [...(prev || []), fileWithPreview];
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [reSelectAll]
   );
 
@@ -112,6 +113,7 @@ export function FileUploadCarouselProvider<T>({
         return newPreview;
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [emblaMainApi, activeIndex]
   );
 
@@ -129,6 +131,7 @@ export function FileUploadCarouselProvider<T>({
         dropzoneState.inputRef.current?.click();
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [emblaMainApi, activeIndex, removeImageFromPreview]
   );
 
@@ -162,6 +165,7 @@ export function FileUploadCarouselProvider<T>({
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [reSelectAll]
   );
 
