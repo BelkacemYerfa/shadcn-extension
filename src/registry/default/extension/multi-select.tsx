@@ -19,11 +19,12 @@ import React, {
   useState,
 } from "react";
 
-type MultiSelectorProps = {
+interface MultiSelectorProps
+  extends React.ComponentPropsWithoutRef<typeof CommandPrimitive> {
   values: string[];
   onValuesChange: (value: string[]) => void;
   loop?: boolean;
-} & React.ComponentPropsWithoutRef<typeof CommandPrimitive>;
+}
 
 interface MultiSelectContextProps {
   value: string[];
