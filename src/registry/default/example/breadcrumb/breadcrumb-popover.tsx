@@ -34,10 +34,10 @@ const BreadCrumbTest = () => {
         </BreadCrumbTrigger>
         <BreadCrumbContent className="flex items-center flex-col p-1 max-w-40">
           <BreadCrumbItem index={3} className="px-2 size-8 w-full">
-            Settings
+            <Link href="/">Settings</Link>
           </BreadCrumbItem>
           <BreadCrumbItem index={4} className="px-2 size-8 w-full">
-            Account
+            <Link href="/">Account</Link>
           </BreadCrumbItem>
         </BreadCrumbContent>
       </BreadCrumbPopover>

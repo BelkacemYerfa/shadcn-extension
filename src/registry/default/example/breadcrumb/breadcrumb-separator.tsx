@@ -20,13 +20,13 @@ const BreadCrumbTest = () => {
         <Slash className="size-3 -rotate-[30deg]" />
       </BreadCrumbSeparator>
       <BreadCrumbItem className="px-2 h-7" index={1}>
-        Settings
+        <Link href="/">Settings</Link>
       </BreadCrumbItem>
       <BreadCrumbSeparator>
         <Slash className="size-3 -rotate-[30deg]" />
       </BreadCrumbSeparator>
       <BreadCrumbItem className="px-2 h-7" index={2}>
-        Account
+        <Link href="/">Account</Link>
       </BreadCrumbItem>
     </BreadCrumb>
   );

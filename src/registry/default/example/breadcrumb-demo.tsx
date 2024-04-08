@@ -19,11 +19,11 @@ const BreadCrumbTest = () => {
       </BreadCrumbItem>
       <BreadCrumbSeparator className="" />
       <BreadCrumbItem className="px-2 h-7" index={1}>
-        Settings
+        <Link href="/">Settings</Link>
       </BreadCrumbItem>
       <BreadCrumbSeparator />
       <BreadCrumbItem className="px-2 h-7" index={2}>
-        Account
+        <Link href="/">Account</Link>
       </BreadCrumbItem>
     </BreadCrumb>
   );
