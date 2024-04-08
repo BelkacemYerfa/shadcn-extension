@@ -134,6 +134,7 @@ export const BreadCrumb = ({
         setOpen(!open);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [activeIndex, value, prevValue]
   );
 
@@ -223,6 +224,7 @@ export const BreadCrumbItem = forwardRef<
     return () => {
       onPrevValueChange(value);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, onValueChange]);
 
   return (
@@ -285,6 +287,7 @@ export const BreadCrumbEllipsis = forwardRef<
       const arr = [...prev, index];
       return arr.sort((a, b) => Number(a) - Number(b));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, onValueChange]);
   return (
     <span
