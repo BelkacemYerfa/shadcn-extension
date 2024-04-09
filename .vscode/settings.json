@@ -40,9 +40,15 @@
     "source.fixAll.eslint": "always"
   },
   "reccomendations": [
-    "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
-    "stylelint.vscode-stylelint",
-    "streetsidesoftware.code-spell-checker"
-  ]
+    "deque-systems.vscode-axe-linter",
+    "esbenp.prettier-vscode",
+    "github.vscode-pull-request-github",
+    "oouo-diogo-perdigao.docthis",
+    "streetsidesoftware.code-spell-checker",
+    "suhelmakkad.shadcn-ui",
+    "unifiedjs.vscode-mdx",
+    "usernamehw.errorlens"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
