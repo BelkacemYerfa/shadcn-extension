@@ -61,6 +61,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(() => import("@/registry/default/extension/image-carousel-upload.tsx")),
       files: ["src/registry/default/extension/image-carousel-upload.tsx"],
     },
+    "smart-datetime-input": {
+      name: "smart-datetime-input",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(() => import("@/registry/default/extension/smart-datetime-input.tsx")),
+      files: ["src/registry/default/extension/smart-datetime-input.tsx"],
+    },
     "tree-view-demo": {
       name: "tree-view-demo",
       type: "components:demo",
@@ -102,6 +109,13 @@ export const Index: Record<string, any> = {
       registryDependencies: ["breadcrumb"],
       component: React.lazy(() => import("@/registry/default/example/breadcrumb-demo.tsx")),
       files: ["src/registry/default/example/breadcrumb-demo.tsx"],
+    },
+    "smart-datetime-input-demo": {
+      name: "smart-datetime-input-demo",
+      type: "components:demo",
+      registryDependencies: ["smart-datetime-input"],
+      component: React.lazy(() => import("@/registry/default/example/smart-datetime-input-demo.tsx")),
+      files: ["src/registry/default/example/smart-datetime-input-demo.tsx"],
     },
     "tree-view-builtin-indicator": {
       name: "tree-view-builtin-indicator",
@@ -235,6 +249,13 @@ export const Index: Record<string, any> = {
       registryDependencies: ["image-carousel-upload"],
       component: React.lazy(() => import("@/registry/default/example/image-carousel-upload-example.tsx")),
       files: ["src/registry/default/example/image-carousel-upload-example.tsx"],
+    },
+    "smart-datetime-input-zod": {
+      name: "smart-datetime-input-zod",
+      type: "components:example",
+      registryDependencies: ["smart-datetime-input"],
+      component: React.lazy(() => import("@/registry/default/example/smart-datetime-input/smart-datetime-input-zod.tsx")),
+      files: ["src/registry/default/example/smart-datetime-input/smart-datetime-input-zod.tsx"],
     },
   },
 }

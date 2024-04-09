@@ -49,6 +49,12 @@ const extension: Registry = [
     dependencies: ["react-dropzone", "embla-carousel-react", "embla-carousel"],
     files: ["extension/image-carousel-upload.tsx"],
   },
+  {
+    name: "smart-datetime-input",
+    type: "components:extension",
+    dependencies: ["chrono-node"],
+    files: ["extension/smart-datetime-input.tsx"],
+  },
 ];
 
 const demos: Registry = [
@@ -87,6 +93,12 @@ const demos: Registry = [
     type: "components:demo",
     registryDependencies: ["breadcrumb"],
     files: ["example/breadcrumb-demo.tsx"],
+  },
+  {
+    name: "smart-datetime-input-demo",
+    type: "components:demo",
+    registryDependencies: ["smart-datetime-input"],
+    files: ["example/smart-datetime-input-demo.tsx"],
   },
 ];
 
@@ -206,6 +218,12 @@ const examples: Registry = [
     type: "components:example",
     registryDependencies: ["image-carousel-upload"],
     files: ["example/image-carousel-upload-example.tsx"],
+  },
+  {
+    name: "smart-datetime-input-zod",
+    type: "components:example",
+    registryDependencies: ["smart-datetime-input"],
+    files: ["example/smart-datetime-input/smart-datetime-input-zod.tsx"],
   },
 ];
 

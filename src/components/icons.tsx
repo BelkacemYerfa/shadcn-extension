@@ -1,8 +1,10 @@
 import {
   AlertTriangle,
   Bell,
+  Clock,
   Info,
   LucideProps,
+  Hexagon,
   TextCursorInput,
 } from "lucide-react";
 
@@ -167,6 +169,7 @@ export const Icons = {
   ),
   Sonner: (props: LucideProps) => <Bell {...props} />,
   Devfolioco: (props: LucideProps) => <TextCursorInput {...props} />,
+  Npmjs: (props: LucideProps) => <Hexagon {...props} />,
 };
 
 export const MdxIcons = {
