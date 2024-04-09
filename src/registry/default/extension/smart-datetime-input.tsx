@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import * as chrono from "chrono-node";
+import { parseDate } from "chrono-node";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
  */
 export const parseDateTime = (str: Date | string) => {
   if (str instanceof Date) return str;
-  return chrono.parseDate(str);
+  return parseDate(str);
 };
 
 /**
@@ -62,6 +62,10 @@ export const formatDateTime = (datetime: Date | string) => {
 const inputBase =
   "bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
+// @source: https://www.perplexity.ai/search/in-javascript-how-RfI7fMtITxKr5c.V9Lv5KA#1
+const naturalInputValidationPattern = // use this pattern to validate the transformed date string
+  "^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$";
+
 const NaturalLanguageInput = React.forwardRef<
   HTMLInputElement,
   {
@@ -71,10 +75,6 @@ const NaturalLanguageInput = React.forwardRef<
     disabled?: boolean;
   }
 >(({ placeholder, value, onChange }, ref) => {
-  // @source: https://www.perplexity.ai/search/in-javascript-how-RfI7fMtITxKr5c.V9Lv5KA#1
-  const naturalInputValidationPattern = // use this pattern to validate the transformed date string
-    "^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$";
-
   const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
   return (
     <Input
