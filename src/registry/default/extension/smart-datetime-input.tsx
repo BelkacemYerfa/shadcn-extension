@@ -3,7 +3,9 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import * as chrono from "chrono-node";
+import { Calendar } from "lucide-react";
 import React, { useState } from "react";
+import { Button } from "react-day-picker";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -102,7 +104,6 @@ const DateTimeLocalInput = React.forwardRef<
   }
 >(({ name, value, onChange }, ref) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
-
   React.useEffect(() => {
     // ref is either a function or a ref object
     if (ref) {
@@ -118,26 +119,28 @@ const DateTimeLocalInput = React.forwardRef<
 
   const _name = name ?? "expiresAt";
   return (
-    <Input
-      ref={ref}
-      type="datetime-local"
-      id={_name}
-      name={_name}
-      value={value ? getDateTimeLocal(value) : ""}
-      onChange={(e) => {
-        const expiryDate = new Date(e.target.value);
-        onChange(expiryDate);
-        // set the formatted date string in the text input field to keep them in sync
-        if (inputRef.current) {
-          inputRef.current.value = formatDateTime(expiryDate);
-        }
-      }}
-      // this input field is hidden and the width is restricted to only show the icon.
-      className={cn(
-        "flex justify-end w-[40px] bg-transparent border border-input text-gray-500",
-        inputBase
-      )}
-    />
+    <div className="group">
+      <Input
+        tabIndex={-1} // remove from tab order
+        ref={ref}
+        type="datetime-local"
+        id={_name}
+        name={_name}
+        value={value ? getDateTimeLocal(value) : ""}
+        onChange={(e) => {
+          const expiryDate = new Date(e.target.value);
+          onChange(expiryDate);
+          // set the formatted date string in the text input field to keep them in sync
+          if (inputRef.current) {
+            inputRef.current.value = formatDateTime(expiryDate);
+          }
+        }}
+        className={cn(
+          "peer flex justify-end w-[44px] bg-transparent text-gray-500 z-[-1]",
+          inputBase
+        )}
+      />
+    </div>
   );
 });
 DateTimeLocalInput.displayName = "DateTimeLocalInput";
@@ -181,15 +184,15 @@ export const SmartDatetimeInput = React.forwardRef<
             className
           )}
         >
-          <NaturalLanguageInput
-            placeholder={placeholder}
+          <DateTimeLocalInput
+            name={name}
             value={dateTime}
             onChange={handleDateChange}
             disabled={disabled}
             ref={ref}
           />
-          <DateTimeLocalInput
-            name={name}
+          <NaturalLanguageInput
+            placeholder={placeholder}
             value={dateTime}
             onChange={handleDateChange}
             disabled={disabled}
