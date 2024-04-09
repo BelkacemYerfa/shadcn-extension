@@ -1,8 +1,9 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import * as chrono from "chrono-node";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -55,7 +56,8 @@ export const formatDateTime = (datetime: Date | string) => {
   });
 };
 
-const inputBase = "focus:outline-none focus:ring-0 sm:text-sm";
+const inputBase =
+  "focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
 const NaturalLanguageInput = React.forwardRef<
   HTMLInputElement,
@@ -63,14 +65,16 @@ const NaturalLanguageInput = React.forwardRef<
     placeholder?: string;
     value?: Date;
     onChange: (date: Date) => void;
+    disabled?: boolean;
   }
 >(({ placeholder, value, onChange }, ref) => {
   const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
   return (
-    <input
+    <Input
       ref={ref}
       type="text"
       placeholder={_placeholder}
+      pattern="^[A-Z][a-z]{2}\s\d{1,2},\s\d{4},\s\d{1,2}:\d{2}\s[AP]M$"
       defaultValue={value ? formatDateTime(value) : ""}
       onBlur={(e) => {
         // parse the date string when the input field loses focus
@@ -82,7 +86,7 @@ const NaturalLanguageInput = React.forwardRef<
           }
         }
       }}
-      className={cn("px-1 flex-1 border-none bg-transparent", inputBase)}
+      className={cn("px-2 mr-1 flex-1 border-none bg-transparent", inputBase)}
     />
   );
 });
@@ -94,6 +98,7 @@ const DateTimeLocalInput = React.forwardRef<
     value?: Date;
     onChange: (date: Date) => void;
     name?: string;
+    disabled?: boolean;
   }
 >(({ name, value, onChange }, ref) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -113,31 +118,26 @@ const DateTimeLocalInput = React.forwardRef<
 
   const _name = name ?? "expiresAt";
   return (
-    <>
-      <Label htmlFor={_name} className="sr-only">
-        Expires At
-      </Label>
-      <Input
-        ref={ref}
-        type="datetime-local"
-        id={_name}
-        name={_name}
-        value={value ? getDateTimeLocal(value) : ""}
-        onChange={(e) => {
-          const expiryDate = new Date(e.target.value);
-          onChange(expiryDate);
-          // set the formatted date string in the text input field to keep them in sync
-          if (inputRef.current) {
-            inputRef.current.value = formatDateTime(expiryDate);
-          }
-        }}
-        // this input field is hidden and the width is restricted to only show the icon.
-        className={cn(
-          "flex justify-end w-[40px] border-none bg-transparent text-gray-500",
-          inputBase
-        )}
-      />
-    </>
+    <Input
+      ref={ref}
+      type="datetime-local"
+      id={_name}
+      name={_name}
+      value={value ? getDateTimeLocal(value) : ""}
+      onChange={(e) => {
+        const expiryDate = new Date(e.target.value);
+        onChange(expiryDate);
+        // set the formatted date string in the text input field to keep them in sync
+        if (inputRef.current) {
+          inputRef.current.value = formatDateTime(expiryDate);
+        }
+      }}
+      // this input field is hidden and the width is restricted to only show the icon.
+      className={cn(
+        "flex justify-end w-[40px] bg-transparent border border-input text-gray-500",
+        inputBase
+      )}
+    />
   );
 });
 DateTimeLocalInput.displayName = "DateTimeLocalInput";
@@ -145,46 +145,59 @@ DateTimeLocalInput.displayName = "DateTimeLocalInput";
 export const SmartDatetimeInput = React.forwardRef<
   HTMLInputElement,
   {
-    initialDate?: Date;
+    name?: string;
+    placeholder?: string;
+    defaultValue?: Date;
+    value?: Date;
     onChange: (date: Date) => void;
     className?: string;
+    disabled?: boolean;
     options?: Omit<
       React.InputHTMLAttributes<HTMLInputElement>,
       "type" | "ref" | "value" | "defaultValue" | "onBlur"
     >;
   }
->(({ className, initialDate, onChange }, ref) => {
-  const [dateTime, setDateTime] = useState<Date | undefined>(
-    initialDate ?? undefined
-  );
+>(
+  (
+    { className, name, defaultValue, value, onChange, placeholder, disabled },
+    ref
+  ) => {
+    const [dateTime, setDateTime] = useState<Date | undefined>(
+      defaultValue ?? value ?? undefined
+    );
 
-  const handleDateChange = (date: Date) => {
-    setDateTime(date);
-    onChange(date);
-  };
+    const handleDateChange = (date: Date) => {
+      setDateTime(date);
+      onChange(date);
+    };
 
-  return (
-    <div className="flex items-center justify-center p-8">
-      <div
-        className={cn(
-          "flex w-full p-1 pl-3 items-center justify-between rounded-md border transition-all",
-          "focus-within:border-gray-800 focus-within:outline-none focus-within:ring-1 focus-within:ring-gray-500",
-          className
-        )}
-      >
-        <NaturalLanguageInput
-          value={dateTime}
-          onChange={handleDateChange}
-          ref={ref}
-        />
-        <DateTimeLocalInput
-          name={"test"}
-          value={dateTime}
-          onChange={handleDateChange}
-          ref={ref}
-        />
+    return (
+      <div className="flex items-center justify-center">
+        <div
+          className={cn(
+            "flex w-full p-1 items-center justify-between rounded-md border transition-all",
+            "focus-within:outline-none focus:outline-none focus:ring-0",
+            "placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+            className
+          )}
+        >
+          <NaturalLanguageInput
+            placeholder={placeholder}
+            value={dateTime}
+            onChange={handleDateChange}
+            disabled={disabled}
+            ref={ref}
+          />
+          <DateTimeLocalInput
+            name={name}
+            value={dateTime}
+            onChange={handleDateChange}
+            disabled={disabled}
+            ref={ref}
+          />
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 SmartDatetimeInput.displayName = "DatetimeInput";
