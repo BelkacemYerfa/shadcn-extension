@@ -63,7 +63,8 @@ const inputBase =
   "bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
 // @source: https://www.perplexity.ai/search/in-javascript-how-RfI7fMtITxKr5c.V9Lv5KA#1
-const naturalInputValidationPattern = // use this pattern to validate the transformed date string
+// use this pattern to validate the transformed date string for the natural language input
+const naturalInputValidationPattern =
   "^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$";
 
 const NaturalLanguageInput = React.forwardRef<
@@ -76,22 +77,23 @@ const NaturalLanguageInput = React.forwardRef<
   }
 >(({ placeholder, value, onChange }, ref) => {
   const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
+
+  const handleParse = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // parse the date string when the input field loses focus
+    const parsedDateTime = parseDateTime(e.target.value);
+    if (parsedDateTime) {
+      onChange(parsedDateTime);
+      e.target.value = formatDateTime(parsedDateTime);
+    }
+  };
+
   return (
     <Input
       ref={ref}
       type="text"
       placeholder={_placeholder}
       defaultValue={value ? formatDateTime(value) : ""}
-      onBlur={(e) => {
-        // parse the date string when the input field loses focus
-        if (e.target.value.length > 0) {
-          const parsedDateTime = parseDateTime(e.target.value);
-          if (parsedDateTime) {
-            onChange(parsedDateTime);
-            e.target.value = formatDateTime(parsedDateTime);
-          }
-        }
-      }}
+      onBlur={handleParse}
       className={cn("px-2 mr-1 flex-1 border-none", inputBase)}
     />
   );
@@ -132,6 +134,15 @@ const DateTimeLocalInput = React.forwardRef<
     };
   }, [ref]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const expiryDate = new Date(e.target.value);
+    onChange(expiryDate);
+    // set the formatted date string in the text input field to keep them in sync
+    if (inputRef.current) {
+      inputRef.current.value = formatDateTime(expiryDate);
+    }
+  };
+
   const _name = name ?? "expiresAt";
   return (
     <div className="group">
@@ -142,14 +153,7 @@ const DateTimeLocalInput = React.forwardRef<
         id={_name}
         name={_name}
         value={value ? getDateTimeLocal(value) : ""}
-        onChange={(e) => {
-          const expiryDate = new Date(e.target.value);
-          onChange(expiryDate);
-          // set the formatted date string in the text input field to keep them in sync
-          if (inputRef.current) {
-            inputRef.current.value = formatDateTime(expiryDate);
-          }
-        }}
+        onChange={handleChange}
         className={cn(
           "peer flex justify-end w-[44px] text-gray-500 z-[-1]",
           inputBase
