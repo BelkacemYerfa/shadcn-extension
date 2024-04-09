@@ -1,6 +1,6 @@
-import { FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import * as chrono from "chrono-node";
 import React, { useRef, useState } from "react";
 
@@ -55,6 +55,8 @@ export const formatDateTime = (datetime: Date | string) => {
   });
 };
 
+const inputBase = "focus:outline-none focus:ring-0 sm:text-sm";
+
 const NaturalLanguageInput = React.forwardRef<
   HTMLInputElement,
   {
@@ -80,7 +82,7 @@ const NaturalLanguageInput = React.forwardRef<
           }
         }
       }}
-      className="px-1 flex-1 border-none bg-transparent focus:outline-none focus:ring-0 sm:text-sm"
+      className={cn("px-1 flex-1 border-none bg-transparent", inputBase)}
     />
   );
 });
@@ -129,9 +131,11 @@ const DateTimeLocalInput = React.forwardRef<
             inputRef.current.value = formatDateTime(expiryDate);
           }
         }}
-        // we intentionally make the datetime-local input field with a width of 40px
-        // to only show the calendar icon and hide the input field
-        className="flex justify-end w-[40px] border-none bg-transparent  text-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
+        // this input field is hidden and the width is restricted to only show the icon.
+        className={cn(
+          "flex justify-end w-[40px] border-none bg-transparent text-gray-500",
+          inputBase
+        )}
       />
     </>
   );
@@ -143,33 +147,40 @@ export const SmartDatetimeInput = React.forwardRef<
   {
     initialDate?: Date;
     onChange: (date: Date) => void;
+    className?: string;
     options?: Omit<
       React.InputHTMLAttributes<HTMLInputElement>,
       "type" | "ref" | "value" | "defaultValue" | "onBlur"
     >;
   }
->(({ initialDate, onChange }, ref) => {
+>(({ className, initialDate, onChange }, ref) => {
   const [dateTime, setDateTime] = useState<Date | undefined>(
     initialDate ?? undefined
   );
 
-  const handleChange = (date: Date) => {
+  const handleDateChange = (date: Date) => {
     setDateTime(date);
     onChange(date);
   };
 
   return (
     <div className="flex items-center justify-center p-8">
-      <div className="flex w-full p-1 pl-3 max-w-sm items-center justify-between rounded-md border transition-all focus-within:border-gray-800 focus-within:outline-none focus-within:ring-1 focus-within:ring-gray-500">
+      <div
+        className={cn(
+          "flex w-full p-1 pl-3 items-center justify-between rounded-md border transition-all",
+          "focus-within:border-gray-800 focus-within:outline-none focus-within:ring-1 focus-within:ring-gray-500",
+          className
+        )}
+      >
         <NaturalLanguageInput
           value={dateTime}
-          onChange={handleChange}
+          onChange={handleDateChange}
           ref={ref}
         />
         <DateTimeLocalInput
           name={"test"}
           value={dateTime}
-          onChange={handleChange}
+          onChange={handleDateChange}
           ref={ref}
         />
       </div>

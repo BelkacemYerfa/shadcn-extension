@@ -14,7 +14,7 @@ export default function ExamplePage() {
         placeholder="enter your used tech"
       />
 
-      <SmartDatetimeInput onChange={console.log} />
+        <SmartDatetimeInput onChange={console.log} />
     </main>
   );
 }
