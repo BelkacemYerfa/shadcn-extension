@@ -57,6 +57,10 @@ export const docsConfig: DocsConfig[] = [
         path: "/docs/otp-input",
       },
       {
+        title: "Smart DateTime input",
+        path: "/docs/smart-datetime-input",
+      },
+      {
         title: "File upload",
         path: "/docs/file-upload",
       },

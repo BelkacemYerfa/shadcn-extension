@@ -94,6 +94,12 @@ const demos: Registry = [
     registryDependencies: ["breadcrumb"],
     files: ["example/breadcrumb-demo.tsx"],
   },
+  {
+    name: "smart-datetime-input-demo",
+    type: "components:demo",
+    registryDependencies: ["smart-datetime-input"],
+    files: ["example/smart-datetime-input-demo.tsx"],
+  },
 ];
 
 const examples: Registry = [
@@ -212,6 +218,12 @@ const examples: Registry = [
     type: "components:example",
     registryDependencies: ["image-carousel-upload"],
     files: ["example/image-carousel-upload-example.tsx"],
+  },
+  {
+    name: "smart-datetime-input-zod",
+    type: "components:example",
+    registryDependencies: ["smart-datetime-input"],
+    files: ["example/smart-datetime-input/smart-datetime-input-zod.tsx"],
   },
 ];
 
