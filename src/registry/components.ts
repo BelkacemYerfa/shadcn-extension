@@ -49,6 +49,12 @@ const extension: Registry = [
     dependencies: ["react-dropzone", "embla-carousel-react", "embla-carousel"],
     files: ["extension/image-carousel-upload.tsx"],
   },
+  {
+    name: "smart-datetime-input",
+    type: "components:extension",
+    dependencies: ["chrono-node"],
+    files: ["extension/smart-datetime-input.tsx"],
+  },
 ];
 
 const demos: Registry = [
