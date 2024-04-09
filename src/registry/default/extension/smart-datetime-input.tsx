@@ -1,11 +1,10 @@
 "use client";
 
+import React from "react";
+import * as chrono from "chrono-node";
+
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import * as chrono from "chrono-node";
-import { Calendar } from "lucide-react";
-import React, { useState } from "react";
-import { Button } from "react-day-picker";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -27,9 +26,10 @@ export const parseDateTime = (str: Date | string) => {
 
 /**
  * Converts a given timestamp or the current date and time to a string representation in the local time zone.
+ * format: `HH:mm`, adjusted for the local time zone.
  *
  * @param timestamp {Date | string}
- * @returns A string representation of the timestamp in the format `HH:mm`, adjusted for the local time zone.
+ * @returns A string representation of the timestamp
  */
 export const getDateTimeLocal = (timestamp?: Date): string => {
   const d = timestamp ? new Date(timestamp) : new Date();
@@ -43,9 +43,10 @@ export const getDateTimeLocal = (timestamp?: Date): string => {
 
 /**
  * Formats a given date and time object or string into a human-readable string representation.
+ * "MMM D, YYYY h:mm A" (e.g. "Jan 1, 2023 12:00 PM").
  *
  * @param datetime - {Date | string}
- * @returns A string representation of the date and time in the format "MMM D, YYYY h:mm A" (e.g. "Jan 1, 2023 12:00 PM").
+ * @returns A string representation of the date and time
  */
 export const formatDateTime = (datetime: Date | string) => {
   return new Date(datetime).toLocaleTimeString("en-US", {
@@ -59,7 +60,7 @@ export const formatDateTime = (datetime: Date | string) => {
 };
 
 const inputBase =
-  "focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
+  "bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
 const NaturalLanguageInput = React.forwardRef<
   HTMLInputElement,
@@ -70,13 +71,16 @@ const NaturalLanguageInput = React.forwardRef<
     disabled?: boolean;
   }
 >(({ placeholder, value, onChange }, ref) => {
+  // @source: https://www.perplexity.ai/search/in-javascript-how-RfI7fMtITxKr5c.V9Lv5KA#1
+  const naturalInputValidationPattern = // use this pattern to validate the transformed date string
+    "^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$";
+
   const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
   return (
     <Input
       ref={ref}
       type="text"
       placeholder={_placeholder}
-      pattern="^[A-Z][a-z]{2}\s\d{1,2},\s\d{4},\s\d{1,2}:\d{2}\s[AP]M$"
       defaultValue={value ? formatDateTime(value) : ""}
       onBlur={(e) => {
         // parse the date string when the input field loses focus
@@ -88,7 +92,7 @@ const NaturalLanguageInput = React.forwardRef<
           }
         }
       }}
-      className={cn("px-2 mr-1 flex-1 border-none bg-transparent", inputBase)}
+      className={cn("px-2 mr-1 flex-1 border-none", inputBase)}
     />
   );
 });
@@ -115,6 +119,17 @@ const DateTimeLocalInput = React.forwardRef<
         ref.current = inputRef.current;
       }
     }
+
+    return () => {
+      // cleanup
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(null);
+        } else {
+          ref.current = null;
+        }
+      }
+    };
   }, [ref]);
 
   const _name = name ?? "expiresAt";
@@ -136,7 +151,7 @@ const DateTimeLocalInput = React.forwardRef<
           }
         }}
         className={cn(
-          "peer flex justify-end w-[44px] bg-transparent text-gray-500 z-[-1]",
+          "peer flex justify-end w-[44px] text-gray-500 z-[-1]",
           inputBase
         )}
       />
@@ -165,7 +180,7 @@ export const SmartDatetimeInput = React.forwardRef<
     { className, name, defaultValue, value, onChange, placeholder, disabled },
     ref
   ) => {
-    const [dateTime, setDateTime] = useState<Date | undefined>(
+    const [dateTime, setDateTime] = React.useState<Date | undefined>(
       defaultValue ?? value ?? undefined
     );
 
