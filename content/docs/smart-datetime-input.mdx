@@ -1,0 +1,99 @@
+---
+title: Smart DateTime Input
+description: A natural language date and time input component.
+links:
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/input
+  - title: chrono-node
+    url: https://www.npmjs.com/package/chrono-node
+---
+
+
+<ComponentPreview name="smart-datetime-input-demo" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+  <TabsList>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="manual">
+    <Steps>
+      <Step>Run the following command:</Step>
+
+        ```bash
+        npx shadcn@latest add input
+        npm i chrono-node
+        ```
+
+      <Step>Copy and paste the following code into your project.</Step>
+
+      <ComponentSource name="smart-datetime-input"/>
+
+    </Steps>
+
+  </TabsContent>
+  <TabsContent value="cli">
+
+    <Callout className="mt-6">
+      Currently there is no CLI command for this component. since we haven't created
+      it yet.
+    </Callout>
+
+  </TabsContent>
+
+</Tabs>
+
+## Usage
+
+```tsx
+import { SmartDateTimeInput } from "@/components/extension/smart-date-time-input";
+```
+
+```tsx
+  <SmartDateTimeInput
+    name="datetime"
+    value={Date.now()}
+    onChange={(e) => setValue(e.target.value)}
+    placeholder="e.g. tomorrow at 3pm"
+  />
+```
+
+## Example
+
+## Form
+```tsx showLineNumbers {1 , 3 , 16-23  }
+"use client";
+
+import { SmartDateTimeInput } from "@/components/extension/smart-datetime-input";
+
+{...}
+
+const SmartDateTimeInput = ()=>{
+  return (
+     <Form {...form}>
+       {...}
+       <FormField
+          control={form.control}
+          name="otp"
+          render={({ field }) => (
+            {...}
+            <SmartDateTimeInput
+              name="datetime"
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="e.g. tomorrow at 3pm"
+            />
+            {...}
+          )} />
+        {...}
+     </Form>
+  )
+}
+
+```
+
+<ComponentPreview name="smart-datetime-input-zod" />

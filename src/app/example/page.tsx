@@ -1,5 +1,6 @@
 "use client";
 
+import { SmartDatetimeInput } from "@/registry/default/extension/smart-datetime-input";
 import { TagsInput } from "@/registry/default/extension/tags-input";
 import { useState } from "react";
 
@@ -12,6 +13,8 @@ export default function ExamplePage() {
         onValueChange={setValues}
         placeholder="enter your used tech"
       />
+
+        <SmartDatetimeInput onChange={console.log} />
     </main>
   );
 }
