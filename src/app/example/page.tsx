@@ -1,7 +1,7 @@
 "use client";
 
-import { SmartDatetimeInput } from "@/registry/default/extension/smart-datetime-input";
 import { TagsInput } from "@/registry/default/extension/tags-input";
+import { DateTimePicker } from "@/registry/default/extension/time-picker";
 import { useState } from "react";
 
 export default function ExamplePage() {
@@ -14,7 +14,7 @@ export default function ExamplePage() {
         placeholder="enter your used tech"
       />
 
-        <SmartDatetimeInput onChange={console.log} />
+      <DateTimePicker date={new Date()} onChange={console.log} />
     </main>
   );
 }
