@@ -49,5 +49,6 @@
     "suhelmakkad.shadcn-ui",
     "unifiedjs.vscode-mdx",
     "usernamehw.errorlens"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
