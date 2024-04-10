@@ -1,16 +1,11 @@
-"use client";
 import React from "react";
 import { DatetimePicker } from "../extension/datetime-picker";
 
-const DatetimePickerDemo = () => {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-
+export const DatetimePickerDemo = () => {
   return (
     <DatetimePicker
-      config={[
-        ["days", "months", "years"],
-        ["hours", "minutes", "am/pm"],
-      ]}
+      initialDate={new Date()}
+      format={[["months", "days", "years"], []]}
     />
   );
 };
