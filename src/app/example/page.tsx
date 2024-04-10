@@ -1,7 +1,6 @@
 "use client";
 
 import { TagsInput } from "@/registry/default/extension/tags-input";
-import { DateTimePicker } from "@/registry/default/extension/time-picker";
 import { useState } from "react";
 
 export default function ExamplePage() {
@@ -13,8 +12,6 @@ export default function ExamplePage() {
         onValueChange={setValues}
         placeholder="enter your used tech"
       />
-
-      <DateTimePicker date={new Date()} onChange={console.log} />
     </main>
   );
 }

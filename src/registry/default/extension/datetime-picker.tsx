@@ -1,10 +1,14 @@
 "use client";
 import React from "react";
-import { useTimescape } from "timescape/react";
+import { DateType, useTimescape } from "timescape/react";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 // @source: https://github.com/dan-lee/timescape?tab=readme-ov-file
+
+const timePickerInputBase =
+  "p-1 inline tabular-nums h-fit border-none outline-none select-none content-box caret-transparent rounded-sm min-w-8 text-center focus:bg-foreground/20 focus-visible:ring-0 focus-visible:outline-none";
+const timePickerSeparatorBase = "text-xs text-gray-400";
 
 type ConfigDates = "days" | "months" | "years";
 type ConfigTime = "hours" | "minutes" | "seconds" | "am/pm";
@@ -16,33 +20,29 @@ type DateTimeConfigDefaults = [
 ];
 
 const DEFAULTS = [
-  ["days", "months", "years"],
+  ["months", "days", "years"],
   ["hours", "minutes", "seconds", "am/pm"],
 ] as DateTimeConfigDefaults;
 
-interface DateTimePickerProps {
-  date: Date;
-  onChange: (date: Date) => void;
-  className?: string;
-  config?: DateTimeConfigDefaults;
-}
-
-const timePickerInputBase =
-  "p-1 inline tabular-nums h-fit border-none outline-none select-none content-box caret-transparent rounded-sm min-w-8 text-center focus:bg-foreground/20 focus-visible:ring-0 focus-visible:outline-none";
-const timePickerSeparatorBase = "text-xs text-gray-400";
-export const DateTimePicker = ({
-  className,
+const DatetimeInputs = ({
   date,
+  inputs,
+  className,
   onChange,
-  config = DEFAULTS,
-}: DateTimePickerProps) => {
-  const { getRootProps, getInputProps, options, update } = useTimescape({
-    date: date ?? new Date(),
+}: {
+  inputs: DateTimeConfigDefaults;
+  className?: string;
+  date?: Date;
+  onChange?: (date: Date) => void;
+}) => {
+  const { getRootProps, getInputProps } = useTimescape({
+    date,
     onChangeDate: (nextDate) => {
-      nextDate && onChange(nextDate);
+      if (onChange && nextDate) onChange(nextDate);
     },
     hour12: true,
   });
+
   return (
     <div
       className={cn(
@@ -52,8 +52,8 @@ export const DateTimePicker = ({
       )}
       {...getRootProps()}
     >
-      {!!config.length
-        ? config.map((group, i) => (
+      {!!inputs?.length
+        ? inputs.map((group, i) => (
             <React.Fragment key={i === 0 ? "dates" : "times"}>
               {!!group?.length
                 ? group.map((unit, j) => (
@@ -77,7 +77,7 @@ export const DateTimePicker = ({
                     </React.Fragment>
                   ))
                 : null}
-              {config.length > 1 && !i && (
+              {inputs && inputs.length > 1 && !i && (
                 // date-time separator
                 <span
                   className={cn(timePickerSeparatorBase, "opacity-30 text-xl")}
@@ -89,5 +89,21 @@ export const DateTimePicker = ({
           ))
         : null}
     </div>
+  );
+};
+
+export const DatetimePicker = (props: {
+  config?: DateTimeConfigDefaults;
+  className?: string;
+}) => {
+  const [datetime, setDatetime] = React.useState<Date | undefined>();
+  const _config = props.config ?? DEFAULTS;
+  return (
+    <DatetimeInputs
+      inputs={_config}
+      className={props.className}
+      date={datetime}
+      onChange={setDatetime}
+    />
   );
 };

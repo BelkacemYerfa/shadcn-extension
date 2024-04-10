@@ -1,0 +1,65 @@
+---
+title: Datetime Picker
+description: A customized datetime picker component.
+links:
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/input
+  - title: timescape
+    url: https://www.npmjs.com/package/timescape
+---
+
+<ComponentPreview name="datetime-picker-demo" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+{" "}
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+  <TabsContent value="manual">
+    <Steps>
+      <Step>Run the following command:</Step>
+
+        ```bash
+        npx shadcn@latest add input
+        npm i timescape
+        ```
+
+      <Step>Copy and paste the following code into your project.</Step>
+
+      <ComponentSource name="datetime-picker"/>
+
+    </Steps>
+
+  </TabsContent>
+  <TabsContent value="cli">
+
+    <Callout className="mt-6">
+      Currently there is no CLI command for this component. since we haven't created
+      it yet.
+    </Callout>
+
+  </TabsContent>
+
+</Tabs>
+
+## Usage
+
+```tsx
+import { DatetimePicker } from "@/components/extension/datetime-picker";
+```
+
+```tsx
+<DatetimePicker
+  value={Date.now()}
+  onChange={(date) => console.log(date)}
+  config={
+    (["months", "days", "years"], ["hours", "minutes", "seconds", "am/pm"])
+  }
+/>
+```

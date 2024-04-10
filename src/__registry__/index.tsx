@@ -68,6 +68,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(() => import("@/registry/default/extension/smart-datetime-input.tsx")),
       files: ["src/registry/default/extension/smart-datetime-input.tsx"],
     },
+    "datetime-picker": {
+      name: "datetime-picker",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(() => import("@/registry/default/extension/datetime-picker.tsx")),
+      files: ["src/registry/default/extension/datetime-picker.tsx"],
+    },
     "tree-view-demo": {
       name: "tree-view-demo",
       type: "components:demo",
@@ -116,6 +123,13 @@ export const Index: Record<string, any> = {
       registryDependencies: ["smart-datetime-input"],
       component: React.lazy(() => import("@/registry/default/example/smart-datetime-input-demo.tsx")),
       files: ["src/registry/default/example/smart-datetime-input-demo.tsx"],
+    },
+    "datetime-picker-demo": {
+      name: "datetime-picker-demo",
+      type: "components:demo",
+      registryDependencies: ["datetime-picker"],
+      component: React.lazy(() => import("@/registry/default/example/datetime-picker-demo.tsx")),
+      files: ["src/registry/default/example/datetime-picker-demo.tsx"],
     },
     "tree-view-builtin-indicator": {
       name: "tree-view-builtin-indicator",
