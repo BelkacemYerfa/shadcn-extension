@@ -49,5 +49,6 @@
     "suhelmakkad.shadcn-ui",
     "unifiedjs.vscode-mdx",
     "usernamehw.errorlens"
-  ]
+  ],
+  "cSpell.words": ["nums", "timescape"]
 }
