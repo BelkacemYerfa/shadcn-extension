@@ -13,8 +13,8 @@ export default function ExamplePage() {
         onValueChange={setValues}
         placeholder="enter your used tech"
       />
-
-        <SmartDatetimeInput onChange={console.log} />
+      {/*       <SmartDatetimeInput onChange={console.log} />
+       */}{" "}
     </main>
   );
 }
