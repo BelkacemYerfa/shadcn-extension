@@ -1,6 +1,10 @@
 "use client";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { Calendar } from "lucide-react";
 
-import { SmartDatetimeInput } from "@/registry/default/extension/smart-datetime-input";
 import {
   Form,
   FormControl,
@@ -10,13 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "lucide-react";
+import { SmartDatetimeInput } from "@/registry/default/extension/smart-datetime-input";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "Name is required" }),
@@ -25,7 +25,7 @@ const formSchema = z.object({
 
 type Form = z.infer<typeof formSchema>;
 
-const OTPInputZod = () => {
+const SmartDatetimeInputZod = () => {
   const [_, setFormData] = useState<Form | null>(null);
   const form = useForm<Form>({
     resolver: zodResolver(formSchema),
@@ -121,4 +121,4 @@ const OTPInputZod = () => {
   );
 };
 
-export default OTPInputZod;
+export default SmartDatetimeInputZod;

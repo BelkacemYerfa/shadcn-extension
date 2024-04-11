@@ -164,21 +164,19 @@ const DateTimeLocalInput = React.forwardRef<
 });
 DateTimeLocalInput.displayName = "DateTimeLocalInput";
 
+interface SmartDatetimeInputProps {
+  defaultValue?: Date;
+  value?: Date;
+  onChange: (date: Date) => void;
+}
+
 export const SmartDatetimeInput = React.forwardRef<
   HTMLInputElement,
-  {
-    name?: string;
-    placeholder?: string;
-    defaultValue?: Date;
-    value?: Date;
-    onChange: (date: Date) => void;
-    className?: string;
-    disabled?: boolean;
-    options?: Omit<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      "type" | "ref" | "value" | "defaultValue" | "onBlur"
-    >;
-  }
+  Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "type" | "ref" | "value" | "defaultValue" | "onBlur"
+  > &
+    SmartDatetimeInputProps
 >(
   (
     { className, name, defaultValue, value, onChange, placeholder, disabled },
