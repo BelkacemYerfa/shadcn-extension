@@ -27,10 +27,13 @@ const BreadCrumbVariantPicker = ({
   return (
     <div className="absolute right-2 top-2">
       <Select defaultValue="ghost" value={variant} onValueChange={setVariant}>
-        <SelectTrigger className="px-2 h-8 bg-background text-sm w-36">
+        <SelectTrigger
+          aria-label="Select Variant"
+          className="px-2 h-8 bg-background text-sm w-36"
+        >
           <SelectValue>
             <span className="text-muted-foreground text-xs">Variant : </span>
-            <span>{variant}</span>
+            <span id="variant">{variant}</span>
           </SelectValue>
         </SelectTrigger>
         <SelectContent align="end">
