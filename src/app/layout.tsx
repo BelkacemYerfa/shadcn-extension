@@ -7,6 +7,9 @@ import { SiteHeader } from "@/components/layouts/site-header";
 import { CSPostHogProvider } from "@/components/analytics";
 import { siteConfig } from "@/config/site-config";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { SkipNav } from "@/components/skip-nav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -54,6 +57,7 @@ export default function RootLayout({
           "flex flex-col min-h-screen supports-[min-h-[100dvh]]:min-h-[100dvh] scroll-smooth"
         )}
       >
+        <SkipNav />
         <CSPostHogProvider>
           <Provider>
             <SiteHeader />

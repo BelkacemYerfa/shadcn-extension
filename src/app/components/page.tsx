@@ -10,7 +10,10 @@ export const metadata: Metadata = {
 
 export default function ComponentsPage() {
   return (
-    <main className="mx-auto max-w-6xl w-full flex-1 pt-20 space-y-2">
+    <main
+      id="main-content"
+      className="mx-auto max-w-6xl w-full flex-1 pt-20 space-y-2"
+    >
       <div className="px-4 space-y-6 w-full">
         <div className="">
           <h1 className="text-base text-foreground sm:text-2xl font-semibold ">
