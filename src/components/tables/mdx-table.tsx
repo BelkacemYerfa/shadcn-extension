@@ -127,6 +127,7 @@ const MiniInfoPopover = ({ children }: MiniInfoPopoverProps) => {
   return (
     <Popover>
       <PopoverTrigger
+        aria-label="details"
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
           "size-6"

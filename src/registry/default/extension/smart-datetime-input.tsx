@@ -147,6 +147,7 @@ const DateTimeLocalInput = React.forwardRef<
   return (
     <div className="group">
       <Input
+        aria-label="Natural Language Input"
         tabIndex={-1} // remove from tab order
         ref={ref}
         type="datetime-local"
