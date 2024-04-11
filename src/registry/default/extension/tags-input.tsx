@@ -4,13 +4,22 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { X as RemoveIcon } from "lucide-react";
-import React, { ChangeEvent, useCallback, useEffect } from "react";
+import React from "react";
 
+/**
+ * used for identifying the split char and use will pasting
+ */
 const SPLITTER_REGEX = /[\n#?=&\t,/-]+/;
+
+/**
+ * used for formatting the pasted element for the correct value format to be added
+ */
+
 const FORMATTING_REGEX = /^[^a-zA-Z0-9]*|[^a-zA-Z0-9]*$/g;
 
 interface TagsInputProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string[];
+  defaultOptions?: string[];
   onValueChange: (value: string[]) => void;
   placeholder?: string;
   maxItems?: number;
@@ -28,7 +37,6 @@ interface TagsInputContextProps {
 
 const TagInputContext = React.createContext<TagsInputContextProps | null>(null);
 
-// TODO : add the on paste support function
 // TODO : expose primitive functions for tag controlling
 
 export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
@@ -36,6 +44,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
     {
       children,
       value,
+      defaultOptions,
       onValueChange,
       placeholder,
       maxItems,
@@ -54,7 +63,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
     const parseMinItems = minItems ?? 0;
     const parseMaxItems = maxItems ?? Infinity;
 
-    const onValueChangeHandler = useCallback(
+    const onValueChangeHandler = React.useCallback(
       (val: string) => {
         if (!value.includes(val) && value.length < parseMaxItems) {
           onValueChange([...value, val]);
@@ -94,7 +103,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
       [value]
     );
 
-    useEffect(() => {
+    React.useEffect(() => {
       const VerifyDisable = () => {
         if (value.length - 1 >= parseMinItems) {
           setDisableButton(false);
@@ -110,9 +119,17 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
       VerifyDisable();
     }, [value]);
 
+    // ? check: Under build , default option support
+
+    React.useEffect(() => {
+      if (!defaultOptions) return;
+      onValueChange([...value, ...defaultOptions]);
+    }, []);
+
     const handleKeyDown = React.useCallback(
       async (e: React.KeyboardEvent<HTMLInputElement>) => {
         e.stopPropagation();
+
         const moveNext = () => {
           const nextIndex =
             activeIndex + 1 > value.length - 1 ? -1 : activeIndex + 1;
@@ -156,16 +173,6 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
             break;
 
           case "Backspace":
-            if (value.length > 0 && inputValue.length === 0) {
-              if (activeIndex !== -1 && activeIndex < value.length) {
-                RemoveValue(value[activeIndex]);
-                moveCurrent();
-              } else {
-                RemoveValue(value[value.length - 1]);
-              }
-            }
-            break;
-
           case "Delete":
             if (value.length > 0 && inputValue.length === 0) {
               if (activeIndex !== -1 && activeIndex < value.length) {
@@ -200,7 +207,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
     }, []);
 
     const handleChange = React.useCallback(
-      (e: ChangeEvent<HTMLInputElement>) => {
+      (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value);
       },
       []
@@ -222,12 +229,16 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
           ref={ref}
           dir={dir}
           className={cn(
-            "flex items-center flex-wrap gap-1 p-1 border border-muted rounded-lg bg-background overflow-hidden",
+            "flex items-center flex-wrap gap-1 p-1 rounded-lg bg-background overflow-hidden   ring-1 ring-muted  ",
+            {
+              "focus-within:ring-ring": activeIndex === -1,
+            },
             className
           )}
         >
           {value.map((item, index) => (
             <Badge
+              tabIndex={activeIndex !== -1 ? 0 : activeIndex}
               key={item}
               aria-disabled={disableButton}
               data-active={activeIndex === index}
@@ -252,6 +263,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
             </Badge>
           ))}
           <Input
+            tabIndex={0}
             aria-label="input tag"
             disabled={disableInput}
             onKeyDown={handleKeyDown}
