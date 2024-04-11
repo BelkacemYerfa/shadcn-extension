@@ -1,6 +1,8 @@
 "use client";
+
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Calendar } from "lucide-react";
@@ -13,25 +15,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import z from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { SmartDatetimeInput } from "@/registry/default/extension/smart-datetime-input";
+import { DatetimePicker } from "../../extension/datetime-picker";
 
 const formSchema = z.object({
-  name: z.string().min(3, { message: "Name is required" }),
   datetime: z.date().optional(),
 });
 
 type Form = z.infer<typeof formSchema>;
 
-const SmartDatetimeInputZod = () => {
+const DateTimePickerZod = () => {
   const [_, setFormData] = useState<Form | null>(null);
   const form = useForm<Form>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      datetime: undefined,
+      datetime: new Date(),
     },
     shouldUseNativeValidation: true,
   });
@@ -53,7 +51,7 @@ const SmartDatetimeInputZod = () => {
           <div className="flex gap-2 pb-2">
             <Calendar className="w-6 h-6" />
             <p className="text-md font-semibold text-right">
-              What&apos;s the best time for you?
+              Let&apos;s get this on the books.
             </p>
           </div>
           <FormField
@@ -63,16 +61,19 @@ const SmartDatetimeInputZod = () => {
               return (
                 <FormControl>
                   <>
-                    <FormLabel
-                      htmlFor={field.name}
-                      className="text-xs text-center sr-only"
-                    >
-                      Enter your next available appointment date
-                    </FormLabel>
                     <FormItem>
-                      <SmartDatetimeInput
+                      <FormLabel
+                        htmlFor={field.name}
+                        className="text-xs text-center sr-only"
+                      >
+                        Let&apos;s put it in the books
+                      </FormLabel>
+                      <DatetimePicker
                         {...field}
-                        placeholder="e.g. Tomorrow morning 9am"
+                        format={[
+                          ["months", "days", "years"],
+                          ["hours", "minutes", "am/pm"],
+                        ]}
                       />
                     </FormItem>
                     <FormMessage />
@@ -83,30 +84,6 @@ const SmartDatetimeInputZod = () => {
           />
         </>
         <div className="w-full flex justify-start items-center gap-x-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => {
-              return (
-                <FormControl>
-                  <>
-                    <FormLabel
-                      htmlFor={field.name}
-                      className="text-xs mb-0 pb-0 sr-only"
-                    >
-                      Name
-                    </FormLabel>
-                    <div className="w-full flex flex-col items-start gap-1">
-                      <FormItem>
-                        <Input {...field} type="text" placeholder="Your name" />
-                      </FormItem>
-                      <FormMessage />
-                    </div>
-                  </>
-                </FormControl>
-              );
-            }}
-          />
           <Button
             type="submit"
             variant="ghost"
@@ -121,4 +98,4 @@ const SmartDatetimeInputZod = () => {
   );
 };
 
-export default SmartDatetimeInputZod;
+export default DateTimePickerZod;
