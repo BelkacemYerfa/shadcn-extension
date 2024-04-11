@@ -68,7 +68,10 @@ const SelectDirection = ({
         value={direction}
         onValueChange={setDirection}
       >
-        <SelectTrigger className="px-2 h-8 bg-background text-sm w-32">
+        <SelectTrigger
+          className="px-2 h-8 bg-background text-sm w-32"
+          aria-label="select direction"
+        >
           <SelectValue>
             <span className="text-muted-foreground text-xs">Variant : </span>
             <span>{direction}</span>
