@@ -271,5 +271,12 @@ export const Index: Record<string, any> = {
       component: React.lazy(() => import("@/registry/default/example/smart-datetime-input/smart-datetime-input-zod.tsx")),
       files: ["src/registry/default/example/smart-datetime-input/smart-datetime-input-zod.tsx"],
     },
+    "datetime-picker-zod": {
+      name: "datetime-picker-zod",
+      type: "components:example",
+      registryDependencies: ["datetime-picker"],
+      component: React.lazy(() => import("@/registry/default/example/datetime-picker/datetime-picker-zod.tsx")),
+      files: ["src/registry/default/example/datetime-picker/datetime-picker-zod.tsx"],
+    },
   },
 }

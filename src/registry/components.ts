@@ -237,6 +237,12 @@ const examples: Registry = [
     registryDependencies: ["smart-datetime-input"],
     files: ["example/smart-datetime-input/smart-datetime-input-zod.tsx"],
   },
+  {
+    name: "datetime-picker-zod",
+    type: "components:example",
+    registryDependencies: ["datetime-picker"],
+    files: ["example/datetime-picker/datetime-picker-zod.tsx"],
+  },
 ];
 
 export const registry: Registry = [...extension, ...demos, ...examples];

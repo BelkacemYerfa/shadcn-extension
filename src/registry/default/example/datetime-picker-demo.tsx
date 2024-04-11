@@ -4,8 +4,10 @@ import { DatetimePicker } from "../extension/datetime-picker";
 export const DatetimePickerDemo = () => {
   return (
     <DatetimePicker
-      initialDate={new Date()}
-      format={[["months", "days", "years"], []]}
+      format={[
+        ["months", "days", "years"],
+        ["hours", "minutes", "am/pm"],
+      ]}
     />
   );
 };
