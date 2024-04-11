@@ -4,12 +4,17 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { X as RemoveIcon } from "lucide-react";
-import React, { forwardRef, useCallback, useState } from "react";
+import React, { ChangeEvent, useCallback, useEffect } from "react";
+
+const SPLITTER_REGEX = /[\n#?=&\t,/-]+/;
+const FORMATTING_REGEX = /^[^a-zA-Z0-9]*|[^a-zA-Z0-9]*$/g;
 
 interface TagsInputProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string[];
   onValueChange: (value: string[]) => void;
   placeholder?: string;
+  maxItems?: number;
+  minItems?: number;
 }
 
 interface TagsInputContextProps {
@@ -26,27 +31,88 @@ const TagInputContext = React.createContext<TagsInputContextProps | null>(null);
 // TODO : add the on paste support function
 // TODO : expose primitive functions for tag controlling
 
-export const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
+export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
   (
-    { children, value, onValueChange, placeholder, className, dir, ...props },
+    {
+      children,
+      value,
+      onValueChange,
+      placeholder,
+      maxItems,
+      minItems,
+      className,
+      dir,
+      ...props
+    },
     ref
   ) => {
-    const [activeIndex, setActiveIndex] = useState(-1);
-    const [inputValue, setInputValue] = useState("");
+    const [activeIndex, setActiveIndex] = React.useState(-1);
+    const [inputValue, setInputValue] = React.useState("");
+    const [disableInput, setDisableInput] = React.useState(false);
+    const [disableButton, setDisableButton] = React.useState(false);
 
-    const onValueChangeHandler = React.useCallback(
+    const parseMinItems = minItems ?? 0;
+    const parseMaxItems = maxItems ?? Infinity;
+
+    const onValueChangeHandler = useCallback(
       (val: string) => {
-        if (value.includes(val)) {
-          onValueChange(value.filter((item) => item !== val));
-        } else {
+        if (!value.includes(val) && value.length < parseMaxItems) {
           onValueChange([...value, val]);
         }
       },
       [value]
     );
 
+    const RemoveValue = React.useCallback(
+      (val: string) => {
+        if (value.includes(val) && value.length > parseMinItems) {
+          onValueChange(value.filter((item) => item !== val));
+        }
+      },
+      [value]
+    );
+
+    const handlePaste = React.useCallback(
+      (e: React.ClipboardEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        const tags = e.clipboardData.getData("text").split(SPLITTER_REGEX);
+        console.log(tags);
+        const newValue = [...value];
+        tags.forEach((item) => {
+          const parsedItem = item.replaceAll(FORMATTING_REGEX, "").trim();
+          if (
+            parsedItem.length > 0 &&
+            !newValue.includes(parsedItem) &&
+            newValue.length < parseMaxItems
+          ) {
+            newValue.push(parsedItem);
+          }
+        });
+        onValueChange(newValue);
+        setInputValue("");
+      },
+      [value]
+    );
+
+    useEffect(() => {
+      const VerifyDisable = () => {
+        if (value.length - 1 >= parseMinItems) {
+          setDisableButton(false);
+        } else {
+          setDisableButton(true);
+        }
+        if (value.length + 1 <= parseMaxItems) {
+          setDisableInput(false);
+        } else {
+          setDisableInput(true);
+        }
+      };
+      VerifyDisable();
+    }, [value]);
+
     const handleKeyDown = React.useCallback(
-      (e: React.KeyboardEvent<HTMLInputElement>) => {
+      async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        e.stopPropagation();
         const moveNext = () => {
           const nextIndex =
             activeIndex + 1 > value.length - 1 ? -1 : activeIndex + 1;
@@ -60,74 +126,85 @@ export const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
         };
 
         const moveCurrent = () => {
-          const newIndex = activeIndex - 1 < 0 ? 0 : activeIndex - 1;
+          const newIndex =
+            activeIndex - 1 <= 0
+              ? value.length - 1 === 0
+                ? -1
+                : 0
+              : activeIndex - 1;
           setActiveIndex(newIndex);
         };
 
         switch (e.key) {
           case "ArrowLeft":
-            if (dir === "rtl") {
-              moveNext();
-            } else {
-              movePrev();
+            if (value.length > 0 && activeIndex !== -1) {
+              if (dir === "rtl") {
+                moveNext();
+              } else {
+                movePrev();
+              }
             }
             break;
           case "ArrowRight":
-            if (dir === "rtl") {
-              movePrev();
-            } else {
-              moveNext();
+            if (value.length > 0 && activeIndex !== -1) {
+              if (dir === "rtl") {
+                movePrev();
+              } else {
+                moveNext();
+              }
             }
             break;
 
           case "Backspace":
-            if (value.length - 1 > 0 && inputValue.length === 0) {
+            if (value.length > 0 && inputValue.length === 0) {
               if (activeIndex !== -1 && activeIndex < value.length) {
-                onValueChangeHandler(value[activeIndex]);
+                RemoveValue(value[activeIndex]);
                 moveCurrent();
               } else {
-                onValueChangeHandler(value[value.length - 1]);
+                RemoveValue(value[value.length - 1]);
               }
-            } else if (value.length - 1 === 0) {
-              onValueChangeHandler(value[value.length - 1]);
-              moveNext();
             }
             break;
 
           case "Delete":
-            if (value.length - 1 > 0 && inputValue.length === 0) {
+            if (value.length > 0 && inputValue.length === 0) {
               if (activeIndex !== -1 && activeIndex < value.length) {
-                onValueChangeHandler(value[activeIndex]);
+                RemoveValue(value[activeIndex]);
                 moveCurrent();
               } else {
-                onValueChangeHandler(value[value.length - 1]);
+                RemoveValue(value[value.length - 1]);
               }
-            } else if (value.length - 1 === 0) {
-              console.log(value.length);
-              onValueChangeHandler(value[value.length - 1]);
-              moveNext();
             }
             break;
 
           case "Escape":
-            setActiveIndex(-1);
+            const newIndex = activeIndex === -1 ? value.length - 1 : -1;
+            setActiveIndex(newIndex);
             break;
 
           case "Enter":
-            if (e.currentTarget.value.trim() !== "") {
-              onValueChangeHandler(e.currentTarget.value);
+            if (inputValue.trim() !== "") {
+              e.preventDefault();
+              onValueChangeHandler(inputValue);
               setInputValue("");
             }
             break;
         }
       },
-      [activeIndex, value, inputValue]
+      [activeIndex, value, inputValue, RemoveValue]
     );
 
     const mousePreventDefault = React.useCallback((e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
     }, []);
+
+    const handleChange = React.useCallback(
+      (e: ChangeEvent<HTMLInputElement>) => {
+        setInputValue(e.currentTarget.value);
+      },
+      []
+    );
 
     return (
       <TagInputContext.Provider
@@ -143,27 +220,31 @@ export const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
         <div
           {...props}
           ref={ref}
+          dir={dir}
           className={cn(
-            "flex flex-wrap gap-1 p-1 border border-muted rounded-lg bg-background",
+            "flex items-center flex-wrap gap-1 p-1 border border-muted rounded-lg bg-background overflow-hidden",
             className
           )}
         >
           {value.map((item, index) => (
             <Badge
               key={item}
+              aria-disabled={disableButton}
+              data-active={activeIndex === index}
               className={cn(
-                "px-1 rounded-xl flex items-center gap-1",
-                activeIndex === index && "ring-2 ring-muted-foreground "
+                "relative px-1 rounded flex items-center gap-1 data-[active='true']:ring-2 data-[active='true']:ring-muted-foreground truncate aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
               )}
               variant={"secondary"}
             >
               <span className="text-xs">{item}</span>
               <button
+                type="button"
                 aria-label={`Remove ${item} option`}
                 aria-roledescription="button to remove option"
-                type="button"
+                disabled={disableButton}
                 onMouseDown={mousePreventDefault}
-                onClick={() => onValueChangeHandler(item)}
+                onClick={() => RemoveValue(item)}
+                className="disabled:cursor-not-allowed"
               >
                 <span className="sr-only">Remove {item} option</span>
                 <RemoveIcon className="h-4 w-4 hover:stroke-destructive" />
@@ -171,17 +252,16 @@ export const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
             </Badge>
           ))}
           <Input
-            onKeyDown={handleKeyDown}
             aria-label="input tag"
+            disabled={disableInput}
+            onKeyDown={handleKeyDown}
+            onPaste={handlePaste}
             value={inputValue}
-            onChange={
-              activeIndex === -1
-                ? (e) => setInputValue(e.currentTarget.value)
-                : undefined
-            }
+            onChange={activeIndex === -1 ? handleChange : undefined}
             placeholder={placeholder}
+            onClick={() => setActiveIndex(-1)}
             className={cn(
-              "outline-0 border-none w-fit focus-visible:outline-0 focus-visible:border-0 placeholder:text-muted-foreground ",
+              "outline-0 border-none h-5 min-w-fit flex-1 focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 placeholder:text-muted-foreground px-1",
               activeIndex !== -1 && "caret-transparent"
             )}
           />
