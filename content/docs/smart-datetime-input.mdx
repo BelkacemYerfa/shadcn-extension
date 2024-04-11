@@ -8,17 +8,18 @@ links:
     url: https://www.npmjs.com/package/chrono-node
 ---
 
-
 <ComponentPreview name="smart-datetime-input-demo" />
 
 ## Installation
 
 <Tabs defaultValue="manual">
 
-  <TabsList>
-    <TabsTrigger value="manual">Manual</TabsTrigger>
-    <TabsTrigger value="cli">CLI</TabsTrigger>
-  </TabsList>
+{" "}
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
 
   <TabsContent value="manual">
     <Steps>
@@ -54,17 +55,18 @@ import { SmartDateTimeInput } from "@/components/extension/smart-date-time-input
 ```
 
 ```tsx
-  <SmartDateTimeInput
-    name="datetime"
-    value={Date.now()}
-    onChange={(e) => setValue(e.target.value)}
-    placeholder="e.g. tomorrow at 3pm"
-  />
+<SmartDateTimeInput
+  name="datetime"
+  value={Date.now()}
+  onChange={(e) => setValue(e.target.value)}
+  placeholder="e.g. tomorrow at 3pm"
+/>
 ```
 
 ## Example
 
-## Form
+### Form
+
 ```tsx showLineNumbers {1 , 3 , 16-23  }
 "use client";
 
