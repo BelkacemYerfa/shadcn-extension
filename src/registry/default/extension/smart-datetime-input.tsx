@@ -67,6 +67,10 @@ const inputBase =
 const naturalInputValidationPattern =
   "^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$";
 
+/**
+ * Smart time input Docs: {@link: https://shadcn-extension.vercel.app/docs/smart-time-input}
+ */
+
 const NaturalLanguageInput = React.forwardRef<
   HTMLInputElement,
   {

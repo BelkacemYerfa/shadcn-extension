@@ -57,6 +57,10 @@ type TreeViewProps = {
   closeIcon?: React.ReactNode;
 } & TreeViewComponentProps;
 
+/**
+ * Tree View Docs: {@link: https://shadcn-extension.vercel.app/docs/tree-view}
+ */
+
 const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
   (
     {

@@ -36,6 +36,10 @@ const INPUT_PLACEHOLDERS: InputPlaceholders = {
   "am/pm": "AM/PM",
 };
 
+/**
+ * Date time picker Docs: {@link: https://shadcn-extension.vercel.app/docs/otp-input}
+ */
+
 const DatetimeGrid = forwardRef(
   (
     {

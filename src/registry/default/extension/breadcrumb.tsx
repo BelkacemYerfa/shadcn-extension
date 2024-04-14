@@ -51,8 +51,9 @@ const useBreadcrumb = () => {
   return context;
 };
 
-// TODO: add support for orientation
-
+/**
+ * Breadcrumb Docs: {@link: https://shadcn-extension.vercel.app/docs/breadcrumb}
+ */
 export const BreadCrumb = ({
   className,
   orientation = "horizontal",

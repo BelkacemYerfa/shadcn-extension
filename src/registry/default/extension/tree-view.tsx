@@ -32,6 +32,10 @@ type TreeViewProps = {
 ) &
   TreeViewComponentProps;
 
+/**
+ * Tree View Docs: {@link: https://shadcn-extension.vercel.app/docs/tree-view}
+ */
+
 export const TreeView = ({
   elements,
   className,
