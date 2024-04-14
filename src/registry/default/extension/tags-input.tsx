@@ -9,7 +9,7 @@ import React from "react";
 /**
  * used for identifying the split char and use will pasting
  */
-const SPLITTER_REGEX = /[\n#?=&\t,/-]+/;
+const SPLITTER_REGEX = /[\n#?=&\t,./-]+/;
 
 /**
  * used for formatting the pasted element for the correct value format to be added
@@ -59,6 +59,8 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
     const [inputValue, setInputValue] = React.useState("");
     const [disableInput, setDisableInput] = React.useState(false);
     const [disableButton, setDisableButton] = React.useState(false);
+    const [isValueSelected, setIsValueSelected] = React.useState(false);
+    const [selectedValue, setSelectedValue] = React.useState("");
 
     const parseMinItems = minItems ?? 0;
     const parseMaxItems = maxItems ?? Infinity;
@@ -85,7 +87,6 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
       (e: React.ClipboardEvent<HTMLInputElement>) => {
         e.preventDefault();
         const tags = e.clipboardData.getData("text").split(SPLITTER_REGEX);
-        console.log(tags);
         const newValue = [...value];
         tags.forEach((item) => {
           const parsedItem = item.replaceAll(FORMATTING_REGEX, "").trim();
@@ -101,6 +102,21 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
         setInputValue("");
       },
       [value]
+    );
+
+    const handleSelect = React.useCallback(
+      (e: React.SyntheticEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        const target = e.currentTarget;
+        const selection = target.value.substring(
+          target.selectionStart ?? 0,
+          target.selectionEnd ?? 0
+        );
+
+        setSelectedValue(selection);
+        setIsValueSelected(selection === inputValue);
+      },
+      [inputValue]
     );
 
     React.useEffect(() => {
@@ -151,22 +167,31 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
               : activeIndex - 1;
           setActiveIndex(newIndex);
         };
+        const target = e.currentTarget;
+
+        // ? Suggest : the multi select should support the same pattern
 
         switch (e.key) {
           case "ArrowLeft":
-            if (value.length > 0 && activeIndex !== -1) {
-              if (dir === "rtl") {
+            // TODO : fix the way the selection works
+            if (dir === "rtl") {
+              if (value.length > 0 && activeIndex !== -1) {
                 moveNext();
-              } else {
+              }
+            } else {
+              if (value.length > 0 && target.selectionStart === 0) {
                 movePrev();
               }
             }
             break;
+
           case "ArrowRight":
-            if (value.length > 0 && activeIndex !== -1) {
-              if (dir === "rtl") {
+            if (dir === "rtl") {
+              if (value.length > 0 && target.selectionStart === 0) {
                 movePrev();
-              } else {
+              }
+            } else {
+              if (value.length > 0 && activeIndex !== -1) {
                 moveNext();
               }
             }
@@ -174,12 +199,16 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
 
           case "Backspace":
           case "Delete":
-            if (value.length > 0 && inputValue.length === 0) {
+            if (value.length > 0) {
               if (activeIndex !== -1 && activeIndex < value.length) {
                 RemoveValue(value[activeIndex]);
                 moveCurrent();
               } else {
-                RemoveValue(value[value.length - 1]);
+                if (target.selectionStart === 0) {
+                  if (selectedValue === inputValue || isValueSelected) {
+                    RemoveValue(value[value.length - 1]);
+                  }
+                }
               }
             }
             break;
@@ -269,6 +298,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
             value={inputValue}
+            onSelect={handleSelect}
             onChange={activeIndex === -1 ? handleChange : undefined}
             placeholder={placeholder}
             onClick={() => setActiveIndex(-1)}

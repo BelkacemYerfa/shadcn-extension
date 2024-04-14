@@ -88,27 +88,62 @@ const MultiSelector = ({
         setActiveIndex(prevIndex < 0 ? value.length - 1 : prevIndex);
       };
 
-      if ((e.key === "Backspace" || e.key === "Delete") && value.length > 0) {
-        if (inputValue.length === 0) {
-          if (activeIndex !== -1 && activeIndex < value.length) {
-            onValueChange(value.filter((item) => item !== value[activeIndex]));
-            const newIndex = activeIndex - 1 < 0 ? 0 : activeIndex - 1;
-            setActiveIndex(newIndex);
-          } else {
-            onValueChange(
-              value.filter((item) => item !== value[value.length - 1])
-            );
+      const moveCurrent = () => {
+        const newIndex =
+          activeIndex - 1 <= 0
+            ? value.length - 1 === 0
+              ? -1
+              : 0
+            : activeIndex - 1;
+        setActiveIndex(newIndex);
+      };
+
+      switch (e.key) {
+        // TODO : fix the arrow bindings
+        /* case "ArrowLeft":
+          if (value.length > 0 && activeIndex !== -1) {
+            if (dir === "rtl") {
+              moveNext();
+            } else {
+              movePrev();
+            }
           }
-        }
-      } else if (e.key === "Enter") {
-        setOpen(true);
-      } else if (e.key === "Escape") {
-        if (activeIndex !== -1) {
-          setActiveIndex(-1);
-        } else {
-          setOpen(false);
-        }
-      } else if (dir === "rtl") {
+          break;
+        case "ArrowRight":
+          if (value.length > 0 && activeIndex !== -1) {
+            if (dir === "rtl") {
+              movePrev();
+            } else {
+              moveNext();
+            }
+          }
+          break; */
+
+        case "Backspace":
+        case "Delete":
+          if (value.length > 0 && inputValue.length === 0) {
+            if (activeIndex !== -1 && activeIndex < value.length) {
+              onValueChangeHandler(value[activeIndex]);
+              moveCurrent();
+            } else {
+              onValueChangeHandler(value[value.length - 1]);
+            }
+          }
+          break;
+
+        case "Enter":
+          setOpen(true);
+          break;
+
+        case "Escape":
+          if (activeIndex === -1) {
+            setActiveIndex(value.length - 1);
+          } else {
+            setOpen(false);
+          }
+      }
+
+      if (dir === "rtl") {
         if (e.key === "ArrowRight") {
           movePrev();
         } else if (e.key === "ArrowLeft" && (activeIndex !== -1 || loop)) {

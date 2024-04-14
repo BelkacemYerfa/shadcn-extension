@@ -11,7 +11,6 @@ export default function ExamplePage() {
         value={values}
         onValueChange={setValues}
         placeholder="enter your used tech"
-        defaultOptions={["gh", "sh"]}
       />
     </main>
   );
