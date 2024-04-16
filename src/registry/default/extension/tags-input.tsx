@@ -173,7 +173,6 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
 
         switch (e.key) {
           case "ArrowLeft":
-            // TODO : fix the way the selection works
             if (dir === "rtl") {
               if (value.length > 0 && activeIndex !== -1) {
                 moveNext();
