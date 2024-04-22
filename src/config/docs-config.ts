@@ -61,6 +61,10 @@ export const docsConfig: DocsConfig[] = [
         path: "/docs/smart-datetime-input",
       },
       {
+        title: "Datetime picker",
+        path: "/docs/datetime-picker",
+      },
+      {
         title: "File upload",
         path: "/docs/file-upload",
       },

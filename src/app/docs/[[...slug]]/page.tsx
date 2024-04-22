@@ -63,7 +63,10 @@ export default async function CurrentSlugPage({ params }: DocsPageProps) {
   const toc = await getTableOfContents(doc.body.raw);
 
   return (
-    <main className="grid grid-cols-1 md:grid-cols-3 gap-2 pt-2 pb-3 h-full">
+    <main
+      id="main-content"
+      className="grid grid-cols-1 md:grid-cols-3 gap-2 pt-2 pb-3 h-full"
+    >
       <article className="col-span-1 md:col-span-3 lg:col-span-2 space-y-10">
         <div className="space-y-2 not-prose">
           <DocsBreadcrumb slug={params.slug} />

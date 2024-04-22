@@ -9,6 +9,7 @@ export const SocialLinks = ({ className }: { className: string }) => {
   return (
     <div className={cn("items-center gap-1 xs:gap-1.5", className)}>
       <Link
+        aria-label="Twitter"
         href={siteConfig.links.twitter}
         className={cn(
           buttonVariants({
@@ -20,6 +21,7 @@ export const SocialLinks = ({ className }: { className: string }) => {
         <Icons.twitter className="h-3 w-3 fill-current" />
       </Link>
       <Link
+        aria-label="GitHub"
         href={siteConfig.links.github}
         className={cn(
           buttonVariants({

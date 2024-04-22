@@ -67,6 +67,10 @@ const inputBase =
 const naturalInputValidationPattern =
   "^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$";
 
+/**
+ * Smart time input Docs: {@link: https://shadcn-extension.vercel.app/docs/smart-time-input}
+ */
+
 const NaturalLanguageInput = React.forwardRef<
   HTMLInputElement,
   {
@@ -147,6 +151,7 @@ const DateTimeLocalInput = React.forwardRef<
   return (
     <div className="group">
       <Input
+        aria-label="Natural Language Input"
         tabIndex={-1} // remove from tab order
         ref={ref}
         type="datetime-local"
@@ -164,21 +169,19 @@ const DateTimeLocalInput = React.forwardRef<
 });
 DateTimeLocalInput.displayName = "DateTimeLocalInput";
 
+interface SmartDatetimeInputProps {
+  defaultValue?: Date;
+  value?: Date;
+  onChange: (date: Date) => void;
+}
+
 export const SmartDatetimeInput = React.forwardRef<
   HTMLInputElement,
-  {
-    name?: string;
-    placeholder?: string;
-    defaultValue?: Date;
-    value?: Date;
-    onChange: (date: Date) => void;
-    className?: string;
-    disabled?: boolean;
-    options?: Omit<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      "type" | "ref" | "value" | "defaultValue" | "onBlur"
-    >;
-  }
+  Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "type" | "ref" | "value" | "defaultValue" | "onBlur"
+  > &
+    SmartDatetimeInputProps
 >(
   (
     { className, name, defaultValue, value, onChange, placeholder, disabled },

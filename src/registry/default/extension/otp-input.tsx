@@ -9,6 +9,10 @@ type OtpStyledInputProps = {
   className?: string;
 } & OtpOptions;
 
+/**
+ * Otp input Docs: {@link: https://shadcn-extension.vercel.app/docs/otp-input}
+ */
+
 export const OtpStyledInput = ({
   className,
   ...props

@@ -35,6 +35,8 @@ interface MultiSelectContextProps {
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   activeIndex: number;
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
+  ref: React.RefObject<HTMLInputElement>;
+  handleSelect: (e: React.SyntheticEvent<HTMLInputElement>) => void;
 }
 
 const MultiSelectContext = createContext<MultiSelectContextProps | null>(null);
@@ -46,6 +48,12 @@ const useMultiSelect = () => {
   }
   return context;
 };
+
+/**
+ * MultiSelect Docs: {@link: https://shadcn-extension.vercel.app/docs/multi-select}
+ */
+
+// TODO : expose the visibility of the popup
 
 const MultiSelector = ({
   values: value,
@@ -59,6 +67,9 @@ const MultiSelector = ({
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [isValueSelected, setIsValueSelected] = React.useState(false);
+  const [selectedValue, setSelectedValue] = React.useState("");
 
   const onValueChangeHandler = useCallback(
     (val: string) => {
@@ -72,10 +83,28 @@ const MultiSelector = ({
     [value]
   );
 
-  // TODO : change from else if use to switch case statement
+  const handleSelect = React.useCallback(
+    (e: React.SyntheticEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const target = e.currentTarget;
+      const selection = target.value.substring(
+        target.selectionStart ?? 0,
+        target.selectionEnd ?? 0
+      );
+
+      setSelectedValue(selection);
+      setIsValueSelected(selection === inputValue);
+    },
+    [inputValue]
+  );
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      const target = inputRef.current;
+
+      if (!target) return;
+
       const moveNext = () => {
         const nextIndex = activeIndex + 1;
         setActiveIndex(
@@ -88,38 +117,68 @@ const MultiSelector = ({
         setActiveIndex(prevIndex < 0 ? value.length - 1 : prevIndex);
       };
 
-      if ((e.key === "Backspace" || e.key === "Delete") && value.length > 0) {
-        if (inputValue.length === 0) {
-          if (activeIndex !== -1 && activeIndex < value.length) {
-            onValueChange(value.filter((item) => item !== value[activeIndex]));
-            const newIndex = activeIndex - 1 < 0 ? 0 : activeIndex - 1;
-            setActiveIndex(newIndex);
+      const moveCurrent = () => {
+        const newIndex =
+          activeIndex - 1 <= 0
+            ? value.length - 1 === 0
+              ? -1
+              : 0
+            : activeIndex - 1;
+        setActiveIndex(newIndex);
+      };
+
+      switch (e.key) {
+        case "ArrowLeft":
+          if (dir === "rtl") {
+            if (value.length > 0 && (activeIndex !== -1 || loop)) {
+              moveNext();
+            }
           } else {
-            onValueChange(
-              value.filter((item) => item !== value[value.length - 1])
-            );
+            if (value.length > 0 && target.selectionStart === 0) {
+              movePrev();
+            }
           }
-        }
-      } else if (e.key === "Enter") {
-        setOpen(true);
-      } else if (e.key === "Escape") {
-        if (activeIndex !== -1) {
-          setActiveIndex(-1);
-        } else {
-          setOpen(false);
-        }
-      } else if (dir === "rtl") {
-        if (e.key === "ArrowRight") {
-          movePrev();
-        } else if (e.key === "ArrowLeft" && (activeIndex !== -1 || loop)) {
-          moveNext();
-        }
-      } else {
-        if (e.key === "ArrowLeft") {
-          movePrev();
-        } else if (e.key === "ArrowRight" && (activeIndex !== -1 || loop)) {
-          moveNext();
-        }
+          break;
+
+        case "ArrowRight":
+          if (dir === "rtl") {
+            if (value.length > 0 && target.selectionStart === 0) {
+              movePrev();
+            }
+          } else {
+            if (value.length > 0 && (activeIndex !== -1 || loop)) {
+              moveNext();
+            }
+          }
+          break;
+
+        case "Backspace":
+        case "Delete":
+          if (value.length > 0) {
+            if (activeIndex !== -1 && activeIndex < value.length) {
+              onValueChangeHandler(value[activeIndex]);
+              moveCurrent();
+            } else {
+              if (target.selectionStart === 0) {
+                if (selectedValue === inputValue || isValueSelected) {
+                  onValueChangeHandler(value[value.length - 1]);
+                }
+              }
+            }
+          }
+          break;
+
+        case "Enter":
+          setOpen(true);
+          break;
+
+        case "Escape":
+          if (activeIndex !== -1) {
+            setActiveIndex(-1);
+          } else if (open) {
+            setOpen(false);
+          }
+          break;
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,6 +196,8 @@ const MultiSelector = ({
         setInputValue,
         activeIndex,
         setActiveIndex,
+        ref: inputRef,
+        handleSelect,
       }}
     >
       <Command
@@ -169,7 +230,10 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg bg-background",
+        "flex flex-wrap gap-1 p-1 py-2 ring-1 ring-muted rounded-lg bg-background",
+        {
+          "ring-1 focus-within:ring-ring": activeIndex === -1,
+        },
         className
       )}
       {...props}
@@ -207,14 +271,24 @@ const MultiSelectorInput = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => {
-  const { setOpen, inputValue, setInputValue, activeIndex, setActiveIndex } =
-    useMultiSelect();
+  const {
+    setOpen,
+    inputValue,
+    setInputValue,
+    activeIndex,
+    setActiveIndex,
+    handleSelect,
+    ref: inputRef,
+  } = useMultiSelect();
+
   return (
     <CommandPrimitive.Input
       {...props}
-      ref={ref}
+      tabIndex={0}
+      ref={inputRef}
       value={inputValue}
       onValueChange={activeIndex === -1 ? setInputValue : undefined}
+      onSelect={handleSelect}
       onBlur={() => setOpen(false)}
       onFocus={() => setOpen(true)}
       onClick={() => setActiveIndex(-1)}

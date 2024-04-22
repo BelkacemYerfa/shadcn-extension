@@ -55,6 +55,12 @@ const extension: Registry = [
     dependencies: ["chrono-node"],
     files: ["extension/smart-datetime-input.tsx"],
   },
+  {
+    name: "datetime-picker",
+    type: "components:extension",
+    dependencies: ["timescape"],
+    files: ["extension/datetime-picker.tsx"],
+  },
 ];
 
 const demos: Registry = [
@@ -99,6 +105,12 @@ const demos: Registry = [
     type: "components:demo",
     registryDependencies: ["smart-datetime-input"],
     files: ["example/smart-datetime-input-demo.tsx"],
+  },
+  {
+    name: "datetime-picker-demo",
+    type: "components:demo",
+    registryDependencies: ["datetime-picker"],
+    files: ["example/datetime-picker-demo.tsx"],
   },
 ];
 
@@ -224,6 +236,12 @@ const examples: Registry = [
     type: "components:example",
     registryDependencies: ["smart-datetime-input"],
     files: ["example/smart-datetime-input/smart-datetime-input-zod.tsx"],
+  },
+  {
+    name: "datetime-picker-zod",
+    type: "components:example",
+    registryDependencies: ["datetime-picker"],
+    files: ["example/datetime-picker/datetime-picker-zod.tsx"],
   },
 ];
 

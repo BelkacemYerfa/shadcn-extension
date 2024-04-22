@@ -50,7 +50,6 @@
     "unifiedjs.vscode-mdx",
     "usernamehw.errorlens"
   ],
-
   "cSpell.words": ["nums", "timescape"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }

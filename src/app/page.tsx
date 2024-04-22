@@ -8,7 +8,7 @@ import Balancer from "react-wrap-balancer";
 
 export default async function Home() {
   return (
-    <main className="max-w-2xl mx-auto flex-1 flex flex-col">
+    <main id="main-content" className="max-w-2xl mx-auto flex-1 flex flex-col">
       <section className="flex-1 flex flex-col items-center justify-center gap-4 ">
         <h1
           className="text-center animate-fade-up text-4xl font-extrabold tracking-tight opacity-0 sm:text-5xl md:text-6xl lg:text-7xl"

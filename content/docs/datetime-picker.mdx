@@ -1,0 +1,213 @@
+---
+title: Datetime Picker
+description: A customized datetime picker component.
+links:
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/input
+  - title: timescape
+    url: https://www.npmjs.com/package/timescape
+---
+
+<ComponentPreview name="datetime-picker-demo" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+{" "}
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+  <TabsContent value="manual">
+    <Steps>
+      <Step>Run the following command:</Step>
+
+        ```bash
+        npx shadcn@latest add input
+        npm i timescape
+        ```
+
+      <Step>Copy and paste the following code into your project.</Step>
+
+      <ComponentSource name="datetime-picker"/>
+
+    </Steps>
+
+  </TabsContent>
+  <TabsContent value="cli">
+
+    <Callout className="mt-6">
+      Currently there is no CLI command for this component. since we haven't created
+      it yet.
+    </Callout>
+
+  </TabsContent>
+
+</Tabs>
+
+## API Reference
+
+### Props
+
+The DatetimePicker component accepts the following props:
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+      },
+      type: { value: ["type"] },
+      defaultValue: { value: "default value" },
+    },
+    {
+      prop: {
+        value: "value",
+        description: "The initial value of the Datetime input",
+      },
+      type: { value: ["Date"] },
+      defaultValue: { value: "new Date()" },
+    },
+    {
+      prop: {
+        value: "format",
+        required: true,
+        description:
+          "A tuple of two arrays, the first array is the date format and the second array is the time format",
+      },
+      type: { value: `DateTimeFormatDefaults` },
+      defaultValue: {
+        value: [
+          `[
+          ["months", "days", "years"],
+          ["hours", "minutes", "am/pm"],
+        ]`,
+        ],
+      },
+    },
+    {
+      prop: {
+        value: "placeholders",
+        description:
+          "Placeholders for any of the date or time inputs, if not provided the default value will be used",
+      },
+      type: {
+        value: [`InputPlaceholders`],
+      },
+      defaultValue: {
+        value: [
+          `{
+          months: "MM",
+          days: "DD",
+          years: "YYYY",
+          hours: "HH",
+          minutes: "MM",
+          seconds: "SS",
+          "am/pm": "AM/PM",
+        }`,
+        ],
+      },
+    },
+    {
+      prop: {
+        value: "dtOptions",
+        description: (
+          <p>
+            Options for the underlying
+            <a
+              href="https://www.npmjs.com/package/timescape"
+              target="_blank"
+              rel="noopener"
+            >
+              useTimescape
+            </a> hook. These are passed directly to the hook and can be used to customize
+            the behavior of the datetime picker. Note: this exposes functionality
+            that can override the default behavior of the datetime picker.
+          </p>
+        ),
+      },
+      type: { value: ["Options"] },
+      defaultValue: {
+        value: [
+          `{
+            date: new Date(),
+            hour12: true,
+          }`,
+        ],
+      },
+    },
+    {
+      prop: {
+        value: "onChange",
+        description:
+          "A function that will be called when the value of the input changes",
+      },
+      type: { value: ["Options['onChangeDate']"] },
+      defaultValue: { value: ["console.log"] },
+    },
+    {
+      prop: {
+        value: "className",
+        description: "A className helper for the input's wrapper",
+      },
+      type: { value: ["string"] },
+      defaultValue: { value: [`undefined`] },
+    },
+  ]}
+/>
+
+## Usage
+
+```tsx
+import { DatetimePicker } from "@/components/extension/datetime-picker";
+```
+
+```tsx
+<DatetimePicker
+  value={Date.now()}
+  onChange={(date) => console.log(date)}
+  format={
+    (["months", "days", "years"], ["hours", "minutes", "seconds", "am/pm"])
+  }
+/>
+```
+
+## Example
+
+### Form
+
+```tsx showLineNumbers {1 , 3 , 16-21  }
+"use client";
+
+import { DatetimePicker } from "@/components/extension/datetime-picker";
+
+{...}
+
+const DateTimeForm = ()=>{
+  return (
+     <Form {...form}>
+       {...}
+       <FormField
+          control={form.control}
+          name="otp"
+          render={({ field }) => (
+            {...}
+           <DatetimePicker
+              value={Date.now()}
+              onChange={(date) => console.log(date)}
+              format={
+                (["months", "days", "years"], ["hours", "minutes", "seconds", "am/pm"])
+              }
+            />
+            {...}
+          )} />
+        {...}
+     </Form>
+  )
+}
+```
+
+<ComponentPreview name="datetime-picker-zod" />
