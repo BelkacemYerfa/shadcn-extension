@@ -21,6 +21,7 @@ export const SearchPopOver = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [mounted, setMounted] = useState(false);
   const isMac = isMacOs();
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -50,11 +51,18 @@ export const SearchPopOver = () => {
   const handleSearch = (query: string) => {
     setQuery(query);
   };
+
   useEffect(() => {
     if (!isOpen) setQuery("");
   }, [isOpen]);
 
-  return (
+  useEffect(() => {
+    if (mounted) return;
+    setMounted(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return mounted ? (
     <>
       <Button
         variant="ghost"
@@ -87,7 +95,7 @@ export const SearchPopOver = () => {
             />
             <CommandList>
               <CommandEmpty className={cn("py-6 text-center text-sm")}>
-                No products found.
+                No documents found.
               </CommandEmpty>
               <CommandGroup
                 className="capitalize block md:hidden"
@@ -140,5 +148,5 @@ export const SearchPopOver = () => {
         </CredenzaContent>
       </Credenza>
     </>
-  );
+  ) : null;
 };
