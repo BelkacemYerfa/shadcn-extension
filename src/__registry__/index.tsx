@@ -75,6 +75,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(() => import("@/registry/default/extension/datetime-picker.tsx")),
       files: ["src/registry/default/extension/datetime-picker.tsx"],
     },
+    "tags-input": {
+      name: "tags-input",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(() => import("@/registry/default/extension/tags-input.tsx")),
+      files: ["src/registry/default/extension/tags-input.tsx"],
+    },
     "tree-view-demo": {
       name: "tree-view-demo",
       type: "components:demo",
@@ -130,6 +137,13 @@ export const Index: Record<string, any> = {
       registryDependencies: ["datetime-picker"],
       component: React.lazy(() => import("@/registry/default/example/datetime-picker-demo.tsx")),
       files: ["src/registry/default/example/datetime-picker-demo.tsx"],
+    },
+    "tags-input-demo": {
+      name: "tags-input-demo",
+      type: "components:demo",
+      registryDependencies: ["tags-input"],
+      component: React.lazy(() => import("@/registry/default/example/tags-input-demo.tsx")),
+      files: ["src/registry/default/example/tags-input-demo.tsx"],
     },
     "tree-view-builtin-indicator": {
       name: "tree-view-builtin-indicator",
@@ -277,6 +291,20 @@ export const Index: Record<string, any> = {
       registryDependencies: ["datetime-picker"],
       component: React.lazy(() => import("@/registry/default/example/datetime-picker/datetime-picker-zod.tsx")),
       files: ["src/registry/default/example/datetime-picker/datetime-picker-zod.tsx"],
+    },
+    "tags-input-state": {
+      name: "tags-input-state",
+      type: "components:example",
+      registryDependencies: ["tags-input"],
+      component: React.lazy(() => import("@/registry/default/example/tags-input/tags-input-state.tsx")),
+      files: ["src/registry/default/example/tags-input/tags-input-state.tsx"],
+    },
+    "tags-input-zod": {
+      name: "tags-input-zod",
+      type: "components:example",
+      registryDependencies: ["tags-input"],
+      component: React.lazy(() => import("@/registry/default/example/tags-input/tags-input-zod.tsx")),
+      files: ["src/registry/default/example/tags-input/tags-input-zod.tsx"],
     },
   },
 }

@@ -65,6 +65,10 @@ export const docsConfig: DocsConfig[] = [
         path: "/docs/datetime-picker",
       },
       {
+        title: "Tags Input",
+        path: "/docs/tags-input",
+      },
+      {
         title: "File upload",
         path: "/docs/file-upload",
       },

@@ -1,12 +1,12 @@
 ---
-title: Multi Select
-description: A mulit select that lets you select multiple items from a list.
+title: Tags Input
+description: A tags input that lets you set multiple options
 links:
   - title: shadcn-ui
-    url: https://ui.shadcn.com/docs/components/command
+    url: https://ui.shadcn.com/docs/components/badge
 ---
 
-<ComponentPreview name="multi-select-demo" />
+<ComponentPreview name="tags-input-demo" />
 
 ## Installation
 
@@ -22,17 +22,17 @@ links:
 <Steps>
 
 <Step>
-  Check the installation setup for the command component in [shadcn
-  ui](https://ui.shadcn.com/docs/components/command)
+  Check the installation setup for the badge component in [shadcn
+  ui](https://ui.shadcn.com/docs/components/badge)
 </Step>
 
 ```bash
-npx shadcn-ui@latest add command
+npx shadcn-ui@latest add badge
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
 
-<ComponentSource name="multi-select" />
+<ComponentSource name="tags-input" />
 
 <Step>Update the import paths to match your project setup.</Step>
 
@@ -92,15 +92,38 @@ npx shadcn-ui@latest add command
     },
     {
       prop: {
-        value: "loop",
-        description:
-          "If true, the selection will loop around when it reaches the end of current selected elements",
+        value: "placeholder",
+        description: "The input placeholder",
       },
       type: {
-        value: ["boolean"],
+        value: ["string"],
       },
       defaultValue: {
-        value: ["false"],
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "MaxItems",
+        description: "Max limit of items to set",
+      },
+      type: {
+        value: ["number"],
+      },
+      defaultValue: {
+        value: ["Infinity"],
+      },
+    },
+    {
+      prop: {
+        value: "MinItems",
+        description: "Min limit of items to set",
+      },
+      type: {
+        value: ["number"],
+      },
+      defaultValue: {
+        value: ["Infinity"],
       },
     },
   ]}
@@ -108,7 +131,7 @@ npx shadcn-ui@latest add command
 
 ## Accessibility
 
-The Multi Select component adheres to the WAI-ARIA design pattern. It is accessible
+The Tags Input component adheres to the WAI-ARIA design pattern. It is accessible
 
 ## Keyboard Navigation
 
@@ -127,7 +150,7 @@ The Multi Select component adheres to the WAI-ARIA design pattern. It is accessi
         value: "Enter",
       },
       description: {
-        value: "opens the list",
+        value: "set the value",
       },
     },
     {
@@ -135,23 +158,23 @@ The Multi Select component adheres to the WAI-ARIA design pattern. It is accessi
         value: "Escape",
       },
       description: {
-        value: "closes the list",
+        value: "exit the tags/exit the component",
       },
     },
     {
       key: {
-        value: "ArrowUp",
+        value: "ArrowLeft",
       },
       description: {
-        value: "Move to the previous item",
+        value: "selects the next tag from the tags list",
       },
     },
     {
       key: {
-        value: "ArrowDown",
+        value: "ArrowRight",
       },
       description: {
-        value: "Move to the next item",
+        value: "selects the prev tag from the tags list",
       },
     },
     {
@@ -159,7 +182,7 @@ The Multi Select component adheres to the WAI-ARIA design pattern. It is accessi
         value: "Delete/Backspace",
       },
       description: {
-        value: "remove the selected item , otherwise removes the last item ",
+        value: "remove the selected tag , otherwise removes the last item ",
       },
     },
   ]}
@@ -168,34 +191,15 @@ The Multi Select component adheres to the WAI-ARIA design pattern. It is accessi
 ## Usage
 
 ```tsx
-import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
-} from "@/components/extension/multi-select";
+import { TagsInput } from "@/components/extension/tags-input";
 ```
 
 ```tsx
-<MultiSelector
-  values={value}
-  onValuesChange={setValue}
-  loop
-  className="max-w-xs"
->
-  <MultiSelectorTrigger>
-    <MultiSelectorInput placeholder="Select your framework" />
-  </MultiSelectorTrigger>
-  <MultiSelectorContent>
-    <MultiSelectorList>
-      <MultiSelectorItem value={"React"}>React</MultiSelectorItem>
-      <MultiSelectorItem value={"Vue"}>Vue</MultiSelectorItem>
-      <MultiSelectorItem value={"Svelte"}>Svelte</MultiSelectorItem>
-    </MultiSelectorList>
-  </MultiSelectorContent>
-</MultiSelector>
+<TagsInput
+  value={value}
+  onValueChange={setValue}
+  placeholder="enter your used tech"
+/>
 ```
 
 ## Example
@@ -206,63 +210,62 @@ import {
 "use client";
 
 import { useState } from "react";
-import { MultiSelector } from "@/components/extension/multi-select";
+import { TagsInput } from "@/components/extension/tags-input";
 ```
 
 ```tsx {2}
-const MultiSelect = ()=>{
+const TagsInputExamle = ()=>{
   const [value , setValue] = useState([])
   return (
-    <MultiSelector>
-      {...}
-    </MultiSelector>
+    <TagsInput value={value} onValueChange={setValue} >
   )
 }
 ```
 
-<ComponentPreview name="multi-select-state" />
+<ComponentPreview name="tags-input-state" />
 
 ### Form
 
 ```tsx showLineNumbers {2-10 , 13-15 , 17 }
 "use client";
+import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem } from "@/components/ui/form";
-import z from "zod";
+import { TagsInput } from "@/registry/default/extension/tags-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import z from "zod";
 
-const schema = z.object({
-  frameworks: z.array(z.string()),
+const form = z.object({
+  value: z.array(z.string()).nonempty("Please at least one item"),
 });
 
-type FormValues = z.infer<typeof schema>;
+type Form = z.infer<typeof form>;
 ```
 
 ```tsx
 const MultiSelectForm = () => {
   return (
-     <Form {...multiForm}>
-      <form onSubmit={multiForm.handleSubmit(onSubmit)} className="space-y-3">
+    <Form {...tagsForm}>
+      <form onSubmit={tagsForm.handleSubmit(onSubmit)} className="grid gap-2">
         <FormField
-          control={multiForm.control}
+          control={tagsForm.control}
           name="value"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Invite people</FormLabel>
-              <MultiSelector onValuesChange={field.onChange} values={field.value}>
-               {...}
-               </MultiSelector>
+              <TagsInput
+                value={field.value}
+                onValueChange={field.onChange}
+                placeholder="enter your used tech"
+              />
             </FormItem>
           )}
         />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
-}
-
+  );
+};
 ```
 
-<ComponentPreview name="multi-select-zod" />
+<ComponentPreview name="tags-input-zod" />

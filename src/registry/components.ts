@@ -61,6 +61,12 @@ const extension: Registry = [
     dependencies: ["timescape"],
     files: ["extension/datetime-picker.tsx"],
   },
+  {
+    name: "tags-input",
+    type: "components:extension",
+    dependencies: ["badge"],
+    files: ["extension/tags-input.tsx"],
+  },
 ];
 
 const demos: Registry = [
@@ -111,6 +117,12 @@ const demos: Registry = [
     type: "components:demo",
     registryDependencies: ["datetime-picker"],
     files: ["example/datetime-picker-demo.tsx"],
+  },
+  {
+    name: "tags-input-demo",
+    type: "components:demo",
+    registryDependencies: ["tags-input"],
+    files: ["example/tags-input-demo.tsx"],
   },
 ];
 
@@ -231,6 +243,7 @@ const examples: Registry = [
     registryDependencies: ["image-carousel-upload"],
     files: ["example/image-carousel-upload-example.tsx"],
   },
+  //
   {
     name: "smart-datetime-input-zod",
     type: "components:example",
@@ -242,6 +255,18 @@ const examples: Registry = [
     type: "components:example",
     registryDependencies: ["datetime-picker"],
     files: ["example/datetime-picker/datetime-picker-zod.tsx"],
+  },
+  {
+    name: "tags-input-state",
+    type: "components:example",
+    registryDependencies: ["tags-input"],
+    files: ["example/tags-input/tags-input-state.tsx"],
+  },
+  {
+    name: "tags-input-zod",
+    type: "components:example",
+    registryDependencies: ["tags-input"],
+    files: ["example/tags-input/tags-input-zod.tsx"],
   },
 ];
 

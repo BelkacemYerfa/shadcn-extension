@@ -19,7 +19,6 @@ const FORMATTING_REGEX = /^[^a-zA-Z0-9]*|[^a-zA-Z0-9]*$/g;
 
 interface TagsInputProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string[];
-  defaultOptions?: string[];
   onValueChange: (value: string[]) => void;
   placeholder?: string;
   maxItems?: number;
@@ -37,14 +36,11 @@ interface TagsInputContextProps {
 
 const TagInputContext = React.createContext<TagsInputContextProps | null>(null);
 
-// TODO : expose primitive functions for tag controlling
-
 export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
   (
     {
       children,
       value,
-      defaultOptions,
       onValueChange,
       placeholder,
       maxItems,
@@ -119,6 +115,8 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
       [inputValue]
     );
 
+    // ? suggest : a refactor rather then using a useEffect
+
     React.useEffect(() => {
       const VerifyDisable = () => {
         if (value.length - 1 >= parseMinItems) {
@@ -136,11 +134,12 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
     }, [value]);
 
     // ? check: Under build , default option support
+    // * support : for the uncontrolled && controlled ui
 
-    React.useEffect(() => {
+    /*  React.useEffect(() => {
       if (!defaultOptions) return;
       onValueChange([...value, ...defaultOptions]);
-    }, []);
+    }, []); */
 
     const handleKeyDown = React.useCallback(
       async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -302,7 +301,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
             placeholder={placeholder}
             onClick={() => setActiveIndex(-1)}
             className={cn(
-              "outline-0 border-none h-5 min-w-fit flex-1 focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 placeholder:text-muted-foreground px-1",
+              "outline-0 border-none h-7 min-w-fit flex-1 focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 placeholder:text-muted-foreground px-1",
               activeIndex !== -1 && "caret-transparent"
             )}
           />

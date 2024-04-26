@@ -61,7 +61,6 @@ export default async function CurrentSlugPage({ params }: DocsPageProps) {
   if (!doc) notFound();
 
   const toc = await getTableOfContents(doc.body.raw);
-
   return (
     <main
       id="main-content"
