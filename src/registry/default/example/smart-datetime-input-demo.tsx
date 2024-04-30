@@ -1,7 +1,7 @@
 import { SmartDatetimeInput } from "@/registry/default/extension/smart-datetime-input";
 
 const SmartDateTimeInputDemo = () => {
-  return <SmartDatetimeInput onChange={console.log} />;
+  return <SmartDatetimeInput onValueChange={console.log} />;
 };
 
 export default SmartDateTimeInputDemo;

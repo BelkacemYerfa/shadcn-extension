@@ -2,9 +2,17 @@
 
 import React from "react";
 import { parseDate } from "chrono-node";
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { SelectSingleEventHandler } from "react-day-picker";
+import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Calendar as CalendarIcon } from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -59,6 +67,16 @@ export const formatDateTime = (datetime: Date | string) => {
   });
 };
 
+const getCurrentTime = (datetime: Date | string) => {
+  return {
+    hours:
+      new Date(datetime).getHours() >= 12
+        ? (new Date(datetime).getHours() % 12) + 1
+        : new Date(datetime).getHours() + 1,
+    minutes: new Date(datetime).getMinutes(),
+  };
+};
+
 const inputBase =
   "bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
@@ -71,109 +89,28 @@ const naturalInputValidationPattern =
  * Smart time input Docs: {@link: https://shadcn-extension.vercel.app/docs/smart-time-input}
  */
 
-const NaturalLanguageInput = React.forwardRef<
-  HTMLInputElement,
-  {
-    placeholder?: string;
-    value?: Date;
-    onChange: (date: Date) => void;
-    disabled?: boolean;
-  }
->(({ placeholder, value, onChange }, ref) => {
-  const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
-
-  const handleParse = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // parse the date string when the input field loses focus
-    const parsedDateTime = parseDateTime(e.target.value);
-    if (parsedDateTime) {
-      onChange(parsedDateTime);
-      e.target.value = formatDateTime(parsedDateTime);
-    }
-  };
-
-  return (
-    <Input
-      ref={ref}
-      type="text"
-      placeholder={_placeholder}
-      defaultValue={value ? formatDateTime(value) : ""}
-      onBlur={handleParse}
-      className={cn("px-2 mr-1 flex-1 border-none", inputBase)}
-    />
-  );
-});
-NaturalLanguageInput.displayName = "NaturalLanguageInput";
-
-const DateTimeLocalInput = React.forwardRef<
-  HTMLInputElement,
-  {
-    value?: Date;
-    onChange: (date: Date) => void;
-    name?: string;
-    disabled?: boolean;
-  }
->(({ name, value, onChange }, ref) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  React.useEffect(() => {
-    // ref is either a function or a ref object
-    if (ref) {
-      if (typeof ref === "function") {
-        // function-ref pattern to set the ref
-        ref(inputRef.current);
-      } else {
-        // ref object pattern to set the ref
-        ref.current = inputRef.current;
-      }
-    }
-
-    return () => {
-      // cleanup
-      if (ref) {
-        if (typeof ref === "function") {
-          ref(null);
-        } else {
-          ref.current = null;
-        }
-      }
-    };
-  }, [ref]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const expiryDate = new Date(e.target.value);
-    onChange(expiryDate);
-    // set the formatted date string in the text input field to keep them in sync
-    if (inputRef.current) {
-      inputRef.current.value = formatDateTime(expiryDate);
-    }
-  };
-
-  const _name = name ?? "expiresAt";
-  return (
-    <div className="group">
-      <Input
-        aria-label="Natural Language Input"
-        tabIndex={-1} // remove from tab order
-        ref={ref}
-        type="datetime-local"
-        id={_name}
-        name={_name}
-        value={value ? getDateTimeLocal(value) : ""}
-        onChange={handleChange}
-        className={cn(
-          "peer flex justify-end w-[44px] text-gray-500 z-[-1]",
-          inputBase
-        )}
-      />
-    </div>
-  );
-});
-DateTimeLocalInput.displayName = "DateTimeLocalInput";
-
 interface SmartDatetimeInputProps {
-  defaultValue?: Date;
   value?: Date;
-  onChange: (date: Date) => void;
+  onValueChange: (date: Date) => void;
 }
+
+interface SmartDatetimeInputContextProps extends SmartDatetimeInputProps {
+  Time: string;
+  onTimeChange: (time: string) => void;
+}
+
+const SmartDatetimeInputContext =
+  React.createContext<SmartDatetimeInputContextProps | null>(null);
+
+const useSmartDateInput = () => {
+  const context = React.useContext(SmartDatetimeInputContext);
+  if (!context) {
+    throw new Error(
+      "useSmartDateInput must be used within SmartDateInputProvider"
+    );
+  }
+  return context;
+};
 
 export const SmartDatetimeInput = React.forwardRef<
   HTMLInputElement,
@@ -182,47 +119,227 @@ export const SmartDatetimeInput = React.forwardRef<
     "type" | "ref" | "value" | "defaultValue" | "onBlur"
   > &
     SmartDatetimeInputProps
->(
-  (
-    { className, name, defaultValue, value, onChange, placeholder, disabled },
-    ref
-  ) => {
-    const [dateTime, setDateTime] = React.useState<Date | undefined>(
-      defaultValue ?? value ?? undefined
-    );
+>(({ className, value, onValueChange, placeholder, disabled }, ref) => {
 
-    const handleDateChange = (date: Date) => {
-      setDateTime(date);
-      onChange(date);
-    };
+  // ? refactor to be only used with controlled input
+  /*  const [dateTime, setDateTime] = React.useState<Date | undefined>(
+    value ?? undefined
+  ); */
 
-    return (
+  const [Time, setTime] = React.useState<string>("00:00");
+
+  const onTimeChange = React.useCallback((time: string) => {
+    setTime(time);
+  }, []);
+
+  return (
+    <SmartDatetimeInputContext.Provider
+      value={{ value, onValueChange, Time, onTimeChange }}
+    >
       <div className="flex items-center justify-center">
         <div
           className={cn(
             "flex w-full p-1 items-center justify-between rounded-md border transition-all",
-            "focus-within:outline-none focus:outline-none focus:ring-0",
-            "placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+            "focus-within:outline-0 focus:outline-0 focus:ring-0",
+            "placeholder:text-muted-foreground focus-visible:outline-0 ",
             className
           )}
         >
-          <DateTimeLocalInput
-            name={name}
-            value={dateTime}
-            onChange={handleDateChange}
-            disabled={disabled}
-            ref={ref}
-          />
+          <DateTimeLocalInput />
           <NaturalLanguageInput
             placeholder={placeholder}
-            value={dateTime}
-            onChange={handleDateChange}
             disabled={disabled}
             ref={ref}
           />
         </div>
       </div>
-    );
-  }
-);
+    </SmartDatetimeInputContext.Provider>
+  );
+});
+
 SmartDatetimeInput.displayName = "DatetimeInput";
+
+const TimePicker = () => {
+  const { value, onValueChange, Time, onTimeChange } = useSmartDateInput();
+
+  const timestamp = 15;
+
+  const currentTime = React.useMemo(() => {
+    return Time
+      ? {
+          hours: parseInt(Time.split(":")[0]),
+          minutes: parseInt(Time.split(":")[1]),
+        }
+      : value
+      ? getCurrentTime(value)
+      : {
+          hours: parseInt(Time.split(":")[0]),
+          minutes: parseInt(Time.split(":")[1]),
+        };
+  }, [value, Time]);
+
+  const formateSelectedTime = React.useCallback(
+    (time: string, hour: number, partStamp: number) => {
+      onTimeChange(time);
+
+      const newVal = parseDateTime(value ?? "");
+
+      if (!newVal) return;
+
+      newVal.setHours(
+        hour,
+        partStamp === 0 ? parseInt("00") : timestamp * partStamp
+      );
+      onValueChange(newVal);
+    },
+    [value, Time]
+  );
+
+  return (
+    <div className="space-y-1 pr-3 py-3">
+      <h3>Time </h3>
+      <div className="flex items-center flex-col gap-1 h-full max-h-[calc(var(--radix-popper-available-height)-180px)] w-28 overflow-y-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg pr-1">
+        {Array.from({ length: 24 }).map((_, i) => {
+          const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
+
+          return Array.from({ length: 4 }).map((_, part) => {
+            const diff = Math.abs(part * timestamp - currentTime.minutes);
+            const doesMatchTime =
+              i + 1 === currentTime.hours && diff >= 0 && diff < timestamp / 2;
+
+            return (
+              <Button
+                className="h-8 px-3 w-full text-sm"
+                variant={doesMatchTime ? "default" : "outline"}
+                key={`time-${formatIndex}:${timestamp * part}`}
+                onClick={() =>
+                  formateSelectedTime(
+                    `${i + 1} : ${part === 0 ? "00" : timestamp * part}`,
+                    i === 0 ? parseInt("00") : i,
+                    part
+                  )
+                }
+              >
+                {formatIndex} : {part === 0 ? "00" : timestamp * part}{" "}
+                {i >= 12 ? "PM" : "AM"}
+              </Button>
+            );
+          });
+        })}
+      </div>
+    </div>
+  );
+};
+
+const NaturalLanguageInput = React.forwardRef<
+  HTMLInputElement,
+  {
+    placeholder?: string;
+    disabled?: boolean;
+  }
+>(({ placeholder, ...props }, ref) => {
+  const { value, onValueChange, Time, onTimeChange } = useSmartDateInput();
+
+  const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
+
+  const [inputValue, setInputValue] = React.useState<string>(
+    value ? formatDateTime(value) : ""
+  );
+
+  React.useEffect(() => {
+    setInputValue(value ? formatDateTime(value) : "");
+    onTimeChange(value ? Time : "00:00");
+  }, [value, Time]);
+
+  const handleParse = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      // parse the date string when the input field loses focus
+      const parsedDateTime = parseDateTime(e.currentTarget.value);
+      if (parsedDateTime) {
+        onValueChange(parsedDateTime);
+        setInputValue(formatDateTime(parsedDateTime));
+        onTimeChange(
+          `${parsedDateTime.getHours()}:${parsedDateTime.getMinutes()}`
+        );
+      }
+    },
+    [value]
+  );
+
+  return (
+    <Input
+      ref={ref}
+      type="text"
+      placeholder={_placeholder}
+      value={inputValue}
+      onChange={(e) => setInputValue(e.currentTarget.value)}
+      onBlur={handleParse}
+      className={cn("px-2 mr-1 flex-1 border-none", inputBase)}
+      {...props}
+    />
+  );
+});
+
+NaturalLanguageInput.displayName = "NaturalLanguageInput";
+
+type DateTimeLocalInputProps = {} & CalendarProps;
+
+const DateTimeLocalInput = ({
+  className,
+  ...props
+}: DateTimeLocalInputProps) => {
+  const {
+    value,
+    onValueChange,
+    Time,
+    onTimeChange: setTime,
+  } = useSmartDateInput();
+
+  const formateSelectedDate = React.useCallback(
+    (date: Date) => {
+      const parsedDateTime = parseDateTime(date);
+
+      if (parsedDateTime) {
+        parsedDateTime.setHours(
+          parseInt(Time.split(":")[0]),
+          parseInt(Time.split(":")[1])
+        );
+        onValueChange(parsedDateTime);
+      }
+    },
+    [value, Time]
+  );
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          size={"icon"}
+          className={cn(
+            "size-9 flex items-center justify-center font-normal",
+            !value && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon className="size-4" />
+          <span className="sr-only">calender</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" sideOffset={8}>
+        <div className="flex gap-2">
+          <Calendar
+            {...props}
+            className={cn("peer flex justify-end", inputBase, className)}
+            mode="single"
+            selected={value}
+            onSelect={formateSelectedDate as SelectSingleEventHandler}
+            initialFocus
+          />
+          <TimePicker />
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+DateTimeLocalInput.displayName = "DateTimeLocalInput";

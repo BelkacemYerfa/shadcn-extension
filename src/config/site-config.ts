@@ -6,7 +6,7 @@ export const siteConfig = {
     "Discover new possibilities with the extended Shadcn UI library. More components, more layouts, more creativity.",
   links: {
     twitter: "https://twitter.com/BylkaYf",
-    github: "https://github.com/BelkacemYerfa/shadcn-extension",
+    github: "https://git.new/extension",
     docs: "/docs/introduction",
     components: "/components",
   },

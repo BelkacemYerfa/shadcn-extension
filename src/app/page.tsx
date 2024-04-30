@@ -45,6 +45,7 @@ export default async function Home() {
             Get Started
           </Link>
           <Link
+            target="_blank"
             href={siteConfig.links.github}
             className={cn("gap-2", buttonVariants({ variant: "outline" }))}
           >

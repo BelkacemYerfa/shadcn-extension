@@ -71,7 +71,8 @@ const SmartDatetimeInputZod = () => {
                     </FormLabel>
                     <FormItem>
                       <SmartDatetimeInput
-                        {...field}
+                        value={field.value}
+                        onValueChange={field.onChange}
                         placeholder="e.g. Tomorrow morning 9am"
                       />
                     </FormItem>
