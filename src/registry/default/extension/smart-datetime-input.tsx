@@ -120,7 +120,6 @@ export const SmartDatetimeInput = React.forwardRef<
   > &
     SmartDatetimeInputProps
 >(({ className, value, onValueChange, placeholder, disabled }, ref) => {
-
   // ? refactor to be only used with controlled input
   /*  const [dateTime, setDateTime] = React.useState<Date | undefined>(
     value ?? undefined
@@ -196,9 +195,9 @@ const TimePicker = () => {
   );
 
   return (
-    <div className="space-y-1 pr-3 py-3">
+    <div className="space-y-1 pr-3 py-3 relative">
       <h3>Time </h3>
-      <div className="flex items-center flex-col gap-1 h-full max-h-[calc(var(--radix-popper-available-height)-180px)] w-28 overflow-y-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg pr-1">
+      <div className="flex items-center flex-col gap-1 h-full max-h-56 w-28 overflow-y-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg pr-1">
         {Array.from({ length: 24 }).map((_, i) => {
           const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
 
