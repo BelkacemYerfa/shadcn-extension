@@ -7,11 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  ActiveModifiers,
-  Modifiers,
-  SelectSingleEventHandler,
-} from "react-day-picker";
+import { ActiveModifiers, SelectSingleEventHandler } from "react-day-picker";
 import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -291,9 +287,10 @@ const TimePicker = () => {
     <div className="space-y-1 pr-3 py-3 relative">
       <h3 className="text-sm font-medium">Time</h3>
       <div
+        tabIndex={0}
         onKeyDown={handleKeydown}
         className={cn(
-          "flex items-center flex-col gap-1 h-full max-h-56 w-28 overflow-y-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg px-1 "
+          "flex items-center flex-col gap-1 h-full max-h-56 w-28 overflow-y-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg px-1 focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 "
         )}
       >
         {Array.from({ length: 24 }).map((_, i) => {
@@ -314,7 +311,6 @@ const TimePicker = () => {
 
             return (
               <Button
-                tabIndex={0}
                 aria-label="currentTime"
                 aria-description={`button that shows current time : ${currentValue} `}
                 className={cn(
@@ -422,11 +418,15 @@ const DateTimeLocalInput = ({
   ...props
 }: DateTimeLocalInputProps) => {
   const { value, onValueChange, Time } = useSmartDateInput();
-  const [inputValue, setInputValue] = React.useState<string>("");
 
   const formateSelectedDate = React.useCallback(
-    (date: Date) => {
-      const parsedDateTime = parseDateTime(date);
+    (
+      date: Date | undefined,
+      selectedDate: Date,
+      m: ActiveModifiers,
+      e: React.MouseEvent
+    ) => {
+      const parsedDateTime = parseDateTime(selectedDate);
 
       if (parsedDateTime) {
         parsedDateTime.setHours(
@@ -437,22 +437,6 @@ const DateTimeLocalInput = ({
       }
     },
     [value, Time]
-  );
-
-  const handleDayKeydown = React.useCallback(
-    (date: Date, modifier: ActiveModifiers, e: React.KeyboardEvent) => {
-      if (e.key === "Enter") {
-        setInputValue(String(date));
-      }
-    },
-    []
-  );
-
-  const handleDayClick = React.useCallback(
-    (date: Date, modifier: ActiveModifiers, e: React.MouseEvent) => {
-      setInputValue(String(date));
-    },
-    []
   );
 
   return (
@@ -477,10 +461,8 @@ const DateTimeLocalInput = ({
             className={cn("peer flex justify-end", inputBase, className)}
             mode="single"
             selected={value}
-            onSelect={formateSelectedDate as SelectSingleEventHandler}
+            onSelect={formateSelectedDate}
             initialFocus
-            onDayKeyDown={handleDayKeydown}
-            onDayClick={handleDayClick}
           />
           <TimePicker />
         </div>
