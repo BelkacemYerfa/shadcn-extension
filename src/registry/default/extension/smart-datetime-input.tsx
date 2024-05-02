@@ -7,7 +7,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { SelectSingleEventHandler } from "react-day-picker";
+import {
+  ActiveModifiers,
+  Modifiers,
+  SelectSingleEventHandler,
+} from "react-day-picker";
 import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -78,7 +82,7 @@ const getCurrentTime = (datetime: Date | string) => {
 };
 
 const inputBase =
-  "bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
+  "bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0 sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
 // @source: https://www.perplexity.ai/search/in-javascript-how-RfI7fMtITxKr5c.V9Lv5KA#1
 // use this pattern to validate the transformed date string for the natural language input
@@ -140,7 +144,7 @@ export const SmartDatetimeInput = React.forwardRef<
       <div className="flex items-center justify-center">
         <div
           className={cn(
-            "flex w-full p-1 items-center justify-between rounded-md border transition-all",
+            "flex gap-1 w-full p-1 items-center justify-between rounded-md border transition-all",
             "focus-within:outline-0 focus:outline-0 focus:ring-0",
             "placeholder:text-muted-foreground focus-visible:outline-0 ",
             className
@@ -169,16 +173,18 @@ const TimePicker = () => {
     (time: string, hour: number, partStamp: number) => {
       onTimeChange(time);
 
-      const newVal = parseDateTime(value ?? "");
+      const newVal = parseDateTime(value ?? new Date());
 
-      newVal?.setHours(
+      if (!newVal) return;
+
+      newVal.setHours(
         hour,
         partStamp === 0 ? parseInt("00") : timestamp * partStamp
       );
 
       // ? refactor needed check if we want to use the new date
 
-      onValueChange(newVal ?? new Date());
+      onValueChange(newVal);
     },
     [value]
   );
@@ -229,9 +235,9 @@ const TimePicker = () => {
           timeValue.split(" ")[0].split(":")[1]
         }`;
 
-        onTimeChange(timeFormat);
+        onTimeChange(timeValue);
 
-        const newVal = parseDateTime(value ?? "");
+        const newVal = parseDateTime(value ?? new Date());
 
         if (!newVal) return;
 
@@ -268,7 +274,7 @@ const TimePicker = () => {
           break;
       }
     },
-    [activeIndex, Time]
+    [activeIndex, Time, value]
   );
 
   const currentTime = React.useMemo(() => {
@@ -354,7 +360,6 @@ const NaturalLanguageInput = React.forwardRef<
 
   React.useEffect(() => {
     setInputValue(value ? formatDateTime(value) : "");
-    console.log("time before : ", Time);
     onTimeChange(value ? Time : "0:00 AM");
   }, [value, Time]);
 
@@ -374,6 +379,25 @@ const NaturalLanguageInput = React.forwardRef<
     [value]
   );
 
+  const handleKeydown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      switch (e.key) {
+        case "Enter":
+          const parsedDateTime = parseDateTime(e.currentTarget.value);
+          if (parsedDateTime) {
+            const PM_AM = parsedDateTime.getHours() >= 12 ? "PM" : "AM";
+            onValueChange(parsedDateTime);
+            setInputValue(formatDateTime(parsedDateTime));
+            onTimeChange(
+              `${parsedDateTime.getHours()}:${parsedDateTime.getMinutes()} ${PM_AM}`
+            );
+          }
+          break;
+      }
+    },
+    [value]
+  );
+
   return (
     <Input
       ref={ref}
@@ -381,8 +405,9 @@ const NaturalLanguageInput = React.forwardRef<
       placeholder={_placeholder}
       value={inputValue}
       onChange={(e) => setInputValue(e.currentTarget.value)}
+      onKeyDown={handleKeydown}
       onBlur={handleParse}
-      className={cn("px-2 mr-1 flex-1 border-none", inputBase)}
+      className={cn("px-2 mr-0.5 flex-1 border-none h-8 rounded", inputBase)}
       {...props}
     />
   );
@@ -397,6 +422,7 @@ const DateTimeLocalInput = ({
   ...props
 }: DateTimeLocalInputProps) => {
   const { value, onValueChange, Time } = useSmartDateInput();
+  const [inputValue, setInputValue] = React.useState<string>("");
 
   const formateSelectedDate = React.useCallback(
     (date: Date) => {
@@ -411,6 +437,22 @@ const DateTimeLocalInput = ({
       }
     },
     [value, Time]
+  );
+
+  const handleDayKeydown = React.useCallback(
+    (date: Date, modifier: ActiveModifiers, e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        setInputValue(String(date));
+      }
+    },
+    []
+  );
+
+  const handleDayClick = React.useCallback(
+    (date: Date, modifier: ActiveModifiers, e: React.MouseEvent) => {
+      setInputValue(String(date));
+    },
+    []
   );
 
   return (
@@ -437,6 +479,8 @@ const DateTimeLocalInput = ({
             selected={value}
             onSelect={formateSelectedDate as SelectSingleEventHandler}
             initialFocus
+            onDayKeyDown={handleDayKeydown}
+            onDayClick={handleDayClick}
           />
           <TimePicker />
         </div>
