@@ -70,10 +70,10 @@ export const formatDateTime = (datetime: Date | string) => {
 const getCurrentTime = (datetime: Date | string) => {
   return {
     hours:
-      new Date(datetime).getHours() >= 12
-        ? (new Date(datetime).getHours() % 12) + 1
-        : new Date(datetime).getHours() + 1,
-    minutes: new Date(datetime).getMinutes(),
+      new Date(datetime).getUTCHours() >= 12
+        ? (new Date(datetime).getUTCHours() % 12) + 1
+        : new Date(datetime).getUTCHours() + 1,
+    minutes: new Date(datetime).getUTCMinutes(),
   };
 };
 
@@ -84,6 +84,8 @@ const inputBase =
 // use this pattern to validate the transformed date string for the natural language input
 const naturalInputValidationPattern =
   "^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$";
+
+const DEFAULT_SIZE = 96;
 
 /**
  * Smart time input Docs: {@link: https://shadcn-extension.vercel.app/docs/smart-time-input}
@@ -125,7 +127,7 @@ export const SmartDatetimeInput = React.forwardRef<
     value ?? undefined
   ); */
 
-  const [Time, setTime] = React.useState<string>("00:00");
+  const [Time, setTime] = React.useState<string>("0:00 AM");
 
   const onTimeChange = React.useCallback((time: string) => {
     setTime(time);
@@ -160,22 +162,8 @@ SmartDatetimeInput.displayName = "DatetimeInput";
 
 const TimePicker = () => {
   const { value, onValueChange, Time, onTimeChange } = useSmartDateInput();
-
+  const [activeIndex, setActiveIndex] = React.useState(-1);
   const timestamp = 15;
-
-  const currentTime = React.useMemo(() => {
-    return Time
-      ? {
-          hours: parseInt(Time.split(":")[0]),
-          minutes: parseInt(Time.split(":")[1]),
-        }
-      : value
-      ? getCurrentTime(value)
-      : {
-          hours: parseInt(Time.split(":")[0]),
-          minutes: parseInt(Time.split(":")[1]),
-        };
-  }, [value, Time]);
 
   const formateSelectedTime = React.useCallback(
     (time: string, hour: number, partStamp: number) => {
@@ -183,44 +171,165 @@ const TimePicker = () => {
 
       const newVal = parseDateTime(value ?? "");
 
-      if (!newVal) return;
-
-      newVal.setHours(
+      newVal?.setHours(
         hour,
         partStamp === 0 ? parseInt("00") : timestamp * partStamp
       );
-      onValueChange(newVal);
+
+      // ? refactor needed check if we want to use the new date
+
+      onValueChange(newVal ?? new Date());
     },
-    [value, Time]
+    [value]
   );
+
+  const handleKeydown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      if (!document) return;
+
+      const moveNext = () => {
+        const nextIndex =
+          activeIndex + 1 > DEFAULT_SIZE - 1 ? 0 : activeIndex + 1;
+
+        const currentElm = document.getElementById(`time-${nextIndex}`);
+
+        currentElm?.scrollIntoView({
+          block: "center",
+          behavior: "smooth",
+        });
+
+        setActiveIndex(nextIndex);
+      };
+
+      const movePrev = () => {
+        const prevIndex =
+          activeIndex - 1 < 0 ? DEFAULT_SIZE - 1 : activeIndex - 1;
+
+        const currentElm = document.getElementById(`time-${prevIndex}`);
+
+        currentElm?.scrollIntoView({
+          block: "center",
+          behavior: "smooth",
+        });
+
+        setActiveIndex(prevIndex);
+      };
+
+      const setElement = () => {
+        const currentElm = document.getElementById(`time-${activeIndex}`);
+
+        if (!currentElm) return;
+
+        const timeValue = currentElm.textContent ?? "";
+
+        const timeFormat = `${timeValue.split(" ")[0].split(":")[0]}:${
+          timeValue.split(" ")[0].split(":")[1]
+        }`;
+
+        onTimeChange(timeFormat);
+
+        const newVal = parseDateTime(value ?? "");
+
+        if (!newVal) return;
+
+        newVal.setHours(
+          parseInt(timeFormat.split(":")[0]),
+          parseInt(timeFormat.split(":")[1])
+        );
+        onValueChange(newVal);
+      };
+
+      switch (e.key) {
+        case "ArrowUp":
+          movePrev();
+          break;
+
+        case "ArrowDown":
+          moveNext();
+          break;
+
+        case "Escape":
+          setActiveIndex(-1);
+          break;
+
+        case "Tab":
+          if (e.shiftKey) {
+            movePrev();
+          } else {
+            moveNext();
+          }
+          break;
+
+        case "Enter":
+          setElement();
+          break;
+      }
+    },
+    [activeIndex, Time]
+  );
+
+  const currentTime = React.useMemo(() => {
+    const timeVal = Time.split("")[0];
+    return value
+      ? getCurrentTime(value)
+      : {
+          hours: parseInt(timeVal.split(":")[0]),
+          minutes: parseInt(timeVal.split(":")[1]),
+        };
+  }, [Time, value]);
 
   return (
     <div className="space-y-1 pr-3 py-3 relative">
-      <h3>Time </h3>
-      <div className="flex items-center flex-col gap-1 h-full max-h-56 w-28 overflow-y-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg pr-1">
+      <h3 className="text-sm font-medium">Time</h3>
+      <div
+        onKeyDown={handleKeydown}
+        className={cn(
+          "flex items-center flex-col gap-1 h-full max-h-56 w-28 overflow-y-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg px-1 "
+        )}
+      >
         {Array.from({ length: 24 }).map((_, i) => {
+          const PM_AM = i >= 12 ? "PM" : "AM";
           const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
-
           return Array.from({ length: 4 }).map((_, part) => {
             const diff = Math.abs(part * timestamp - currentTime.minutes);
-            const doesMatchTime =
-              i + 1 === currentTime.hours && diff >= 0 && diff < timestamp / 2;
+            const trueIndex = i * 4 + part;
+            const isSelected =
+              (currentTime.hours === i || currentTime.hours === formatIndex) &&
+              Time.split(" ")[1] === PM_AM &&
+              diff >= 0 &&
+              diff < timestamp / 2;
+
+            const currentValue = `${formatIndex}:${
+              part === 0 ? "00" : timestamp * part
+            } ${PM_AM}`;
 
             return (
               <Button
-                className="h-8 px-3 w-full text-sm"
-                variant={doesMatchTime ? "default" : "outline"}
-                key={`time-${formatIndex}:${timestamp * part}`}
-                onClick={() =>
+                tabIndex={0}
+                aria-label="currentTime"
+                aria-description={`button that shows current time : ${currentValue} `}
+                className={cn(
+                  "h-8 px-3 w-full text-sm focus-visible:outline-0 outline-0 ",
+                  {
+                    "ring-1 ring-ring": activeIndex === trueIndex,
+                  }
+                )}
+                variant={isSelected ? "default" : "outline"}
+                id={`time-${trueIndex}`}
+                key={`time-${trueIndex}`}
+                onClick={() => {
                   formateSelectedTime(
-                    `${i + 1} : ${part === 0 ? "00" : timestamp * part}`,
-                    i === 0 ? parseInt("00") : i,
+                    `${i}:${part === 0 ? "00" : timestamp * part} ${PM_AM}`,
+                    i,
                     part
-                  )
-                }
+                  );
+                  setActiveIndex(trueIndex);
+                }}
               >
-                {formatIndex} : {part === 0 ? "00" : timestamp * part}{" "}
-                {i >= 12 ? "PM" : "AM"}
+                {currentValue}
               </Button>
             );
           });
@@ -241,13 +350,12 @@ const NaturalLanguageInput = React.forwardRef<
 
   const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
 
-  const [inputValue, setInputValue] = React.useState<string>(
-    value ? formatDateTime(value) : ""
-  );
+  const [inputValue, setInputValue] = React.useState<string>("");
 
   React.useEffect(() => {
     setInputValue(value ? formatDateTime(value) : "");
-    onTimeChange(value ? Time : "00:00");
+    console.log("time before : ", Time);
+    onTimeChange(value ? Time : "0:00 AM");
   }, [value, Time]);
 
   const handleParse = React.useCallback(
@@ -255,10 +363,11 @@ const NaturalLanguageInput = React.forwardRef<
       // parse the date string when the input field loses focus
       const parsedDateTime = parseDateTime(e.currentTarget.value);
       if (parsedDateTime) {
+        const PM_AM = parsedDateTime.getHours() >= 12 ? "PM" : "AM";
         onValueChange(parsedDateTime);
         setInputValue(formatDateTime(parsedDateTime));
         onTimeChange(
-          `${parsedDateTime.getHours()}:${parsedDateTime.getMinutes()}`
+          `${parsedDateTime.getHours()}:${parsedDateTime.getMinutes()} ${PM_AM}`
         );
       }
     },
@@ -287,12 +396,7 @@ const DateTimeLocalInput = ({
   className,
   ...props
 }: DateTimeLocalInputProps) => {
-  const {
-    value,
-    onValueChange,
-    Time,
-    onTimeChange: setTime,
-  } = useSmartDateInput();
+  const { value, onValueChange, Time } = useSmartDateInput();
 
   const formateSelectedDate = React.useCallback(
     (date: Date) => {
