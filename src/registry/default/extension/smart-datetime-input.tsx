@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { parseDate } from "chrono-node";
 import {
   Popover,
@@ -10,9 +10,10 @@ import {
 import { ActiveModifiers, SelectSingleEventHandler } from "react-day-picker";
 import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, LucideTextCursorInput } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -127,10 +128,19 @@ export const SmartDatetimeInput = React.forwardRef<
     value ?? undefined
   ); */
 
-  const [Time, setTime] = React.useState<string>("0:00 AM");
+  const [Time, setTime] = React.useState<string>("");
 
   const onTimeChange = React.useCallback((time: string) => {
     setTime(time);
+  }, []);
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    const Time = `${hour >= 12 ? hour % 12 : hour}:${new Date().getMinutes()} ${
+      hour >= 12 ? "PM" : "AM"
+    }`;
+    console.log(Time);
+    setTime(Time);
   }, []);
 
   return (
@@ -188,7 +198,6 @@ const TimePicker = () => {
   const handleKeydown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       e.stopPropagation();
-      e.preventDefault();
 
       if (!document) return;
 
@@ -225,6 +234,8 @@ const TimePicker = () => {
 
         if (!currentElm) return;
 
+        currentElm.focus();
+
         const timeValue = currentElm.textContent ?? "";
 
         const timeFormat = `${timeValue.split(" ")[0].split(":")[0]}:${
@@ -255,14 +266,8 @@ const TimePicker = () => {
 
         case "Escape":
           setActiveIndex(-1);
-          break;
-
-        case "Tab":
-          if (e.shiftKey) {
-            movePrev();
-          } else {
-            moveNext();
-          }
+          const currentElm = document.getElementById(`time-${activeIndex}`);
+          currentElm?.blur();
           break;
 
         case "Enter":
@@ -274,7 +279,7 @@ const TimePicker = () => {
   );
 
   const currentTime = React.useMemo(() => {
-    const timeVal = Time.split("")[0];
+    const timeVal = Time.split(" ")[0];
     return value
       ? getCurrentTime(value)
       : {
@@ -283,60 +288,108 @@ const TimePicker = () => {
         };
   }, [Time, value]);
 
+  React.useEffect(() => {
+    const getCurrentElementTime = () => {
+      let trueIndex = activeIndex === -1 ? 0 : activeIndex;
+      for (let i = 0; i <= 23; i++) {
+        const PM_AM = i >= 12 ? "PM" : "AM";
+        const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
+        for (let j = 0; j <= 3; j++) {
+          const diff = Math.abs(j * timestamp - currentTime.minutes);
+          const selected =
+            (currentTime.hours === i || currentTime.hours === formatIndex) &&
+            Time.split(" ")[1] === PM_AM &&
+            diff >= 0 &&
+            diff < timestamp / 2;
+          if (selected) trueIndex = i * 4 + j;
+        }
+      }
+
+      trueIndex = activeIndex === -1 ? trueIndex : activeIndex;
+
+      setActiveIndex(trueIndex);
+
+      const currentElm = document.getElementById(`time-${trueIndex}`);
+      // * suggestion : make the scroll when the component mounts
+      currentElm?.scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+    };
+    getCurrentElementTime();
+  }, [value, activeIndex]);
+
   return (
-    <div className="space-y-1 pr-3 py-3 relative">
+    <div className="space-y-1 pr-3 py-3 relative ">
       <h3 className="text-sm font-medium">Time</h3>
-      <div
-        tabIndex={0}
+      <ScrollArea
         onKeyDown={handleKeydown}
-        className={cn(
-          "flex items-center flex-col gap-1 h-full max-h-56 w-28 overflow-y-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg px-1 focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 "
-        )}
+        className="max-h-full w-full focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0"
       >
-        {Array.from({ length: 24 }).map((_, i) => {
-          const PM_AM = i >= 12 ? "PM" : "AM";
-          const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
-          return Array.from({ length: 4 }).map((_, part) => {
-            const diff = Math.abs(part * timestamp - currentTime.minutes);
-            const trueIndex = i * 4 + part;
-            const isSelected =
-              (currentTime.hours === i || currentTime.hours === formatIndex) &&
-              Time.split(" ")[1] === PM_AM &&
-              diff >= 0 &&
-              diff < timestamp / 2;
+        <ul
+          className={cn(
+            "flex items-center flex-col gap-1 h-full max-h-56 w-28 px-1 py-0.5"
+          )}
+        >
+          {Array.from({ length: 24 }).map((_, i) => {
+            const PM_AM = i >= 12 ? "PM" : "AM";
+            const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
+            return Array.from({ length: 4 }).map((_, part) => {
+              const diff = Math.abs(part * timestamp - currentTime.minutes);
+              const trueIndex = i * 4 + part;
 
-            const currentValue = `${formatIndex}:${
-              part === 0 ? "00" : timestamp * part
-            } ${PM_AM}`;
+              // ? refactor : add the select of the default time on the current device (H:MM)
+              const isSelected =
+                (currentTime.hours === i ||
+                  currentTime.hours === formatIndex) &&
+                Time.split(" ")[1] === PM_AM &&
+                diff >= 0 &&
+                diff < timestamp / 2;
 
-            return (
-              <Button
-                aria-label="currentTime"
-                aria-description={`button that shows current time : ${currentValue} `}
-                className={cn(
-                  "h-8 px-3 w-full text-sm focus-visible:outline-0 outline-0 ",
-                  {
-                    "ring-1 ring-ring": activeIndex === trueIndex,
-                  }
-                )}
-                variant={isSelected ? "default" : "outline"}
-                id={`time-${trueIndex}`}
-                key={`time-${trueIndex}`}
-                onClick={() => {
-                  formateSelectedTime(
-                    `${i}:${part === 0 ? "00" : timestamp * part} ${PM_AM}`,
-                    i,
-                    part
-                  );
-                  setActiveIndex(trueIndex);
-                }}
-              >
-                {currentValue}
-              </Button>
-            );
-          });
-        })}
-      </div>
+              const isSuggested = !value && isSelected;
+
+              const checkTab = isSuggested ? isSuggested : isSelected;
+
+              const currentValue = `${formatIndex}:${
+                part === 0 ? "00" : timestamp * part
+              } ${PM_AM}`;
+
+              return (
+                <li
+                  tabIndex={checkTab ? 0 : -1}
+                  id={`time-${trueIndex}`}
+                  key={`time-${trueIndex}`}
+                  aria-label="currentTime"
+                  className={cn(
+                    buttonVariants({
+                      variant: isSuggested
+                        ? "secondary"
+                        : isSelected
+                        ? "default"
+                        : "outline",
+                    }),
+                    "h-8 px-3 w-full text-sm focus-visible:outline-0 outline-0 focus-visible:border-0 cursor-default ring-0",
+                    activeIndex === trueIndex
+                      ? "ring-1 ring-ring"
+                      : !checkTab && "focus-visible:ring-0"
+                  )}
+                  onClick={() => {
+                    formateSelectedTime(
+                      `${i}:${part === 0 ? "00" : timestamp * part} ${PM_AM}`,
+                      i,
+                      part
+                    );
+                    setActiveIndex(trueIndex);
+                  }}
+                  onFocus={() => isSuggested && setActiveIndex(trueIndex)}
+                >
+                  {currentValue}
+                </li>
+              );
+            });
+          })}
+        </ul>
+      </ScrollArea>
     </div>
   );
 };
@@ -355,8 +408,12 @@ const NaturalLanguageInput = React.forwardRef<
   const [inputValue, setInputValue] = React.useState<string>("");
 
   React.useEffect(() => {
+    const hour = new Date().getHours();
+    const timeVal = `${
+      hour >= 12 ? hour % 12 : hour
+    }:${new Date().getMinutes()} ${hour >= 12 ? "PM" : "AM"}`;
     setInputValue(value ? formatDateTime(value) : "");
-    onTimeChange(value ? Time : "0:00 AM");
+    onTimeChange(value ? Time : timeVal);
   }, [value, Time]);
 
   const handleParse = React.useCallback(
