@@ -68,16 +68,6 @@ export const formatDateTime = (datetime: Date | string) => {
   });
 };
 
-const getCurrentTime = (datetime: Date | string) => {
-  return {
-    hours:
-      new Date(datetime).getUTCHours() >= 12
-        ? (new Date(datetime).getUTCHours() % 12) + 1
-        : new Date(datetime).getUTCHours() + 1,
-    minutes: new Date(datetime).getUTCMinutes(),
-  };
-};
-
 const inputBase =
   "bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0 sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
@@ -128,7 +118,7 @@ export const SmartDatetimeInput = React.forwardRef<
     value ?? undefined
   ); */
 
-  const [Time, setTime] = React.useState<string>("10:32 AM");
+  const [Time, setTime] = React.useState<string>("");
 
   const onTimeChange = React.useCallback((time: string) => {
     setTime(time);
@@ -160,6 +150,8 @@ export const SmartDatetimeInput = React.forwardRef<
 });
 
 SmartDatetimeInput.displayName = "DatetimeInput";
+
+// Make it a standalone component
 
 const TimePicker = () => {
   const { value, onValueChange, Time, onTimeChange } = useSmartDateInput();
@@ -287,13 +279,11 @@ const TimePicker = () => {
 
   const currentTime = React.useMemo(() => {
     const timeVal = Time.split(" ")[0];
-    return value
-      ? getCurrentTime(value)
-      : {
-          hours: parseInt(timeVal.split(":")[0]),
-          minutes: parseInt(timeVal.split(":")[1]),
-        };
-  }, [Time, value]);
+    return {
+      hours: parseInt(timeVal.split(":")[0]),
+      minutes: parseInt(timeVal.split(":")[1]),
+    };
+  }, [Time]);
 
   React.useEffect(() => {
     const getCurrentElementTime = () => {
@@ -305,7 +295,7 @@ const TimePicker = () => {
           const selected =
             (currentTime.hours === i || currentTime.hours === formatIndex) &&
             Time.split(" ")[1] === PM_AM &&
-            diff <= Math.ceil(timestamp / 2);
+            diff < Math.ceil(timestamp / 2);
 
           if (selected) {
             const trueIndex = activeIndex === -1 ? i * 4 + j : activeIndex;
@@ -313,7 +303,6 @@ const TimePicker = () => {
             setActiveIndex(trueIndex);
 
             const currentElm = document.getElementById(`time-${trueIndex}`);
-            // * suggestion : make the scroll when the component mounts
             currentElm?.scrollIntoView({
               block: "center",
               behavior: "smooth",
@@ -323,7 +312,7 @@ const TimePicker = () => {
       }
     };
     getCurrentElementTime();
-  }, [value]);
+  }, [Time, activeIndex]);
 
   const height = React.useMemo(() => {
     if (!document) return;
@@ -360,7 +349,7 @@ const TimePicker = () => {
                 (currentTime.hours === i ||
                   currentTime.hours === formatIndex) &&
                 Time.split(" ")[1] === PM_AM &&
-                diff <= Math.ceil(timestamp / 2);
+                diff < Math.ceil(timestamp / 2);
 
               const isSuggested = !value && isSelected;
 
@@ -417,7 +406,7 @@ const NaturalLanguageInput = React.forwardRef<
       hour >= 12 ? hour % 12 : hour
     }:${new Date().getMinutes()} ${hour >= 12 ? "PM" : "AM"}`;
     setInputValue(value ? formatDateTime(value) : "");
-    onTimeChange(value ? Time : "1:53 AM");
+    onTimeChange(value ? Time : timeVal);
   }, [value, Time]);
 
   const handleParse = React.useCallback(
@@ -516,7 +505,7 @@ const DateTimeLocalInput = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" sideOffset={8}>
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <Calendar
             {...props}
             id={"calendar"}
