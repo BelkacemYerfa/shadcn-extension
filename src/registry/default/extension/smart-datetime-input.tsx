@@ -128,19 +128,10 @@ export const SmartDatetimeInput = React.forwardRef<
     value ?? undefined
   ); */
 
-  const [Time, setTime] = React.useState<string>("");
+  const [Time, setTime] = React.useState<string>("10:32 AM");
 
   const onTimeChange = React.useCallback((time: string) => {
     setTime(time);
-  }, []);
-
-  useEffect(() => {
-    const hour = new Date().getHours();
-    const Time = `${hour >= 12 ? hour % 12 : hour}:${new Date().getMinutes()} ${
-      hour >= 12 ? "PM" : "AM"
-    }`;
-    console.log(Time);
-    setTime(Time);
   }, []);
 
   return (
@@ -212,6 +203,8 @@ const TimePicker = () => {
           behavior: "smooth",
         });
 
+        currentElm?.focus();
+
         setActiveIndex(nextIndex);
       };
 
@@ -225,6 +218,8 @@ const TimePicker = () => {
           block: "center",
           behavior: "smooth",
         });
+
+        currentElm?.focus();
 
         setActiveIndex(prevIndex);
       };
@@ -278,6 +273,18 @@ const TimePicker = () => {
     [activeIndex, Time, value]
   );
 
+  const handleClick = React.useCallback(
+    (hour: number, part: number, PM_AM: string, currentIndex: number) => {
+      formateSelectedTime(
+        `${hour}:${part === 0 ? "00" : timestamp * part} ${PM_AM}`,
+        hour,
+        part
+      );
+      setActiveIndex(currentIndex);
+    },
+    [formateSelectedTime]
+  );
+
   const currentTime = React.useMemo(() => {
     const timeVal = Time.split(" ")[0];
     return value
@@ -290,7 +297,6 @@ const TimePicker = () => {
 
   React.useEffect(() => {
     const getCurrentElementTime = () => {
-      let trueIndex = activeIndex === -1 ? 0 : activeIndex;
       for (let i = 0; i <= 23; i++) {
         const PM_AM = i >= 12 ? "PM" : "AM";
         const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
@@ -299,32 +305,42 @@ const TimePicker = () => {
           const selected =
             (currentTime.hours === i || currentTime.hours === formatIndex) &&
             Time.split(" ")[1] === PM_AM &&
-            diff >= 0 &&
-            diff < timestamp / 2;
-          if (selected) trueIndex = i * 4 + j;
+            diff <= Math.ceil(timestamp / 2);
+
+          if (selected) {
+            const trueIndex = activeIndex === -1 ? i * 4 + j : activeIndex;
+
+            setActiveIndex(trueIndex);
+
+            const currentElm = document.getElementById(`time-${trueIndex}`);
+            // * suggestion : make the scroll when the component mounts
+            currentElm?.scrollIntoView({
+              block: "center",
+              behavior: "smooth",
+            });
+          }
         }
       }
-
-      trueIndex = activeIndex === -1 ? trueIndex : activeIndex;
-
-      setActiveIndex(trueIndex);
-
-      const currentElm = document.getElementById(`time-${trueIndex}`);
-      // * suggestion : make the scroll when the component mounts
-      currentElm?.scrollIntoView({
-        block: "center",
-        behavior: "smooth",
-      });
     };
     getCurrentElementTime();
-  }, [value, activeIndex]);
+  }, [value]);
+
+  const height = React.useMemo(() => {
+    if (!document) return;
+    const calendarElm = document.getElementById("calendar");
+    if (!calendarElm) return;
+    return calendarElm.style.height;
+  }, []);
 
   return (
-    <div className="space-y-1 pr-3 py-3 relative ">
-      <h3 className="text-sm font-medium">Time</h3>
+    <div className="space-y-2 pr-3 py-3 relative ">
+      <h3 className="text-sm font-medium ">Time</h3>
       <ScrollArea
         onKeyDown={handleKeydown}
-        className="max-h-full w-full focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0"
+        className="h-[90%] w-full focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 py-0.5"
+        style={{
+          height,
+        }}
       >
         <ul
           className={cn(
@@ -336,6 +352,7 @@ const TimePicker = () => {
             const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
             return Array.from({ length: 4 }).map((_, part) => {
               const diff = Math.abs(part * timestamp - currentTime.minutes);
+
               const trueIndex = i * 4 + part;
 
               // ? refactor : add the select of the default time on the current device (H:MM)
@@ -343,12 +360,9 @@ const TimePicker = () => {
                 (currentTime.hours === i ||
                   currentTime.hours === formatIndex) &&
                 Time.split(" ")[1] === PM_AM &&
-                diff >= 0 &&
-                diff < timestamp / 2;
+                diff <= Math.ceil(timestamp / 2);
 
               const isSuggested = !value && isSelected;
-
-              const checkTab = isSuggested ? isSuggested : isSelected;
 
               const currentValue = `${formatIndex}:${
                 part === 0 ? "00" : timestamp * part
@@ -356,7 +370,7 @@ const TimePicker = () => {
 
               return (
                 <li
-                  tabIndex={checkTab ? 0 : -1}
+                  tabIndex={isSelected ? 0 : -1}
                   id={`time-${trueIndex}`}
                   key={`time-${trueIndex}`}
                   aria-label="currentTime"
@@ -368,19 +382,9 @@ const TimePicker = () => {
                         ? "default"
                         : "outline",
                     }),
-                    "h-8 px-3 w-full text-sm focus-visible:outline-0 outline-0 focus-visible:border-0 cursor-default ring-0",
-                    activeIndex === trueIndex
-                      ? "ring-1 ring-ring"
-                      : !checkTab && "focus-visible:ring-0"
+                    "h-8 px-3 w-full text-sm focus-visible:outline-0 outline-0 focus-visible:border-0 cursor-default ring-0"
                   )}
-                  onClick={() => {
-                    formateSelectedTime(
-                      `${i}:${part === 0 ? "00" : timestamp * part} ${PM_AM}`,
-                      i,
-                      part
-                    );
-                    setActiveIndex(trueIndex);
-                  }}
+                  onClick={() => handleClick(i, part, PM_AM, trueIndex)}
                   onFocus={() => isSuggested && setActiveIndex(trueIndex)}
                 >
                   {currentValue}
@@ -413,7 +417,7 @@ const NaturalLanguageInput = React.forwardRef<
       hour >= 12 ? hour % 12 : hour
     }:${new Date().getMinutes()} ${hour >= 12 ? "PM" : "AM"}`;
     setInputValue(value ? formatDateTime(value) : "");
-    onTimeChange(value ? Time : timeVal);
+    onTimeChange(value ? Time : "1:53 AM");
   }, [value, Time]);
 
   const handleParse = React.useCallback(
@@ -515,6 +519,7 @@ const DateTimeLocalInput = ({
         <div className="flex gap-2">
           <Calendar
             {...props}
+            id={"calendar"}
             className={cn("peer flex justify-end", inputBase, className)}
             mode="single"
             selected={value}
