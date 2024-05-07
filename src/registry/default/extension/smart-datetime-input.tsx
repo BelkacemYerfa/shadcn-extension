@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { parseDate } from "chrono-node";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ActiveModifiers, SelectSingleEventHandler } from "react-day-picker";
+import { ActiveModifiers } from "react-day-picker";
 import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Calendar as CalendarIcon, LucideTextCursorInput } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { format } from "date-fns";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -190,11 +191,6 @@ const TimePicker = () => {
 
         const currentElm = document.getElementById(`time-${nextIndex}`);
 
-        currentElm?.scrollIntoView({
-          block: "center",
-          behavior: "smooth",
-        });
-
         currentElm?.focus();
 
         setActiveIndex(nextIndex);
@@ -205,11 +201,6 @@ const TimePicker = () => {
           activeIndex - 1 < 0 ? DEFAULT_SIZE - 1 : activeIndex - 1;
 
         const currentElm = document.getElementById(`time-${prevIndex}`);
-
-        currentElm?.scrollIntoView({
-          block: "center",
-          behavior: "smooth",
-        });
 
         currentElm?.focus();
 
@@ -225,21 +216,30 @@ const TimePicker = () => {
 
         const timeValue = currentElm.textContent ?? "";
 
-        const timeFormat = `${timeValue.split(" ")[0].split(":")[0]}:${
-          timeValue.split(" ")[0].split(":")[1]
-        }`;
+        // this should work now haha that hour is what does the trick
 
-        onTimeChange(timeValue);
+        const PM_AM = timeValue.split(" ")[1];
+        const PM_AM_hour = parseInt(timeValue.split(" ")[0].split(":")[0]);
+        const hour =
+          PM_AM === "AM"
+            ? PM_AM_hour === 12
+              ? 0
+              : PM_AM_hour
+            : PM_AM_hour === 12
+            ? 12
+            : PM_AM_hour + 12;
 
-        const newVal = parseDateTime(value ?? new Date());
-
-        if (!newVal) return;
-
-        newVal.setHours(
-          parseInt(timeFormat.split(":")[0]),
-          parseInt(timeFormat.split(":")[1])
+        const part = Math.floor(
+          parseInt(timeValue.split(" ")[0].split(":")[1]) / 15
         );
-        onValueChange(newVal);
+
+        formateSelectedTime(timeValue, hour, part);
+      };
+
+      const reset = () => {
+        const currentElm = document.getElementById(`time-${activeIndex}`);
+        currentElm?.blur();
+        setActiveIndex(-1);
       };
 
       switch (e.key) {
@@ -252,9 +252,7 @@ const TimePicker = () => {
           break;
 
         case "Escape":
-          setActiveIndex(-1);
-          const currentElm = document.getElementById(`time-${activeIndex}`);
-          currentElm?.blur();
+          reset();
           break;
 
         case "Enter":
@@ -262,7 +260,7 @@ const TimePicker = () => {
           break;
       }
     },
-    [activeIndex, Time, value]
+    [activeIndex, formateSelectedTime]
   );
 
   const handleClick = React.useCallback(
@@ -287,30 +285,38 @@ const TimePicker = () => {
 
   React.useEffect(() => {
     const getCurrentElementTime = () => {
-      for (let i = 0; i <= 23; i++) {
-        const PM_AM = i >= 12 ? "PM" : "AM";
-        const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
-        for (let j = 0; j <= 3; j++) {
-          const diff = Math.abs(j * timestamp - currentTime.minutes);
-          const selected =
-            (currentTime.hours === i || currentTime.hours === formatIndex) &&
-            Time.split(" ")[1] === PM_AM &&
-            diff < Math.ceil(timestamp / 2);
+      const timeVal = Time.split(" ")[0];
+      const hours = parseInt(timeVal.split(":")[0]);
+      const minutes = parseInt(timeVal.split(":")[1]);
+      const PM_AM = Time.split(" ")[1];
 
-          if (selected) {
-            const trueIndex = activeIndex === -1 ? i * 4 + j : activeIndex;
+      const formatIndex =
+        PM_AM === "AM" ? hours : hours === 12 ? hours : hours + 12;
+      const formattedHours = formatIndex;
 
-            setActiveIndex(trueIndex);
+      console.log(formatIndex);
 
-            const currentElm = document.getElementById(`time-${trueIndex}`);
-            currentElm?.scrollIntoView({
-              block: "center",
-              behavior: "smooth",
-            });
-          }
+      for (let j = 0; j <= 3; j++) {
+        const diff = Math.abs(j * timestamp - minutes);
+        const selected =
+          PM_AM === (formattedHours >= 12 ? "PM" : "AM") &&
+          (minutes <= 53 ? diff < Math.ceil(timestamp / 2) : diff < timestamp);
+
+        if (selected) {
+          const trueIndex =
+            activeIndex === -1 ? formattedHours * 4 + j : activeIndex;
+
+          setActiveIndex(trueIndex);
+
+          const currentElm = document.getElementById(`time-${trueIndex}`);
+          currentElm?.scrollIntoView({
+            block: "center",
+            behavior: "smooth",
+          });
         }
       }
     };
+
     getCurrentElementTime();
   }, [Time, activeIndex]);
 
@@ -349,7 +355,9 @@ const TimePicker = () => {
                 (currentTime.hours === i ||
                   currentTime.hours === formatIndex) &&
                 Time.split(" ")[1] === PM_AM &&
-                diff < Math.ceil(timestamp / 2);
+                (currentTime.minutes <= 53
+                  ? diff < Math.ceil(timestamp / 2)
+                  : diff < timestamp);
 
               const isSuggested = !value && isSelected;
 
@@ -415,11 +423,20 @@ const NaturalLanguageInput = React.forwardRef<
       const parsedDateTime = parseDateTime(e.currentTarget.value);
       if (parsedDateTime) {
         const PM_AM = parsedDateTime.getHours() >= 12 ? "PM" : "AM";
+        //fix the time format for this value
+
+        const PM_AM_hour = parsedDateTime.getHours();
+
+        const hour =
+          PM_AM_hour > 12
+            ? PM_AM_hour % 12
+            : PM_AM_hour === 0 || PM_AM_hour === 12
+            ? 12
+            : PM_AM_hour;
+
         onValueChange(parsedDateTime);
         setInputValue(formatDateTime(parsedDateTime));
-        onTimeChange(
-          `${parsedDateTime.getHours()}:${parsedDateTime.getMinutes()} ${PM_AM}`
-        );
+        onTimeChange(`${hour}:${parsedDateTime.getMinutes()} ${PM_AM}`);
       }
     },
     [value]
@@ -432,11 +449,20 @@ const NaturalLanguageInput = React.forwardRef<
           const parsedDateTime = parseDateTime(e.currentTarget.value);
           if (parsedDateTime) {
             const PM_AM = parsedDateTime.getHours() >= 12 ? "PM" : "AM";
+            //fix the time format for this value
+
+            const PM_AM_hour = parsedDateTime.getHours();
+
+            const hour =
+              PM_AM_hour > 12
+                ? PM_AM_hour % 12
+                : PM_AM_hour === 0 || PM_AM_hour === 12
+                ? 12
+                : PM_AM_hour;
+
             onValueChange(parsedDateTime);
             setInputValue(formatDateTime(parsedDateTime));
-            onTimeChange(
-              `${parsedDateTime.getHours()}:${parsedDateTime.getMinutes()} ${PM_AM}`
-            );
+            onTimeChange(`${hour}:${parsedDateTime.getMinutes()} ${PM_AM}`);
           }
           break;
       }
