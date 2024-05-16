@@ -106,10 +106,10 @@ const Carousel = forwardRef<
 
     const handleKeyDown = useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
-        event.preventDefault();
         if (!emblaMainApi) return;
         switch (event.key) {
           case "ArrowLeft":
+            event.preventDefault();
             if (orientation === "horizontal") {
               if (direction === "rtl") {
                 ScrollNext();
@@ -119,6 +119,7 @@ const Carousel = forwardRef<
             }
             break;
           case "ArrowRight":
+            event.preventDefault();
             if (orientation === "horizontal") {
               if (direction === "rtl") {
                 ScrollPrev();
@@ -128,11 +129,13 @@ const Carousel = forwardRef<
             }
             break;
           case "ArrowUp":
+            event.preventDefault();
             if (orientation === "vertical") {
               ScrollPrev();
             }
             break;
           case "ArrowDown":
+            event.preventDefault();
             if (orientation === "vertical") {
               ScrollNext();
             }
