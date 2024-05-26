@@ -40,18 +40,18 @@ const INPUT_PLACEHOLDERS: InputPlaceholders = {
  * Date time picker Docs: {@link: https://shadcn-extension.vercel.app/docs/otp-input}
  */
 
-const DatetimeGrid = forwardRef(
+const DatetimeGrid = forwardRef<HTMLDivElement, {
+  format: DateTimeFormatDefaults;
+  className?: string;
+  timescape: Pick<TimescapeReturn, "getRootProps" | "getInputProps">;
+  placeholders: InputPlaceholders;
+}>(
   (
     {
       format,
       className,
       timescape,
       placeholders,
-    }: {
-      format: DateTimeFormatDefaults;
-      className?: string;
-      timescape: Pick<TimescapeReturn, "getRootProps" | "getInputProps">;
-      placeholders: InputPlaceholders;
     },
     ref
   ) => {
@@ -63,6 +63,7 @@ const DatetimeGrid = forwardRef(
           "border-input rounded-md gap-1 selection:bg-transparent selection:text-foreground"
         )}
         {...timescape.getRootProps()}
+        ref={ref}
       >
         {!!format?.length
           ? format.map((group, i) => (
@@ -124,7 +125,7 @@ const DEFAULT_TS_OPTIONS = {
   date: new Date(),
   hour12: true,
 };
-export const DatetimePicker = forwardRef(
+export const DatetimePicker = forwardRef<HTMLDivElement, DateTimeInput>(
   (
     {
       value = new Date(),
@@ -133,7 +134,7 @@ export const DatetimePicker = forwardRef(
       dtOptions = DEFAULT_TS_OPTIONS,
       onChange,
       className,
-    }: DateTimeInput & { className?: string },
+    },
     ref
   ) => {
     const handleDateChange = useCallback(
@@ -153,6 +154,7 @@ export const DatetimePicker = forwardRef(
         className={className}
         timescape={timescape}
         placeholders={placeholders ?? INPUT_PLACEHOLDERS}
+        ref={ref}
       />
     );
   }
