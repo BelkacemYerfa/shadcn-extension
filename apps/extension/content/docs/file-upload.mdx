@@ -1,0 +1,235 @@
+---
+title: File Upload
+description: an input component that allows file uploading.
+links:
+  - title: react-dropzone
+    url: https://react-dropzone.js.org/#src
+  - title: sonner
+    url: https://sonner.emilkowal.ski/
+---
+
+<ComponentPreview name="file-upload-demo" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Run the following command:</Step>
+
+```bash
+npm i react-dropzone
+npm i sonner
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="file-upload" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+<TabsContent value="cli">
+
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
+</Tabs>
+
+## API Reference
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+
+      },
+      type: {
+        value: "type",
+      },
+      defaultValue: {
+        value: "defaultValue",
+      },
+    },
+    {
+      prop: {
+        value: "value",
+        description: "an array of files that are selected by the user",
+      },
+      type: {
+        value: ["File[]"],
+      },
+      defaultValue: {
+        value: ["null"],
+      },
+    },
+    {
+      prop: {
+        value: "onValueChange",
+        description: "A callback function that is called when the value changes.",
+      },
+      type: {
+        value: ["(value: File[]) => void"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop : {
+        value: "reSelect",
+        description: "if true , all the current selected file will be all removed if new files are selected.",
+      } ,
+      type : {
+        value: ["boolean"]
+      } ,
+      defaultValue : {
+        value: ["false"]
+      }
+    },
+    { prop : {
+        value: "orientation",
+        description: "The orientation of the file upload.",
+      } ,
+      type : {
+        value: ["horizantle" , "vertical"]
+      } ,
+      defaultValue : {
+        value: ["horizantle"]
+      }},
+    {
+      prop: {
+        value: "dropzoneOptions",
+        description: (
+          <>
+            those are options to be passed to the useDropzone hook from
+            react-dropzone you can check the type{" "}
+            <a target="_blank" src="https://react-dropzone.js.org/#src">
+              here
+            </a>
+          </>
+        ),
+      },
+      type: {
+        value: ["DropzoneOptions"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+
+]}
+/>
+
+## Accessibility
+
+The Accordion component adheres to the WAI-ARIA design pattern. It is accessible by keyboard and screen readers.
+
+## Keyboard Navigation
+
+<MDXTable
+  data={[
+    {
+      key: {
+        value: "key",
+      },
+      description: {
+        value: "description",
+      },
+    },
+    {
+      key: {
+        value: "Enter",
+      },
+      description: {
+        value: "opens the file upload pc interface",
+      },
+    },
+
+    {
+      key: {
+        value: "ArrowUp",
+      },
+      description: {
+        value: "Move to the previous item",
+      },
+    },
+    {
+      key: {
+        value: "ArrowDown",
+      },
+      description: {
+        value: "Move to the next item",
+      },
+    },
+    {
+      key: {
+        value: "Delete/Backspace",
+      },
+      description: {
+        value: "remove the selected item , otherwise removes the last item ",
+      },
+    },
+
+]}
+/>
+
+## Usage
+
+```tsx
+import {
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+  FileInput,
+} from "@/components/extension/file-uploader";
+```
+
+```tsx
+<FileUploader
+  value={files}
+  onValueChange={setFiles}
+  dropzoneOptions={dropZoneConfig}
+  className="relative max-w-xs space-y-1"
+>
+  <FileInput className="border border-dashed border-gray-500">
+    <Button variant={"outline"}>Upload a file</Button>
+  </FileInput>
+  <FileUploaderContent className="h-48 ">
+    <FileUploaderItem index={i}>file 1</FileUploaderItem>
+    <FileUploaderItem index={i}>file 2</FileUploaderItem>
+    <FileUploaderItem index={i}>...</FileUploaderItem>
+  </FileUploaderContent>
+</FileUploader>
+```
+
+## Example
+
+
+### DropzoneOptions
+
+The `dropzoneOptions` prop is an object that can be passed to the `FileUploader` component to customize the useDropzone hook behavior. You can find the full list of options [here](https://react-dropzone.js.org/#src).
+
+<ComponentPreview name="file-upload-dropzone" />
+
+### Form
+
+This form uses the reSelect prop to remove all the current selected files when new files are selected.
+
+<ComponentPreview name="file-upload-zod" />
