@@ -1,0 +1,117 @@
+[
+  {
+    "name": "tree-view",
+    "dependencies": [
+      "@radix-ui/react-accordion"
+    ],
+    "files": [
+      "extension/tree-view.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "tree-view-api",
+    "dependencies": [
+      "@radix-ui/react-accordion"
+    ],
+    "files": [
+      "extension/tree-view-api.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "file-upload",
+    "dependencies": [
+      "react-dropzone"
+    ],
+    "files": [
+      "extension/file-upload.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "multi-select",
+    "dependencies": [
+      "command",
+      "cmdk"
+    ],
+    "files": [
+      "extension/multi-select.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "otp-input",
+    "dependencies": [
+      "react-otp-input"
+    ],
+    "files": [
+      "extension/otp-input.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "carousel",
+    "dependencies": [
+      "embla-carousel-react",
+      "embla-carousel"
+    ],
+    "files": [
+      "extension/carousel.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "breadcrumb",
+    "dependencies": [
+      "Button",
+      "@radix-ui/react-popover"
+    ],
+    "files": [
+      "extension/breadcrumb.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "image-carousel-upload",
+    "dependencies": [
+      "react-dropzone",
+      "embla-carousel-react",
+      "embla-carousel"
+    ],
+    "files": [
+      "extension/image-carousel-upload.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "smart-datetime-input",
+    "dependencies": [
+      "chrono-node"
+    ],
+    "files": [
+      "extension/smart-datetime-input.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "datetime-picker",
+    "dependencies": [
+      "timescape"
+    ],
+    "files": [
+      "extension/datetime-picker.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
+    "name": "tags-input",
+    "dependencies": [
+      "badge"
+    ],
+    "files": [
+      "extension/tags-input.tsx"
+    ],
+    "type": "components:extension"
+  }
+]

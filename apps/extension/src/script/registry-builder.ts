@@ -71,4 +71,26 @@ if (!fs.existsSync(registryPath)) {
 rimraf.sync(path.join(process.cwd(), "src/__registry__/index.tsx"));
 fs.writeFileSync(path.join(process.cwd(), "src/__registry__/index.tsx"), index);
 
+// write the registry to public dir
+const names = result.data.filter((item) => item.type === "components:extension")
+console.log("📝 Building index...");
+const registryJson = JSON.stringify(names, null, 2);
+console.log("📝 getting registry path registry...");
+const publicRegistryPath = path.join(process.cwd(), "public/registry");
+if (!fs.existsSync(publicRegistryPath)) {
+  console.log("📝 Creating registry directory...");
+  fs.mkdirSync(publicRegistryPath);
+}
+
+console.log("📝 Writing registry...");
+
+// check if file exists
+const registryFilePath = path.join(publicRegistryPath, "index.json");
+if (fs.existsSync(registryFilePath)) {
+  console.log("📝 Removing existing registry file...");
+  fs.unlinkSync(registryFilePath);
+}
+
+fs.writeFileSync(registryFilePath, registryJson);
+
 console.log("✅ Done!");
