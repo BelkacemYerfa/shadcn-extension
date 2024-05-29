@@ -114,7 +114,7 @@ export const add = new Command()
       spinner.text = `Installing ${item.name}...`;
 
       const packageManager = await getPackageManager(cwd);
-
+      
       // Install uiDependencies.
       if (item.uiDependencies?.length) {
         spinner.stop();
@@ -172,13 +172,6 @@ export const add = new Command()
             cwd,
           }
         );
-      }
-      if (item.fileDependencies) {
-        for (const dir of item.fileDependencies) {
-          if (!fs.existsSync(path.join(componentPath, dir))) {
-            fs.mkdirSync(path.join(componentPath, dir), { recursive: true });
-          }
-        }
       }
 
       const data = await fetchFileContentFromGithub(item.files);
