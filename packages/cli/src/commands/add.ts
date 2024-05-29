@@ -1,5 +1,5 @@
-import { Registry } from "@/registry/schema";
-import { registryIndexSchema } from "@/registry/schema";
+import { Registry } from "@/utils/registry/schema";
+import { registryIndexSchema } from "@/utils/registry/schema";
 import { componentPath } from "@/utils/get-json";
 import { getPackageManager } from "@/utils/get-package-manager";
 import {
@@ -152,7 +152,7 @@ export const add = new Command()
       if (item.dependencies?.length) {
         await execa(
           packageManager,
-          [packageManager === "npm" ? "install" : "i", ...item.dependencies],
+          [packageManager === "npm" ? "install" : "add", ...item.dependencies],
           {
             cwd,
           }
