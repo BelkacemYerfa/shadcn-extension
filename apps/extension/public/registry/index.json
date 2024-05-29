@@ -2,7 +2,11 @@
   {
     "name": "tree-view",
     "dependencies": [
-      "@radix-ui/react-accordion"
+      "@tanstack/react-virtual",
+      "use-resize-observer"
+    ],
+    "registryDependencies": [
+      "tree-view-api"
     ],
     "files": [
       "extension/tree-view.tsx"
@@ -14,6 +18,10 @@
     "dependencies": [
       "@radix-ui/react-accordion"
     ],
+    "uiDependencies": [
+      "button",
+      "scroll-area"
+    ],
     "files": [
       "extension/tree-view-api.tsx"
     ],
@@ -22,7 +30,12 @@
   {
     "name": "file-upload",
     "dependencies": [
-      "react-dropzone"
+      "react-dropzone",
+      "sonner"
+    ],
+    "uiDependencies": [
+      "button",
+      "input"
     ],
     "files": [
       "extension/file-upload.tsx"
@@ -35,6 +48,10 @@
       "command",
       "cmdk"
     ],
+    "uiDependencies": [
+      "badge",
+      "command"
+    ],
     "files": [
       "extension/multi-select.tsx"
     ],
@@ -45,6 +62,9 @@
     "dependencies": [
       "react-otp-input"
     ],
+    "uiDependencies": [
+      "input"
+    ],
     "files": [
       "extension/otp-input.tsx"
     ],
@@ -54,7 +74,11 @@
     "name": "carousel",
     "dependencies": [
       "embla-carousel-react",
-      "embla-carousel"
+      "embla-carousel",
+      "@radix-ui/react-icons"
+    ],
+    "uiDependencies": [
+      "button"
     ],
     "files": [
       "extension/carousel.tsx"
@@ -64,8 +88,11 @@
   {
     "name": "breadcrumb",
     "dependencies": [
-      "Button",
       "@radix-ui/react-popover"
+    ],
+    "uiDependencies": [
+      "button",
+      "popover"
     ],
     "files": [
       "extension/breadcrumb.tsx"
@@ -79,6 +106,12 @@
       "embla-carousel-react",
       "embla-carousel"
     ],
+    "registryDependencies": [
+      "carousel"
+    ],
+    "uiDependencies": [
+      "input"
+    ],
     "files": [
       "extension/image-carousel-upload.tsx"
     ],
@@ -87,7 +120,15 @@
   {
     "name": "smart-datetime-input",
     "dependencies": [
-      "chrono-node"
+      "chrono-node",
+      "react-day-picker"
+    ],
+    "uiDependencies": [
+      "popover",
+      "calendar",
+      "input",
+      "button",
+      "scroll-area"
     ],
     "files": [
       "extension/smart-datetime-input.tsx"
@@ -99,6 +140,9 @@
     "dependencies": [
       "timescape"
     ],
+    "uiDependencies": [
+      "input"
+    ],
     "files": [
       "extension/datetime-picker.tsx"
     ],
@@ -107,6 +151,10 @@
   {
     "name": "tags-input",
     "dependencies": [
+      "badge"
+    ],
+    "uiDependencies": [
+      "input",
       "badge"
     ],
     "files": [
