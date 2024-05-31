@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {
   COMPONENTS_JSON_PATH,
-  DEFAULT_TRNSPRNCY_PATH,
+  DEFAULT_EXTENSION_PATH,
   componentPath,
   parseComponentsJson,
 } from "@/utils/get-json.js";
@@ -26,7 +26,7 @@ const ALIAS_EXAMPLE = `
 
     ${highlights.info(
       `"aliases": {
-        "trnsprncy": "@/components/ui/trnsprncy"
+        "extension": "@/components/ui/extension"
       }`
     )}
 `;
@@ -60,7 +60,7 @@ const isInitialized = () => {
     ora(prompts.shadcnRequired).fail();
     process.exit(1);
   }
-  return !!componentsJson.aliases?.trnsprncy;
+  return !!componentsJson.aliases?.extension;
 };
 
 export const init = new Command()
@@ -70,7 +70,7 @@ export const init = new Command()
     renderTitle("Initializing:");
     if (isInitialized()) {
       ora(
-        `trnsprncy alias already exists in ${highlights.success(
+        `extension alias already exists in ${highlights.success(
           "components.json"
         )}`
       ).fail();
@@ -181,8 +181,8 @@ async function config() {
     }
     const componentsJson = parseComponentsJson();
 
-    // Create trnsprncy alias
-    componentsJson.aliases.trnsprncy = DEFAULT_TRNSPRNCY_PATH;
+    // Create extension alias
+    componentsJson.aliases.extension = DEFAULT_EXTENSION_PATH;
 
     fs.writeFileSync(
       COMPONENTS_JSON_PATH,
