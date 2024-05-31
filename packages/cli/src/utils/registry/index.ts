@@ -1,4 +1,4 @@
-import { registryIndexSchema, Registry } from "@/registry/schema";
+import { registryIndexSchema, Registry } from "@/utils/registry/schema";
 import { decide, hasSrcPath } from "@/utils/get-json";
 import fs from "fs";
 import { HttpsProxyAgent } from "https-proxy-agent";
@@ -6,9 +6,9 @@ import fetch from "node-fetch";
 import path from "path";
 import { z } from "zod";
 
-const GithubUrl = "https://raw.githubusercontent.com/trnsprncy/ui/main";
+const GithubUrl = "https://raw.githubusercontent.com/gaurangrshah/ext-temp/main";
 const baseUrl =
-  process.env.COMPONENTS_REGISTRY_URL ?? "https://trnsprncy.vercel.app";
+  process.env.COMPONENTS_REGISTRY_URL ?? "http://localhost:3000/";
 const agent = process.env.https_proxy
   ? new HttpsProxyAgent(process.env.https_proxy)
   : undefined;
@@ -106,12 +106,9 @@ export async function fetchFileContentFromGithub(
     const contents: string[] = [];
 
     for (const path of paths) {
-      const rawUrl = `${GithubUrl}/packages/site/src/registry/alpha/${path}`;
+      const rawUrl = `${GithubUrl}/apps/extension/src/registry/default/${path}`;
 
-      //getting the filename index from path
-      const secondSlashIndex = path.indexOf("/", path.indexOf("/") + 1);
-      //getting the filename from the above index
-      const filename = path.substring(secondSlashIndex);
+      const filename = path.substring( path.indexOf("/"));
 
       const response = await fetch(rawUrl);
 

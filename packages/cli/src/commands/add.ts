@@ -1,5 +1,5 @@
-import { Registry } from "@/registry/schema";
-import { registryIndexSchema } from "@/registry/schema";
+import { Registry } from "@/utils/registry/schema";
+import { registryIndexSchema } from "@/utils/registry/schema";
 import { componentPath } from "@/utils/get-json";
 import { getPackageManager } from "@/utils/get-package-manager";
 import {
@@ -114,7 +114,7 @@ export const add = new Command()
       spinner.text = `Installing ${item.name}...`;
 
       const packageManager = await getPackageManager(cwd);
-
+      
       // Install uiDependencies.
       if (item.uiDependencies?.length) {
         spinner.stop();
@@ -152,7 +152,7 @@ export const add = new Command()
       if (item.dependencies?.length) {
         await execa(
           packageManager,
-          [packageManager === "npm" ? "install" : "i", ...item.dependencies],
+          [packageManager === "npm" ? "install" : "add", ...item.dependencies],
           {
             cwd,
           }
@@ -172,13 +172,6 @@ export const add = new Command()
             cwd,
           }
         );
-      }
-      if (item.fileDependencies) {
-        for (const dir of item.fileDependencies) {
-          if (!fs.existsSync(path.join(componentPath, dir))) {
-            fs.mkdirSync(path.join(componentPath, dir), { recursive: true });
-          }
-        }
       }
 
       const data = await fetchFileContentFromGithub(item.files);

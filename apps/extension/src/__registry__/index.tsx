@@ -8,7 +8,7 @@ export const Index: Record<string, any> = {
     "tree-view": {
       name: "tree-view",
       type: "components:extension",
-      registryDependencies: undefined,
+      registryDependencies: ["tree-view-api"],
       component: React.lazy(() => import("@/registry/default/extension/tree-view.tsx")),
       files: ["src/registry/default/extension/tree-view.tsx"],
     },
@@ -57,7 +57,7 @@ export const Index: Record<string, any> = {
     "image-carousel-upload": {
       name: "image-carousel-upload",
       type: "components:extension",
-      registryDependencies: undefined,
+      registryDependencies: ["carousel"],
       component: React.lazy(() => import("@/registry/default/extension/image-carousel-upload.tsx")),
       files: ["src/registry/default/extension/image-carousel-upload.tsx"],
     },

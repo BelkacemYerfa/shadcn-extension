@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-export const registrySchema = z.array(
-  z.object({
+export const registrySchema = z.object({
     name: z.string(),
     dependencies: z.array(z.string()).optional(),
     devDependencies: z.array(z.string()).optional(),
@@ -9,11 +8,12 @@ export const registrySchema = z.array(
     uiDependencies: z.array(z.string()).optional(),
     files: z.array(z.string()),
     type: z.enum([
-      "components:extension",
-      "components:demo",
-      "components:example",
+        "components:extension",
+        "components:demo",
+        "components:example",
     ]),
-  })
-);
+});
 
-export type Registry = z.infer<typeof registrySchema>;
+export const registryIndexSchema = z.array(registrySchema);
+
+export type Registry = z.infer<typeof registryIndexSchema>;

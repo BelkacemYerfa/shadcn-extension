@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export const DEFAULT_TRNSPRNCY_PATH = "@/components/ui/trnsprncy";
+export const DEFAULT_EXTENSION_PATH = "@/components/ui/extension";
 
 export const COMPONENTS_JSON_PATH = path.join(process.cwd(), "components.json");
 export function parseComponentsJson() {
@@ -41,8 +41,8 @@ export const mkdir_components = (path: string) => {
 };
 
 export const decide = {
-  true: path.join(process.cwd(), "/src", DEFAULT_TRNSPRNCY_PATH.replace("@", "")),
-  false: path.join(process.cwd(), DEFAULT_TRNSPRNCY_PATH.replace("@", "")),
+  true: path.join(process.cwd(), "/src", DEFAULT_EXTENSION_PATH.replace("@", "")),
+  false: path.join(process.cwd(), DEFAULT_EXTENSION_PATH.replace("@", "")),
 };
 
 const srcPath = hasSrcPath() ? "true" : "false";
