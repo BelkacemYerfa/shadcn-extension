@@ -45,5 +45,5 @@ export const decide = {
   false: path.join(process.cwd(), DEFAULT_EXTENSION_PATH.replace("@", "")),
 };
 
-const srcPath = hasSrcPath() ? "true" : "false";
+export const srcPath = hasSrcPath() ? "true" : "false";
 export const componentPath = decide[srcPath];
