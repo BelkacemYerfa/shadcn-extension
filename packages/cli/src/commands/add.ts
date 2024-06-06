@@ -1,7 +1,8 @@
 import { Registry } from "@/utils/registry/schema";
 import { registryIndexSchema } from "@/utils/registry/schema";
-import { componentPath } from "@/utils/get-json";
+import { componentPath, parseComponentsJson, srcPath } from "@/utils/get-json";
 import { getPackageManager } from "@/utils/get-package-manager";
+import { glob } from "glob";
 import {
   fetchRegistry,
   getComponentInfo,
@@ -114,9 +115,29 @@ export const add = new Command()
       spinner.text = `Installing ${item.name}...`;
 
       const packageManager = await getPackageManager(cwd);
-      
+
+      // remove duplicate uiDependencies
+      const componenetsPath = parseComponentsJson().aliases["components"].replace("@", "");
+      let fullPath
+      if (srcPath) {
+        fullPath = path.join(cwd, "src", componenetsPath, "ui");
+      }
+      else {
+        fullPath = path.join(cwd, componenetsPath, "ui");
+      }
+
+      let fileNames: string[] = [];
+
+      const componenetsPattern = "*.tsx";
+
+      const files: string[] = await glob.glob(`${fullPath}/${componenetsPattern}`)
+
+      fileNames = files.map(file => path.basename(file, path.extname(file)));
+
+      const uiDeps = item.uiDependencies?.filter((dep: string) => !(fileNames).includes(dep));
+
       // Install uiDependencies.
-      if (item.uiDependencies?.length) {
+      if (uiDeps?.length) {
         spinner.stop();
         const { proceed } = await prompts({
           type: "confirm",
@@ -124,17 +145,17 @@ export const add = new Command()
           message: `${highlights.info(
             item.name
           )} requires the following shadcn-ui components ${highlights.info(
-            item.uiDependencies.join(", ")
+            uiDeps.join(", ")
           )} Proceed?`,
           initial: true,
         });
         if (proceed) {
           spinner.start(
-            `installing ${item.uiDependencies.join(", ")} for ${item.name}...`
+            `installing ${uiDeps.join(", ")} for ${item.name}...`
           );
           await execa(
             "npx",
-            ["shadcn-ui@latest", "add", ...item.uiDependencies, "--overwrite"],
+            ["shadcn-ui@latest", "add", ...uiDeps, "--overwrite"],
             {
               cwd,
             }
@@ -142,7 +163,7 @@ export const add = new Command()
           spinner.text = `Installing ${item.name}...`;
         } else {
           spinner.fail(
-            `you need (${item.uiDependencies.join(", ")}) for ${item.name}!`
+            `you need (${uiDeps.join(", ")}) for ${item.name}!`
           );
           process.exit(0);
         }
