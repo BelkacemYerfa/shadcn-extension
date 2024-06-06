@@ -258,6 +258,9 @@ importers:
       figlet:
         specifier: ^1.7.0
         version: 1.7.0
+      glob:
+        specifier: ^10.4.1
+        version: 10.4.1
       https-proxy-agent:
         specifier: ^7.0.4
         version: 7.0.4
@@ -295,6 +298,9 @@ importers:
       '@types/figlet':
         specifier: ^1.5.5
         version: 1.5.8
+      '@types/glob':
+        specifier: ^8.1.0
+        version: 8.1.0
       '@types/node':
         specifier: ^18.11.18
         version: 18.19.33
@@ -3642,6 +3648,13 @@ packages:
 
   /@types/glob@7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+    dependencies:
+      '@types/minimatch': 5.1.2
+      '@types/node': 20.12.12
+    dev: true
+
+  /@types/glob@8.1.0:
+    resolution: {integrity: sha512-IO+MJPVhoqz+28h1qLAcBEH2+xHMK6MTyHJc7MTnnYb6wsoLR29POVGJ7LycmVXIqyy/4/2ShP5sUwTXuOwb/w==}
     dependencies:
       '@types/minimatch': 5.1.2
       '@types/node': 20.12.12
