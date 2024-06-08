@@ -1,6 +1,6 @@
-MIT License
+## MIT License
 
-Copyright (c) 2022 Boilertown
+Copyright (c) 2024 shadcn extension
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
