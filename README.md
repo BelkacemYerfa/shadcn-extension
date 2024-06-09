@@ -1,81 +1,125 @@
-# Turborepo starter
+# Schadcn Extension Turborepo
 
-This is an official starter Turborepo.
+This is the official starter for the Schadcn Extension Turborepo, a monorepo setup for developing and sharing reusable UI components.
 
-## Using this example
+## What is Turborepo?
 
-Run the following command:
+Turborepo is a high-performance build system for JavaScript and TypeScript codebases. It is designed for scaling monorepos and also makes workflows in single-package workspaces faster, too. Turborepo optimizes build and development processes by caching, parallel execution, and dependency graph analysis.
 
-```sh
-npx create-turbo@latest
+## About This Repository
+
+This repository is a monorepo, which means it contains multiple projects managed in a single codebase. This approach simplifies dependency management and sharing code between projects.
+
+### Tools and Technologies Used:
+
+- **pnpm**: A fast, disk space-efficient package manager.
+- **Turborepo**: A build system for monorepos.
+- **TypeScript**: A statically typed superset of JavaScript.
+- **Next.js**: A React framework for production.
+
+## Structure
+
+The repository is structured as follows:
+
+```
+schadcn-extension-turborepo/
+├── apps/
+│   └── extension/
+│       ├── content/
+│       │   └── docs/
+│       ├── public/
+│       │   ├── registry/
+│       │   ├── next.svg
+│       │   ├── og.png
+│       │   └── vercel.svg
+│       ├── src/
+│       │   ├── __registry__/
+│       │   ├── app/
+│       │   ├── components/
+│       │   ├── config/
+│       │   ├── hooks/
+│       │   ├── lib/
+│       │   ├── registry/
+│       │   ├── script/
+│       │   ├── types/
+│       │   └── env.ts
+├── packages/
+│   ├── CLI/
+│   │   ├── src/
+│   │   ├── __tests__/
+│   │   ├── commands/
+│   │   ├── utils/
+│   │   └── index.ts
+│   ├── eslint-config/
+│   │   ├── library.js
+│   │   ├── next.js
+│   │   ├── package.json
+│   │   ├── react-internal.js
+│   │   └── README.md
+│   └── typescript-config/
+│       ├── base.json
+│       ├── nextjs.json
+│       ├── package.json
+│       └── react-library.json
+└── pnpm-workspace.yaml
 ```
 
-## What's inside?
+## Getting Started
 
-This Turborepo includes the following packages/apps:
+### Cloning the Repository
 
-### Apps and Packages
+First, clone the monorepo to your local machine:
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+```sh
+git clone https://github.com/gaurangrshah/ext-temp.git
+cd ext-temp
+```
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Installation
 
-### Utilities
+Install all dependencies using `pnpm`:
 
-This Turborepo has some additional tools already setup for you:
+```sh
+pnpm install
+```
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
+### Building the Project
 
 To build all apps and packages, run the following command:
 
-```
-cd my-turborepo
+```sh
 pnpm build
 ```
 
-### Develop
+This will compile the TypeScript code and prepare the project for development and production.
 
-To develop all apps and packages, run the following command:
+### Development
 
-```
-cd my-turborepo
+To start the development server for all apps and packages, run:
+
+```sh
 pnpm dev
 ```
 
-### Remote Caching
+This command will run the development servers and watch for changes, enabling live reload for a smoother development experience.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## CLI
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+The `@raphael-08/cli` package is a command-line interface (CLI) for adding components to your project. It helps automate repetitive tasks, such as creating new components or setting up configurations.
 
-```
-cd my-turborepo
-npx turbo login
-```
+You can find detailed instructions for using the CLI in the [CLI README](/packages/cli/README.md).
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## Additional Resources
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+- [pnpm Documentation](https://pnpm.io)
+- [Turborepo Documentation](https://turbo.build/repo)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 
-```
-npx turbo link
-```
+## Contributing
 
-## Useful Links
+Contributions are welcome! Please open an issue or submit a pull request with your changes. Make sure to follow the project's code of conduct and guidelines for contributing.
 
-Learn more about the power of Turborepo:
+## License
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/BelkacemYerfa/shadcn-extension/blob/master/LICENSE.md) file for details.
