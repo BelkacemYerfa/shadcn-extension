@@ -107,7 +107,7 @@ This command will run the development servers and watch for changes, enabling li
 
 The `@raphael-08/cli` package is a command-line interface (CLI) for adding components to your project. It helps automate repetitive tasks, such as creating new components or setting up configurations.
 
-You can find detailed instructions for using the CLI in the [CLI README](/blob/master/packages/cli/README.md).
+You can find detailed instructions for using the CLI in the [CLI README](/packages/cli/README.md).
 
 ## Additional Resources
 
