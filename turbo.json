@@ -21,6 +21,12 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "pub:release" : {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": []
     }
   }
 }

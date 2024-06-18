@@ -35,6 +35,7 @@
     "components"
   ],
   "scripts": {
+    "pub:release":"pnpm publish --access public",
     "cli": "node dist/index.js",
     "init": "node dist/index.js init",
     "build": "rm -rf dist && tsup src/index.ts --format esm --clean --minify --metafile",
