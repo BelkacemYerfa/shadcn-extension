@@ -10,7 +10,7 @@ import { Command } from "commander";
 
   program
     .name(">")
-    .description("⚡️ transparency/ui.")
+    .description("⚡️ raphael-08/ui.")
     .version(
       packageJSON.version,
       "-v, --version",
