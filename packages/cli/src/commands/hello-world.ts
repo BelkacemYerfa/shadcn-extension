@@ -4,7 +4,7 @@ import chalkAnimation from "chalk-animation"
 
 export const helloWorldCommand = new Command()
   .name("hello-world")
-  .description("Prints a greeting message")
+  .description("an ester-egg!")
   .argument("[components...]", "the components to add")
   .action(() => {
     const animation = chalkAnimation.rainbow(ascii_logo_tease);

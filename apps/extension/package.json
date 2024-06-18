@@ -72,6 +72,8 @@
     "tailwind-scrollbar": "^3.0.5",
     "tailwindcss-animate": "^1.0.7",
     "timescape": "^0.4.1",
+    "tsc": "^2.0.4",
+    "tsx": "^4.15.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.0.0",
     "use-resize-observer": "^9.1.0",
