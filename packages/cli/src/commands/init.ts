@@ -32,7 +32,6 @@ const ALIAS_EXAMPLE = `
 `;
 
 const prompts = {
-  greet: "Hello, There! Fellow frontend Fanatic!",
   missingPackages: "This project does not meet the minimum requirements:",
   outdatedPackages: "This project does not meet the minimum requirements:",
   noDependencies: `No dependencies found in ${highlights.success(
@@ -65,7 +64,7 @@ const isInitialized = () => {
 
 export const init = new Command()
   .name("init")
-  .description(prompts.greet)
+  .description("initializes your project")
   .action(() => {
     renderTitle("Initializing:");
     if (isInitialized()) {
