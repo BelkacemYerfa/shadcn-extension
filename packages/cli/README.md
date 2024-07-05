@@ -1,6 +1,6 @@
-# shadcn-Extension
+# Shadcn-Extension
 
-A CLI for adding components to your project, making it easier to integrate and manage UI components within your codebase.
+A CLI (inspiried by shadcn-ui) for adding components to your project, making it easier to integrate and manage UI components within your codebase.
 
 ## Installation
 
@@ -20,7 +20,7 @@ Use the `init` command to initialize dependencies for a new project. This comman
    npx shadcn-ui init
    ```
 
-2. **Initialize shadcn-Extension CLI**
+2. **Initialize Shadcn-Extension CLI**
 
    Next, set up your project with the shadcn-extension CLI:
 
