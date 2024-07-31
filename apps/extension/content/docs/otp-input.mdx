@@ -1,0 +1,104 @@
+---
+title: Otp Input
+description: A simple validation input for OTP
+links:
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/input
+  - title: react-otp-input
+    url: https://devfolioco.github.io/react-otp-input/
+---
+
+<ComponentPreview name="otp-input-demo" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Run the following command:</Step>
+
+```bash
+npx  shadcn@latest add input
+npm i react-otp-input
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="otp-input" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+<TabsContent value="cli">
+
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
+</Tabs>
+
+## Usage
+
+```tsx
+import { OtpStyledInput } from "@/components/extension/otp-input";
+```
+
+```tsx
+<OtpStyledInput
+  numInputs={5}
+  inputType="number"
+  value={value}
+  onChange={onChange}
+/>
+```
+
+## Example
+
+### Form
+
+```tsx showLineNumbers {1 , 3 , 16-21  }
+"use client";
+
+import { OtpStyledInput } from "@/components/extension/otp-input";
+
+{...}
+
+const OTPInput = ()=>{
+  return (
+     <Form {...multiForm}>
+       {...}
+       <FormField
+          control={multiForm.control}
+          name="otp"
+          render={({ field }) => (
+            {...}
+            <OtpStyledInput
+              numInputs={5}
+              inputType="number"
+              value={field.value}
+              onChange={field.onChange}
+            />
+            {...}
+          )} />
+        {...}
+     </Form>
+  )
+}
+
+```
+
+<ComponentPreview name="otp-input-zod" />
