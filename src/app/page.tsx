@@ -10,7 +10,7 @@ export default async function Home() {
   return (
     <main className="max-w-2xl mx-auto flex-1 flex flex-col">
       <section className="flex-1 flex flex-col items-center justify-center gap-4 ">
-        <Link href={"https://discord.gg/HMcgHeZQ"}
+        <Link href={"https://discord.gg/zyucvAYawG"}
          className={cn(
             "flex gap-2 animate-fade-up opacity-0",
             buttonVariants({ variant: "outline", size: "sm" }),
