@@ -1,0 +1,12 @@
+name: Close Stale Issues
+
+on:
+    schedule:
+        - cron: '0 0 * * *' # Runs at midnight every day
+
+jobs:
+    close-stale-issues:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Close Stale Issues
+              uses: actions/stale@v9.0.0
