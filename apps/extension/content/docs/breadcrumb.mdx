@@ -1,0 +1,258 @@
+---
+title: Breadcrumb
+description: A component for detecting the path to the current page using links.
+links:
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/popover
+---
+
+<ComponentPreview name="breadcrumb-demo" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Run the following command:</Step>
+
+```bash
+npx shadcn-ui@latest add button
+npx shadcn-ui@latest add popover
+```
+
+<Alert className="mt-4" variant="info">
+  <MdxIcons.Info className="size-4" />
+  <AlertTitle>Good to know</AlertTitle>
+  <AlertDescription>
+    you need to install those components to properly use the Breadcrumb
+    component.
+  </AlertDescription>
+</Alert>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="breadcrumb" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+<TabsContent value="cli">
+
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
+</Tabs>
+
+## API Reference
+
+### Props
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+      },
+      type: {
+        value: "type",
+      },
+      defaultValue: {
+        value: "default value",
+      },
+    },
+    {
+      prop: {
+        value: "variant",
+        description: (
+          <>
+            Variant styles for the each breadcrumb item , same as the{" "}
+            <a
+              target="_blank"
+              href="https://ui.shadcn.com/docs/components/button#link"
+            >
+              button variants
+            </a>
+          </>
+        ),
+      },
+      type: {
+        value: ["typeof buttonVariants"],
+      },
+      defaultValue: {
+        value: ["default"],
+      },
+    },
+    {
+      prop: {
+        value: "isActive",
+        description: "Boolean to indicate the active breadcrumb item.",
+      },
+      type: {
+        value: ["boolean"],
+      },
+      defaultValue: {
+        value: ["false"],
+      },
+    },
+    {
+      prop: {
+        value: "activeVariant",
+        description: "Variant styles for the active breadcrumb item.",
+      },
+      type: {
+        value: ["typeof buttonVariants"],
+      },
+      defaultValue: {
+        value: ["default"],
+      },
+    },
+    {
+      prop: {
+        value: "orientation",
+        description: "The orientation of the breadcrumb items.",
+      },
+      type: {
+        value: ["horizontal", "vertical"],
+      },
+      defaultValue: {
+        value: ["horizontal"],
+      },
+    },
+  ]}
+/>
+
+## Accessibility
+
+the Breadcrumb component is accessible by default, and it follows the WAI-ARIA guidelines.
+
+## Keyboard Navigation
+
+<MDXTable
+  data={[
+    {
+      key: {
+        value: "key",
+      },
+      description: {
+        value: "description",
+      },
+    },
+    {
+      key: {
+        value: "Escape",
+      },
+      description: {
+        value: "closes BreadCrumb Popover/gets out of scope selected link",
+      },
+    },
+    {
+      key: {
+        value: "Enter",
+      },
+      description: {
+        value: " Opens/closes BreadCrumb Popover",
+      },
+    },
+    {
+      key: {
+        value: "ArrowDown/ArrowRight ",
+      },
+      description: {
+        value: "Moves focus to the next link",
+      },
+    },
+    {
+      key: {
+        value: "ArrowUp/ArrowLeft",
+      },
+      description: {
+        value: "Moves focus to the previous link",
+      },
+    },
+  ]}
+/>
+
+## Usage
+
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/extension/breadcrumb";
+import { Link } from "next/link";
+```
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <Link href="/">Home</Link>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <Link href="/components">Components</Link>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+## Examples
+
+### Orientation
+
+<ComponentPreview name="breadcrumb-orientation" />
+
+### BreadCrumb Separator
+
+<ComponentPreview name="breadcrumb-separator" />
+
+### BreadCrumb Variants
+
+By default, the Breadcrumb component uses the `default` variant for each item. You can change the variant by passing the `variant` prop to the `BreadcrumbItem` component.
+
+<ComponentPreview name="breadcrumb-variants" />
+
+### BreadCrumb Active Item
+
+You can indicate the active item by passing the `isActive` prop to the `BreadcrumbItem` component.
+
+<ComponentPreview name="breadcrumb-active" />
+
+<Alert className="mt-4" variant="info">
+  <MdxIcons.Info className="size-4" />
+  <AlertTitle>Good to know</AlertTitle>
+  <AlertDescription>
+    The `variant` prop is the same as the button variants from shadcn, you can check the
+    button [documentation](https://ui.shadcn.com/docs/components/popover) for more information.
+  </AlertDescription>
+</Alert>
+
+### Active BreadCrumb
+
+<ComponentPreview name="breadcrumb-active" />
+
+### BreadCrumb Popover
+
+This popover can be used to display the full path if it's too long to fit in the screen.
+
+<ComponentPreview name="breadcrumb-popover" />

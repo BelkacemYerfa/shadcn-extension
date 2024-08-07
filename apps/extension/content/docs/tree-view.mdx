@@ -1,0 +1,638 @@
+---
+title: Tree View
+description: A tree view that assembles all the functionalities of the Accordion component to create a tree view.
+links:
+  - title: radix-ui
+    url: https://www.radix-ui.com/docs/primitives/components/accordion
+  - title : shadcn
+    url : https://ui.shadcn.com/docs/components/scroll-area#installation
+---
+
+<ComponentPreview
+  name="tree-view-demo"
+  className="[&_.preview>[data-orientation=vertical]]:sm:max-w-[70%]"
+/>
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install @radix-ui/react-accordion
+npx shadcn-ui@latest add scroll-area
+```
+
+<Step>Chose your component to setup</Step>
+
+<Tabs defaultValue="tree-view">
+<TabsList>
+  <TabsTrigger value="tree-view">Tree view</TabsTrigger>
+  <TabsTrigger value="tree-view-api">Tree view api</TabsTrigger>
+</TabsList>
+<TabsContent value="tree-view">
+  <ComponentSource name="tree-view" />
+</TabsContent>
+<TabsContent value="tree-view-api">
+  <ComponentSource name="tree-view-api" />
+</TabsContent>
+
+</Tabs>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<Alert className="mt-4" variant="info">
+  <MdxIcons.Info className="size-4" />
+  <AlertTitle>Good to know</AlertTitle>
+  <AlertDescription>
+    Note that if you want to setup the tree view, you need to have alse the tree
+    view api.
+  </AlertDescription>
+</Alert>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+<Step>Update `tailwind.config.ts`</Step>
+
+Add the following animations to your `tailwind.config.ts` file:
+
+```js title="tailwind.config.js" {5-18}
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  theme: {
+    extend: {
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+    },
+  },
+};
+```
+
+</Steps>
+
+</TabsContent>
+
+<TabsContent value="cli">
+
+<Callout className="mt-6">
+  Currently there is no CLI command for this component. since we haven't created
+  it yet.
+</Callout>
+
+</TabsContent>
+
+</Tabs>
+
+## Why there is two components?
+
+The TreeView component has two different ways to be used, that you can choose , based on your choice , that you have picked in the installation [section](#installation).
+
+- The first approach is the `tree-view` component that is based on the `tree-view-api` components, in other words it is a wrapper for devs that don't want to have an custom functionality, but you still have the access to customise the ui , some of the benifits are :
+
+  - Full control over the UI.
+  - All functionality is provided out of the box , including the (Virtualization , Selection , Expend/Collapse , Keyboard Navigation).
+  - You can customise the functionality if you want.
+
+- The second approach is the `tree-view-api` component that is based on the [radix-ui-accordion](https://www.radix-ui.com/docs/primitives/components/accordion) components, and it is the primitive api that you can use to build your own custom tree view, some of the benifits are:
+
+  - Full control over the UI.
+  - You can customise the functionality as you want.
+
+## API Reference
+
+### Props
+
+The TreeView component accepts the following props:
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+      },
+      type: { value: ["type"] },
+      defaultValue: { value: "default value" },
+    },
+    {
+      prop: {
+        value: "initialSelectedId",
+        description: "The id of the element that should be selected by default",
+      },
+      type: { value: ["string"] },
+      defaultValue: { value: "--" },
+    },
+    {
+      prop: {
+        value: "expendAll",
+        description:
+          "Boolean that indicates if all the elements should be expended by default",
+      },
+      type: { value: ["boolean"] },
+      defaultValue: { value: ["false"] },
+    },
+    {
+      prop: {
+        value: "elements",
+        required: true,
+        description: (
+          <>
+            Description of the element object inside this Array that is passed
+            to the TreeView component
+            <p>
+              See the props in this&nbsp;
+              <a href="#treeviewelement">section</a>
+            </p>
+          </>
+        ),
+      },
+      type: { value: ["TreeViewElement[]"] },
+      defaultValue: { value: "--" },
+    },
+    {
+      prop: {
+        value: "initialExpendedItems",
+        description:
+          "Array of the ids of the elements that should be expended by default",
+      },
+      type: { value: ["string[]"] },
+      defaultValue: { value: "--" },
+    },
+    {
+      prop : {
+        value : "openIcon",
+        description : "The icon that should be displayed when the folder is opened"
+      },
+      type : { value : ["ReactNode"] },
+      defaultValue : { value : ["<FolderOpenIcon />"] }
+    } ,
+    {
+      prop : {
+        value : "closeIcon",
+        description : "The icon that should be displayed when the folder is closed"
+      },
+      type : { value : ["ReactNode"] },
+      defaultValue : { value : ["<FolderIcon />"] }
+    } ,
+    {
+      prop : {
+        value : "fileIcon",
+        description : "The icon that should be displayed when the folder is selected"
+      },
+      type : { value : ["ReactNode"] },
+      defaultValue : { value : ["<FileIcon />"] }
+    }
+  ]}
+/>
+
+<Alert className="mt-4" variant="warning">
+  <MdxIcons.AlertTriangle className="size-4" />
+  <AlertTitle>Heads up</AlertTitle>
+  <AlertDescription>
+    The `initialExpendedItems` with `expendAll` can not work together, if you
+    want to expend all the items you should use `expendAll` prop only ,
+    otherwase if you want only specific items , provide `initialExpendedItems`
+    prop.
+  </AlertDescription>
+</Alert>
+
+### TreeViewElement
+
+The TreeViewElement object accepts the following props:
+
+<MDXTable
+  data={[
+    {
+      props: { value: "field" },
+      type: { value: "type" },
+      defaultValue: { value: "default Value" },
+    },
+    {
+      props: { value: "id", required: true },
+      type: { value: ["string"] },
+      defaultValue: { value: "--" },
+    },
+    {
+      props: { value: "name", required: true },
+      type: { value: ["string"] },
+      defaultValue: { value: "--" },
+    },
+    {
+      props: { value: "children" },
+      type: { value: ["TreeViewElement[]"] },
+      defaultValue: { value: "--" },
+    },
+    {
+      props: { value: "isSelectable" },
+      type: { value: ["boolean"] },
+      defaultValue: { value: "--" },
+    },
+  ]}
+/>
+
+## Accessibility
+
+Currently, the TreeView component is fully accessible and supports keyboard navigation.
+
+## Keyboard Navigation
+
+<MDXTable
+  data={[
+    { key: { value: "key" }, description: { value: "Description" } },
+    {
+      key: { value: "Tab" },
+      description: { value: "enter a nested folder" },
+    },
+    {
+      key: { value: "Tab + Shift" },
+      description: { value: "exit the current selected folder" },
+    },
+    {
+      key: { value: "ArrowDown" },
+      description: { value: "Increments by one step horzintanly" },
+    },
+    {
+      key: { value: "ArrowUp" },
+      description: { value: "Decrements by one step horzintanly" },
+    },
+    {
+      key: { value: "Enter" },
+      description: { value: "Opens/Close a folder , select a file" },
+    },
+  ]}
+/>
+
+## Usage
+
+The TreeView component has two different ways to be used, that you can choose , based on your choice , that you have picked in the installation [section](#installation).
+
+<Tabs defaultValue="tree-view">
+<TabsList>
+  <TabsTrigger value="tree-view">Tree view</TabsTrigger>
+  <TabsTrigger value="tree-view-api">Tree view api</TabsTrigger>
+</TabsList>
+<TabsContent value="tree-view">
+```tsx
+import { TreeView } from "@/components/extension/tree-view";
+```
+
+```tsx
+const elements = [
+  {
+    id: "1",
+    name: "components",
+    children: [
+      {
+        id: "2",
+        name: "extension",
+        children: [
+          {
+            id: "3",
+            name: "tree-view.tsx",
+          },
+          {
+            id: "4",
+            name: "tree-view-api.tsx",
+          },
+        ],
+      },
+      {
+        id: "5",
+        name: "dashboard-tree.tsx",
+      },
+    ],
+  },
+];
+```
+
+```tsx
+export default function TreeViewExample() {
+  return (
+    <TreeView
+      elements={elements}
+      initialSelectedId="3"
+      initialExpendedItems={["1", "2"]}
+    />
+  );
+}
+```
+
+</TabsContent>
+<TabsContent value="tree-view-api">
+```tsx
+import {
+  Tree,
+  Folder ,
+  File ,
+  CollapseButton
+} from "@/components/extension/tree-view-api";
+```
+```tsx
+const elements = [
+  {
+    id: "1",
+    name: "components",
+    children: [
+      {
+        id: "2",
+        name: "extension",
+        children: [
+          {
+            id: "3",
+            name: "tree-view.tsx",
+          },
+          {
+            id: "4",
+            name: "tree-view-api.tsx",
+          },
+        ],
+      },
+      {
+        id: "5",
+        name: "dashboard-tree.tsx",
+      },
+    ],
+  },
+]
+```
+```tsx
+<Tree
+  initialSelectedId={"dashboard-tree.tsx"}
+  initialExpendedItems={["components"]}
+>
+  <Folder element="components">
+    <Folder element="extension">
+      <File element="tree-view.tsx">
+        <span>tree-view.tsx</span>
+      </File>
+      <File element="tree-view-api.tsx">
+        <span>tree-view-api.tsx</span>
+      </File>
+    </Folder>
+    <File element="dashboard-tree.tsx">
+      <span>dashboard-tree.tsx</span>
+    </File>
+  </Folder>
+</Tree>
+```
+
+</TabsContent>
+
+</Tabs>
+
+
+This section will be focusing on how to build a custom tree view using the `tree-view-api` component.
+
+## Project Structure
+
+This is the Structure that we will follow for this example
+
+```txt
+components
+└── table_of_content
+    ├── tree-item.tsx
+    ├── tree.tsx
+    ├── toc.tsx
+```
+
+## Pre requisites
+In the following example we're going to use this elements array :
+
+
+```tsx showLineNumbers
+const elements :TreeViewElement[]  = [
+    {
+      id: "1",
+      name: "components",
+      children: [
+        {
+          id: "2",
+          name: "extension",
+          children: [
+            {
+              id: "3",
+              name: "tree-view.tsx",
+            },
+            {
+              id: "4",
+              name: "tree-view-api.tsx",
+            },
+          ],
+        },
+        {
+          id: "5",
+          name: "dashboard-tree.tsx",
+        },
+      ],
+    },
+    {
+      id: "6",
+      name: "pages",
+      children: [
+        {
+          id: "7",
+          name: "page.tsx",
+        },
+        {
+          id: "8",
+          name: "page-guide.tsx",
+        },
+      ],
+    },
+    {
+      id: "18",
+      name: "env.ts",
+    },
+  ]
+```
+
+## TOC
+
+<Steps>
+
+<Step> TOC component </Step>
+
+First we create the TOC component.
+
+```tsx showLineNumbers title="components/Table_of_content/tree.tsx"
+import { Tree , TreeViewElement , CollapseButton } from "@/components/extension/tree-view-api";
+import { TreeItem } from "./tree-item.tsx"
+
+type TOCProps = {
+  toc : TreeViewElement[]
+};
+
+export const TOC = ({ toc } : TOCProps) => {
+
+return (
+    <Tree className="w-full h-60 bg-background p-2 rounded-md" indicator={true} >
+      {
+        toc.map((element , _)=>
+          <TreeItem key={element.id}  elements={[element]} />
+        )
+      }
+      <CollapseButton elements={toc} expandAll={true} />
+    </Tree>
+  )
+}
+```
+
+Here we can see that we created a `TOC` component that will be responsible for rendering all the tree , the CollapseButton is used for the expandAll functionality.
+
+<Step> TreeItem component </Step>
+
+Then the TreeItem element.
+
+```tsx showLineNumbers title="components/Table_of_content/tree-item.tsx"
+import { File , Folder , TreeViewElement } from "@/components/extension/tree-view-api";
+
+type TreeItemProps = {
+  elements : TreeViewElement[]
+};
+
+export const TreeItem = ({ elements } : TreeItemProps) => {
+
+return (
+   <ul className="w-full space-y-1" >
+      {elements.map((element) => (
+        <li key={element.id} className="w-full space-y-2">
+          {element.children && element.children?.length > 0 ? (
+            <Folder
+              element={element.name}
+              value={element.id}
+              isSelectable={element.isSelectable}
+              className="px-px pr-1"
+            >
+              <TreeItem
+                key={element.id}
+                aria-label={`folder ${element.name}`}
+                elements={element.children}
+              />
+            </Folder>
+          ) : (
+            <File
+              key={element.id}
+              value={element.id}
+              element={element.name}
+              isSelectable={element.isSelectable}
+              className={"px-1"}
+            >
+              <span className="ml-1">
+                {element?.name}
+              </span>
+            </File>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+Now let's break the code above :
+
+- We have created a `TreeItem` component that will be responsible for rendering the elements of the tree view.
+
+```tsx showLineNumbers {7,10-17}
+import { File , Folder , TreeViewElement } from "@/components/extension/tree-view-api";
+
+type TreeItemProps = {
+  elements : TreeViewElement[]
+};
+
+export const TreeItem = ({ elements } : TreeItemProps) => {
+
+return (
+   <ul className="w-full space-y-1" >
+      {elements.map((element) => (
+        <li key={element.id} className="w-full space-y-2">
+         {...}
+        </li>
+        ))
+      }
+   </ul>
+ )
+}
+
+```
+
+- First we check if the element has children or not , if it has children we render a `Folder` component , otherwise we render a `File` component.
+
+```tsx showLineNumbers {1 , 2-13 , 15-24}
+{element.children && element.children?.length > 0 ? (
+  <Folder
+    element={element.name}
+    value={element.id}
+    isSelectable={element.isSelectable}
+    className="px-px pr-1"
+  >
+    <TreeItem
+      key={element.id}
+      aria-label={`folder ${element.name}`}
+      elements={element.children}
+    />
+  </Folder>
+) : (
+  <File
+    key={element.id}
+    value={element.id}
+    element={element.name}
+    isSelectable={element.isSelectable}
+    className={"px-1"}
+  >
+    <span className="ml-1">
+      {element?.name}
+    </span>
+  </File>
+)}
+
+```
+
+- In case of the `Folder` component we're calling the `TreeItem` component again to render the children of the folder.
+
+But wait, as you might notice we didn't loop over the elements as usual (using loop only), rather we are recalling the `TreeItem` , this called recursion rendering. And we use it because we don't know how many levels of children we have in the tree view , and this is the most efficient way to render the tree view.
+
+<Step> Final Step </Step>
+
+Now we can use the create the main component `TOC` that will contain all of this logic, and we will pass the elements to it.
+
+```tsx showLineNumbers title="components/Table_of_content/toc.tsx"
+import { Tree , TreeViewElement } from "@/components/extension/tree-view-api";
+
+const TOCWrapper = ()=> {
+  return (
+    <TOC element={elements} />
+  )
+}
+
+export default TOCWrapper;
+```
+
+</Steps>
+
+## Final Result
+
+So the end result is going to be like this :
+
+<ComponentPreview  name="tree-view-guide" />
