@@ -52,6 +52,11 @@ const DatetimeGrid = forwardRef<HTMLDivElement, {
       className,
       timescape,
       placeholders,
+    }: {
+      format: DateTimeFormatDefaults;
+      className?: string;
+      timescape: Pick<TimescapeReturn, "getRootProps" | "getInputProps">;
+      placeholders: InputPlaceholders;
     },
     ref
   ) => {
