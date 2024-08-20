@@ -38,7 +38,7 @@
     "pub:release":"pnpm publish --access public",
     "cli": "node dist/index.js",
     "init": "node dist/index.js init",
-    "build": "rm -rf dist && tsup src/index.ts --format esm --clean --minify --metafile",
+    "build": "tsup src/index.ts --format esm --clean --minify --metafile",
     "dev": "tsup src/index.ts --format esm --watch --clean --onSuccess \"node dist/index.js\"",
     "test": "vitest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
