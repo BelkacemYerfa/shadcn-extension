@@ -1,0 +1,272 @@
+---
+title: Tags Input
+description: A tags input that lets you set multiple options
+links:
+  - title: shadcn-ui
+    url: https://ui.shadcn.com/docs/components/badge
+---
+
+<ComponentPreview name="tags-input-demo" />
+
+## Installation
+
+<Tabs defaultValue="manual">
+
+<TabsList>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>
+  Check the installation setup for the badge component in [shadcn
+  ui](https://ui.shadcn.com/docs/components/badge)
+</Step>
+
+```bash
+npx shadcn-ui@latest add badge
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="tags-input" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+<TabsContent value="cli">
+<Step>Run the following command </Step>
+
+```bash
+npx @shadx/cli add tags-input
+```
+
+</TabsContent>
+
+</Tabs>
+
+## API Reference
+
+<MDXTable
+  data={[
+    {
+      prop: {
+        value: "prop",
+      },
+      type: {
+        value: "type",
+      },
+      defaultValue: {
+        value: "defaultValue",
+      },
+    },
+    {
+      prop: {
+        value: "values",
+        description:
+          "The value array that contains the values of the selected items.",
+      },
+      type: {
+        value: ["string[]"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "onValuesChange",
+        description: "The function that will be called when the value changes.",
+      },
+      type: {
+        value: ["(value: string[]) => void"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "placeholder",
+        description: "The input placeholder",
+      },
+      type: {
+        value: ["string"],
+      },
+      defaultValue: {
+        value: "--",
+      },
+    },
+    {
+      prop: {
+        value: "MaxItems",
+        description: "Max limit of items to set",
+      },
+      type: {
+        value: ["number"],
+      },
+      defaultValue: {
+        value: ["Infinity"],
+      },
+    },
+    {
+      prop: {
+        value: "MinItems",
+        description: "Min limit of items to set",
+      },
+      type: {
+        value: ["number"],
+      },
+      defaultValue: {
+        value: ["Infinity"],
+      },
+    },
+  ]}
+/>
+
+## Accessibility
+
+The Tags Input component adheres to the WAI-ARIA design pattern. It is accessible
+
+## Keyboard Navigation
+
+<MDXTable
+  data={[
+    {
+      key: {
+        value: "key",
+      },
+      description: {
+        value: "description",
+      },
+    },
+    {
+      key: {
+        value: "Enter",
+      },
+      description: {
+        value: "set the value",
+      },
+    },
+    {
+      key: {
+        value: "Escape",
+      },
+      description: {
+        value: "exit the tags/exit the component",
+      },
+    },
+    {
+      key: {
+        value: "ArrowLeft",
+      },
+      description: {
+        value: "selects the next tag from the tags list",
+      },
+    },
+    {
+      key: {
+        value: "ArrowRight",
+      },
+      description: {
+        value: "selects the prev tag from the tags list",
+      },
+    },
+    {
+      key: {
+        value: "Delete/Backspace",
+      },
+      description: {
+        value: "remove the selected tag , otherwise removes the last item ",
+      },
+    },
+  ]}
+/>
+
+## Usage
+
+```tsx
+import { TagsInput } from "@/components/extension/tags-input";
+```
+
+```tsx
+<TagsInput
+  value={value}
+  onValueChange={setValue}
+  placeholder="enter your used tech"
+/>
+```
+
+## Example
+
+### Basic
+
+```tsx showLineNumbers {1 , 3 , 5}
+"use client";
+
+import { useState } from "react";
+import { TagsInput } from "@/components/extension/tags-input";
+```
+
+```tsx {2}
+const TagsInputExamle = ()=>{
+  const [value , setValue] = useState([])
+  return (
+    <TagsInput value={value} onValueChange={setValue} >
+  )
+}
+```
+
+<ComponentPreview name="tags-input-state" />
+
+### Form
+
+```tsx showLineNumbers {2-10 , 13-15 , 17 }
+"use client";
+import { Button } from "@/components/ui/button";
+import { Form, FormField, FormItem } from "@/components/ui/form";
+import { TagsInput } from "@/registry/default/extension/tags-input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
+
+const form = z.object({
+  value: z.array(z.string()).nonempty("Please at least one item"),
+});
+
+type Form = z.infer<typeof form>;
+```
+
+```tsx
+const MultiSelectForm = () => {
+  return (
+    <Form {...tagsForm}>
+      <form onSubmit={tagsForm.handleSubmit(onSubmit)} className="grid gap-2">
+        <FormField
+          control={tagsForm.control}
+          name="value"
+          render={({ field }) => (
+            <FormItem>
+              <TagsInput
+                value={field.value}
+                onValueChange={field.onChange}
+                placeholder="enter your used tech"
+              />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  );
+};
+```
+
+<ComponentPreview name="tags-input-zod" />
