@@ -8,7 +8,7 @@ import { z } from "zod";
 
 const GithubUrl = "https://raw.githubusercontent.com/gaurangrshah/ext-temp/main";
 const baseUrl =
-  process.env.COMPONENTS_REGISTRY_URL ?? "http://localhost:3000/";
+  process.env.COMPONENTS_REGISTRY_URL ?? "https://shadcn-extension.vercel.app/";
 const agent = process.env.https_proxy
   ? new HttpsProxyAgent(process.env.https_proxy)
   : undefined;
