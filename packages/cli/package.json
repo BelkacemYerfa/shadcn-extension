@@ -1,17 +1,17 @@
 {
-  "name": "@raphael-08/cli",
-  "version": "1.0.2",
+  "name": "@shadx/cli",
+  "version": "1.0.0",
   "description": "A CLI tool to generate UI components for your project",
   "publishConfig": {
     "access": "public"
   },
   "author": {
-    "name": "raphael-08",
-    "url": "https://twitter.com/dangling_hanma"
+    "name": "shadx",
+    "url": "https://github.com/BelkacemYerfa/shadcn-extension"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaurangrshah/ext-temp.git",
+    "url": "https://github.com/BelkacemYerfa/shadcn-extension.git",
     "directory": "packages/cli"
   },
   "license": "MIT",
@@ -30,9 +30,19 @@
     "dist"
   ],
   "keywords": [
+    "shadcn",
+    "shadcn-extension",
+    "shadcn-cli",
+    "shadcn-ui",
     "extension-cli",
+    "extension-ui",
+    "extension",
+    "cli",
     "ui",
-    "components"
+    "react",
+    "typescript",
+    "nextjs",
+    "tailwindcss"
   ],
   "scripts": {
     "pub:release":"pnpm publish --access public",
@@ -41,9 +51,7 @@
     "build": "tsup src/index.ts --format esm --clean --minify --metafile",
     "dev": "tsup src/index.ts --format esm --watch --clean --onSuccess \"node dist/index.js\"",
     "test": "vitest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "changeset": "changeset",
-    "release": "changeset publish"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
     "@antfu/ni": "^0.21.12",
@@ -61,7 +69,6 @@
     "glob": "^10.4.1"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.0",
     "@commitlint/cli": "^17.4.1",
     "@commitlint/config-conventional": "^17.4.0",
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
