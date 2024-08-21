@@ -59,7 +59,7 @@ export const Toc = ({ toc }: { toc: TreeViewElement[] }) => {
         .filter(Boolean)
         .map((id) => id?.split("#")[1])
         .filter((value): value is string => typeof value === "string"),
-    [toc]
+    [toc],
   );
 
   const activeId = useActiveSection(items);

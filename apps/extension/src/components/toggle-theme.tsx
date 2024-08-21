@@ -52,7 +52,7 @@ export function ModeToggle({ isDesktop = true }: ModeToggleProps) {
                 onClick={() => setTheme(option.value)}
                 className={cn(
                   "flex items-center gap-2 w-full relative cursor-default select-none rounded-sm px-3 py-1.5 text-sm outline-none transition-colors focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                  theme === option.value && "bg-accent"
+                  theme === option.value && "bg-accent",
                 )}
               >
                 <Icon className="w-4 h-4" />

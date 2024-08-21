@@ -66,7 +66,7 @@ const Carousel = forwardRef<
       className,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [emblaMainRef, emblaMainApi] = useEmblaCarousel(
       {
@@ -74,7 +74,7 @@ const Carousel = forwardRef<
         axis: orientation === "vertical" ? "y" : "x",
         direction: carouselOptions?.direction ?? (dir as DirectionOption),
       },
-      plugins
+      plugins,
     );
 
     const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel(
@@ -85,7 +85,7 @@ const Carousel = forwardRef<
         containScroll: "keepSnaps",
         dragFree: true,
       },
-      plugins
+      plugins,
     );
 
     const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false);
@@ -143,7 +143,7 @@ const Carousel = forwardRef<
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [emblaMainApi, orientation, direction]
+      [emblaMainApi, orientation, direction],
     );
 
     const onThumbClick = useCallback(
@@ -151,7 +151,7 @@ const Carousel = forwardRef<
         if (!emblaMainApi || !emblaThumbsApi) return;
         emblaMainApi.scrollTo(index);
       },
-      [emblaMainApi, emblaThumbsApi]
+      [emblaMainApi, emblaThumbsApi],
     );
 
     const onSelect = useCallback(() => {
@@ -200,7 +200,7 @@ const Carousel = forwardRef<
           onKeyDownCapture={handleKeyDown}
           className={cn(
             "grid gap-2 w-full relative focus:outline-none",
-            className
+            className,
           )}
           dir={direction}
         >
@@ -208,7 +208,7 @@ const Carousel = forwardRef<
         </div>
       </CarouselContext.Provider>
     );
-  }
+  },
 );
 
 Carousel.displayName = "Carousel";
@@ -226,7 +226,7 @@ const CarouselMainContainer = forwardRef<
         className={cn(
           "flex",
           `${orientation === "vertical" ? "flex-col" : ""}`,
-          className
+          className,
         )}
       >
         {children}
@@ -250,7 +250,7 @@ const CarouselThumbsContainer = forwardRef<
         className={cn(
           "flex",
           `${orientation === "vertical" ? "flex-col" : ""}`,
-          className
+          className,
         )}
       >
         {children}
@@ -274,7 +274,7 @@ const SliderMainItem = forwardRef<
         `min-w-0 shrink-0 grow-0 basis-full bg-background p-1 ${
           orientation === "vertical" ? "pb-1" : "pr-1"
         }`,
-        className
+        className,
       )}
     >
       {children}
@@ -300,7 +300,7 @@ const SliderThumbItem = forwardRef<
       className={cn(
         "flex min-w-0 shrink-0 grow-0 basis-1/3 bg-background p-1",
         `${orientation === "vertical" ? "pb-1" : "pr-1"}`,
-        className
+        className,
       )}
     >
       <div
@@ -329,7 +329,7 @@ const CarouselIndicator = forwardRef<
       className={cn(
         "h-1 w-6 rounded-full",
         "data-[active='false']:bg-primary/50 data-[active='true']:bg-primary",
-        className
+        className,
       )}
       data-active={isSlideActive}
       onClick={() => onThumbClick(index)}
@@ -367,7 +367,7 @@ const CarouselPrevious = forwardRef<
         orientation === "vertical"
           ? "-top-2 left-1/2 -translate-x-1/2 rotate-90"
           : "-left-2 top-1/2 -translate-y-1/2",
-        className
+        className,
       )}
       onClick={scroll}
       disabled={!canScroll}
@@ -404,7 +404,7 @@ const CarouselNext = forwardRef<
         orientation === "vertical"
           ? "-bottom-2 left-1/2 -translate-x-1/2 rotate-90"
           : "-right-2 top-1/2 -translate-y-1/2",
-        className
+        className,
       )}
       onClick={scroll}
       disabled={!canScroll}

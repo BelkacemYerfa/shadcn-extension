@@ -10,15 +10,17 @@ export default async function Home() {
   return (
     <main id="main-content" className="max-w-2xl mx-auto flex-1 flex flex-col">
       <section className="flex-1 flex flex-col items-center justify-center gap-4 ">
-        <Link href={"https://discord.gg/HMcgHeZQ"}
-         className={cn(
+        <Link
+          href={"https://discord.gg/HMcgHeZQ"}
+          className={cn(
             "flex gap-2 animate-fade-up opacity-0",
             buttonVariants({ variant: "outline", size: "sm" }),
-            )}
+          )}
           style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
-          target="_blank" >
+          target="_blank"
+        >
           <Icons.discord aria-label="discord" className="size-4" />
-          <span className="text-sm" >Discord community</span>
+          <span className="text-sm">Discord community</span>
         </Link>
         <h1
           className="text-center animate-fade-up text-4xl font-extrabold tracking-tight opacity-0 sm:text-5xl md:text-6xl lg:text-7xl"

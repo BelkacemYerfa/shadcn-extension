@@ -4,14 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "contentlayer2 build && pnpm build:registry && next build",
+    "build": "contentlayer2 build && pnpm build:registry && next build && prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "start": "next start",
     "lint": "next lint",
     "build:test": "pnpm typecheck && pnpm build:registry && next build && next start -p 3001",
     "build:registry": "npx tsx --tsconfig ./src/script/tsconfig.scripts.json ./src/script/registry-builder.ts",
     "typecheck": "contentlayer2 build && tsc --noEmit",
-    "watch": "contentlayer2 dev && tsc --noEmit",
-    "format": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache"
+    "watch": "contentlayer2 dev && tsc --noEmit"
   },
   "dependencies": {
     "@contentlayer2/source-files": "^0.5.0",

@@ -18,7 +18,7 @@ const extension: Registry = [
   {
     name: "file-upload",
     type: "components:extension",
-    dependencies: ["react-dropzone","sonner"],
+    dependencies: ["react-dropzone", "sonner"],
     uiDependencies: ["button", "input"],
     files: ["extension/file-upload.tsx"],
   },
@@ -39,7 +39,11 @@ const extension: Registry = [
   {
     name: "carousel",
     type: "components:extension",
-    dependencies: ["embla-carousel-react", "embla-carousel", "@radix-ui/react-icons"],
+    dependencies: [
+      "embla-carousel-react",
+      "embla-carousel",
+      "@radix-ui/react-icons",
+    ],
     uiDependencies: ["button"],
     files: ["extension/carousel.tsx"],
   },

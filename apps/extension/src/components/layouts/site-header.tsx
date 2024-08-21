@@ -43,7 +43,7 @@ export const SiteHeader = () => {
                     href={page.path}
                     className={cn(
                       "transition-colors text-foreground/70 hidden md:inline-block",
-                      isActive && "text-foreground"
+                      isActive && "text-foreground",
                     )}
                   >
                     {page.title}

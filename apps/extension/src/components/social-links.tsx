@@ -15,7 +15,7 @@ export const SocialLinks = ({ className }: { className: string }) => {
           buttonVariants({
             variant: "ghost",
             size: "icon",
-          })
+          }),
         )}
       >
         <Icons.twitter className="h-3 w-3 fill-current" />
@@ -27,7 +27,7 @@ export const SocialLinks = ({ className }: { className: string }) => {
           buttonVariants({
             variant: "ghost",
             size: "icon",
-          })
+          }),
         )}
       >
         <Icons.gitHub className="h-4 w-4" />

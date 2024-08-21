@@ -136,7 +136,7 @@ export const BreadCrumb = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeIndex, value, prevValue]
+    [activeIndex, value, prevValue],
   );
 
   return (
@@ -164,7 +164,7 @@ export const BreadCrumb = ({
             "flex-row": orientation === "horizontal",
             "flex-col": orientation === "vertical",
           },
-          className
+          className,
         )}
         dir={dir}
         {...props}
@@ -177,19 +177,18 @@ export const BreadCrumb = ({
 
 BreadCrumb.displayName = "BreadCrumb";
 
-type BreadCrumbItemProps =
+type BreadCrumbItemProps = {
+  index: number;
+} & (
   | {
-      index: number;
-    } & (
-      | {
-          isActive: boolean;
-          activeVariant?: VariantProps<typeof buttonVariants>;
-        }
-      | {
-          isActive?: undefined;
-          activeVariant?: undefined;
-        }
-    );
+      isActive: boolean;
+      activeVariant?: VariantProps<typeof buttonVariants>;
+    }
+  | {
+      isActive?: undefined;
+      activeVariant?: undefined;
+    }
+);
 
 export const BreadCrumbItem = forwardRef<
   HTMLDivElement,
@@ -234,7 +233,7 @@ export const BreadCrumbItem = forwardRef<
       className={cn(
         buttonVariants(Variants),
         className,
-        isSelected ? "bg-muted focus-visible:ring-0 ring-0" : ""
+        isSelected ? "bg-muted focus-visible:ring-0 ring-0" : "",
       )}
       onClick={() => setActiveIndex(index)}
       {...props}
@@ -258,7 +257,7 @@ export const BreadCrumbSeparator = forwardRef<
       dir={dir}
       data-orientation={orientation}
       className={cn(
-        "flex items-center justify-center size-4 data-[orientation='horizontal']:rotate-0 rtl:data-[orientation='horizontal']:rotate-180 data-[orientation='vertical']:rotate-90 "
+        "flex items-center justify-center size-4 data-[orientation='horizontal']:rotate-0 rtl:data-[orientation='horizontal']:rotate-180 data-[orientation='vertical']:rotate-90 ",
       )}
     >
       {children ? (

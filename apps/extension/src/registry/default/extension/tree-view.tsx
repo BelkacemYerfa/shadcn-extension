@@ -61,7 +61,7 @@ export const TreeView = ({
       ref={containerRef}
       className={cn(
         "w-full rounded-md overflow-hidden py-1 relative",
-        className
+        className,
       )}
     >
       <Tree

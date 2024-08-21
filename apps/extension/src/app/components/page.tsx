@@ -31,7 +31,7 @@ export default function ComponentsPage() {
                 return newValue.type === "components:demo" ? (
                   <ComponentCard key={key} name={componentName} />
                 ) : null;
-              }
+              },
             );
           })}
         </div>

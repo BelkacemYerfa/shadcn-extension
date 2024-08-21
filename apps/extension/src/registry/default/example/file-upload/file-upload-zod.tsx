@@ -25,7 +25,7 @@ const CardForm = z.object({
     .array(
       z.instanceof(File).refine((file) => file.size < 4 * 1024 * 1024, {
         message: "File size must be less than 4MB",
-      })
+      }),
     )
     .max(5, {
       message: "Maximum 5 files are allowed",
@@ -83,7 +83,7 @@ const FileUploadDropzone = () => {
                       buttonVariants({
                         size: "icon",
                       }),
-                      "size-8"
+                      "size-8",
                     )}
                   >
                     <Paperclip className="size-4" />

@@ -33,7 +33,7 @@ export const SideBar = ({ setOpen }: SideBarProps) => {
                       "text-accent-foreground bg-accent":
                         pathname === page.path,
                       "text-muted-foreground": pathname !== page.path,
-                    }
+                    },
                   )}
                 >
                   {page.title}

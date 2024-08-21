@@ -32,7 +32,7 @@ enum OtpInputType {
 
 const OTPInputZod = () => {
   const [isPassword, setIsPassword] = useState<OtpInputType>(
-    OtpInputType.password
+    OtpInputType.password,
   );
   const multiForm = useForm<Form>({
     resolver: zodResolver(form),
@@ -75,7 +75,7 @@ const OTPInputZod = () => {
                       setIsPassword(
                         isPassword === OtpInputType.password
                           ? OtpInputType.text
-                          : OtpInputType.password
+                          : OtpInputType.password,
                       );
                     }}
                   >

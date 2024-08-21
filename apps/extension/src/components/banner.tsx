@@ -14,7 +14,7 @@ export const Banner = () => {
           buttonVariants({
             variant: "link",
           }),
-          "px-1 text-sm py-0 h-fit text-white"
+          "px-1 text-sm py-0 h-fit text-white",
         )}
       >
         Check them out

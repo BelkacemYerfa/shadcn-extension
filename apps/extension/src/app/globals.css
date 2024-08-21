@@ -78,7 +78,7 @@
 
 @layer base {
   * {
-    @apply border-border selection:bg-accent selection:text-accent;
+    @apply border-border selection:bg-primary selection:text-accent;
   }
   body {
     @apply bg-background text-foreground;

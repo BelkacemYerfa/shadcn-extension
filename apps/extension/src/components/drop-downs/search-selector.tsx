@@ -67,7 +67,7 @@ export const PlaygroundSearchSelector = ({
                   router.push(
                     `?${createQuery({
                       [comp ? "comp" : "theme"]: opt.value,
-                    })}`
+                    })}`,
                   );
                   setOpen(false);
                 }}
@@ -76,7 +76,7 @@ export const PlaygroundSearchSelector = ({
                 <CheckIcon
                   className={cn(
                     "ml-auto h-4 w-4",
-                    value === opt.value ? "opacity-100" : "opacity-0"
+                    value === opt.value ? "opacity-100" : "opacity-0",
                   )}
                 />
               </CommandItem>

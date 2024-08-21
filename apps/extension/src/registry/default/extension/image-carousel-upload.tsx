@@ -39,7 +39,7 @@ export const useFileUpload = () => {
 };
 
 const CarouselUploadContext = createContext<CarouselWithUploadContext | null>(
-  null
+  null,
 );
 
 interface ImageUploadProps<T> extends React.HTMLAttributes<HTMLDivElement> {
@@ -84,7 +84,7 @@ export function FileUploadCarouselProvider<T>({
       onValueChange((prev) => {
         if (!reSelectAll && prev && prev.length >= maxFiles) {
           toast.warning(
-            `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`
+            `Max files is ${maxFiles} , the component will take the last ones by default to complete the set`,
           );
 
           return prev;
@@ -93,7 +93,7 @@ export function FileUploadCarouselProvider<T>({
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [reSelectAll]
+    [reSelectAll],
   );
 
   const removeImageFromPreview = useCallback(
@@ -114,7 +114,7 @@ export function FileUploadCarouselProvider<T>({
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [emblaMainApi, activeIndex]
+    [emblaMainApi, activeIndex],
   );
 
   const handleKeyDown = useCallback(
@@ -132,7 +132,7 @@ export function FileUploadCarouselProvider<T>({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [emblaMainApi, activeIndex, removeImageFromPreview]
+    [emblaMainApi, activeIndex, removeImageFromPreview],
   );
 
   const onDrop = useCallback(
@@ -154,7 +154,7 @@ export function FileUploadCarouselProvider<T>({
         for (let i = 0; i < rejectedFiles.length; i++) {
           if (rejectedFiles[i].errors[0]?.code === "file-too-large") {
             toast.error(
-              `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
+              `File is too large. Max size is ${maxSize / 1024 / 1024}MB`,
             );
             break;
           }
@@ -166,7 +166,7 @@ export function FileUploadCarouselProvider<T>({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [reSelectAll]
+    [reSelectAll],
   );
 
   useEffect(() => {
@@ -203,7 +203,7 @@ export function FileUploadCarouselProvider<T>({
         onKeyDownCapture={handleKeyDown}
         className={cn(
           "grid gap-2 w-full relative focus:outline-none",
-          className
+          className,
         )}
       >
         {children}
@@ -228,7 +228,7 @@ export const SliderThumbItemWithRemove = forwardRef<
         {...props}
         type="button"
         className={cn(
-          "absolute -right-2 -top-1 z-10 opacity-70 h-6 w-6 focus:outline-none"
+          "absolute -right-2 -top-1 z-10 opacity-70 h-6 w-6 focus:outline-none",
         )}
         onClick={() => removeImageFromPreview(index)}
       >
@@ -263,10 +263,10 @@ export const CustomUploadInput = forwardRef<
         dropzoneState.isDragAccept
           ? "border-green-500"
           : dropzoneState.isDragReject || isFileTooBig
-          ? "border-red-500"
-          : "border-gray-300"
+            ? "border-red-500"
+            : "border-gray-300"
       }`,
-          className
+          className,
         )}
         {...rootProps}
       >

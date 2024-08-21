@@ -16,7 +16,7 @@ type TimeFormat = "hours" | "minutes" | "seconds" | "am/pm";
 type DateTimeArray<T extends DateFormat | TimeFormat> = T[];
 type DateTimeFormatDefaults = [
   DateTimeArray<DateFormat>,
-  DateTimeArray<TimeFormat>
+  DateTimeArray<TimeFormat>,
 ];
 
 const DEFAULTS = [
@@ -40,12 +40,15 @@ const INPUT_PLACEHOLDERS: InputPlaceholders = {
  * Date time picker Docs: {@link: https://shadcn-extension.vercel.app/docs/otp-input}
  */
 
-const DatetimeGrid = forwardRef<HTMLDivElement, {
-  format: DateTimeFormatDefaults;
-  className?: string;
-  timescape: Pick<TimescapeReturn, "getRootProps" | "getInputProps">;
-  placeholders: InputPlaceholders;
-}>(
+const DatetimeGrid = forwardRef<
+  HTMLDivElement,
+  {
+    format: DateTimeFormatDefaults;
+    className?: string;
+    timescape: Pick<TimescapeReturn, "getRootProps" | "getInputProps">;
+    placeholders: InputPlaceholders;
+  }
+>(
   (
     {
       format,
@@ -58,14 +61,14 @@ const DatetimeGrid = forwardRef<HTMLDivElement, {
       timescape: Pick<TimescapeReturn, "getRootProps" | "getInputProps">;
       placeholders: InputPlaceholders;
     },
-    ref
+    ref,
   ) => {
     return (
       <div
         className={cn(
           "flex items-center w-fit p-1 border-2",
           className,
-          "border-input rounded-md gap-1 selection:bg-transparent selection:text-foreground"
+          "border-input rounded-md gap-1 selection:bg-transparent selection:text-foreground",
         )}
         {...timescape.getRootProps()}
         ref={ref}
@@ -101,7 +104,7 @@ const DatetimeGrid = forwardRef<HTMLDivElement, {
                   <span
                     className={cn(
                       timePickerSeparatorBase,
-                      "opacity-30 text-xl"
+                      "opacity-30 text-xl",
                     )}
                   >
                     |
@@ -112,7 +115,7 @@ const DatetimeGrid = forwardRef<HTMLDivElement, {
           : null}
       </div>
     );
-  }
+  },
 );
 
 DatetimeGrid.displayName = "DatetimeGrid";
@@ -140,13 +143,13 @@ export const DatetimePicker = forwardRef<HTMLDivElement, DateTimeInput>(
       onChange,
       className,
     },
-    ref
+    ref,
   ) => {
     const handleDateChange = useCallback(
       (nextDate: Date | undefined) => {
         onChange ? onChange(nextDate) : console.log(nextDate);
       },
-      [onChange]
+      [onChange],
     );
     const timescape = useTimescape({
       date: value,
@@ -162,7 +165,7 @@ export const DatetimePicker = forwardRef<HTMLDivElement, DateTimeInput>(
         ref={ref}
       />
     );
-  }
+  },
 );
 
 DatetimePicker.displayName = "DatetimePicker";

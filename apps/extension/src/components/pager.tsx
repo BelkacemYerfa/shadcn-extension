@@ -44,7 +44,7 @@ export function DocsPager({ doc }: DocsPagerProps) {
 export function getPagerForDoc(doc: Doc) {
   const flattenedLinks = [null, ...flatten(docsConfig), null];
   const activeIndex = flattenedLinks.findIndex(
-    (link) => doc.slug === link?.path
+    (link) => doc.slug === link?.path,
   );
   const prev = activeIndex !== 0 ? flattenedLinks[activeIndex - 1] : null;
   const next =
@@ -64,7 +64,7 @@ export type FlatDocsConfig = {
 
 function flatten(
   links: DocsConfig[],
-  parentPath: string = ""
+  parentPath: string = "",
 ): FlatDocsConfig[] {
   return links.reduce<FlatDocsConfig[]>((acc, link) => {
     const currentPath = parentPath ? `${parentPath}/${link.title}` : link.title;

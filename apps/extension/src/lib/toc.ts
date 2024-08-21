@@ -66,7 +66,7 @@ const getToc = () => (node, file) => {
 export type TableOfContents = TreeViewElement;
 
 export async function getTableOfContents(
-  content: string
+  content: string,
 ): Promise<TableOfContents> {
   const result = await remark().use(getToc).process(content);
 

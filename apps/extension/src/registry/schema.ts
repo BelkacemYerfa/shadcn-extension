@@ -13,7 +13,7 @@ export const registrySchema = z.array(
       "components:demo",
       "components:example",
     ]),
-  })
+  }),
 );
 
 export type Registry = z.infer<typeof registrySchema>;

@@ -38,7 +38,7 @@ export const DocsBreadcrumb = ({ slug }: DocsBreadcrumbProps) => {
                   "h-7 px-1 capitalize text-foreground/50 select-none focus-within:bg-transparent",
                   {
                     "text-foreground": isActive,
-                  }
+                  },
                 )}
               >
                 {path.replaceAll("-", " ")}

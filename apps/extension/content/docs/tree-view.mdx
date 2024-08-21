@@ -4,8 +4,8 @@ description: A tree view that assembles all the functionalities of the Accordion
 links:
   - title: radix-ui
     url: https://www.radix-ui.com/docs/primitives/components/accordion
-  - title : shadcn
-    url : https://ui.shadcn.com/docs/components/scroll-area#installation
+  - title: shadcn
+    url: https://ui.shadcn.com/docs/components/scroll-area#installation
 ---
 
 <ComponentPreview
@@ -96,10 +96,11 @@ module.exports = {
 
 <TabsContent value="cli">
 
-<Callout className="mt-6">
-  Currently there is no CLI command for this component. since we haven't created
-  it yet.
-</Callout>
+<Step>Run the following command </Step>
+
+```bash
+npx @shadx/cli add tree-view
+```
 
 </TabsContent>
 
@@ -180,29 +181,32 @@ The TreeView component accepts the following props:
       defaultValue: { value: "--" },
     },
     {
-      prop : {
-        value : "openIcon",
-        description : "The icon that should be displayed when the folder is opened"
+      prop: {
+        value: "openIcon",
+        description:
+          "The icon that should be displayed when the folder is opened",
       },
-      type : { value : ["ReactNode"] },
-      defaultValue : { value : ["<FolderOpenIcon />"] }
-    } ,
+      type: { value: ["ReactNode"] },
+      defaultValue: { value: ["<FolderOpenIcon />"] },
+    },
     {
-      prop : {
-        value : "closeIcon",
-        description : "The icon that should be displayed when the folder is closed"
+      prop: {
+        value: "closeIcon",
+        description:
+          "The icon that should be displayed when the folder is closed",
       },
-      type : { value : ["ReactNode"] },
-      defaultValue : { value : ["<FolderIcon />"] }
-    } ,
+      type: { value: ["ReactNode"] },
+      defaultValue: { value: ["<FolderIcon />"] },
+    },
     {
-      prop : {
-        value : "fileIcon",
-        description : "The icon that should be displayed when the folder is selected"
+      prop: {
+        value: "fileIcon",
+        description:
+          "The icon that should be displayed when the folder is selected",
       },
-      type : { value : ["ReactNode"] },
-      defaultValue : { value : ["<FileIcon />"] }
-    }
+      type: { value: ["ReactNode"] },
+      defaultValue: { value: ["<FileIcon />"] },
+    },
   ]}
 />
 
@@ -401,7 +405,6 @@ const elements = [
 
 </Tabs>
 
-
 This section will be focusing on how to build a custom tree view using the `tree-view-api` component.
 
 ## Project Structure
@@ -417,54 +420,54 @@ components
 ```
 
 ## Pre requisites
+
 In the following example we're going to use this elements array :
 
-
 ```tsx showLineNumbers
-const elements :TreeViewElement[]  = [
-    {
-      id: "1",
-      name: "components",
-      children: [
-        {
-          id: "2",
-          name: "extension",
-          children: [
-            {
-              id: "3",
-              name: "tree-view.tsx",
-            },
-            {
-              id: "4",
-              name: "tree-view-api.tsx",
-            },
-          ],
-        },
-        {
-          id: "5",
-          name: "dashboard-tree.tsx",
-        },
-      ],
-    },
-    {
-      id: "6",
-      name: "pages",
-      children: [
-        {
-          id: "7",
-          name: "page.tsx",
-        },
-        {
-          id: "8",
-          name: "page-guide.tsx",
-        },
-      ],
-    },
-    {
-      id: "18",
-      name: "env.ts",
-    },
-  ]
+const elements: TreeViewElement[] = [
+  {
+    id: "1",
+    name: "components",
+    children: [
+      {
+        id: "2",
+        name: "extension",
+        children: [
+          {
+            id: "3",
+            name: "tree-view.tsx",
+          },
+          {
+            id: "4",
+            name: "tree-view-api.tsx",
+          },
+        ],
+      },
+      {
+        id: "5",
+        name: "dashboard-tree.tsx",
+      },
+    ],
+  },
+  {
+    id: "6",
+    name: "pages",
+    children: [
+      {
+        id: "7",
+        name: "page.tsx",
+      },
+      {
+        id: "8",
+        name: "page-guide.tsx",
+      },
+    ],
+  },
+  {
+    id: "18",
+    name: "env.ts",
+  },
+];
 ```
 
 ## TOC
@@ -476,26 +479,27 @@ const elements :TreeViewElement[]  = [
 First we create the TOC component.
 
 ```tsx showLineNumbers title="components/Table_of_content/tree.tsx"
-import { Tree , TreeViewElement , CollapseButton } from "@/components/extension/tree-view-api";
-import { TreeItem } from "./tree-item.tsx"
+import {
+  Tree,
+  TreeViewElement,
+  CollapseButton,
+} from "@/components/extension/tree-view-api";
+import { TreeItem } from "./tree-item.tsx";
 
 type TOCProps = {
-  toc : TreeViewElement[]
+  toc: TreeViewElement[];
 };
 
-export const TOC = ({ toc } : TOCProps) => {
-
-return (
-    <Tree className="w-full h-60 bg-background p-2 rounded-md" indicator={true} >
-      {
-        toc.map((element , _)=>
-          <TreeItem key={element.id}  elements={[element]} />
-        )
-      }
+export const TOC = ({ toc }: TOCProps) => {
+  return (
+    <Tree className="w-full h-60 bg-background p-2 rounded-md" indicator={true}>
+      {toc.map((element, _) => (
+        <TreeItem key={element.id} elements={[element]} />
+      ))}
       <CollapseButton elements={toc} expandAll={true} />
     </Tree>
-  )
-}
+  );
+};
 ```
 
 Here we can see that we created a `TOC` component that will be responsible for rendering all the tree , the CollapseButton is used for the expandAll functionality.
@@ -505,16 +509,19 @@ Here we can see that we created a `TOC` component that will be responsible for r
 Then the TreeItem element.
 
 ```tsx showLineNumbers title="components/Table_of_content/tree-item.tsx"
-import { File , Folder , TreeViewElement } from "@/components/extension/tree-view-api";
+import {
+  File,
+  Folder,
+  TreeViewElement,
+} from "@/components/extension/tree-view-api";
 
 type TreeItemProps = {
-  elements : TreeViewElement[]
+  elements: TreeViewElement[];
 };
 
-export const TreeItem = ({ elements } : TreeItemProps) => {
-
-return (
-   <ul className="w-full space-y-1" >
+export const TreeItem = ({ elements }: TreeItemProps) => {
+  return (
+    <ul className="w-full space-y-1">
       {elements.map((element) => (
         <li key={element.id} className="w-full space-y-2">
           {element.children && element.children?.length > 0 ? (
@@ -538,16 +545,14 @@ return (
               isSelectable={element.isSelectable}
               className={"px-1"}
             >
-              <span className="ml-1">
-                {element?.name}
-              </span>
+              <span className="ml-1">{element?.name}</span>
             </File>
           )}
         </li>
       ))}
     </ul>
-  )
-}
+  );
+};
 ```
 
 Now let's break the code above :
@@ -580,33 +585,32 @@ return (
 - First we check if the element has children or not , if it has children we render a `Folder` component , otherwise we render a `File` component.
 
 ```tsx showLineNumbers {1 , 2-13 , 15-24}
-{element.children && element.children?.length > 0 ? (
-  <Folder
-    element={element.name}
-    value={element.id}
-    isSelectable={element.isSelectable}
-    className="px-px pr-1"
-  >
-    <TreeItem
+{
+  element.children && element.children?.length > 0 ? (
+    <Folder
+      element={element.name}
+      value={element.id}
+      isSelectable={element.isSelectable}
+      className="px-px pr-1"
+    >
+      <TreeItem
+        key={element.id}
+        aria-label={`folder ${element.name}`}
+        elements={element.children}
+      />
+    </Folder>
+  ) : (
+    <File
       key={element.id}
-      aria-label={`folder ${element.name}`}
-      elements={element.children}
-    />
-  </Folder>
-) : (
-  <File
-    key={element.id}
-    value={element.id}
-    element={element.name}
-    isSelectable={element.isSelectable}
-    className={"px-1"}
-  >
-    <span className="ml-1">
-      {element?.name}
-    </span>
-  </File>
-)}
-
+      value={element.id}
+      element={element.name}
+      isSelectable={element.isSelectable}
+      className={"px-1"}
+    >
+      <span className="ml-1">{element?.name}</span>
+    </File>
+  );
+}
 ```
 
 - In case of the `Folder` component we're calling the `TreeItem` component again to render the children of the folder.
@@ -618,13 +622,11 @@ But wait, as you might notice we didn't loop over the elements as usual (using l
 Now we can use the create the main component `TOC` that will contain all of this logic, and we will pass the elements to it.
 
 ```tsx showLineNumbers title="components/Table_of_content/toc.tsx"
-import { Tree , TreeViewElement } from "@/components/extension/tree-view-api";
+import { Tree, TreeViewElement } from "@/components/extension/tree-view-api";
 
-const TOCWrapper = ()=> {
-  return (
-    <TOC element={elements} />
-  )
-}
+const TOCWrapper = () => {
+  return <TOC element={elements} />;
+};
 
 export default TOCWrapper;
 ```
@@ -635,4 +637,4 @@ export default TOCWrapper;
 
 So the end result is going to be like this :
 
-<ComponentPreview  name="tree-view-guide" />
+<ComponentPreview name="tree-view-guide" />

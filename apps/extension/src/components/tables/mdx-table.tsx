@@ -71,7 +71,7 @@ export function MDXTable({ data }: MDXTableProps) {
                                 field !== fields[0] &&
                                 row[field].value !== NonValue &&
                                 isArray,
-                            }
+                            },
                           )}
                         >
                           {isArray
@@ -92,7 +92,7 @@ export function MDXTable({ data }: MDXTableProps) {
                                       <span key={`${index}-separator`}>|</span>
                                     )}
                                   </div>
-                                )
+                                ),
                               )
                             : row[field].value}
                           {row[field].required && (
@@ -112,7 +112,7 @@ export function MDXTable({ data }: MDXTableProps) {
                   );
                 })}
               </TableRow>
-            )
+            ),
         )}
       </TableBody>
     </Table>
@@ -130,7 +130,7 @@ const MiniInfoPopover = ({ children }: MiniInfoPopoverProps) => {
         aria-label="details"
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "size-6"
+          "size-6",
         )}
       >
         <span className="text-foreground text-xs font-bold">

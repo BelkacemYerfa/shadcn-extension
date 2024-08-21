@@ -36,7 +36,7 @@ export const PrimitiveLink = async ({
       className={cn(
         badgeVariants({ variant: "secondary" }),
         className,
-        "flex items-center gap-1"
+        "flex items-center gap-1",
       )}
       {...props}
     >

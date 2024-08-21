@@ -55,7 +55,7 @@ export function rehypeComponent() {
             // For now a simple regex should do.
             source = source.replaceAll(
               `@/registry/${style.name}/`,
-              "@/components/"
+              "@/components/",
             );
             source = source.replaceAll("export default", "export");
 
@@ -89,7 +89,7 @@ export function rehypeComponent() {
                     ],
                   }),
                 ],
-              })
+              }),
             );
           }
         } catch (error) {
@@ -118,7 +118,7 @@ export function rehypeComponent() {
             // For now a simple regex should do.
             source = source.replaceAll(
               `@/registry/${style.name}/`,
-              "@/components/"
+              "@/components/",
             );
 
             // Add code as children so that rehype can take over at build time.
@@ -143,7 +143,7 @@ export function rehypeComponent() {
                     ],
                   }),
                 ],
-              })
+              }),
             );
           }
         } catch (error) {

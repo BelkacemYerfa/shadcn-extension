@@ -30,7 +30,7 @@ function extractComponentContent(fileContent: string): string {
   // Remove the "use client" line
   const contentWithoutUseClient = fileContent.replace(
     /"use client"\s*;\s*/,
-    ""
+    "",
   );
 
   // Extract the component content

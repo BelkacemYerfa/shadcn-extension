@@ -7,7 +7,7 @@ export const SkipNav = () => {
     <Link
       className={cn(
         "absolute left-0 p-3 m-3 transition -translate-y-16 focus:translate-y-0 z-20",
-        buttonVariants({ variant: "ghost" })
+        buttonVariants({ variant: "ghost" }),
       )}
       href="#main-content"
     >

@@ -75,7 +75,7 @@ export const SearchPopOver = () => {
       <Button
         variant="outline"
         className={cn(
-          "relative h-8 justify-start w-full hidden md:flex rounded-[0.5rem] bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64"
+          "relative h-8 justify-start w-full hidden md:flex rounded-[0.5rem] bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64",
         )}
         onClick={() => setIsOpen(true)}
       >
@@ -114,7 +114,7 @@ export const SearchPopOver = () => {
                         <FileIcon className="w-4 h-4" />
                         <span className="ml-2">{page.title}</span>
                       </CommandItem>
-                    )
+                    ),
                 )}
               </CommandGroup>
               {docsConfig.map((group) => (
