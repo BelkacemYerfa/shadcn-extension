@@ -1,6 +1,6 @@
-# Schadcn Extension Turborepo
+# Shadcn Extension Turborepo
 
-This is the official starter for the Schadcn Extension Turborepo, a monorepo setup for developing and sharing reusable UI components.
+This is the official starter for the Shadcn Extension Turborepo, a monorepo setup for developing and sharing reusable UI components.
 
 ## What is Turborepo?
 
@@ -22,7 +22,7 @@ This repository is a monorepo, which means it contains multiple projects managed
 The repository is structured as follows:
 
 ```
-schadcn-extension-turborepo/
+shadcn-extension-turborepo/
 ├── apps/
 │   └── extension/
 │       ├── content/
@@ -71,8 +71,8 @@ schadcn-extension-turborepo/
 First, clone the monorepo to your local machine:
 
 ```sh
-git clone https://github.com/gaurangrshah/ext-temp.git
-cd ext-temp
+git clone https://github.com/BelkacemYerfa/shadcn-extension.git
+cd shadcn-extension
 ```
 
 ### Installation
@@ -105,7 +105,7 @@ This command will run the development servers and watch for changes, enabling li
 
 ## CLI
 
-The `@raphael-08/cli` package is a command-line interface (CLI) for adding components to your project. It helps automate repetitive tasks, such as creating new components or setting up configurations.
+The `@shadx/cli` package is a command-line interface (CLI) for adding components to your project. It helps automate repetitive tasks, such as creating new components or setting up configurations.
 
 You can find detailed instructions for using the CLI in the [CLI README](/packages/cli/README.md).
 
