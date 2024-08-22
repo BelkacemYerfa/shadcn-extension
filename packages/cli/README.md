@@ -1,6 +1,6 @@
 # Shadcn-Extension
 
-A CLI (inspiried by shadcn-ui) for adding components to your project, making it easier to integrate and manage UI components within your codebase.
+A CLI (inspired by shadcn-ui) for adding components to your project, making it easier to integrate and manage UI components within your codebase.
 
 ## Installation
 
@@ -25,7 +25,7 @@ Use the `init` command to initialize dependencies for a new project. This comman
    Next, set up your project with the shadcn-extension CLI:
 
    ```bash
-   npx @raphael-08/cli init
+   npx @shadx/cli init
    ```
 
 ### Adding Components
@@ -37,7 +37,7 @@ Use the `add` command to add components to your project. This command installs t
    To add a specific component, specify the component name:
 
    ```bash
-   npx @raphael-08/cli add [component]
+   npx @shadx/cli add [component]
    ```
 
    **Example:**
@@ -45,7 +45,7 @@ Use the `add` command to add components to your project. This command installs t
    Adding a `tree-view` component:
 
    ```bash
-   npx @raphael-08/cli add tree-view
+   npx @shadx/cli add tree-view
    ```
 
 2. **View Available Components**
@@ -53,7 +53,7 @@ Use the `add` command to add components to your project. This command installs t
    If you want to see a list of all available components, run the `add` command without any arguments:
 
    ```bash
-   npx @raphael-08/cli add
+   npx @shadx/cli add
    ```
 
    This will display a list of components that you can add to your project.
