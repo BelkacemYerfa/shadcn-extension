@@ -6,6 +6,10 @@ A CLI (inspired by shadcn-ui) for adding components to your project, making it e
 
 To get started with the `shadcn-Extension` CLI, ensure you have `npx` installed. This tool allows you to run packages directly from npm without globally installing them.
 
+> ## NOTE
+>
+> ALL TYPES PACKAGES FOR NOW NEEDS TO BE INSTALLED MANUALLY
+
 ## Usage
 
 ### Initializing a New Project
