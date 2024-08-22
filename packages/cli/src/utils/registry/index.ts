@@ -6,7 +6,7 @@ import fetch from "node-fetch";
 import path from "path";
 import { z } from "zod";
 
-const GithubUrl = "https://raw.githubusercontent.com/gaurangrshah/ext-temp/main";
+const GithubUrl = "https://raw.githubusercontent.com/BelkacemYerfa/shadcn-extension/master";
 const baseUrl =
   process.env.COMPONENTS_REGISTRY_URL ?? "https://shadcn-extension.vercel.app/";
 const agent = process.env.https_proxy
