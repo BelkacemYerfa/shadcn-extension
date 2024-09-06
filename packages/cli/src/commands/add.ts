@@ -155,7 +155,7 @@ export const add = new Command()
           );
           await execa(
             "npx",
-            ["shadcn-ui@latest", "add", ...uiDeps, "--overwrite"],
+            ["shadcn@latest", "add", ...uiDeps, "--overwrite"],
             {
               cwd,
             }
