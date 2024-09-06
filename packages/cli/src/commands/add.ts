@@ -1,6 +1,10 @@
 import { Registry } from "@/utils/registry/schema";
 import { registryIndexSchema } from "@/utils/registry/schema";
-import { componentPath, parseComponentsJson, srcPath } from "@/utils/get-json";
+import {
+  parseComponentsJson,
+  hasSrcPath,
+  DEFAULT_EXTENSION_PATH,
+} from "@/utils/get-json";
 import { getPackageManager } from "@/utils/get-package-manager";
 import { glob } from "glob";
 import {
@@ -101,6 +105,13 @@ export const add = new Command()
       }
     }
 
+    const srcPath = hasSrcPath(cwd) ? "true" : "false";
+    const componentPath = path.join(
+      cwd,
+      srcPath ? "src" : "",
+      DEFAULT_EXTENSION_PATH.replace("@", "")
+    );
+
     if (fs.existsSync(componentPath + "/.gitkeep")) {
       // Delete the file
       fs.unlink(componentPath + "/.gitkeep", (err) => {
@@ -117,12 +128,13 @@ export const add = new Command()
       const packageManager = await getPackageManager(cwd);
 
       // remove duplicate uiDependencies
-      const componenetsPath = parseComponentsJson().aliases["components"].replace("@", "");
-      let fullPath
+      const componenetsPath = parseComponentsJson(cwd).aliases[
+        "components"
+      ].replace("@", "");
+      let fullPath;
       if (srcPath) {
         fullPath = path.join(cwd, "src", componenetsPath, "ui");
-      }
-      else {
+      } else {
         fullPath = path.join(cwd, componenetsPath, "ui");
       }
 
@@ -130,11 +142,15 @@ export const add = new Command()
 
       const componenetsPattern = "*.tsx";
 
-      const files: string[] = await glob.glob(`${fullPath}/${componenetsPattern}`)
+      const files: string[] = await glob.glob(
+        `${fullPath}/${componenetsPattern}`
+      );
 
-      fileNames = files.map(file => path.basename(file, path.extname(file)));
+      fileNames = files.map((file) => path.basename(file, path.extname(file)));
 
-      const uiDeps = item.uiDependencies?.filter((dep: string) => !(fileNames).includes(dep));
+      const uiDeps = item.uiDependencies?.filter(
+        (dep: string) => !fileNames.includes(dep)
+      );
 
       // Install uiDependencies.
       if (uiDeps?.length) {
@@ -150,21 +166,17 @@ export const add = new Command()
           initial: true,
         });
         if (proceed) {
-          spinner.start(
-            `installing ${uiDeps.join(", ")} for ${item.name}...`
-          );
+          spinner.start(`installing ${uiDeps.join(", ")} for ${item.name}...`);
           await execa(
             "npx",
-            ["shadcn-ui@latest", "add", ...uiDeps, "--overwrite"],
+            ["shadcn@latest", "add", ...uiDeps, "--overwrite", `-c ${cwd}`],
             {
               cwd,
             }
           );
           spinner.text = `Installing ${item.name}...`;
         } else {
-          spinner.fail(
-            `you need (${uiDeps.join(", ")}) for ${item.name}!`
-          );
+          spinner.fail(`you need (${uiDeps.join(", ")}) for ${item.name}!`);
           process.exit(0);
         }
       }
@@ -196,8 +208,8 @@ export const add = new Command()
       }
 
       const data = await fetchFileContentFromGithub(item.files);
-      createFiles(data.filenames, data.contents);
-      spinner.succeed(`installed ${item.name}`)
+      createFiles(data.filenames, data.contents, cwd);
+      spinner.succeed(`installed ${item.name}`);
     }
     spinner.succeed("Done.");
     process.exit(0);

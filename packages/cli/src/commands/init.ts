@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 import {
-  COMPONENTS_JSON_PATH,
+  hasSrcPath,
   DEFAULT_EXTENSION_PATH,
-  componentPath,
   parseComponentsJson,
 } from "@/utils/get-json.js";
 import { renderTitle } from "@/utils/render-title.js";
@@ -10,6 +9,7 @@ import chalk from "chalk";
 import { Command } from "commander";
 import fs from "fs";
 import ora from "ora";
+import z from "zod";
 import path from "path";
 import prompt from "prompts";
 import * as semver from "semver";
@@ -53,8 +53,8 @@ const prompts = {
   )} file in your project root is required before running this command`,
 };
 
-const isInitialized = () => {
-  const componentsJson = parseComponentsJson();
+const isInitialized = (cwd: string) => {
+  const componentsJson = parseComponentsJson(cwd);
   if (!componentsJson?.aliases) {
     ora(prompts.shadcnRequired).fail();
     process.exit(1);
@@ -62,12 +62,25 @@ const isInitialized = () => {
   return !!componentsJson.aliases?.extension;
 };
 
+export const initOptionsSchema = z.object({
+  cwd: z.string(),
+  yes: z.boolean(),
+});
+
 export const init = new Command()
   .name("init")
+  .option(
+    "-c, --cwd <cwd>",
+    "the working directory. defaults to the current directory.",
+    process.cwd()
+  )
+  .option("-y, --yes", "skip confirmation prompt.", false)
   .description("initializes your project")
-  .action(() => {
+  .action((opts) => {
+    const options = initOptionsSchema.parse({ ...opts });
+    const cwd = path.resolve(options.cwd);
     renderTitle("Initializing:");
-    if (isInitialized()) {
+    if (isInitialized(cwd)) {
       ora(
         `extension alias already exists in ${highlights.success(
           "components.json"
@@ -75,7 +88,7 @@ export const init = new Command()
       ).fail();
       process.exit(1);
     }
-    checkRequiredPackages()
+    checkRequiredPackages(cwd)
       .then((result: PackageCheckResult) => {
         if (
           !!result.missingPackages.length ||
@@ -98,7 +111,7 @@ export const init = new Command()
           process.exit(1);
         } else {
           ora(prompts.meetsRequirements).succeed();
-          config();
+          config(cwd, options.yes);
         }
       })
       .catch((error) => {
@@ -143,8 +156,8 @@ const REQUIRED_PACKAGES = {
  *
  * @return {*}  {Promise<string[]>}
  */
-async function loadDependencies(): Promise<Record<string, string>> {
-  const packageJsonPath = path.join(process.cwd(), "package.json");
+async function loadDependencies(cwd: string): Promise<Record<string, string>> {
+  const packageJsonPath = path.join(cwd, "package.json");
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
   if (!Object.keys(packageJson.dependencies)?.length) {
     // technically this may not be necessary as the for-in loop below will not run if the dependencies object is empty.
@@ -163,22 +176,32 @@ async function loadDependencies(): Promise<Record<string, string>> {
   return packageJson.dependencies;
 }
 
-async function config() {
-  const { confirmation } = await prompt({
-    type: "toggle",
-    name: "confirmation",
-    message: prompts.writeConfiguration,
-    initial: true,
-    active: "yes",
-    inactive: "no",
-  });
+async function config(cwd: string, skip: boolean) {
+  const srcPath = hasSrcPath(cwd) ? "true" : "false";
+  const componentPath = path.join(
+    cwd,
+    srcPath ? "src" : "",
+    DEFAULT_EXTENSION_PATH.replace("@", "")
+  );
+
+  const { confirmation } = skip
+    ? { confirmation: true }
+    : await prompt({
+        type: "toggle",
+        name: "confirmation",
+        message: prompts.writeConfiguration,
+        initial: true,
+        active: "yes",
+        inactive: "no",
+      });
   if (confirmation) {
+    const COMPONENTS_JSON_PATH: string = path.join(cwd, "components.json");
     if (!fs.existsSync(COMPONENTS_JSON_PATH)) {
       // technically this may not be necessary. as the isInitialized fn will check if the file exists.
       ora(prompts.shadcnRequired).fail();
       process.exit(1);
     }
-    const componentsJson = parseComponentsJson();
+    const componentsJson = parseComponentsJson(cwd);
 
     // Create extension alias
     componentsJson.aliases.extension = DEFAULT_EXTENSION_PATH;
@@ -188,18 +211,16 @@ async function config() {
       JSON.stringify(componentsJson, null, 2)
     );
 
-
-
     if (!fs.existsSync(componentPath)) {
       fs.mkdirSync(componentPath, { recursive: true });
     }
 
-    console.log(componentPath)
-    
+    console.log(componentPath);
+
     const filePath = path.join(componentPath, ".gitkeep");
     fs.writeFile(filePath, "", (err) => {
       if (err) {
-        console.error('Error writing file:', err);
+        console.error("Error writing file:", err);
       }
     });
 
@@ -216,8 +237,8 @@ async function config() {
  *
  * @return {*}  {Promise<PackageCheckResult>}
  */
-async function checkRequiredPackages(): Promise<PackageCheckResult> {
-  const dependencies = await loadDependencies();
+async function checkRequiredPackages(cwd: string): Promise<PackageCheckResult> {
+  const dependencies = await loadDependencies(cwd);
   if (!Object.keys(dependencies)?.length) {
     ora(prompts.noDependencies).fail();
     return {
