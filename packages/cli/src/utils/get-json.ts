@@ -3,8 +3,8 @@ import path from "path";
 
 export const DEFAULT_EXTENSION_PATH = "@/components/ui/extension";
 
-export const COMPONENTS_JSON_PATH = path.join(process.cwd(), "components.json");
-export function parseComponentsJson() {
+export function parseComponentsJson(cwd: string) {
+  const COMPONENTS_JSON_PATH = path.join(cwd, "components.json");
   if (fs.existsSync(COMPONENTS_JSON_PATH)) {
     return JSON.parse(fs.readFileSync(COMPONENTS_JSON_PATH, "utf-8"));
   } else {
@@ -12,8 +12,8 @@ export function parseComponentsJson() {
   }
 }
 
-const TSCONFIG_JSON_PATH = path.join(process.cwd(), "tsconfig.json");
-export function parseTsconfigJson() {
+export function parseTsconfigJson(cwd: string) {
+  const TSCONFIG_JSON_PATH = path.join(cwd, "tsconfig.json");
   if (fs.existsSync(TSCONFIG_JSON_PATH)) {
     return JSON.parse(fs.readFileSync(TSCONFIG_JSON_PATH, "utf-8"));
   } else {
@@ -21,9 +21,9 @@ export function parseTsconfigJson() {
   }
 }
 
-export function hasSrcPath(): boolean {
+export function hasSrcPath(cwd: string): boolean {
   try {
-    const tsconfig = parseTsconfigJson();
+    const tsconfig = parseTsconfigJson(cwd);
     const paths = tsconfig.compilerOptions?.paths || {};
     return !!paths["@/*"] && paths["@/*"][0] === "./src/*";
   } catch (error) {
@@ -39,11 +39,3 @@ export const mkdir_components = (path: string) => {
     }
   });
 };
-
-export const decide = {
-  true: path.join(process.cwd(), "/src", DEFAULT_EXTENSION_PATH.replace("@", "")),
-  false: path.join(process.cwd(), DEFAULT_EXTENSION_PATH.replace("@", "")),
-};
-
-export const srcPath = hasSrcPath() ? "true" : "false";
-export const componentPath = decide[srcPath];
