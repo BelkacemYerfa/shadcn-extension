@@ -307,7 +307,7 @@ BreadCrumbEllipsis.displayName = "BreadCrumbEllipsis";
 export const BreadCrumbPopover = forwardRef<
   PopoverPrimitive.PopoverProps,
   React.HTMLAttributes<HTMLDivElement>
->(({ children }, ref) => {
+>(({ children }) => {
   const { open, onOpenChange } = useBreadcrumb();
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
