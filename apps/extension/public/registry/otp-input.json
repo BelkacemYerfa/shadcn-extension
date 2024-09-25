@@ -1,0 +1,18 @@
+{
+  "name": "otp-input",
+  "type": "registry:ui",
+  "dependencies": [
+    "react-otp-input"
+  ],
+  "registryDependencies": [
+    "input"
+  ],
+  "files": [
+    {
+      "path": "./registry/default/extension/otp-input.tsx",
+      "type": "registry:ui",
+      "content": "import React from \"react\";\nimport { Input } from \"@/components/ui/input\";\nimport { cn } from \"@/lib/utils\";\nimport OtpInput, { OTPInputProps } from \"react-otp-input\";\n\ntype OtpOptions = Omit<OTPInputProps, \"renderInput\">;\n\ntype OtpStyledInputProps = {\n  className?: string;\n} & OtpOptions;\n\n/**\n * Otp input Docs: {@link: https://shadcn-extension.vercel.app/docs/otp-input}\n */\n\nexport const OtpStyledInput = ({\n  className,\n  ...props\n}: OtpStyledInputProps) => {\n  return (\n    <OtpInput\n      {...props}\n      renderInput={(inputProps) => (\n        <Input\n          {...inputProps}\n          className={cn(\"!w-12 !appearance-none selection:bg-none \", className)}\n        />\n      )}\n      containerStyle={`flex justify-center items-center flex-wrap  text-2xl font-bold ${\n        props.renderSeparator ? \"gap-1\" : \"gap-x-3 gap-y-2\"\n      }`}\n    />\n  );\n};\n"
+    }
+  ],
+  "docs": "https://shadcn-extension.vercel.app/docs/otp-input"
+}
