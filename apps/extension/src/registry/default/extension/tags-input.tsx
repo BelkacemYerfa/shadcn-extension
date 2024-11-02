@@ -102,7 +102,6 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
 
     const handleSelect = React.useCallback(
       (e: React.SyntheticEvent<HTMLInputElement>) => {
-        e.preventDefault();
         const target = e.currentTarget;
         const selection = target.value.substring(
           target.selectionStart ?? 0,
