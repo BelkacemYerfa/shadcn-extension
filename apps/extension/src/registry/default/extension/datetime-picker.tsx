@@ -1,5 +1,5 @@
 "use client";
-import React, { forwardRef, useCallback, useState } from "react";
+import React, { forwardRef, useCallback } from "react";
 import { useTimescape, type Options } from "timescape/react";
 
 import { Input } from "@/components/ui/input";
@@ -136,7 +136,7 @@ const DEFAULT_TS_OPTIONS = {
 export const DatetimePicker = forwardRef<HTMLDivElement, DateTimeInput>(
   (
     {
-      value = new Date(),
+      value,
       format = DEFAULTS,
       placeholders,
       dtOptions = DEFAULT_TS_OPTIONS,
@@ -152,9 +152,9 @@ export const DatetimePicker = forwardRef<HTMLDivElement, DateTimeInput>(
       [onChange],
     );
     const timescape = useTimescape({
-      date: value,
-      onChangeDate: handleDateChange,
       ...dtOptions,
+      ...(value && { date: value }),
+      onChangeDate: handleDateChange,
     });
     return (
       <DatetimeGrid
