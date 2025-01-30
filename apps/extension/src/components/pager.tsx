@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { Doc } from "contentlayer/generated";
+import { Doc } from "content-collections";
 
 import { DocsConfig, docsConfig } from "@/config/docs-config";
 import { cn } from "@/lib/utils";

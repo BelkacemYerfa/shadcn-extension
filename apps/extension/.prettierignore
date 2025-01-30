@@ -1,0 +1,5 @@
+node_modules
+.next
+build
+.content-collections
+__registry__/index.tsx
