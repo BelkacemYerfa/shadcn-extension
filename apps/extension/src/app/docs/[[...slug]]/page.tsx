@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { allDocs as docs } from "contentlayer/generated";
+import { allDocs as docs } from "content-collections";
 import { Mdx } from "@/components/mdx-component";
 import { notFound } from "next/navigation";
 import { DocsPager } from "@/components/pager";
@@ -19,7 +19,8 @@ type DocsPageProps = {
 };
 
 async function getDocFromParams({ params }: DocsPageProps) {
-  const slug = params.slug?.join("/") || "";
+  let slug = params.slug?.join("/") || "";
+  slug += ".mdx";
   const doc = docs.find((doc) => doc.slugAsParams === slug);
 
   if (!doc) {

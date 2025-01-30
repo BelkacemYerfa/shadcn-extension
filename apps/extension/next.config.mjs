@@ -1,4 +1,4 @@
-import { createContentlayerPlugin } from "next-contentlayer2";
+import { withContentCollections } from "@content-collections/next";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -8,7 +8,7 @@ const nextConfig = {
     // doesn't work for cjs config , need ESM config
     domains: ["pbs.twimg.com"],
   },
-  redirects: function () {
+  redirects: async function () {
     return [
       {
         source: "/docs",
@@ -24,8 +24,4 @@ const nextConfig = {
   },
 };
 
-const withContentlayer = createContentlayerPlugin({
-  // Additional Contentlayer config options
-});
-
-export default withContentlayer(nextConfig);
+export default withContentCollections(nextConfig);

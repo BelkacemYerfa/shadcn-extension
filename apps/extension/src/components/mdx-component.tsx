@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMDXComponent } from "next-contentlayer2/hooks";
+import { useMDXComponent } from "@content-collections/mdx/react";
 import { NpmCommands } from "../types/unist";
 import { Event } from "@/lib/events";
 import { cn } from "@/lib/utils";
@@ -201,7 +201,11 @@ const components = {
                 __pnpmCommand__,
                 __bunCommand__,
               }}
-              className={cn("absolute right-4 top-4", __withMeta__ && "top-16")}
+              style={{
+                position: "absolute",
+                right: "1rem",
+                top: __withMeta__ ? "4rem" : "1rem",
+              }}
             />
           )}
       </div>
@@ -305,9 +309,8 @@ export function Mdx({ code }: MdxProps) {
   const config = {
     style: "default",
   };
-  const Component = useMDXComponent(code, {
-    style: config.style,
-  });
+
+  const Component = useMDXComponent(code);
 
   return (
     <div className="mdx">

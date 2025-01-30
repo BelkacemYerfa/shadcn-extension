@@ -18,6 +18,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "contentlayer/generated": ["./.contentlayer/generated"],
+      "content-collections": ["./.content-collections/generated"],
       "@ui/*": ["./src/components/ui/*"]
     }
   },
@@ -28,7 +29,8 @@
     ".next/types/**/*.ts",
     "velite.config.ts",
     ".contentlayer/generated",
-    "contentlayer.config.js"
+    "contentlayer.config.js",
+    "next.config.mts"
   ],
   "exclude": ["./src/script/registry-builder.ts"]
 }
