@@ -108,9 +108,9 @@ The SmartDatetimeInput component accepts the following props:
     {
       prop: {
         value: "disabled",
-        description: "Used to diable the input",
+        description: "A boolean to disable the input entirely, or a matcher function that takes a Date and returns a boolea--used to disable specific dates",
       },
-      type: { value: ["boolean"] },
+      type: { value: ["boolean | ((date: Date) => boolean)"] },
       defaultValue: { value: [`false`] },
     },
   ]}
@@ -128,6 +128,7 @@ import { SmartDateTimeInput } from "@/components/extension/smart-date-time-input
   value={Date.now()}
   onChange={(e) => setValue(e.target.value)}
   placeholder="e.g. tomorrow at 3pm"
+  disabled={(date) => date < new Date()}
 />
 ```
 
@@ -156,6 +157,7 @@ const SmartDateTimeForm = ()=>{
               value={field.value}
               onChange={field.onChange}
               placeholder="e.g. tomorrow at 3pm"
+              disabled={(date) => date < new Date()}
             />
             {...}
           )} />
