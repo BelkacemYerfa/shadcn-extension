@@ -3,8 +3,10 @@
 import * as React from "react";
 import { Index } from "@/__registry__";
 import { cn } from "@/lib/utils";
+import { OpenInV0Button } from "@/components/openInV0";
 import { CopyButton, CopyWithClassNames } from "@/components/copy-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,6 +14,15 @@ interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   extractClassname?: boolean;
   extractedClassNames?: string;
   align?: "center" | "start" | "end";
+}
+
+function convertUrl(url: string): string {
+  const parsedUrl = new URL(url);
+  parsedUrl.pathname = parsedUrl.pathname.replace(
+    /^\/docs\/(.+)$/,
+    "/registry/$1.json"
+  );
+  return parsedUrl.toString();
 }
 
 export function ComponentPreview({
@@ -23,6 +34,11 @@ export function ComponentPreview({
   align = "center",
   ...props
 }: ComponentPreviewProps) {
+  const pathname = usePathname();
+  const baseUrl = "https://shadcn-extension.vercel.app";
+  const fullUrl = `${baseUrl}${pathname}`;
+  const RegistryUrl = convertUrl(fullUrl);
+
   const Codes = React.Children.toArray(children) as React.ReactElement[];
   const Code = Codes[0];
 
@@ -80,14 +96,19 @@ export function ComponentPreview({
         </div>
         <TabsContent
           value="preview"
-          className="relative rounded-md border bg-muted/50 p-2 data-[state=active]:flex flex-col items-center justify-center w-full min-h-[20rem]"
+          className="relative rounded-md border bg-muted/50 p-2 data-[state=active]:flex flex-col justify-center w-full min-h-[20rem]"
         >
-          {codeString && <CopyButton value={codeString} />}
-          <React.Suspense fallback={<div className="h-full">Loading...</div>}>
-            <div className="w-full max-w-sm flex items-center justify-center">
-              {Preview}
-            </div>
-          </React.Suspense>
+          <div className="absolute top-1 right-1 flex justify-end gap-2 p-2">
+            <OpenInV0Button url={RegistryUrl} />
+            {codeString && <CopyButton value={codeString} />}
+          </div>
+          <div className="flex items-center justify-center p-4">
+            <React.Suspense fallback={<div className="h-full">Loading...</div>}>
+              <div className="w-full max-w-sm flex items-center justify-center">
+                {Preview}
+              </div>
+            </React.Suspense>
+          </div>
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">
