@@ -24,7 +24,14 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 const form = z.object({
-  value: z.array(z.string()).nonempty("Please select at least one person"),
+  value: z
+    .array(
+      z.object({
+        value: z.string(),
+        label: z.string(),
+      }),
+    )
+    .nonempty("Please select at least one person"),
 });
 
 type Form = z.infer<typeof form>;
@@ -44,7 +51,14 @@ const users = [
 const MultiSelectZod = () => {
   const multiForm = useForm<Form>({
     resolver: zodResolver(form),
-    defaultValues: form.parse({ value: [users[0].name] }),
+    defaultValues: form.parse({
+      value: [
+        {
+          value: users[0].name,
+          label: users[0].name,
+        },
+      ],
+    }),
   });
 
   const onSubmit = (data: Form) => {
@@ -73,7 +87,11 @@ const MultiSelectZod = () => {
                 <MultiSelectorContent>
                   <MultiSelectorList>
                     {users.map((user) => (
-                      <MultiSelectorItem key={user.name} value={user.name}>
+                      <MultiSelectorItem
+                        key={user.name}
+                        value={user.name}
+                        label={user.name}
+                      >
                         <span>{user.name}</span>
                       </MultiSelectorItem>
                     ))}

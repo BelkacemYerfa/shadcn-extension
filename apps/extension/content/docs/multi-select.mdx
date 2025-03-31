@@ -73,7 +73,13 @@ npx @shadx/cli add multi-select
           "The value array that contains the values of the selected items.",
       },
       type: {
-        value: ["string[]"],
+        value: ["MultiSelectValue[]"],
+        description: (
+          <>
+            This is an object type that consists of 2 keys:
+            {" "}<code>{`{ value: string, label: string }`}</code>
+          </>
+        ),
       },
       defaultValue: {
         value: "--",
@@ -85,7 +91,7 @@ npx @shadx/cli add multi-select
         description: "The function that will be called when the value changes.",
       },
       type: {
-        value: ["(value: string[]) => void"],
+        value: ["(value: MultiSelectValue[]) => void"],
       },
       defaultValue: {
         value: "--",
@@ -104,7 +110,8 @@ npx @shadx/cli add multi-select
         value: ["false"],
       },
     },
-  ]}
+
+]}
 />
 
 ## Accessibility
