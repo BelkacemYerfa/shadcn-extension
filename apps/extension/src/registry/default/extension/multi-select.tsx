@@ -81,8 +81,6 @@ const MultiSelector = ({
   const [open, setOpen] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [isValueSelected, setIsValueSelected] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState("");
 
   const onValueChangeHandler = useCallback(
     (val: MultiSelectValue) => {
@@ -94,7 +92,7 @@ const MultiSelector = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value],
+    [value]
   );
 
   const handleKeyDown = useCallback(
@@ -115,7 +113,7 @@ const MultiSelector = ({
       const moveNext = () => {
         const nextIndex = activeIndex + 1;
         setActiveIndex(
-          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex,
+          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex
         );
       };
 
@@ -167,9 +165,7 @@ const MultiSelector = ({
               moveCurrent();
             } else {
               if (target.selectionStart === 0) {
-                if (selectedValue === inputValue || isValueSelected) {
-                  onValueChangeHandler(value[value.length - 1]);
-                }
+                onValueChangeHandler(value[value.length - 1]);
               }
             }
           }
@@ -183,12 +179,13 @@ const MultiSelector = ({
           if (activeIndex !== -1) {
             setActiveIndex(-1);
           } else if (open) {
+            setInputValue("");
             setOpen(false);
           }
           break;
       }
     },
-    [value, activeIndex, loop],
+    [value, activeIndex, loop]
   );
 
   return (
@@ -209,7 +206,7 @@ const MultiSelector = ({
         onKeyDown={handleKeyDown}
         className={cn(
           "overflow-visible bg-transparent flex flex-col space-y-2",
-          className,
+          className
         )}
         dir={dir}
         {...props}
@@ -239,7 +236,7 @@ const MultiSelectorTrigger = forwardRef<
         {
           "ring-1 focus-within:ring-ring": activeIndex === -1,
         },
-        className,
+        className
       )}
       {...props}
     >
@@ -248,7 +245,7 @@ const MultiSelectorTrigger = forwardRef<
           key={item.value}
           className={cn(
             "px-1 rounded-xl flex items-center gap-1",
-            activeIndex === index && "ring-2 ring-muted-foreground ",
+            activeIndex === index && "ring-2 ring-muted-foreground "
           )}
           variant={"secondary"}
         >
@@ -284,7 +281,7 @@ const MultiSelectorInput = forwardRef<
     setActiveIndex,
     ref: inputRef,
   } = useMultiSelect();
-  console.log(inputValue);
+
   return (
     <CommandPrimitive.Input
       {...props}
@@ -292,13 +289,16 @@ const MultiSelectorInput = forwardRef<
       ref={inputRef}
       value={inputValue}
       onValueChange={activeIndex === -1 ? setInputValue : undefined}
-      onBlur={() => setOpen(false)}
+      onBlur={() => {
+        setInputValue("");
+        setOpen(false);
+      }}
       onFocus={() => setOpen(true)}
       onClick={() => setActiveIndex(-1)}
       className={cn(
         "ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1",
         className,
-        activeIndex !== -1 && "caret-transparent",
+        activeIndex !== -1 && "caret-transparent"
       )}
     />
   );
@@ -313,7 +313,7 @@ const MultiSelectorContent = forwardRef<
   const { open } = useMultiSelect();
   return (
     <div ref={ref} className="relative">
-      {open && children}
+      {open ? children : null}
     </div>
   );
 });
@@ -329,7 +329,7 @@ const MultiSelectorList = forwardRef<
       ref={ref}
       className={cn(
         "p-2 flex flex-col gap-2 rounded-md scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg w-full absolute bg-background shadow-md z-10 border border-muted top-0",
-        className,
+        className
       )}
     >
       {children}
@@ -376,7 +376,7 @@ const MultiSelectorItem = forwardRef<
         "rounded-md cursor-pointer px-2 py-1 transition-colors flex justify-between ",
         className,
         isIncluded && "opacity-50 cursor-default",
-        props.disabled && "opacity-50 cursor-not-allowed",
+        props.disabled && "opacity-50 cursor-not-allowed"
       )}
       onMouseDown={mousePreventDefault}
     >
