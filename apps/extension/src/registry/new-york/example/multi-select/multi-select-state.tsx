@@ -8,7 +8,7 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
   MultiSelectValue,
-} from "@/registry/default/extension/multi-select";
+} from "@/registry/new-york/extension/multi-select";
 import { useState } from "react";
 
 const MultiSelectState = () => {

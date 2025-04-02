@@ -5,7 +5,7 @@ import {
   FileInput,
   FileUploaderContent,
   FileUploaderItem,
-} from "@/registry/default/extension/file-upload";
+} from "@/registry/new-york/extension/file-upload";
 import { DropzoneOptions } from "react-dropzone";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

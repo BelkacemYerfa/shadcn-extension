@@ -40,7 +40,7 @@ for (const style of styles) {
     // }
 
     const resolveFiles = item.files.map(
-      (file) => `src/registry/${style.name}/${file.path}`
+      (file) => `src/registry/${style.name}/${file.path}`,
     );
 
     const type = item.type.split(":")[1];
@@ -57,7 +57,7 @@ for (const style of styles) {
           (file) => `{
         "path": "${file}",
         "source": "${item.type}"
-      }`
+      }`,
         )
         .join(",")}],
       meta: ${item.meta},
@@ -81,7 +81,7 @@ fs.writeFileSync(path.join(process.cwd(), "src/__registry__/index.tsx"), index);
 
 // write the registry to public dir
 const names = result.data.filter(
-  (item) => item.type === "components:extension"
+  (item) => item.type === "components:extension",
 );
 console.log("📝 Building index...");
 const registryJson = JSON.stringify(names, null, 2);

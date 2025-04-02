@@ -7,7 +7,7 @@ import {
   MultiSelectorItem,
   MultiSelectorList,
   MultiSelectorTrigger,
-} from "@/registry/default/extension/multi-select";
+} from "@/registry/new-york/extension/multi-select";
 import {
   Form,
   FormDescription,

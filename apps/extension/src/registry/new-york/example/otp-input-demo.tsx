@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { OtpStyledInput } from "@/registry/default/extension/otp-input";
+import { OtpStyledInput } from "@/registry/new-york/extension/otp-input";
 
 const OtpTest = () => {
   const form = useForm({
@@ -24,7 +24,7 @@ const OtpTest = () => {
     toast.success(`Success , Your Otp code is : ${data.otp}`);
   };
   return (
-    <div className="max-w-xs h-fit flex items-center justify-center outline outline-1 outline-muted rounded-md p-4 bg-background">
+    <div className="max-w-[17.5rem] h-fit flex items-center justify-center outline outline-1 outline-muted rounded-md p-4 bg-background">
       <div className="w-full space-y-2">
         <div className="space-y-1">
           <h2 className="font-semibold">OTP verification</h2>

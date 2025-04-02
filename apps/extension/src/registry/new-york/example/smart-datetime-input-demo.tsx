@@ -1,4 +1,4 @@
-import { SmartDatetimeInput } from "@/registry/default/extension/smart-datetime-input";
+import { SmartDatetimeInput } from "@/registry/new-york/extension/smart-datetime-input";
 
 const SmartDateTimeInputDemo = () => {
   return (

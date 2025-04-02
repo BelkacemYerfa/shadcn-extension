@@ -95,7 +95,10 @@ const TreeItem = forwardRef<
   return (
     <ul ref={ref} className="w-full space-y-1" {...props}>
       {elements.map((element) => (
-        <li key={element.id} className="w-full space-y-2">
+        <li
+          key={element.id}
+          className="w-full space-y-2 max-w-[17.5rem] truncate"
+        >
           {element.children && element.children?.length > 0 ? (
             <Folder
               element={element.name}

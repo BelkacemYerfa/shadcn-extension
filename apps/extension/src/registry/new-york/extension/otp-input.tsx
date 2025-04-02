@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/registry/new-york/ui/input";
 import { cn } from "@/lib/utils";
 import OtpInput, { OTPInputProps } from "react-otp-input";
 
@@ -23,10 +23,10 @@ export const OtpStyledInput = ({
       renderInput={(inputProps) => (
         <Input
           {...inputProps}
-          className={cn("!w-12 !appearance-none selection:bg-none ", className)}
+          className={cn("selection:bg-none !w-9", className)}
         />
       )}
-      containerStyle={`flex justify-center items-center flex-wrap  text-2xl font-bold ${
+      containerStyle={`flex justify-center items-center flex-wrap ${
         props.renderSeparator ? "gap-1" : "gap-x-3 gap-y-2"
       }`}
     />

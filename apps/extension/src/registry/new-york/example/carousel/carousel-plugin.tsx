@@ -2,7 +2,7 @@ import {
   Carousel,
   CarouselMainContainer,
   SliderMainItem,
-} from "@/registry/default/extension/carousel";
+} from "@/registry/new-york/extension/carousel";
 import AutoScroll from "embla-carousel-auto-scroll";
 
 const CarouselOrientation = () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/registry/default/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { FileIcon, FolderIcon, FolderOpenIcon } from "lucide-react";
@@ -13,7 +13,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/registry/default/ui/button";
 
 type TreeViewElement = {
   id: string;

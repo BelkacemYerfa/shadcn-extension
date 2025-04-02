@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TagsInput } from "@/registry/default/extension/tags-input";
+import { TagsInput } from "@/registry/new-york/extension/tags-input";
 
 const TagsInputSate = () => {
   const [value, setValue] = useState<string[]>([]);

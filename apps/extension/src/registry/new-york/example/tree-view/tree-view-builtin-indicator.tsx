@@ -1,4 +1,4 @@
-import { TreeView } from "@/registry/default/extension/tree-view";
+import { TreeView } from "@/registry/new-york/extension/tree-view";
 
 const TreeViewBuiltInComponent = () => {
   const elements = [

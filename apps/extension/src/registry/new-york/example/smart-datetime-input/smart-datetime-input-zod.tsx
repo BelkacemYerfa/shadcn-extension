@@ -16,7 +16,7 @@ import {
 import z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SmartDatetimeInput } from "@/registry/default/extension/smart-datetime-input";
+import { SmartDatetimeInput } from "@/registry/new-york/extension/smart-datetime-input";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "Name is required" }),

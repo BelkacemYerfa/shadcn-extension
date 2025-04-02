@@ -6,7 +6,7 @@ import {
   FileUploaderContent,
   FileUploaderItem,
   FileInput,
-} from "@/registry/default/extension/file-upload";
+} from "@/registry/new-york/extension/file-upload";
 import { Paperclip } from "lucide-react";
 
 const FileSvgDraw = () => {

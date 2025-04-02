@@ -121,27 +121,6 @@
     "type": "components:extension"
   },
   {
-    "name": "image-carousel-upload",
-    "dependencies": [
-      "react-dropzone",
-      "embla-carousel-react",
-      "embla-carousel"
-    ],
-    "registryDependencies": [
-      "carousel"
-    ],
-    "uiDependencies": [
-      "input"
-    ],
-    "files": [
-      {
-        "path": "extension/image-carousel-upload.tsx",
-        "type": "components:example"
-      }
-    ],
-    "type": "components:extension"
-  },
-  {
     "name": "smart-datetime-input",
     "dependencies": [
       "chrono-node",

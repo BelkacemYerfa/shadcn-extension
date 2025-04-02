@@ -1,6 +1,6 @@
 "use client";
 
-import { OtpStyledInput } from "@/registry/default/extension/otp-input";
+import { OtpStyledInput } from "@/registry/new-york/extension/otp-input";
 import {
   Form,
   FormControl,

@@ -5,7 +5,7 @@ import {
   Folder,
   File,
   CollapseButton,
-} from "@/registry/default/extension/tree-view-api";
+} from "@/registry/new-york/extension/tree-view-api";
 
 const TreeFileTest = () => {
   const elements = [

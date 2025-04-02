@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/registry/default/ui/button";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronRightIcon } from "lucide-react";

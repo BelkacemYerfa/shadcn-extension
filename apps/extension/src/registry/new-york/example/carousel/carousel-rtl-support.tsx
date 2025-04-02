@@ -16,7 +16,7 @@ import {
   CarouselThumbsContainer,
   SliderThumbItem,
   CarouselIndicator,
-} from "@/registry/default/extension/carousel";
+} from "@/registry/new-york/extension/carousel";
 import { useState } from "react";
 
 const CarouselOrientation = () => {

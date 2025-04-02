@@ -4,7 +4,7 @@ import {
   CarouselThumbsContainer,
   SliderMainItem,
   SliderThumbItem,
-} from "@/registry/default/extension/carousel";
+} from "@/registry/new-york/extension/carousel";
 
 const CarouselExample = () => {
   return (

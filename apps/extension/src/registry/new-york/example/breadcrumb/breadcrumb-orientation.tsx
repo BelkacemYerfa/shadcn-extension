@@ -2,7 +2,7 @@ import {
   BreadCrumb,
   BreadCrumbItem,
   BreadCrumbSeparator,
-} from "@/registry/default/extension/breadcrumb";
+} from "@/registry/new-york/extension/breadcrumb";
 import Link from "next/link";
 
 const Pages = [

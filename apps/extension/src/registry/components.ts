@@ -90,19 +90,6 @@ const extension: Registry = [
     ],
   },
   {
-    name: "image-carousel-upload",
-    type: "components:extension",
-    dependencies: ["react-dropzone", "embla-carousel-react", "embla-carousel"],
-    registryDependencies: ["carousel"],
-    uiDependencies: ["input"],
-    files: [
-      {
-        path: "extension/image-carousel-upload.tsx",
-        type: "components:example",
-      },
-    ],
-  },
-  {
     name: "smart-datetime-input",
     type: "components:extension",
     dependencies: ["chrono-node", "react-day-picker"],
@@ -441,20 +428,6 @@ const examples: Registry = [
       },
     ],
   },
-
-  // Under development
-  {
-    name: "image-carousel-upload-example",
-    type: "components:example",
-    registryDependencies: ["image-carousel-upload"],
-    files: [
-      {
-        path: "example/image-carousel-upload-example.tsx",
-        type: "components:example",
-      },
-    ],
-  },
-  //
   {
     name: "smart-datetime-input-zod",
     type: "components:example",

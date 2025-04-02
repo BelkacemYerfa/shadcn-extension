@@ -6,14 +6,14 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/registry/default/ui/popover";
 import { ActiveModifiers } from "react-day-picker";
-import { Calendar, CalendarProps } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Calendar, CalendarProps } from "@/registry/default/ui/calendar";
+import { Input } from "@/registry/default/ui/input";
+import { Button, buttonVariants } from "@/registry/default/ui/button";
 import { cn } from "@/lib/utils";
 import { Calendar as CalendarIcon, LucideTextCursorInput } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/registry/default/ui/scroll-area";
 import { format } from "date-fns";
 
 /* -------------------------------------------------------------------------- */

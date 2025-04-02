@@ -8,7 +8,7 @@ import {
   MultiSelectorList,
   MultiSelectorItem,
   MultiSelectValue,
-} from "@/registry/default/extension/multi-select";
+} from "@/registry/new-york/extension/multi-select";
 
 const options = [
   { label: "React", value: "react" },

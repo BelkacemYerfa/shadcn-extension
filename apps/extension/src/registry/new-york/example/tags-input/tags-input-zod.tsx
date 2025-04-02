@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem } from "@/components/ui/form";
-import { TagsInput } from "@/registry/default/extension/tags-input";
+import { TagsInput } from "@/registry/new-york/extension/tags-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

@@ -5,7 +5,7 @@ import {
   FileInput,
   FileUploaderContent,
   FileUploaderItem,
-} from "@/registry/default/extension/file-upload";
+} from "@/registry/new-york/extension/file-upload";
 import Image from "next/image";
 import { useState } from "react";
 import { DropzoneOptions } from "react-dropzone";

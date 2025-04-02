@@ -52,7 +52,7 @@ export function ComponentPreview({
   const codeString = React.useMemo(() => {
     if (typeof Code?.props["data-rehype-pretty-code-figure"] !== "undefined") {
       const [, Button] = React.Children.toArray(
-        Code.props.children
+        Code.props.children,
       ) as React.ReactElement[];
       return Button?.props?.value || Button?.props?.__rawString__ || null;
     }
@@ -62,7 +62,7 @@ export function ComponentPreview({
     <div
       className={cn(
         "group relative my-4 flex flex-col space-y-2 not-prose",
-        className
+        className,
       )}
       {...props}
     >
@@ -83,7 +83,10 @@ export function ComponentPreview({
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="preview" className="relative rounded-md border">
+        <TabsContent
+          value="preview"
+          className="relative rounded-md border pb-6"
+        >
           <div className="flex items-center justify-between p-4">
             <StyleSwitcher />
             <div className="flex items-center gap-2">
@@ -111,8 +114,11 @@ export function ComponentPreview({
           </div>
         </TabsContent>
         <TabsContent value="code">
-          <div className="flex flex-col space-y-4">
+          <div className="relative flex flex-col space-y-4">
             <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto overflow-hidden relative">
+              <div className="absolute right-4 top-5 z-10 flex items-center gap-2">
+                <CopyButton value={codeString} />
+              </div>
               {Code}
             </div>
           </div>

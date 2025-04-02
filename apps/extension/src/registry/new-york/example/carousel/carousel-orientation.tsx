@@ -6,7 +6,7 @@ import {
   SliderMainItem,
   CarouselThumbsContainer,
   SliderThumbItem,
-} from "@/registry/default/extension/carousel";
+} from "@/registry/new-york/extension/carousel";
 
 const CarouselOrientation = () => {
   return (
