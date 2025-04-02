@@ -7,6 +7,7 @@ import {
   MultiSelectorContent,
   MultiSelectorList,
   MultiSelectorItem,
+  MultiSelectValue,
 } from "@/registry/default/extension/multi-select";
 
 const options = [
@@ -16,7 +17,7 @@ const options = [
 ];
 
 const MultiSelectTest = () => {
-  const [value, setValue] = useState<string[]>([]);
+  const [value, setValue] = useState<MultiSelectValue[]>([]);
   return (
     <MultiSelector values={value} onValuesChange={setValue} loop={false}>
       <MultiSelectorTrigger>
@@ -25,7 +26,11 @@ const MultiSelectTest = () => {
       <MultiSelectorContent>
         <MultiSelectorList>
           {options.map((option, i) => (
-            <MultiSelectorItem key={i} value={option.value}>
+            <MultiSelectorItem
+              key={i}
+              value={option.value}
+              label={option.label}
+            >
               {option.label}
             </MultiSelectorItem>
           ))}
