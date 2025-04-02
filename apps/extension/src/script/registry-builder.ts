@@ -40,7 +40,7 @@ for (const style of styles) {
     // }
 
     const resolveFiles = item.files.map(
-      (file) => `src/registry/${style.name}/${file}`,
+      (file) => `src/registry/${style.name}/${file.path}`
     );
 
     const type = item.type.split(":")[1];
@@ -50,9 +50,17 @@ for (const style of styles) {
       type: "${item.type}",
       registryDependencies: ${JSON.stringify(item.registryDependencies)},
       component: React.lazy(() => import("@/registry/${style.name}/${
-        item.files[0]
+        item.files[0].path
       }")),
-      files: [${resolveFiles.map((file) => `"${file}"`)}],
+      files: [${resolveFiles
+        .map(
+          (file) => `{
+        "path": "${file}",
+        "source": "${item.type}"
+      }`
+        )
+        .join(",")}],
+      meta: ${item.meta},
     },`;
   }
 
@@ -73,7 +81,7 @@ fs.writeFileSync(path.join(process.cwd(), "src/__registry__/index.tsx"), index);
 
 // write the registry to public dir
 const names = result.data.filter(
-  (item) => item.type === "components:extension",
+  (item) => item.type === "components:extension"
 );
 console.log("📝 Building index...");
 const registryJson = JSON.stringify(names, null, 2);
