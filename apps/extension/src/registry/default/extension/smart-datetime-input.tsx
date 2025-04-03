@@ -157,8 +157,9 @@ export const SmartDatetimeInput = React.forwardRef<
         <div
           className={cn(
             "flex gap-1 w-full p-1 items-center justify-between rounded-md border transition-all",
-            "focus-within:outline-0 focus:outline-0 focus:ring-0",
-            "placeholder:text-muted-foreground focus-visible:outline-0 ",
+            "focus-within:outline-0 focus:outline-0",
+            "placeholder:text-muted-foreground focus-visible:outline-0",
+            "focus-within:ring-1 focus-within:ring-ring",
             className,
           )}
         >
@@ -358,7 +359,7 @@ const TimePicker = () => {
       <h3 className="text-sm font-medium ">Time</h3>
       <ScrollArea
         onKeyDown={handleKeydown}
-        className="h-[90%] w-full focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 py-0.5"
+        className="h-[90%] w-full focus-visible:outline-0 focus:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 py-0.5"
         style={{
           height,
         }}
@@ -439,7 +440,7 @@ const TimePicker = () => {
                           ? "default"
                           : "outline",
                     }),
-                    "h-8 px-3 w-full text-sm focus-visible:outline-0 outline-0 focus-visible:border-0 cursor-default ring-0",
+                    "h-8 px-3 w-full text-sm focus-visible:outline-0 outline-0 focus-visible:border-0 cursor-default ring-0 focus:ring-0 focus-within:ring-0",
                   )}
                   onClick={() => handleClick(i, part, PM_AM, trueIndex)}
                   onFocus={() => isSuggested && setActiveIndex(trueIndex)}
@@ -465,7 +466,7 @@ const NaturalLanguageInput = React.forwardRef<
   const { value, onValueChange, Time, onTimeChange, disabled } =
     useSmartDateInput();
 
-  const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
+  const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm"';
 
   const [inputValue, setInputValue] = React.useState<string>("");
 
@@ -556,7 +557,10 @@ const NaturalLanguageInput = React.forwardRef<
       onChange={(e) => setInputValue(e.currentTarget.value)}
       onKeyDown={handleKeydown}
       onBlur={handleParse}
-      className={cn("px-2 mr-0.5 flex-1 border-none h-8 rounded", inputBase)}
+      className={cn(
+        "px-1 flex-1 border-none rounded focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+        inputBase,
+      )}
       {...props}
     />
   );
