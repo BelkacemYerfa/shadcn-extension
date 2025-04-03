@@ -319,11 +319,8 @@ const File = forwardRef<
         value={value}
         onClick={() => selectItem(value)}
         className={cn(
-          "relative rounded-md hover:bg-muted duration-200 ease-in-out pl-2 rtl:pr-2",
-          {
-            "bg-muted": isSelected && isSelectable,
-          },
-          isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed",
+          "relative",
+          isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed"
         )}
       >
         <AccordionPrimitive.Trigger
@@ -334,7 +331,11 @@ const File = forwardRef<
           aria-label="File"
           className={cn(
             "flex items-center gap-1 cursor-pointer text-sm pr-1 rtl:pl-1 rtl:pr-0 h-8",
-            className,
+            "rounded-md hover:bg-muted duration-200 ease-in-out pl-2 rtl:pr-2 w-full",
+            {
+              "bg-muted": isSelected && isSelectable,
+            },
+            className
           )}
         >
           {fileIcon ?? <FileIcon className="h-4 w-4" />}
