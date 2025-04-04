@@ -31,7 +31,7 @@ export const useConfig = create<ConfigStore>()(
       reset: () => set({ config: { ...defaultConfig } }),
     }),
     {
-      name: "shadcn-config",
+      name: "config",
     },
   ),
 );

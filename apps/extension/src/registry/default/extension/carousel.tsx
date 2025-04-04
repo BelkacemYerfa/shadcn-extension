@@ -299,12 +299,12 @@ const SliderThumbItem = forwardRef<
       onClick={() => onThumbClick(index)}
       className={cn(
         "flex min-w-0 shrink-0 grow-0 basis-1/3 bg-background p-1",
-        `${orientation === "vertical" ? "pb-1" : "pr-1"}`,
+        `${orientation === "vertical" ? "pt-1" : "pr-1"}`,
         className,
       )}
     >
       <div
-        className={`relative aspect-square h-20 w-full opacity-50 rounded-md transition-opacity ${
+        className={`relative aspect-square h-20 w-full opacity-50 rounded-lg transition-opacity ${
           isSlideActive ? "!opacity-100" : ""
         }`}
       >
@@ -327,7 +327,7 @@ const CarouselIndicator = forwardRef<
       ref={ref}
       size="icon"
       className={cn(
-        "h-1 w-6 rounded-full",
+        "h-1.5 w-6 rounded-full",
         "data-[active='false']:bg-primary/50 data-[active='true']:bg-primary",
         className,
       )}

@@ -14,7 +14,7 @@ const CarouselExample = () => {
           {Array.from({ length: 10 }).map((_, index) => (
             <SliderMainItem
               key={index}
-              className="border border-muted flex items-center justify-center h-52 rounded-md"
+              className="border border-muted flex items-center justify-center h-52 rounded-xl"
             >
               Slide {index + 1}
             </SliderMainItem>
@@ -26,9 +26,9 @@ const CarouselExample = () => {
           <SliderThumbItem
             key={index}
             index={index}
-            className="rounded-md bg-transparent"
+            className="rounded-xl bg-transparent"
           >
-            <span className="border border-muted flex items-center justify-center h-full w-full rounded-md cursor-pointer bg-background">
+            <span className="border border-muted flex items-center justify-center h-full w-full rounded-xl cursor-pointer bg-background">
               Slide {index + 1}
             </span>
           </SliderThumbItem>
