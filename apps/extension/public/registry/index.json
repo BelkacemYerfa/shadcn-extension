@@ -1,5 +1,16 @@
 [
   {
+    "name": "timeline",
+    "dependencies": [
+      "class-variance-authority",
+      "lucide-react"
+    ],
+    "files": [
+      "extension/timeline.tsx"
+    ],
+    "type": "components:extension"
+  },
+  {
     "name": "tree-view",
     "dependencies": [
       "@tanstack/react-virtual",

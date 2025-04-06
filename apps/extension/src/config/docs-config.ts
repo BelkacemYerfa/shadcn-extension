@@ -37,6 +37,10 @@ export const docsConfig: DocsConfig[] = [
     title: "Components",
     pages: [
       {
+        title: "Timeline",
+        path: "/docs/timeline",
+      },
+      {
         title: "Tree view",
         path: "/docs/tree-view",
       },

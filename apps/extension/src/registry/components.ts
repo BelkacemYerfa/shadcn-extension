@@ -2,6 +2,12 @@ import { Registry } from "./schema";
 
 const extension: Registry = [
   {
+    name: "timeline",
+    type: "components:extension",
+    dependencies: ["class-variance-authority", "lucide-react"],
+    files: ["extension/timeline.tsx"],
+  },
+  {
     name: "tree-view",
     type: "components:extension",
     dependencies: ["@tanstack/react-virtual", "use-resize-observer"],
@@ -87,6 +93,11 @@ const extension: Registry = [
 
 const demos: Registry = [
   {
+    name: "timeline-demo",
+    type: "components:demo",
+    files: ["example/timeline-demo.tsx"],
+  },
+  {
     name: "tree-view-demo",
     type: "components:demo",
     registryDependencies: ["tree-view-api"],
@@ -143,6 +154,21 @@ const demos: Registry = [
 ];
 
 const examples: Registry = [
+  {
+    name: "timeline-right",
+    type: "components:example",
+    files: ["example/timeline/timeline-right.tsx"],
+  },
+  {
+    name: "timeline-alternate",
+    type: "components:example",
+    files: ["example/timeline/timeline-alternate.tsx"],
+  },
+  {
+    name: "timeline-labels",
+    type: "components:example",
+    files: ["example/timeline/timeline-labels.tsx"],
+  },
   {
     name: "tree-view-builtin-indicator",
     type: "components:example",
