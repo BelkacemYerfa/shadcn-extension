@@ -1,12 +1,12 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/registry/default/ui/button";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/registry/default/ui/popover";
 import { cn } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { VariantProps } from "class-variance-authority";

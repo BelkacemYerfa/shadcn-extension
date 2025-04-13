@@ -1,12 +1,12 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/registry/default/ui/badge";
 import {
   Command,
   CommandItem,
   CommandEmpty,
   CommandList,
-} from "@/components/ui/command";
+} from "@/registry/default/ui/command";
 import { cn } from "@/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon, Check } from "lucide-react";
@@ -92,7 +92,7 @@ const MultiSelector = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value]
+    [value],
   );
 
   const handleKeyDown = useCallback(
@@ -113,7 +113,7 @@ const MultiSelector = ({
       const moveNext = () => {
         const nextIndex = activeIndex + 1;
         setActiveIndex(
-          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex
+          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex,
         );
       };
 
@@ -185,7 +185,7 @@ const MultiSelector = ({
           break;
       }
     },
-    [value, activeIndex, loop]
+    [value, activeIndex, loop],
   );
 
   return (
@@ -206,7 +206,7 @@ const MultiSelector = ({
         onKeyDown={handleKeyDown}
         className={cn(
           "overflow-visible bg-transparent flex flex-col space-y-2",
-          className
+          className,
         )}
         dir={dir}
         {...props}
@@ -236,7 +236,7 @@ const MultiSelectorTrigger = forwardRef<
         {
           "ring-1 focus-within:ring-ring": activeIndex === -1,
         },
-        className
+        className,
       )}
       {...props}
     >
@@ -244,8 +244,8 @@ const MultiSelectorTrigger = forwardRef<
         <Badge
           key={item.value}
           className={cn(
-            "px-1 rounded-xl flex items-center gap-1",
-            activeIndex === index && "ring-2 ring-muted-foreground "
+            "px-1.5 rounded-md flex items-center gap-1",
+            activeIndex === index && "ring-2 ring-muted-foreground ",
           )}
           variant={"secondary"}
         >
@@ -296,9 +296,9 @@ const MultiSelectorInput = forwardRef<
       onFocus={() => setOpen(true)}
       onClick={() => setActiveIndex(-1)}
       className={cn(
-        "ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1",
+        "ml-1 bg-transparent outline-none placeholder:text-muted-foreground flex-1",
         className,
-        activeIndex !== -1 && "caret-transparent"
+        activeIndex !== -1 && "caret-transparent",
       )}
     />
   );
@@ -329,7 +329,7 @@ const MultiSelectorList = forwardRef<
       ref={ref}
       className={cn(
         "p-2 flex flex-col gap-2 rounded-md scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg w-full absolute bg-background shadow-md z-10 border border-muted top-0",
-        className
+        className,
       )}
     >
       {children}
@@ -376,7 +376,7 @@ const MultiSelectorItem = forwardRef<
         "rounded-md cursor-pointer px-2 py-1 transition-colors flex justify-between ",
         className,
         isIncluded && "opacity-50 cursor-default",
-        props.disabled && "opacity-50 cursor-not-allowed"
+        props.disabled && "opacity-50 cursor-not-allowed",
       )}
       onMouseDown={mousePreventDefault}
     >

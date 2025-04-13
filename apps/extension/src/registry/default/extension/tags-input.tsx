@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
+import { Badge } from "@/registry/default/ui/badge";
+import { Input } from "@/registry/default/ui/input";
 import { cn } from "@/lib/utils";
 import { X as RemoveIcon } from "lucide-react";
 import React from "react";

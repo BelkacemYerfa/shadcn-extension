@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@/registry/default/ui/input";
 import { cn } from "@/lib/utils";
 import {
   Dispatch,
@@ -21,7 +21,7 @@ import {
 } from "react-dropzone";
 import { toast } from "sonner";
 import { Trash2 as RemoveIcon } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/registry/default/ui/button";
 import { max } from "date-fns";
 
 type DirectionOptions = "rtl" | "ltr" | undefined;

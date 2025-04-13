@@ -24,6 +24,7 @@ import { Style } from "@/registry/styles";
 import { ComponentSource } from "./component-source";
 import { MdxIcons } from "./icons";
 import { MDXTable } from "./tables/mdx-table";
+import { useConfig } from "@/hooks/use-config";
 
 const components = {
   Accordion,
@@ -306,9 +307,7 @@ interface MdxProps {
 }
 
 export function Mdx({ code }: MdxProps) {
-  const config = {
-    style: "default",
-  };
+  const { config } = useConfig();
 
   const Component = useMDXComponent(code);
 

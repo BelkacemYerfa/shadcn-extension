@@ -43,7 +43,7 @@ const FileUploaderTest = () => {
 
   const dropZoneConfig = {
     maxFiles: 5,
-    maxSize: 1024 * 1024 * 4,
+    maxSize: 1024 * 1024 * 10,
     multiple: true,
   };
 
@@ -63,9 +63,9 @@ const FileUploaderTest = () => {
         {files &&
           files.length > 0 &&
           files.map((file, i) => (
-            <FileUploaderItem key={i} index={i}>
+            <FileUploaderItem key={i} index={i} className="">
               <Paperclip className="h-4 w-4 stroke-current" />
-              <span>{file.name}</span>
+              <span className="max-w-[320px] truncate">{file.name}</span>
             </FileUploaderItem>
           ))}
       </FileUploaderContent>
