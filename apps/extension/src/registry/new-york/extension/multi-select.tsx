@@ -244,7 +244,7 @@ const MultiSelectorTrigger = forwardRef<
         <Badge
           key={item.value}
           className={cn(
-            "px-1 rounded-xl flex items-center gap-1",
+            "px-1.5 rounded-md flex items-center gap-1",
             activeIndex === index && "ring-2 ring-muted-foreground ",
           )}
           variant={"secondary"}
@@ -296,7 +296,7 @@ const MultiSelectorInput = forwardRef<
       onFocus={() => setOpen(true)}
       onClick={() => setActiveIndex(-1)}
       className={cn(
-        "ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1",
+        "ml-1 bg-transparent outline-none placeholder:text-muted-foreground flex-1 text-sm",
         className,
         activeIndex !== -1 && "caret-transparent",
       )}
@@ -373,7 +373,7 @@ const MultiSelectorItem = forwardRef<
         setInputValue("");
       }}
       className={cn(
-        "rounded-md cursor-pointer px-2 py-1 transition-colors flex justify-between ",
+        "rounded-md cursor-pointer px-2 py-1 transition-colors flex justify-between",
         className,
         isIncluded && "opacity-50 cursor-default",
         props.disabled && "opacity-50 cursor-not-allowed",
