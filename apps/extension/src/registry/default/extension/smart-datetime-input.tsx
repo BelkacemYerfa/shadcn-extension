@@ -1,20 +1,19 @@
 "use client";
 
-import React from "react";
-import { parseDate } from "chrono-node";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Calendar, CalendarProps } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ActiveModifiers } from "react-day-picker";
-import { Calendar, CalendarProps } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Calendar as CalendarIcon, LucideTextCursorInput } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { parseDate } from "chrono-node";
+import { Calendar as CalendarIcon } from "lucide-react";
+import React from "react";
+import { ActiveModifiers } from "react-day-picker";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -460,15 +459,6 @@ const NaturalLanguageInput = React.forwardRef<
   const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
 
   const [inputValue, setInputValue] = React.useState<string>("");
-
-  React.useEffect(() => {
-    const hour = new Date().getHours();
-    const timeVal = `${
-      hour >= 12 ? hour % 12 : hour
-    }:${new Date().getMinutes()} ${hour >= 12 ? "PM" : "AM"}`;
-    setInputValue(value ? formatDateTime(value) : "");
-    onTimeChange(value ? Time : timeVal);
-  }, [value, Time]);
 
   const handleParse = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
