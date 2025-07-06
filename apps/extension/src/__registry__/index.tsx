@@ -5,6 +5,15 @@ import * as React from "react";
 
 export const Index: Record<string, any> = {
   default: {
+    timeline: {
+      name: "timeline",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/extension/timeline.tsx"),
+      ),
+      files: ["src/registry/default/extension/timeline.tsx"],
+    },
     "tree-view": {
       name: "tree-view",
       type: "components:extension",
@@ -104,6 +113,15 @@ export const Index: Record<string, any> = {
       ),
       files: ["src/registry/default/extension/tags-input.tsx"],
     },
+    "timeline-demo": {
+      name: "timeline-demo",
+      type: "components:demo",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline-demo.tsx"),
+      ),
+      files: ["src/registry/default/example/timeline-demo.tsx"],
+    },
     "tree-view-demo": {
       name: "tree-view-demo",
       type: "components:demo",
@@ -185,6 +203,34 @@ export const Index: Record<string, any> = {
         () => import("@/registry/default/example/tags-input-demo.tsx"),
       ),
       files: ["src/registry/default/example/tags-input-demo.tsx"],
+    },
+    "timeline-right": {
+      name: "timeline-right",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline/timeline-right.tsx"),
+      ),
+      files: ["src/registry/default/example/timeline/timeline-right.tsx"],
+    },
+    "timeline-alternate": {
+      name: "timeline-alternate",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () =>
+          import("@/registry/default/example/timeline/timeline-alternate.tsx"),
+      ),
+      files: ["src/registry/default/example/timeline/timeline-alternate.tsx"],
+    },
+    "timeline-labels": {
+      name: "timeline-labels",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline/timeline-labels.tsx"),
+      ),
+      files: ["src/registry/default/example/timeline/timeline-labels.tsx"],
     },
     "tree-view-builtin-indicator": {
       name: "tree-view-builtin-indicator",

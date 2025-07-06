@@ -54,12 +54,12 @@ export const getDateTimeLocal = (timestamp?: Date): string => {
 /**
  * Returns the earliest date (starting with today) that is not disabled by the matcher.
  * If no dates are `disabled`, we default to new Date().
- * 
+ *
  * @param disabled - A boolean disabling the entire input, or a matcher function for valid dates.
  * @returns A `Date` object representing the earliest valid date.
  */
 const getValidBaseDate = (
-  disabled?: boolean | ((date: Date) => boolean)
+  disabled?: boolean | ((date: Date) => boolean),
 ): Date => {
   if (typeof disabled !== "function") return new Date();
   let potential = new Date();
@@ -136,7 +136,7 @@ export const SmartDatetimeInput = React.forwardRef<
     React.InputHTMLAttributes<HTMLInputElement>,
     "disabled" | "type" | "ref" | "value" | "defaultValue" | "onBlur"
   > &
-  SmartDatetimeInputProps
+    SmartDatetimeInputProps
 >(({ className, value, onValueChange, placeholder, disabled }, ref) => {
   // ? refactor to be only used with controlled input
   /*  const [dateTime, setDateTime] = React.useState<Date | undefined>(
@@ -179,7 +179,8 @@ SmartDatetimeInput.displayName = "DatetimeInput";
 // Make it a standalone component
 
 const TimePicker = () => {
-  const { value, onValueChange, Time, onTimeChange, disabled } = useSmartDateInput();
+  const { value, onValueChange, Time, onTimeChange, disabled } =
+    useSmartDateInput();
   const [activeIndex, setActiveIndex] = React.useState(-1);
   const timestamp = 15;
 
@@ -372,7 +373,10 @@ const TimePicker = () => {
             const formatIndex = i > 12 ? i % 12 : i === 0 || i === 12 ? 12 : i;
             return Array.from({ length: 4 }).map((_, part) => {
               // Create a candidate date using the current value's date if available or today's date.
-              const baseDate = value && !disabled ? new Date(value) : getValidBaseDate(disabled);
+              const baseDate =
+                value && !disabled
+                  ? new Date(value)
+                  : getValidBaseDate(disabled);
               const candidateDate = new Date(
                 baseDate.getFullYear(),
                 baseDate.getMonth(),
@@ -383,7 +387,10 @@ const TimePicker = () => {
                 0,
               );
               // Use the matcher if provided to decide if this candidate should be disabled.
-              let candidateDisabled = typeof disabled === "function" ? disabled(candidateDate) : false;
+              let candidateDisabled =
+                typeof disabled === "function"
+                  ? disabled(candidateDate)
+                  : false;
 
               // Additional check: if the candidate is for today and its time is past, disable it.
               const now = new Date();
@@ -455,7 +462,8 @@ const NaturalLanguageInput = React.forwardRef<
     disabled?: boolean;
   }
 >(({ placeholder, ...props }, ref) => {
-  const { value, onValueChange, Time, onTimeChange, disabled } = useSmartDateInput();
+  const { value, onValueChange, Time, onTimeChange, disabled } =
+    useSmartDateInput();
 
   const _placeholder = placeholder ?? 'e.g. "tomorrow at 5pm" or "in 2 hours"';
 
@@ -476,7 +484,11 @@ const NaturalLanguageInput = React.forwardRef<
       const parsedDateTime = parseDateTime(e.currentTarget.value);
       if (parsedDateTime) {
         // If a matcher function was passed, prevent selecting a disabled (past) date
-        if (disabled && typeof disabled != "boolean" && disabled(parsedDateTime)) {
+        if (
+          disabled &&
+          typeof disabled != "boolean" &&
+          disabled(parsedDateTime)
+        ) {
           // Invalid input--time already passed
           return;
         }
@@ -506,7 +518,11 @@ const NaturalLanguageInput = React.forwardRef<
         case "Enter":
           const parsedDateTime = parseDateTime(e.currentTarget.value);
           if (parsedDateTime) {
-            if (disabled && typeof disabled != "boolean" && disabled(parsedDateTime)) {
+            if (
+              disabled &&
+              typeof disabled != "boolean" &&
+              disabled(parsedDateTime)
+            ) {
               return;
             }
             const PM_AM = parsedDateTime.getHours() >= 12 ? "PM" : "AM";
@@ -548,7 +564,9 @@ const NaturalLanguageInput = React.forwardRef<
 
 NaturalLanguageInput.displayName = "NaturalLanguageInput";
 
-type DateTimeLocalInputProps = { disabled?: boolean | ((date: Date) => boolean) } & CalendarProps;
+type DateTimeLocalInputProps = {
+  disabled?: boolean | ((date: Date) => boolean);
+} & CalendarProps;
 
 const DateTimeLocalInput = ({
   className,
