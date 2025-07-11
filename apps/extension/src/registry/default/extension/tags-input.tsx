@@ -23,6 +23,7 @@ interface TagsInputProps extends React.HTMLAttributes<HTMLDivElement> {
   placeholder?: string;
   maxItems?: number;
   minItems?: number;
+  disabled?: boolean;
 }
 
 interface TagsInputContextProps {
@@ -45,6 +46,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
       placeholder,
       maxItems,
       minItems,
+      disabled,
       className,
       dir,
       ...props
@@ -131,6 +133,14 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
       };
       VerifyDisable();
     }, [value]);
+
+    React.useEffect(() => {
+      if (disabled === true) {
+        setDisableInput(true);
+      } else {
+        setDisableInput(false);
+      }
+    }, [disabled]);
 
     // ? check: Under build , default option support
     // * support : for the uncontrolled && controlled ui
