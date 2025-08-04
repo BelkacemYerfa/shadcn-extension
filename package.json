@@ -11,8 +11,8 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "prettier": "^3.2.5",
-    "turbo": "^2.0.14"
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5"
   },
   "engines": {
     "node": ">=18"

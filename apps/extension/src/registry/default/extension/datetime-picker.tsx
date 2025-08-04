@@ -2,7 +2,7 @@
 import React, { forwardRef, useCallback } from "react";
 import { useTimescape, type Options } from "timescape/react";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@/registry/default/ui/input";
 import { cn } from "@/lib/utils";
 // @source: https://github.com/dan-lee/timescape?tab=readme-ov-file
 

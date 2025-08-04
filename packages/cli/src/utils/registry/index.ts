@@ -6,7 +6,8 @@ import fetch from "node-fetch";
 import path from "path";
 import { z } from "zod";
 
-const GithubUrl = "https://raw.githubusercontent.com/BelkacemYerfa/shadcn-extension/master";
+const GithubUrl =
+  "https://raw.githubusercontent.com/BelkacemYerfa/shadcn-extension/master";
 const baseUrl =
   process.env.COMPONENTS_REGISTRY_URL ?? "https://shadcn-extension.vercel.app/";
 const agent = process.env.https_proxy
@@ -40,7 +41,6 @@ export async function fetchRegistry() {
  * @returns An array of component objects matching the provided component names.
  */
 export async function getComponentInfo(componentName: string[] | undefined) {
-
   const componentRegistry = registryIndexSchema.parse(await fetchRegistry());
 
   const addedComponents = new Set<string>(componentName); // Set to store added component names
@@ -106,9 +106,9 @@ export async function fetchFileContentFromGithub(
     const contents: string[] = [];
 
     for (const path of paths) {
-      const rawUrl = `${GithubUrl}/apps/extension/src/registry/default/${path}`;
+      const rawUrl = `${GithubUrl}/apps/extension/src/registry/new-york/${path}`;
 
-      const filename = path.substring( path.indexOf("/"));
+      const filename = path.substring(path.indexOf("/"));
 
       const response = await fetch(rawUrl);
 

@@ -5,6 +5,21 @@ import * as React from "react";
 
 export const Index: Record<string, any> = {
   default: {
+    timeline: {
+      name: "timeline",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/extension/timeline.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/extension/timeline.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
     "tree-view": {
       name: "tree-view",
       type: "components:extension",
@@ -12,7 +27,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/tree-view.tsx"),
       ),
-      files: ["src/registry/default/extension/tree-view.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/tree-view.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     "tree-view-api": {
       name: "tree-view-api",
@@ -21,7 +42,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/tree-view-api.tsx"),
       ),
-      files: ["src/registry/default/extension/tree-view-api.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/tree-view-api.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     "file-upload": {
       name: "file-upload",
@@ -30,7 +57,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/file-upload.tsx"),
       ),
-      files: ["src/registry/default/extension/file-upload.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/file-upload.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     "multi-select": {
       name: "multi-select",
@@ -39,7 +72,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/multi-select.tsx"),
       ),
-      files: ["src/registry/default/extension/multi-select.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/multi-select.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     "otp-input": {
       name: "otp-input",
@@ -48,7 +87,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/otp-input.tsx"),
       ),
-      files: ["src/registry/default/extension/otp-input.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/otp-input.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     carousel: {
       name: "carousel",
@@ -57,7 +102,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/carousel.tsx"),
       ),
-      files: ["src/registry/default/extension/carousel.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/carousel.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     breadcrumb: {
       name: "breadcrumb",
@@ -66,16 +117,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/breadcrumb.tsx"),
       ),
-      files: ["src/registry/default/extension/breadcrumb.tsx"],
-    },
-    "image-carousel-upload": {
-      name: "image-carousel-upload",
-      type: "components:extension",
-      registryDependencies: ["carousel"],
-      component: React.lazy(
-        () => import("@/registry/default/extension/image-carousel-upload.tsx"),
-      ),
-      files: ["src/registry/default/extension/image-carousel-upload.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/breadcrumb.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     "smart-datetime-input": {
       name: "smart-datetime-input",
@@ -84,7 +132,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/smart-datetime-input.tsx"),
       ),
-      files: ["src/registry/default/extension/smart-datetime-input.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/smart-datetime-input.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     "datetime-picker": {
       name: "datetime-picker",
@@ -93,7 +147,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/datetime-picker.tsx"),
       ),
-      files: ["src/registry/default/extension/datetime-picker.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/datetime-picker.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
     },
     "tags-input": {
       name: "tags-input",
@@ -102,7 +162,28 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/extension/tags-input.tsx"),
       ),
-      files: ["src/registry/default/extension/tags-input.tsx"],
+      files: [
+        {
+          path: "src/registry/default/extension/tags-input.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-demo": {
+      name: "timeline-demo",
+      type: "components:demo",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/example/timeline-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "tree-view-demo": {
       name: "tree-view-demo",
@@ -111,7 +192,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/tree-view-demo.tsx"),
       ),
-      files: ["src/registry/default/example/tree-view-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/tree-view-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "file-upload-demo": {
       name: "file-upload-demo",
@@ -120,7 +207,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/file-upload-demo.tsx"),
       ),
-      files: ["src/registry/default/example/file-upload-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/file-upload-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "multi-select-demo": {
       name: "multi-select-demo",
@@ -129,7 +222,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/multi-select-demo.tsx"),
       ),
-      files: ["src/registry/default/example/multi-select-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/multi-select-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "otp-input-demo": {
       name: "otp-input-demo",
@@ -138,7 +237,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/otp-input-demo.tsx"),
       ),
-      files: ["src/registry/default/example/otp-input-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/otp-input-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "carousel-demo": {
       name: "carousel-demo",
@@ -147,7 +252,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/carousel-demo.tsx"),
       ),
-      files: ["src/registry/default/example/carousel-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/carousel-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "breadcrumb-demo": {
       name: "breadcrumb-demo",
@@ -156,7 +267,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/breadcrumb-demo.tsx"),
       ),
-      files: ["src/registry/default/example/breadcrumb-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/breadcrumb-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "smart-datetime-input-demo": {
       name: "smart-datetime-input-demo",
@@ -166,7 +283,13 @@ export const Index: Record<string, any> = {
         () =>
           import("@/registry/default/example/smart-datetime-input-demo.tsx"),
       ),
-      files: ["src/registry/default/example/smart-datetime-input-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/smart-datetime-input-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "datetime-picker-demo": {
       name: "datetime-picker-demo",
@@ -175,7 +298,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/datetime-picker-demo.tsx"),
       ),
-      files: ["src/registry/default/example/datetime-picker-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/datetime-picker-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
     },
     "tags-input-demo": {
       name: "tags-input-demo",
@@ -184,7 +313,59 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/tags-input-demo.tsx"),
       ),
-      files: ["src/registry/default/example/tags-input-demo.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/tags-input-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-right": {
+      name: "timeline-right",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline/timeline-right.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/example/timeline/timeline-right.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-alternate": {
+      name: "timeline-alternate",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () =>
+          import("@/registry/default/example/timeline/timeline-alternate.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/example/timeline/timeline-alternate.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-labels": {
+      name: "timeline-labels",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline/timeline-labels.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/example/timeline/timeline-labels.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "tree-view-builtin-indicator": {
       name: "tree-view-builtin-indicator",
@@ -197,8 +378,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/tree-view/tree-view-builtin-indicator.tsx",
+        {
+          path: "src/registry/default/example/tree-view/tree-view-builtin-indicator.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "tree-view-builtin-expand": {
       name: "tree-view-builtin-expand",
@@ -211,8 +396,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/tree-view/tree-view-builtin-expand.tsx",
+        {
+          path: "src/registry/default/example/tree-view/tree-view-builtin-expand.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "tree-view-builtin-select": {
       name: "tree-view-builtin-select",
@@ -225,8 +414,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/tree-view/tree-view-builtin-select.tsx",
+        {
+          path: "src/registry/default/example/tree-view/tree-view-builtin-select.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "tree-view-guide": {
       name: "tree-view-guide",
@@ -236,7 +429,13 @@ export const Index: Record<string, any> = {
         () =>
           import("@/registry/default/example/tree-view/tree-view-guide.tsx"),
       ),
-      files: ["src/registry/default/example/tree-view/tree-view-guide.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/tree-view/tree-view-guide.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "carousel-orientation": {
       name: "carousel-orientation",
@@ -248,7 +447,13 @@ export const Index: Record<string, any> = {
             "@/registry/default/example/carousel/carousel-orientation.tsx"
           ),
       ),
-      files: ["src/registry/default/example/carousel/carousel-orientation.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/carousel/carousel-orientation.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "carousel-plugin": {
       name: "carousel-plugin",
@@ -257,7 +462,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/carousel/carousel-plugin.tsx"),
       ),
-      files: ["src/registry/default/example/carousel/carousel-plugin.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/carousel/carousel-plugin.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "carousel-indicator": {
       name: "carousel-indicator",
@@ -267,7 +478,13 @@ export const Index: Record<string, any> = {
         () =>
           import("@/registry/default/example/carousel/carousel-indicator.tsx"),
       ),
-      files: ["src/registry/default/example/carousel/carousel-indicator.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/carousel/carousel-indicator.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "carousel-rtl-support": {
       name: "carousel-rtl-support",
@@ -279,7 +496,13 @@ export const Index: Record<string, any> = {
             "@/registry/default/example/carousel/carousel-rtl-support.tsx"
           ),
       ),
-      files: ["src/registry/default/example/carousel/carousel-rtl-support.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/carousel/carousel-rtl-support.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "multi-select-state": {
       name: "multi-select-state",
@@ -292,8 +515,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/multi-select/multi-select-state.tsx",
+        {
+          path: "src/registry/default/example/multi-select/multi-select-state.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "multi-select-zod": {
       name: "multi-select-zod",
@@ -305,7 +532,13 @@ export const Index: Record<string, any> = {
             "@/registry/default/example/multi-select/multi-select-zod.tsx"
           ),
       ),
-      files: ["src/registry/default/example/multi-select/multi-select-zod.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/multi-select/multi-select-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "otp-input-zod": {
       name: "otp-input-zod",
@@ -314,7 +547,13 @@ export const Index: Record<string, any> = {
       component: React.lazy(
         () => import("@/registry/default/example/otp-input/otp-input-zod.tsx"),
       ),
-      files: ["src/registry/default/example/otp-input/otp-input-zod.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/otp-input/otp-input-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "file-upload-dropzone": {
       name: "file-upload-dropzone",
@@ -327,8 +566,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/file-upload/file-upload-dropzone.tsx",
+        {
+          path: "src/registry/default/example/file-upload/file-upload-dropzone.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "file-upload-zod": {
       name: "file-upload-zod",
@@ -338,7 +581,13 @@ export const Index: Record<string, any> = {
         () =>
           import("@/registry/default/example/file-upload/file-upload-zod.tsx"),
       ),
-      files: ["src/registry/default/example/file-upload/file-upload-zod.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/file-upload/file-upload-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "breadcrumb-separator": {
       name: "breadcrumb-separator",
@@ -351,8 +600,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/breadcrumb/breadcrumb-separator.tsx",
+        {
+          path: "src/registry/default/example/breadcrumb/breadcrumb-separator.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "breadcrumb-variants": {
       name: "breadcrumb-variants",
@@ -365,8 +618,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/breadcrumb/breadcrumb-variants.tsx",
+        {
+          path: "src/registry/default/example/breadcrumb/breadcrumb-variants.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "breadcrumb-popover": {
       name: "breadcrumb-popover",
@@ -378,7 +635,13 @@ export const Index: Record<string, any> = {
             "@/registry/default/example/breadcrumb/breadcrumb-popover.tsx"
           ),
       ),
-      files: ["src/registry/default/example/breadcrumb/breadcrumb-popover.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/breadcrumb/breadcrumb-popover.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "breadcrumb-active": {
       name: "breadcrumb-active",
@@ -388,7 +651,13 @@ export const Index: Record<string, any> = {
         () =>
           import("@/registry/default/example/breadcrumb/breadcrumb-active.tsx"),
       ),
-      files: ["src/registry/default/example/breadcrumb/breadcrumb-active.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/breadcrumb/breadcrumb-active.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "breadcrumb-orientation": {
       name: "breadcrumb-orientation",
@@ -401,20 +670,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/breadcrumb/breadcrumb-orientation.tsx",
+        {
+          path: "src/registry/default/example/breadcrumb/breadcrumb-orientation.tsx",
+          source: "components:example",
+        },
       ],
-    },
-    "image-carousel-upload-example": {
-      name: "image-carousel-upload-example",
-      type: "components:example",
-      registryDependencies: ["image-carousel-upload"],
-      component: React.lazy(
-        () =>
-          import(
-            "@/registry/default/example/image-carousel-upload-example.tsx"
-          ),
-      ),
-      files: ["src/registry/default/example/image-carousel-upload-example.tsx"],
+      meta: undefined,
     },
     "smart-datetime-input-zod": {
       name: "smart-datetime-input-zod",
@@ -427,8 +688,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/smart-datetime-input/smart-datetime-input-zod.tsx",
+        {
+          path: "src/registry/default/example/smart-datetime-input/smart-datetime-input-zod.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "datetime-picker-zod": {
       name: "datetime-picker-zod",
@@ -441,8 +706,12 @@ export const Index: Record<string, any> = {
           ),
       ),
       files: [
-        "src/registry/default/example/datetime-picker/datetime-picker-zod.tsx",
+        {
+          path: "src/registry/default/example/datetime-picker/datetime-picker-zod.tsx",
+          source: "components:example",
+        },
       ],
+      meta: undefined,
     },
     "tags-input-state": {
       name: "tags-input-state",
@@ -452,7 +721,13 @@ export const Index: Record<string, any> = {
         () =>
           import("@/registry/default/example/tags-input/tags-input-state.tsx"),
       ),
-      files: ["src/registry/default/example/tags-input/tags-input-state.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/tags-input/tags-input-state.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
     "tags-input-zod": {
       name: "tags-input-zod",
@@ -462,7 +737,759 @@ export const Index: Record<string, any> = {
         () =>
           import("@/registry/default/example/tags-input/tags-input-zod.tsx"),
       ),
-      files: ["src/registry/default/example/tags-input/tags-input-zod.tsx"],
+      files: [
+        {
+          path: "src/registry/default/example/tags-input/tags-input-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+  },
+  "new-york": {
+    timeline: {
+      name: "timeline",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/timeline.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/timeline.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "tree-view": {
+      name: "tree-view",
+      type: "components:extension",
+      registryDependencies: ["tree-view-api"],
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/tree-view.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/tree-view.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "tree-view-api": {
+      name: "tree-view-api",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/tree-view-api.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/tree-view-api.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "file-upload": {
+      name: "file-upload",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/file-upload.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/file-upload.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "multi-select": {
+      name: "multi-select",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/multi-select.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/multi-select.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "otp-input": {
+      name: "otp-input",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/otp-input.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/otp-input.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    carousel: {
+      name: "carousel",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/carousel.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/carousel.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    breadcrumb: {
+      name: "breadcrumb",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/breadcrumb.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/breadcrumb.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "smart-datetime-input": {
+      name: "smart-datetime-input",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/smart-datetime-input.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/smart-datetime-input.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "datetime-picker": {
+      name: "datetime-picker",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/datetime-picker.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/datetime-picker.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "tags-input": {
+      name: "tags-input",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/tags-input.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/tags-input.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-demo": {
+      name: "timeline-demo",
+      type: "components:demo",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/example/timeline-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/timeline-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "tree-view-demo": {
+      name: "tree-view-demo",
+      type: "components:demo",
+      registryDependencies: ["tree-view-api"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/tree-view-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/tree-view-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "file-upload-demo": {
+      name: "file-upload-demo",
+      type: "components:demo",
+      registryDependencies: ["file-upload"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/file-upload-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/file-upload-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "multi-select-demo": {
+      name: "multi-select-demo",
+      type: "components:demo",
+      registryDependencies: ["multi-select"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/multi-select-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/multi-select-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "otp-input-demo": {
+      name: "otp-input-demo",
+      type: "components:demo",
+      registryDependencies: ["otp-input"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/otp-input-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/otp-input-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "carousel-demo": {
+      name: "carousel-demo",
+      type: "components:demo",
+      registryDependencies: ["carousel"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/carousel-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/carousel-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "breadcrumb-demo": {
+      name: "breadcrumb-demo",
+      type: "components:demo",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/breadcrumb-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/breadcrumb-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "smart-datetime-input-demo": {
+      name: "smart-datetime-input-demo",
+      type: "components:demo",
+      registryDependencies: ["smart-datetime-input"],
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/smart-datetime-input-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/smart-datetime-input-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "datetime-picker-demo": {
+      name: "datetime-picker-demo",
+      type: "components:demo",
+      registryDependencies: ["datetime-picker"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/datetime-picker-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/datetime-picker-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "tags-input-demo": {
+      name: "tags-input-demo",
+      type: "components:demo",
+      registryDependencies: ["tags-input"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/tags-input-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/tags-input-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-right": {
+      name: "timeline-right",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/example/timeline/timeline-right.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/timeline/timeline-right.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-alternate": {
+      name: "timeline-alternate",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/timeline/timeline-alternate.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/timeline/timeline-alternate.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-labels": {
+      name: "timeline-labels",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/timeline/timeline-labels.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/timeline/timeline-labels.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "tree-view-builtin-indicator": {
+      name: "tree-view-builtin-indicator",
+      type: "components:example",
+      registryDependencies: ["tree-view"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/tree-view/tree-view-builtin-indicator.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/tree-view/tree-view-builtin-indicator.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "tree-view-builtin-expand": {
+      name: "tree-view-builtin-expand",
+      type: "components:example",
+      registryDependencies: ["tree-view"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/tree-view/tree-view-builtin-expand.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/tree-view/tree-view-builtin-expand.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "tree-view-builtin-select": {
+      name: "tree-view-builtin-select",
+      type: "components:example",
+      registryDependencies: ["tree-view"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/tree-view/tree-view-builtin-select.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/tree-view/tree-view-builtin-select.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "tree-view-guide": {
+      name: "tree-view-guide",
+      type: "components:example",
+      registryDependencies: ["tree-view-api"],
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/tree-view/tree-view-guide.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/tree-view/tree-view-guide.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "carousel-orientation": {
+      name: "carousel-orientation",
+      type: "components:example",
+      registryDependencies: ["carousel"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/carousel/carousel-orientation.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/carousel/carousel-orientation.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "carousel-plugin": {
+      name: "carousel-plugin",
+      type: "components:example",
+      registryDependencies: ["carousel"],
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/carousel/carousel-plugin.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/carousel/carousel-plugin.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "carousel-indicator": {
+      name: "carousel-indicator",
+      type: "components:example",
+      registryDependencies: ["carousel"],
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/carousel/carousel-indicator.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/carousel/carousel-indicator.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "carousel-rtl-support": {
+      name: "carousel-rtl-support",
+      type: "components:example",
+      registryDependencies: ["carousel"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/carousel/carousel-rtl-support.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/carousel/carousel-rtl-support.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "multi-select-state": {
+      name: "multi-select-state",
+      type: "components:example",
+      registryDependencies: ["multi-select"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/multi-select/multi-select-state.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/multi-select/multi-select-state.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "multi-select-zod": {
+      name: "multi-select-zod",
+      type: "components:example",
+      registryDependencies: ["multi-select"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/multi-select/multi-select-zod.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/multi-select/multi-select-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "otp-input-zod": {
+      name: "otp-input-zod",
+      type: "components:example",
+      registryDependencies: ["otp-input"],
+      component: React.lazy(
+        () => import("@/registry/new-york/example/otp-input/otp-input-zod.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/otp-input/otp-input-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "file-upload-dropzone": {
+      name: "file-upload-dropzone",
+      type: "components:example",
+      registryDependencies: ["file-upload"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/file-upload/file-upload-dropzone.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/file-upload/file-upload-dropzone.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "file-upload-zod": {
+      name: "file-upload-zod",
+      type: "components:example",
+      registryDependencies: ["file-upload"],
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/file-upload/file-upload-zod.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/file-upload/file-upload-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "breadcrumb-separator": {
+      name: "breadcrumb-separator",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/breadcrumb/breadcrumb-separator.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/breadcrumb/breadcrumb-separator.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "breadcrumb-variants": {
+      name: "breadcrumb-variants",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/breadcrumb/breadcrumb-variants.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/breadcrumb/breadcrumb-variants.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "breadcrumb-popover": {
+      name: "breadcrumb-popover",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/breadcrumb/breadcrumb-popover.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/breadcrumb/breadcrumb-popover.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "breadcrumb-active": {
+      name: "breadcrumb-active",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/breadcrumb/breadcrumb-active.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/breadcrumb/breadcrumb-active.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "breadcrumb-orientation": {
+      name: "breadcrumb-orientation",
+      type: "components:example",
+      registryDependencies: ["breadcrumb"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/breadcrumb/breadcrumb-orientation.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/breadcrumb/breadcrumb-orientation.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "smart-datetime-input-zod": {
+      name: "smart-datetime-input-zod",
+      type: "components:example",
+      registryDependencies: ["smart-datetime-input"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/smart-datetime-input/smart-datetime-input-zod.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/smart-datetime-input/smart-datetime-input-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "datetime-picker-zod": {
+      name: "datetime-picker-zod",
+      type: "components:example",
+      registryDependencies: ["datetime-picker"],
+      component: React.lazy(
+        () =>
+          import(
+            "@/registry/new-york/example/datetime-picker/datetime-picker-zod.tsx"
+          ),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/datetime-picker/datetime-picker-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "tags-input-state": {
+      name: "tags-input-state",
+      type: "components:example",
+      registryDependencies: ["tags-input"],
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/tags-input/tags-input-state.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/tags-input/tags-input-state.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "tags-input-zod": {
+      name: "tags-input-zod",
+      type: "components:example",
+      registryDependencies: ["tags-input"],
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/tags-input/tags-input-zod.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/tags-input/tags-input-zod.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
     },
   },
 };

@@ -2,14 +2,13 @@
 
 import { siteConfig } from "@/config/site-config";
 import { useActiveSection } from "@/hooks/use-active-section";
-import { cn } from "@/lib/utils";
 import {
   TreeViewElement,
   Tree,
   Folder,
   File,
   CollapseButton,
-} from "@/registry/default/extension/tree-view-api";
+} from "@/registry/new-york/extension/tree-view-api";
 import { ChevronDown, ChevronRight, Circle, MoveRight } from "lucide-react";
 import Link from "next/link";
 import React, { forwardRef } from "react";
@@ -95,12 +94,16 @@ const TreeItem = forwardRef<
   return (
     <ul ref={ref} className="w-full space-y-1" {...props}>
       {elements.map((element) => (
-        <li key={element.id} className="w-full space-y-2">
+        <li
+          key={element.id}
+          className="w-full space-y-2 max-w-[17.5rem] truncate"
+        >
           {element.children && element.children?.length > 0 ? (
             <Folder
               element={element.name}
               value={element.id}
               isSelectable={element.isSelectable}
+              folderIcon={false}
               isSelect={activeItem === element.id.split("#")[1]}
               className="px-px pr-1"
             >
