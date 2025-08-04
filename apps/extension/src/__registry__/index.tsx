@@ -5,6 +5,21 @@ import * as React from "react";
 
 export const Index: Record<string, any> = {
   default: {
+    timeline: {
+      name: "timeline",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/extension/timeline.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/extension/timeline.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
     "tree-view": {
       name: "tree-view",
       type: "components:extension",
@@ -155,6 +170,21 @@ export const Index: Record<string, any> = {
       ],
       meta: undefined,
     },
+    "timeline-demo": {
+      name: "timeline-demo",
+      type: "components:demo",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/example/timeline-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
     "tree-view-demo": {
       name: "tree-view-demo",
       type: "components:demo",
@@ -287,6 +317,52 @@ export const Index: Record<string, any> = {
         {
           path: "src/registry/default/example/tags-input-demo.tsx",
           source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-right": {
+      name: "timeline-right",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline/timeline-right.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/example/timeline/timeline-right.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-alternate": {
+      name: "timeline-alternate",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () =>
+          import("@/registry/default/example/timeline/timeline-alternate.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/example/timeline/timeline-alternate.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-labels": {
+      name: "timeline-labels",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/default/example/timeline/timeline-labels.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/default/example/timeline/timeline-labels.tsx",
+          source: "components:example",
         },
       ],
       meta: undefined,
@@ -671,6 +747,21 @@ export const Index: Record<string, any> = {
     },
   },
   "new-york": {
+    timeline: {
+      name: "timeline",
+      type: "components:extension",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/extension/timeline.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/extension/timeline.tsx",
+          source: "components:extension",
+        },
+      ],
+      meta: undefined,
+    },
     "tree-view": {
       name: "tree-view",
       type: "components:extension",
@@ -821,6 +912,21 @@ export const Index: Record<string, any> = {
       ],
       meta: undefined,
     },
+    "timeline-demo": {
+      name: "timeline-demo",
+      type: "components:demo",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/example/timeline-demo.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/timeline-demo.tsx",
+          source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
     "tree-view-demo": {
       name: "tree-view-demo",
       type: "components:demo",
@@ -953,6 +1059,53 @@ export const Index: Record<string, any> = {
         {
           path: "src/registry/new-york/example/tags-input-demo.tsx",
           source: "components:demo",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-right": {
+      name: "timeline-right",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () => import("@/registry/new-york/example/timeline/timeline-right.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/timeline/timeline-right.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-alternate": {
+      name: "timeline-alternate",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/timeline/timeline-alternate.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/timeline/timeline-alternate.tsx",
+          source: "components:example",
+        },
+      ],
+      meta: undefined,
+    },
+    "timeline-labels": {
+      name: "timeline-labels",
+      type: "components:example",
+      registryDependencies: undefined,
+      component: React.lazy(
+        () =>
+          import("@/registry/new-york/example/timeline/timeline-labels.tsx"),
+      ),
+      files: [
+        {
+          path: "src/registry/new-york/example/timeline/timeline-labels.tsx",
+          source: "components:example",
         },
       ],
       meta: undefined,

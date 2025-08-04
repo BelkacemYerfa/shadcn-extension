@@ -320,7 +320,7 @@ const File = forwardRef<
         onClick={() => selectItem(value)}
         className={cn(
           "relative",
-          isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed"
+          isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed",
         )}
       >
         <AccordionPrimitive.Trigger
@@ -335,7 +335,7 @@ const File = forwardRef<
             {
               "bg-muted": isSelected && isSelectable,
             },
-            className
+            className,
           )}
         >
           {fileIcon ?? <FileIcon className="h-4 w-4" />}

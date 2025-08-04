@@ -52,7 +52,7 @@ export function ComponentPreview({
   const codeString = React.useMemo(() => {
     if (typeof Code?.props["data-rehype-pretty-code-figure"] !== "undefined") {
       const [Button] = React.Children.toArray(
-        Code.props.children
+        Code.props.children,
       ) as React.ReactElement[];
       return Button?.props?.value || Button?.props?.__rawString__ || null;
     }
