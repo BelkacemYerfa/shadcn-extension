@@ -6,7 +6,10 @@
       "lucide-react"
     ],
     "files": [
-      "extension/timeline.tsx"
+      {
+        "path": "extension/timeline.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -20,7 +23,10 @@
       "tree-view-api"
     ],
     "files": [
-      "extension/tree-view.tsx"
+      {
+        "path": "extension/tree-view.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -34,7 +40,10 @@
       "scroll-area"
     ],
     "files": [
-      "extension/tree-view-api.tsx"
+      {
+        "path": "extension/tree-view-api.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -49,7 +58,10 @@
       "input"
     ],
     "files": [
-      "extension/file-upload.tsx"
+      {
+        "path": "extension/file-upload.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -64,7 +76,10 @@
       "command"
     ],
     "files": [
-      "extension/multi-select.tsx"
+      {
+        "path": "extension/multi-select.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -77,7 +92,10 @@
       "input"
     ],
     "files": [
-      "extension/otp-input.tsx"
+      {
+        "path": "extension/otp-input.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -92,7 +110,10 @@
       "button"
     ],
     "files": [
-      "extension/carousel.tsx"
+      {
+        "path": "extension/carousel.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -106,25 +127,10 @@
       "popover"
     ],
     "files": [
-      "extension/breadcrumb.tsx"
-    ],
-    "type": "components:extension"
-  },
-  {
-    "name": "image-carousel-upload",
-    "dependencies": [
-      "react-dropzone",
-      "embla-carousel-react",
-      "embla-carousel"
-    ],
-    "registryDependencies": [
-      "carousel"
-    ],
-    "uiDependencies": [
-      "input"
-    ],
-    "files": [
-      "extension/image-carousel-upload.tsx"
+      {
+        "path": "extension/breadcrumb.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -142,7 +148,10 @@
       "scroll-area"
     ],
     "files": [
-      "extension/smart-datetime-input.tsx"
+      {
+        "path": "extension/smart-datetime-input.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -155,7 +164,10 @@
       "input"
     ],
     "files": [
-      "extension/datetime-picker.tsx"
+      {
+        "path": "extension/datetime-picker.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   },
@@ -169,7 +181,10 @@
       "badge"
     ],
     "files": [
-      "extension/tags-input.tsx"
+      {
+        "path": "extension/tags-input.tsx",
+        "type": "components:example"
+      }
     ],
     "type": "components:extension"
   }

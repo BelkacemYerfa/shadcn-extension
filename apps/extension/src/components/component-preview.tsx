@@ -5,7 +5,10 @@ import { Index } from "@/__registry__";
 import { cn } from "@/lib/utils";
 import { CopyButton, CopyWithClassNames } from "@/components/copy-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import dynamic from "next/dynamic";
+import { useConfig } from "@/hooks/use-config";
+import { StyleSwitcher } from "./style-switcher";
+import { Icons } from "./icons";
+import { styles } from "@/registry/styles";
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -23,12 +26,14 @@ export function ComponentPreview({
   align = "center",
   ...props
 }: ComponentPreviewProps) {
+  const { config } = useConfig();
+  const index = styles.findIndex((style) => style.name === config.style);
+
   const Codes = React.Children.toArray(children) as React.ReactElement[];
-  const Code = Codes[0];
+  const Code = Codes[index];
 
   const Preview = React.useMemo(() => {
-    const Component = Index["default"][name]?.component;
-
+    const Component = Index[config.style][name]?.component;
     if (!Component) {
       return (
         <p className="text-sm text-muted-foreground">
@@ -42,11 +47,11 @@ export function ComponentPreview({
     }
 
     return <Component />;
-  }, [name]);
+  }, [name, config.style]);
 
   const codeString = React.useMemo(() => {
     if (typeof Code?.props["data-rehype-pretty-code-figure"] !== "undefined") {
-      const [, Button] = React.Children.toArray(
+      const [Button] = React.Children.toArray(
         Code.props.children,
       ) as React.ReactElement[];
       return Button?.props?.value || Button?.props?.__rawString__ || null;
@@ -80,18 +85,40 @@ export function ComponentPreview({
         </div>
         <TabsContent
           value="preview"
-          className="relative rounded-md border bg-muted/50 p-2 data-[state=active]:flex flex-col items-center justify-center w-full min-h-[20rem]"
+          className="relative rounded-md border pb-6"
         >
-          {codeString && <CopyButton value={codeString} />}
-          <React.Suspense fallback={<div className="h-full">Loading...</div>}>
-            <div className="w-full max-w-sm flex items-center justify-center">
-              {Preview}
+          <div className="flex items-center justify-between p-4">
+            <StyleSwitcher />
+            <div className="flex items-center gap-2">
+              <CopyButton value={codeString} />
             </div>
-          </React.Suspense>
+          </div>
+          <div
+            className={cn("preview flex min-h-[20rem] w-full justify-center", {
+              "items-center": align === "center",
+              "items-start": align === "start",
+              "items-end": align === "end",
+            })}
+          >
+            <React.Suspense
+              fallback={
+                <div className="flex w-full items-center justify-center text-sm text-muted-foreground">
+                  Loading...
+                </div>
+              }
+            >
+              <div className="max-w-sm w-full flex items-center justify-center">
+                {Preview}
+              </div>
+            </React.Suspense>
+          </div>
         </TabsContent>
         <TabsContent value="code">
-          <div className="flex flex-col space-y-4">
+          <div className="relative flex flex-col space-y-4">
             <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto overflow-hidden relative">
+              <div className="absolute right-4 top-5 z-10 flex items-center gap-2">
+                <CopyButton value={codeString} />
+              </div>
               {Code}
             </div>
           </div>

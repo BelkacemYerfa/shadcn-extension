@@ -117,6 +117,10 @@
   }
 }
 
+pre code {
+  @apply font-semibold leading-loose;
+}
+
 [data-rehype-pretty-code-figure] pre {
   @apply px-0;
 }

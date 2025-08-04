@@ -18,8 +18,7 @@ const FileUploadDropzone = () => {
       "image/*": [".jpg", ".jpeg", ".png"],
     },
     multiple: true,
-    maxFiles: 4,
-    maxSize: 1 * 1024 * 1024,
+    maxFiles: 3,
   } satisfies DropzoneOptions;
 
   return (
@@ -46,7 +45,7 @@ const FileUploadDropzone = () => {
               alt={file.name}
               height={80}
               width={80}
-              className="size-20 p-0"
+              className="size-20 p-0 object-cover"
             />
           </FileUploaderItem>
         ))}
